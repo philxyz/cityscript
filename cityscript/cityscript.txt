@@ -1,0 +1,6 @@
+"cityscript"
+{
+	"base"		"sandbox"
+	"title"		"CityScript"
+	"menusystem"	"1"
+}

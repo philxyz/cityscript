@@ -1,0 +1,9 @@
+ITEM.Name = "Ford Mustang";
+ITEM.Class = "car_mustang";
+ITEM.Description = "A 1968 Ford Mustang Fastback GT with an extra seat.";
+ITEM.Model = "models/Mustang.mdl";
+ITEM.VehicleScript = "scripts/vehicles/Mustang_test.txt";
+ITEM.VehicleClass = "prop_vehicle_jeep";
+ITEM.Purchaseable = true;
+ITEM.Price = 19000;
+ITEM.ItemGroup = 4;

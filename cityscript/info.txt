@@ -1,0 +1,7 @@
+CityScript 1.0.2
+
+Authors:
+Nori (CakeScript)
+philxyz (CityScript, derived from CakeScript G2)
+
+This is a DarkRP-inspired Cakescript-based gamemode.

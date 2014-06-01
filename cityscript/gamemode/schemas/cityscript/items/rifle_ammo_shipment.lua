@@ -1,0 +1,10 @@
+ITEM.Name = "Rifle Ammo Shipment";
+ITEM.Class = "weapon_rifle_ammo_shipment";
+ITEM.ContentClass = "ammo_rifle"
+ITEM.ContentCount = 10
+ITEM.ContentItemWeight = 0.32
+ITEM.Description = "10 pack";
+ITEM.Model = "models/Items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 350;
+ITEM.ItemGroup = 3;

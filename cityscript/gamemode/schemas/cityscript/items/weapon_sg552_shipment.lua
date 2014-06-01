@@ -1,0 +1,10 @@
+ITEM.Name = "SG552 Shipment";
+ITEM.Class = "weapon_sg552_shipment";
+ITEM.ContentClass = "weapon_sg552"
+ITEM.ContentCount = 10
+ITEM.ContentItemWeight = 3.5
+ITEM.Description = "10 pack";
+ITEM.Model = "models/Items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 3800;
+ITEM.ItemGroup = 3;

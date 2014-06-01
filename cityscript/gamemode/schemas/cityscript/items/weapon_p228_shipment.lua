@@ -1,0 +1,10 @@
+ITEM.Name = "P228 Shipment";
+ITEM.Class = "weapon_p228_shipment";
+ITEM.ContentClass = "weapon_p228"
+ITEM.ContentCount = 10
+ITEM.ContentItemWeight = 2.2
+ITEM.Description = "10 pack";
+ITEM.Model = "models/Items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 1000;
+ITEM.ItemGroup = 3;

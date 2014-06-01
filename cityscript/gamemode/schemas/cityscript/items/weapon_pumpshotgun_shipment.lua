@@ -1,0 +1,10 @@
+ITEM.Name = "Shotgun Shipment";
+ITEM.Class = "weapon_pumpshotgun_shipment";
+ITEM.ContentClass = "weapon_pumpshotgun"
+ITEM.ContentCount = 10
+ITEM.ContentItemWeight = 8.0
+ITEM.Description = "10 pack";
+ITEM.Model = "models/Items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 1750;
+ITEM.ItemGroup = 3;

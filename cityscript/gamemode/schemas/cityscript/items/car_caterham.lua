@@ -1,0 +1,10 @@
+ITEM.Name = "Caterham";
+ITEM.Class = "car_caterham";
+ITEM.Description = "Car";
+ITEM.Model = "models/caterham/caterham.mdl";
+ITEM.VehicleScript = "scripts/vehicles/caterham.txt";
+ITEM.VehicleClass = "prop_vehicle_jeep";
+ITEM.VehicleExtras = 7
+ITEM.Purchaseable = true;
+ITEM.Price = 8000;
+ITEM.ItemGroup = 4;

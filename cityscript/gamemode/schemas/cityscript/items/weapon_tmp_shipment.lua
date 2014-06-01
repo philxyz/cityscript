@@ -1,0 +1,10 @@
+ITEM.Name = "Machine Pistol Shipment";
+ITEM.Class = "weapon_tmp_shipment";
+ITEM.ContentClass = "weapon_tmp"
+ITEM.ContentCount = 10
+ITEM.ContentItemWeight = 2.9
+ITEM.Description = "10 pack";
+ITEM.Model = "models/Items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 2100;
+ITEM.ItemGroup = 3;

@@ -1,0 +1,10 @@
+ITEM.Name = "Knife Shipment";
+ITEM.Class = "weapon_knife_shipment";
+ITEM.ContentClass = "weapon_knife"
+ITEM.ContentCount = 10
+ITEM.ContentItemWeight = 0.3
+ITEM.Description = "10 pack";
+ITEM.Model = "models/Items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 1000;
+ITEM.ItemGroup = 3;

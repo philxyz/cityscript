@@ -1,0 +1,10 @@
+ITEM.Name = "Lamborghini";
+ITEM.Class = "car_lambo";
+ITEM.Description = "Car";
+ITEM.Model = "models/lambo/lambo.mdl";
+ITEM.VehicleScript = "scripts/vehicles/lambo.txt";
+ITEM.VehicleClass = "prop_vehicle_jeep";
+ITEM.VehicleExtras = 511
+ITEM.Purchaseable = true;
+ITEM.Price = 24000;
+ITEM.ItemGroup = 4;

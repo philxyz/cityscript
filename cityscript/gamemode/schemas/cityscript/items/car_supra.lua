@@ -1,0 +1,9 @@
+ITEM.Name = "Toyota Supra";
+ITEM.Class = "car_supra";
+ITEM.Description = "A Toyota Supra with an extra seat.";
+ITEM.Model = "models/Supra.mdl";
+ITEM.VehicleScript = "scripts/vehicles/Supra_test.txt";
+ITEM.VehicleClass = "prop_vehicle_jeep";
+ITEM.Purchaseable = true;
+ITEM.Price = 19000;
+ITEM.ItemGroup = 4;

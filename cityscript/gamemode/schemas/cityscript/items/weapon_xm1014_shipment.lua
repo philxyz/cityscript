@@ -1,0 +1,10 @@
+ITEM.Name = "XM1014 Auto Sniper Shipment";
+ITEM.Class = "weapon_xm1014_shipment";
+ITEM.ContentClass = "weapon_xm1014"
+ITEM.ContentCount = 10
+ITEM.ContentItemWeight = 4.2
+ITEM.Description = "10 pack";
+ITEM.Model = "models/Items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 6100;
+ITEM.ItemGroup = 3;

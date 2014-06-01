@@ -1,0 +1,10 @@
+ITEM.Name = "Mac 10 Shipment";
+ITEM.Class = "weapon_mac10_shipment";
+ITEM.ContentClass = "weapon_mac10"
+ITEM.ContentCount = 10
+ITEM.ContentItemWeight = 5.4
+ITEM.Description = "10 pack";
+ITEM.Model = "models/Items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 2900;
+ITEM.ItemGroup = 3;

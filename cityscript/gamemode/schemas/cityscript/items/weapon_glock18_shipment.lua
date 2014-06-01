@@ -1,0 +1,10 @@
+ITEM.Name = "Glock 18 Shipment";
+ITEM.Class = "weapon_glock18_shipment";
+ITEM.ContentClass = "weapon_glock18"
+ITEM.ContentCount = 10
+ITEM.ContentItemWeight = 2.1
+ITEM.Description = "10 pack";
+ITEM.Model = "models/Items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 950;
+ITEM.ItemGroup = 3;

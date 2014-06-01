@@ -1,0 +1,10 @@
+ITEM.Name = "Desert Eagle Shipment";
+ITEM.Class = "weapon_desert-eagle_shipment";
+ITEM.ContentClass = "weapon_desert_eagle"
+ITEM.ContentCount = 10
+ITEM.ContentItemWeight = 2.4
+ITEM.Description = "10 pack";
+ITEM.Model = "models/Items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 1200;
+ITEM.ItemGroup = 3;

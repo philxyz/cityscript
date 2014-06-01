@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/391/trunk/entities/entities/meteor
+END
+cl_init.lua
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/391/trunk/entities/entities/meteor/cl_init.lua
+END
+init.lua
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/391/trunk/entities/entities/meteor/init.lua
+END
+shared.lua
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/371/trunk/entities/entities/meteor/shared.lua
+END

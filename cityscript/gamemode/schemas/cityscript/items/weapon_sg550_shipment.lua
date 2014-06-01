@@ -1,0 +1,10 @@
+ITEM.Name = "SG550 Sniper Shipment";
+ITEM.Class = "weapon_sg550_shipment";
+ITEM.ContentClass = "weapon_sg550"
+ITEM.ContentCount = 10
+ITEM.ContentItemWeight = 4.2
+ITEM.Description = "10 pack";
+ITEM.Model = "models/Items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 5000;
+ITEM.ItemGroup = 3;

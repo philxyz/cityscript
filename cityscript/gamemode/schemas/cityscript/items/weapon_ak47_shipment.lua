@@ -1,0 +1,10 @@
+ITEM.Name = "AK47 Shipment";
+ITEM.Class = "weapon_ak47_shipment";
+ITEM.ContentClass = "weapon_ak47"
+ITEM.ContentCount = 10
+ITEM.ContentItemWeight = 5.7
+ITEM.Description = "10 pack";
+ITEM.Model = "models/Items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 2250;
+ITEM.ItemGroup = 3;
