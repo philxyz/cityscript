@@ -55,6 +55,6 @@ end
 
 function GM:FinishChat( )
 
-	LocalPlayer( ):ConCommand( "rp_closedchat" );
+	RunConsoleCommand( "rp_closedchat" );
 	
 end
