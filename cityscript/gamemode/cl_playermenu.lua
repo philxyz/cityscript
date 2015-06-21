@@ -860,7 +860,6 @@ function CreatePlayerMenu()
 		
 		local spawnicon = vgui.Create( "SpawnIcon");
 		spawnicon:SetModel(v:GetModel());
-		spawnicon:SetSize( 64, 64 );
 		spawnicon.DoClick = function()
 			if LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() then
 				local AdminFunctions = DermaMenu();
