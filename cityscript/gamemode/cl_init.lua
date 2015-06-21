@@ -20,6 +20,13 @@ CAKE.Loaded = false;
 CAKE.models = {  };
 readysent = false;
 
+surface.CreateFont("ScoreboardText", {
+        font = "Tahoma",
+        size = 16,
+        weight = 1000,
+        antialias = true
+})
+
 -- Client Includes
 include( "shared.lua" );
 include( "player_shared.lua" );
