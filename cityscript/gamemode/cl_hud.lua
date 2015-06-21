@@ -54,7 +54,7 @@ end
 		
 function GM:HUDShouldDraw( name )
 
-	if not LocalPlayer() then return false end
+	if not IsValid(LocalPlayer()) then return false end
 
 	if( LocalPlayer():GetNWInt( "charactercreate" ) == 1 or LocalPlayer():GetNWInt( "charactercreate" ) == nil ) then return false; end
 	
