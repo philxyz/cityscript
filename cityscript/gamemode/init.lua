@@ -72,7 +72,7 @@ function GM:Initialize( ) -- Initialize the gamemode
 	-- game.ConsoleCommand( "exec cakevars.cfg\n" ) -- Put any configuration variables in cfg/cakevars.cfg, set it using rp_admin setconvar varname value
 	-- DEPRECATED
 
-	GAMEMODE.Name = "CityScript 1.0.1"
+	GAMEMODE.Name = "CityScript"
 	
 	CAKE.InitTime();
 	CAKE.LoadDoors();
