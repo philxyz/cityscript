@@ -241,6 +241,10 @@ function GM:PlayerSpawn( ply )
 	
 end
 
+function GM:ShowSpare2(ply)
+	HolsterToggle(ply)
+end
+
 function GM:PlayerSetModel(ply)
 	
 	if(CAKE.Teams[ply:Team()] != nil) then
