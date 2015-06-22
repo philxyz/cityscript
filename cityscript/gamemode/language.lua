@@ -96,7 +96,7 @@ TEXT.Healthy = "Healthy"
 TEXT.NearDeath = "Near Death"
 TEXT.DeathImminent = "Death Imminent"
 TEXT.NewCharacter = "New Character"
-TEXT.WelcomeToCakescriptG2 = "Welcome to CakeScript G2!"
+TEXT.WelcomeToCakescriptG2 = "Welcome to CityScript! (based on CakeScript G2)"
 TEXT.PersonalInformation = "Personal Information"
 TEXT.First = "First"
 TEXT.Last = "Last"
@@ -392,15 +392,14 @@ TEXT.HelpLong = {
 	"You can purchase doors, give players money, pick up items, and other things from this menu.",
 	"",
 	"Press F1 to access this menu (do'h; you've found it now, anyway!)",
-	"IMPORTANT: type \"bind h rp_toggleholster\" into your console to enable toggling of holstered weapons",
-	"",
 	"Create a character when you join by using the left hand side of the 'Character Create' tab",
 	"Once created, your character will appear on the right hand column in the list of your characters.",
 	"Double-click a character in the list, then click on the picture of that character to start",
 	"",
 	"You will earn tokens over time based upon your selected flag (role). These roles are listed in the \"Roles\" tab.",
 	"Start a business, make some money, have fun!",
-	"",
+	"Each character has a Business tab under the F1 menu with a selection",
+	"of items that they can buy for resale.",
 	"",
 	"SOME USEFUL COMMANDS",
 	TEXT.GiveCommand .. " when looking at a player to give money",
