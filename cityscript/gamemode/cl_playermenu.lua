@@ -204,7 +204,6 @@ function CreateModelWindow()
 	local i = 1;
 	
 	local LastMdl = vgui.Create( "DButton", ModelWindow )
-	--LastMdl:SetType("left");
 	LastMdl:SetText("Prev")
 	LastMdl.DoClick = function()
 
@@ -221,7 +220,6 @@ function CreateModelWindow()
 	LastMdl:SetPos(10, 165);
 
 	local NextMdl = vgui.Create( "DButton", ModelWindow )
-	--NextMdl:SetType("right");
 	NextMdl:SetText("Next")
 	NextMdl.DoClick = function()
 
@@ -451,13 +449,15 @@ function CreatePlayerMenu()
 	FullData:SetSize(0, 84);
 	FullData:SetPadding(10);
 	
-	local DataList = vgui.Create("DPanelList");
+	local DataList = vgui.Create("DIconLayout");
 	DataList:SetSize(0, 64);
+	DataList:SetSpaceY(0);
+	DataList:SetSpaceX(0);
 	
 	local spawnicon = vgui.Create( "SpawnIcon");
 	spawnicon:SetModel(LocalPlayer():GetModel());
 	spawnicon:SetSize( 64, 64 );
-	DataList:AddItem(spawnicon);
+	DataList:Add(spawnicon):SetSize(64, 64);
 	
 	local DataList2 = vgui.Create( "DPanelList" )
 	
@@ -475,9 +475,9 @@ function CreatePlayerMenu()
 	Divider:SetLeftWidth(64);
 	Divider:SetHeight(64);
 	
-	DataList:AddItem(spawnicon);
-	DataList:AddItem(DataList2);
-	DataList:AddItem(Divider);
+	DataList:Add(spawnicon);
+	DataList:Add(DataList2);
+	DataList:Add(Divider);
 
 	FullData:AddItem(DataList)
 	
@@ -847,8 +847,9 @@ function CreatePlayerMenu()
 	-- Let's draw the SCOREBOARD.
 	
 	for k, v in pairs(player.GetAll()) do
-		local DataList = vgui.Create("DPanelList");
-		DataList:SetAutoSize( true )
+		local DataList = vgui.Create("DIconLayout");
+		DataList:SetSpaceY(0)
+		DataList:SetSpaceX(0)
 		
 		local CollapsableCategory = vgui.Create("DCollapsibleCategory");
 		CollapsableCategory:SetExpanded(0);
@@ -866,7 +867,7 @@ function CreatePlayerMenu()
 				AdminFunctions:Open()
 			end
 		end
-		DataList:AddItem(spawnicon);
+		DataList:Add(spawnicon):SetSize(64, 64);
 		
 		local DataList2 = vgui.Create( "DPanelList" )
 		DataList2:SetAutoSize( true )
@@ -889,9 +890,8 @@ function CreatePlayerMenu()
 		Divider:SetLeftWidth(64);
 		Divider:SetHeight(64);
 		
-		DataList:AddItem(spawnicon);
-		DataList:AddItem(DataList2);
-		DataList:AddItem(Divider);
+		DataList:Add(DataList2);
+		DataList:Add(Divider);
 		
 		CollapsableCategory:SetContents(DataList);
 	end
