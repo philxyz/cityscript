@@ -254,28 +254,32 @@ function InitHUDMenu()
 	HUDMenu:SetVisible( true )
 	HUDMenu:SetDraggable( false )
 	HUDMenu:ShowCloseButton( false )
+	HUDMenu:SetAnimationEnabled( true )
 	
 	local label = vgui.Create("DLabel", HUDMenu);
 	label:SetWide(0);
-	label:SetPos(5, 25);
+	label:SetPos(8, 25);
 	label:SetText(TEXT.Name .. ": " .. LocalPlayer():Nick());
 	
 	local label3 = vgui.Create("DLabel", HUDMenu);
 	label3:SetWide(0);
-	label3:SetPos(5, 40);
+	label3:SetPos(8, 40);
 	label3:SetText(TEXT.Title .. ": " .. LocalPlayer():GetNWString("title"));
 	
 	local label4 = vgui.Create("DLabel", HUDMenu);
 	label4:SetWide(0);
-	label4:SetPos(5, 55);
+	label4:SetPos(8, 55);
 	label4:SetText(TEXT.Association .. ": " .. team.GetName(LocalPlayer():Team()));
 	
 	local spawnicon = vgui.Create( "SpawnIcon", HUDMenu);
-	spawnicon:SetModel(LocalPlayer():GetModel());
 	spawnicon:SetSize( 128, 128 );
+	spawnicon:SetModel(LocalPlayer():GetModel());
 	spawnicon:SetPos(1,21);
 	print("Model: " .. LocalPlayer():GetModel())
 	spawnicon:SetToolTip(TEXT.OpenPlayerMenu);
+	spawnicon:SetAnimationEnabled( true );
+
+	local lastmodel = LocalPlayer():GetModel()
 	
 	local FadeSize = 130;
 	local NeedsUpdate = false
@@ -287,41 +291,34 @@ function InitHUDMenu()
 		
 		label4:SetText(TEXT.Association .. ": " .. team.GetName(LocalPlayer():Team()));
 
-		spawnicon:SetModel(LocalPlayer():GetModel());
+		if lastmodel ~= LocalPlayer():GetModel() then
+			lastmodel = LocalPlayer():GetModel()
+			spawnicon:SetModel(LocalPlayer():GetModel())
+		end
 		spawnicon:SetToolTip(TEXT.PlayerImage);
 	end
 	
-	--spawnicon.PaintOver = function()
-		--spawnicon:SetPos(FadeSize - 129, 21);
-		--HUDMenu:SetSize(FadeSize, 150);
-		--HUDMenu:SetPos(ScrW() - FadeSize - 5, 5 );
+	spawnicon.PaintOver = function()
+		spawnicon:SetPos(FadeSize - 129, 21);
+		HUDMenu:SetSize(FadeSize, 150);
+		HUDMenu:SetPos(ScrW() - FadeSize - 5, 5 );
 		
-		--label:SetWide(FadeSize - 128);
-		--label3:SetWide(FadeSize - 128);
-		--label4:SetWide(FadeSize - 128);
+		label:SetWide(FadeSize - 128);
+		label3:SetWide(FadeSize - 128);
+		label4:SetWide(FadeSize - 128);
 		
-		--if(FadeSize > 130) then
-			--FadeSize = FadeSize - 5;
-		--end
+		if spawnicon:IsHovered() then
+			if FadeSize < 400 then
+				FadeSize = FadeSize + 5
+			end
+		else
+			if FadeSize > 130 then
+				FadeSize = FadeSize - 5
+			end
+		end
 		
-		--UpdateGUIData();
-	--end
-	
-	--spawnicon.PaintOverHovered = function()
-		--spawnicon:SetPos(FadeSize - 129, 21);
-		--HUDMenu:SetSize(FadeSize, 150);
-		--HUDMenu:SetPos(ScrW() - FadeSize - 5, 5 );
-		
-	--	label:SetWide(FadeSize - 128);
-		--label3:SetWide(FadeSize - 128);
-		--label4:SetWide(FadeSize - 128);
-		
-		--if(FadeSize < 320) then
-			--FadeSize = FadeSize + 5;
-		--end
-		
-	--	UpdateGUIData();
-	--end
+		UpdateGUIData();
+	end
 end
 
 local function WarnPlayer(ply)
