@@ -400,7 +400,7 @@ function ccPurchaseDoor( ply, cmd, args )
 				
 				end
 				
-				timer.Simple( 900, function() ply:Rental(tonumber( args[ 1 ] )) end );
+				timer.Simple( 900, function() Rental(ply, tonumber( args[ 1 ] )) end );
 				
 			end
 			
