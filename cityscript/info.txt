@@ -1,4 +1,4 @@
-CityScript 1.0.2
+CityScript
 
 Authors:
 Nori (CakeScript)
