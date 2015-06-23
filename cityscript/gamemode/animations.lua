@@ -37,7 +37,7 @@ function SelectNPCModel( ply, cmd, args )
 	end
 
 	local requestedmodel = args[1]
-	if( requestedmodel == not nil ) then
+	if( requestedmodel ~= nil ) then
 		string.lower( requestedmodel )
 	end
 	
