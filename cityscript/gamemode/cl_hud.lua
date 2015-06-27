@@ -109,6 +109,50 @@ function DrawDeathMeter( )
 	
 end
 
+function ShowHelpPopup( )
+	local frame = vgui.Create("DFrame");
+	local ok = vgui.Create("DButton", frame);
+	local label = vgui.Create("DLabel", frame);
+	label:SetFont("ScoreboardText");
+	label:SetPos(10, 30);
+	label:SetText("- Use shift + right-click to interact with items, doors and players.");
+	label:SizeToContents();
+	local label2 = vgui.Create("DLabel", frame);
+	label2:SetFont("ScoreboardText");
+	label2:SetPos(10, 56);
+	label2:SetText("- Press F1 in-game and click the Help tab for full info.");
+	label2:SizeToContents();
+	
+	local check = vgui.Create("DCheckBoxLabel", frame);
+	check:SetPos(10, 88);
+	check:SetText("Don't show this next time.");
+	check:SetValue(false);
+	check:SizeToContents();
+	check.OnChange = function(me, status)
+		net.Start("show_help")
+		net.WriteBool(not status);
+		net.SendToServer();
+	end;
+
+	ok:SetText("Close");
+	ok:SetSize(85, 25);
+
+	ok.DoClick = function()
+		frame:SetVisible(false);
+	end
+
+	frame:SetSize(500, 160);
+	ok:SetPos(frame:GetWide()/2-ok:GetWide()/2, 120);
+	frame:SetTitle("First Time Help");
+	frame:SetVisible(true);
+	frame:SetDraggable(false);
+	frame:ShowCloseButton(false);
+	frame:SetBackgroundBlur(true);
+	frame:SetDeleteOnClose(true);
+	frame:Center();
+	frame:MakePopup();
+end
+
 function DrawPlayerInfo( )
 
 	for k, v in pairs( player.GetAll( ) ) do	

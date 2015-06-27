@@ -66,7 +66,7 @@ end
 usermessage.Hook( "ReceiveChar", ReceiveChar );
 
 
-local function CharacterCreatePanel( )
+local function CharacterCreatePanel( msg )
 
 	CreatePlayerMenu( )
 	PlayerMenu:ShowCloseButton( false )
@@ -74,6 +74,12 @@ local function CharacterCreatePanel( )
 	PropertySheet.SetActiveTab = function( ) end;
 
 	InitHUDMenu( );
+
+	-- If we should show the help info screen, do so.
+	if msg:ReadBool( ) then
+
+		ShowHelpPopup( );
+	end
 
 end
 usermessage.Hook( "_cC", CharacterCreatePanel );

@@ -57,14 +57,14 @@ function CAKE.LoadPlayerDataFile( ply )
 	
 	CAKE.PlayerData[ SteamID ]  = {  };
 	
-	if( file.Exists( "CakeScript/PlayerData/" .. CAKE.ConVars[ "Schema" ] .. "/" .. CAKE.FormatSteamID( ply:SteamID() ) .. ".txt", "DATA" ) ) then
+	if( file.Exists( "cakescript/playerdata/" .. CAKE.ConVars[ "Schema" ] .. "/" .. CAKE.FormatSteamID( ply:SteamID() ) .. ".txt", "DATA" ) ) then
 	
 		CAKE.CallHook( "LoadPlayerDataFile", ply );
 		
 		CAKE.DayLog( "script.txt", TEXT.LoadingPlayerDataFileFor .. " " .. ply:SteamID( ) );
 		
 		-- Read the data from their data file
-		local Data_Raw = file.Read( "CakeScript/PlayerData/" .. CAKE.ConVars[ "Schema" ] .. "/" .. CAKE.FormatSteamID( ply:SteamID() ) .. ".txt", "DATA" );
+		local Data_Raw = file.Read( "cakescript/playerdata/" .. CAKE.ConVars[ "Schema" ] .. "/" .. CAKE.FormatSteamID( ply:SteamID() ) .. ".txt", "DATA" );
 		
 		-- Convert the data into a table
 		local Data_Table = CAKE.NilFix(util.KeyValuesToTable( Data_Raw ), { });
@@ -246,6 +246,15 @@ function CAKE.GetCharField( ply, fieldname )
 	
 	-- Check to see if this is a valid field
 	if( fieldname and CAKE.CharacterDataFields[ fieldname ] ) then
+		print("CAKE.PlayerData[ SteamID ] = " .. type(CAKE.PlayerData[ SteamID ]))
+		print("CAKE.NilFix(CAKE.PlayerData[ SteamID ][ characters ] = " .. type(CAKE.NilFix(CAKE.PlayerData[ SteamID ][ "characters" ])))
+		print("CAKE.NilFix(CAKE.PlayerData[ SteamID ][ characters ][ ply:GetNWString( uid ) ] = " .. type(CAKE.NilFix(CAKE.PlayerData[ SteamID ][ "characters" ][ ply:GetNWString( "uid" ) ])))
+
+		if CAKE.PlayerData[ SteamID ][ "characters" ][ ply:GetNWString( "uid" ) ][ fieldname ] == nil then
+			print("NIL FIELD NAME: " .. fieldname);
+		end
+
+		print("CAKE.PlayerData[ SteamID ][ characters ][ ply:GetNWString( uid ) ][ fieldname ] = " .. type(CAKE.PlayerData[ SteamID ][ "characters" ][ ply:GetNWString( "uid" ) ][ fieldname ]))
 		return CAKE.NilFix(CAKE.PlayerData[ SteamID ][ "characters" ][ ply:GetNWString( "uid" ) ][ fieldname ], "");
 	else
 		return "";
@@ -256,6 +265,12 @@ end
 function CAKE.SavePlayerData( ply )
 
 	local keys = util.TableToKeyValues(CAKE.PlayerData[CAKE.FormatSteamID( ply:SteamID() )]);
-	file.Write( "CakeScript/PlayerData/" .. CAKE.ConVars[ "Schema" ] .. "/" .. CAKE.FormatSteamID( ply:SteamID() ) .. ".txt" , keys);
+	local directory = "cakescript/playerdata/" .. CAKE.ConVars[ "Schema" ] .. "/";
+	if not file.Exists(directory, "DATA") then
+		file.CreateDir(directory)
+	end
+	local filename = "cakescript/playerdata/" .. CAKE.ConVars[ "Schema" ] .. "/" .. CAKE.FormatSteamID( ply:SteamID() ) .. ".txt"
+	print("Saving player data to: " .. filename);
+	file.Write(filename , keys);
 	
 end

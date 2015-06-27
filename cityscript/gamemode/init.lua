@@ -18,6 +18,9 @@ CAKE.Loaded = false;
 
 DB = {}
 
+-- String Tables
+util.AddNetworkString( "show_help" );
+
 -- Server Includes
 include( "shared.lua" ); -- Shared Functions
 include( "log.lua" ); -- Logging functions

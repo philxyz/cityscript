@@ -547,3 +547,15 @@ function ccCloseChat( ply, cmd, args )
 	
 end
 concommand.Add( "rp_closedchat", ccCloseChat );
+
+net.Receive("show_help", function( len, ply )
+	if IsValid( ply ) and ply:IsPlayer( ) then
+		local whetherToShow = 0;
+
+		if net.ReadBool( ) then
+			whetherToShow = 1;
+		end
+
+		CAKE.SetPlayerField( ply, "showhelppopup", whetherToShow );
+	end
+end)

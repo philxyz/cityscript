@@ -178,7 +178,10 @@ function ccReady( ply, cmd, args )
 		
 		ply:SetDTInt(0, 1)
 		
+		local showHelp = CAKE.GetPlayerField( ply, "showhelppopup" ) == 1
+
 		umsg.Start( "_cC", ply );
+			umsg.Bool(showHelp);
 		umsg.End( );
 		
 		CAKE.CallHook( "PlayerReady", ply );

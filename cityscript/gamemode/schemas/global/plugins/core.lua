@@ -7,7 +7,7 @@ PLUGIN.Description = "Configures the gamemode on a deeper level."; -- The descri
 -- !!!! WARNING !!!! --
 
 CAKE.AddDataField( 1, "characters", { } );
-CAKE.AddDataField( 1, "ShowHelpPopup", true ); -- Whether or not to show the initial help box
+CAKE.AddDataField( 1, "showhelppopup", 1 ); -- Whether or not to show the initial help box
 
 -- These fields are what would be the default value, and it also allows the field to actually EXIST.
 -- If there is a field in the data and it isn't added, it will automatically be removed.
