@@ -115,17 +115,17 @@ function ShowHelpPopup( )
 	local label = vgui.Create("DLabel", frame);
 	label:SetFont("ScoreboardText");
 	label:SetPos(10, 30);
-	label:SetText("- Use shift + right-click to interact with items, doors and players.");
+	label:SetText(TEXT.ItemsHelpHintText);
 	label:SizeToContents();
 	local label2 = vgui.Create("DLabel", frame);
 	label2:SetFont("ScoreboardText");
 	label2:SetPos(10, 56);
-	label2:SetText("- Press F1 in-game and click the Help tab for full info.");
+	label2:SetText(TEXT.MainHelpHintText);
 	label2:SizeToContents();
 	
 	local check = vgui.Create("DCheckBoxLabel", frame);
 	check:SetPos(10, 88);
-	check:SetText("Don't show this next time.");
+	check:SetText(TEXT.HideHelpHintsCheckText);
 	check:SetValue(false);
 	check:SizeToContents();
 	check.OnChange = function(me, status)
@@ -134,7 +134,7 @@ function ShowHelpPopup( )
 		net.SendToServer();
 	end;
 
-	ok:SetText("Close");
+	ok:SetText(TEXT.HelpHintCloseBtn);
 	ok:SetSize(85, 25);
 
 	ok.DoClick = function()
@@ -143,7 +143,7 @@ function ShowHelpPopup( )
 
 	frame:SetSize(500, 160);
 	ok:SetPos(frame:GetWide()/2-ok:GetWide()/2, 120);
-	frame:SetTitle("First Time Help");
+	frame:SetTitle(TEXT.FirstTimeHelpTitle);
 	frame:SetVisible(true);
 	frame:SetDraggable(false);
 	frame:ShowCloseButton(false);

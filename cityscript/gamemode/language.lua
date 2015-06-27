@@ -383,6 +383,11 @@ TEXT.UnarrestStickInstructions = "Left or right click to unarrest"
 TEXT.NukePack = "Nuclear Detonator Pack"
 TEXT.NukeDetInstructions = "Aim away from face"
 TEXT.DetonationTime = function(time) return "Detonation countdown: ".. tostring(time) .." seconds!" end
+TEXT.ItemsHelpHintText = "- Use shift + right-click to interact with items, doors and players."
+TEXT.MainHelpHintText = "- Press F1 in-game and click the Help tab for full info."
+TEXT.HideHelpHintsCheckText = "Don't show this next time."
+TEXT.HelpHintCloseBtn = "Close"
+TEXT.FirstTimeHelpTitle = "First Time Help"
 TEXT.HelpLong = {
 	"Welcome to CityScript by philxyz - Based on CakeScript by Nori",
 	"",
