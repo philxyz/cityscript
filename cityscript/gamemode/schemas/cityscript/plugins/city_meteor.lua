@@ -101,7 +101,7 @@ local function LOLRandomAttack()
 
 			local target = PotentialMeteorTargets[math.random(1, #PotentialMeteorTargets)]
 
-			if target:Alive() then
+			if IsValid(target) and target:Alive() then
 				AttackEnt(target)
 			end
 		end
