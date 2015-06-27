@@ -183,9 +183,20 @@ end
 
 local function PayInterest()
 	for k, v in pairs(player.GetAll()) do
-		local interest = math.floor((tonumber(CAKE.GetCharField( v, "bank" )) * CAKE.ConVars[ "Default_Interest_Percentage" ]) / 100.0)
-		CAKE.ChangeBankMoney(v, interest)
-		CAKE.Response(v, TEXT.BankInterestReceived(interest))
+		if IsValid(v) then
+			local interest = math.floor((tonumber(CAKE.GetCharField( v, "bank" )) * CAKE.ConVars[ "Default_Interest_Percentage" ]) / 100.0)
+
+			if CAKE.GetCharField( v, "bank" ) == nil then
+				print("CAKE.GetCharField( v, bank ) is nil")
+			end
+
+			if CAKE.ConVars[ "Default_Interest_Percentage" ] == nil then
+				print("CAKE.ConVars[ Default_Interest_Percentage ] is nil")
+			end
+
+			CAKE.ChangeBankMoney(v, interest)
+			CAKE.Response(v, TEXT.BankInterestReceived(interest))
+		end
 	end
 end
 
