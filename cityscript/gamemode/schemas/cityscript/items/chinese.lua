@@ -21,8 +21,10 @@ function ITEM:UseItem(ply)
 	ply:ConCommand("say /me eats some chinese food and feels sick");
 	
 	local function KillThem()
-		ply:ConCommand("say /me throws up and passes out");
-		ply:Kill();
+		if math.random(1, 5) == 1 then
+			ply:ConCommand("say /me throws up and passes out");
+			ply:Kill();
+		end
 	end
 	
 	timer.Simple(30, KillThem);
