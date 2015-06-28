@@ -246,15 +246,10 @@ function CAKE.GetCharField( ply, fieldname )
 	
 	-- Check to see if this is a valid field
 	if( fieldname and CAKE.CharacterDataFields[ fieldname ] ) then
-		print("CAKE.PlayerData[ SteamID ] = " .. type(CAKE.PlayerData[ SteamID ]))
-		print("CAKE.NilFix(CAKE.PlayerData[ SteamID ][ characters ] = " .. type(CAKE.NilFix(CAKE.PlayerData[ SteamID ][ "characters" ])))
-		print("CAKE.NilFix(CAKE.PlayerData[ SteamID ][ characters ][ ply:GetNWString( uid ) ] = " .. type(CAKE.NilFix(CAKE.PlayerData[ SteamID ][ "characters" ][ ply:GetNWString( "uid" ) ])))
-
-		if CAKE.PlayerData[ SteamID ][ "characters" ][ ply:GetNWString( "uid" ) ][ fieldname ] == nil then
-			print("NIL FIELD NAME: " .. fieldname);
+		if CAKE.PlayerData[ SteamID ][ "characters" ][ ply:GetNWString( "uid" ) ] == nil then
+			print("No table into which to index: " .. fieldname .. " obtainable from " .. tostring(ply:GetNWString( "uid" )));
 		end
 
-		print("CAKE.PlayerData[ SteamID ][ characters ][ ply:GetNWString( uid ) ][ fieldname ] = " .. type(CAKE.PlayerData[ SteamID ][ "characters" ][ ply:GetNWString( "uid" ) ][ fieldname ]))
 		return CAKE.NilFix(CAKE.PlayerData[ SteamID ][ "characters" ][ ply:GetNWString( "uid" ) ][ fieldname ], "");
 	else
 		return "";
