@@ -840,24 +840,23 @@ function CreatePlayerMenu()
 		end
 	end
 	
-	Scoreboard = vgui.Create( "DPanelList" )
-	Scoreboard:SetPadding(0);
-	Scoreboard:SetSpacing(0);
+	Scoreboard = vgui.Create( "DListLayout" )
 
 	-- Let's draw the SCOREBOARD.
 	
 	for k, v in pairs(player.GetAll()) do
+		local FullData = vgui.Create("DPanelList");
+		FullData:SetSize(0, 84);
+		FullData:SetPadding(10);
+
 		local DataList = vgui.Create("DIconLayout");
-		DataList:SetSpaceY(0)
-		DataList:SetSpaceX(0)
-		
-		local CollapsableCategory = vgui.Create("DCollapsibleCategory");
-		CollapsableCategory:SetExpanded(0);
-		CollapsableCategory:SetLabel( v:Nick() );
-		Scoreboard:AddItem(CollapsableCategory);
-		
+		DataList:SetSize(0, 64);
+		DataList:SetSpaceY(0);
+		DataList:SetSpaceX(0);
+
 		local spawnicon = vgui.Create( "SpawnIcon");
-		spawnicon:SetModel(v:GetModel());
+		spawnicon:SetModel( LocalPlayer( ):GetModel( ) );
+		spawnicon:SetSize( 64, 64 );
 		spawnicon.DoClick = function()
 			if LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() then
 				local AdminFunctions = DermaMenu();
@@ -867,33 +866,35 @@ function CreatePlayerMenu()
 				AdminFunctions:Open()
 			end
 		end
-		DataList:Add(spawnicon):SetSize(64, 64);
+		DataList:Add( spawnicon );
+
+		local DataList2 = vgui.Create( "DPanelList" );
 		
-		local DataList2 = vgui.Create( "DPanelList" )
-		DataList2:SetAutoSize( true )
+		local label = vgui.Create( "DLabel" );
+		label:SetText( TEXT.OOCName .. ": " .. v:Name() );
+		DataList2:AddItem( label );
 		
-		local label = vgui.Create("DLabel");
-		label:SetText(TEXT.OOCName .. ": " .. v:Name());
-		DataList2:AddItem(label);
+		local label2 = vgui.Create( "DLabel" );
+		label2:SetText( TEXT.Title .. ": " .. v:GetNWString("title") );
+		DataList2:AddItem( label2 );
 		
-		local label2 = vgui.Create("DLabel");
-		label2:SetText(TEXT.Title .. ": " .. v:GetNWString("title"));
-		DataList2:AddItem(label2);
-		
-		local label3 = vgui.Create("DLabel");
-		label3:SetText(TEXT.Association .. ": " .. team.GetName(v:Team()));
-		DataList2:AddItem(label3);
-		
-		local Divider = vgui.Create("DHorizontalDivider");
-		Divider:SetLeft(spawnicon);
-		Divider:SetRight(DataList2);
-		Divider:SetLeftWidth(64);
-		Divider:SetHeight(64);
-		
-		DataList:Add(DataList2);
-		DataList:Add(Divider);
-		
-		CollapsableCategory:SetContents(DataList);
+		local label3 = vgui.Create( "DLabel" );
+		label3:SetText( TEXT.Association .. ": " .. team.GetName(v:Team()) );
+		DataList2:AddItem( label3 );
+
+		local Divider = vgui.Create( "DHorizontalDivider" );
+		Divider:SetLeft( spawnicon );
+		Divider:SetRight( DataList2 );
+		Divider:SetLeftWidth( 64 );
+		Divider:SetHeight( 64 );
+
+		DataList:Add( spawnicon );
+		DataList:Add( DataList2 );
+		DataList:Add( Divider );
+
+		FullData:AddItem( DataList );
+
+		Scoreboard:Add(FullData);
 	end
 
 	local Help = vgui.Create( "DPanelList" )
