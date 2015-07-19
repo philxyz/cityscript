@@ -1,19 +1,16 @@
 if ( SERVER ) then
-
 	AddCSLuaFile( "shared.lua" )
 	
 	SWEP.HoldType			= "shotgun"
-	
 end
 
 if ( CLIENT ) then
 
 	SWEP.PrintName			= "Fire Extinguisher"			
-	SWEP.Author				= "Feihc"
-
-	SWEP.Slot				= 1
+	SWEP.Author			= "Feihc (code), philxyz (mdl)"
+	SWEP.Slot			= 1
 	SWEP.SlotPos			= 8
-	SWEP.ViewModelFOV		= 70
+	SWEP.ViewModelFOV		= 54
 	SWEP.IconLetter			= "x"
 
 end
@@ -108,8 +105,8 @@ SWEP.AdminSpawnable  = true
 -----------------------------------------------
 
 ------------Models---------------------------
-SWEP.ViewModel      = "models/weapons/v_fire_extinguisher.mdl"
-SWEP.WorldModel   = "models/weapons/w_fire_extinguisher.mdl"
+SWEP.ViewModel      = "models/weapons/v_fire_extinguisher_powder.mdl"
+SWEP.WorldModel   = "models/fire_extinguisher_powder/w_fire_extinguisher_powder.mdl"
 -----------------------------------------------
 
 -------------Primary Fire Attributes----------------------------------------

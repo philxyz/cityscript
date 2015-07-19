@@ -156,6 +156,16 @@ function GM:PlayerInitialSpawn( ply )
 
 end
 
+function GM:PlayerSetHandsModel( ply, ent )
+	local simplemodel = player_manager.TranslateToPlayerModelName( ply:GetModel( ) );
+	local info = player_manager.TranslatePlayerHands( simplemodel );
+	if ( info ) then
+		ent:SetModel( info.model );
+		ent:SetSkin( info.skin );
+		ent:SetBodyGroups( info.body );
+	end
+end
+
 function GM:CanTool(ply, trace, mode)
 	if not self.BaseClass:CanTool(ply, trace, mode) then return false end
 
@@ -206,9 +216,11 @@ function GM:PlayerSpawn( ply )
 	if (CAKE.PlayerData[CAKE.FormatSteamID(ply:SteamID())] == nil) then
 		return; -- Player data isn't loaded. This is an initial spawn.
 	end
+
+	ply:SetupHands( );
 	
 	ply:StripWeapons( );
-	
+
 	self.BaseClass:PlayerSpawn( ply )
 	
 	GAMEMODE:SetPlayerSpeed( ply, CAKE.ConVars[ "WalkSpeed" ], CAKE.ConVars[ "RunSpeed" ] );

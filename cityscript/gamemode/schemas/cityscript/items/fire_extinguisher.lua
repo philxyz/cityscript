@@ -1,7 +1,7 @@
 ITEM.Name = "Fire Extinguisher";
 ITEM.Class = "fire_extinguisher";
 ITEM.Description = "Pull tag hard, aim and squeeze trigger";
-ITEM.Model = "models/weapons/w_fire_extinguisher.mdl";
+ITEM.Model = "models/weapons/w_fire_extinguisher_powder.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 120;
 ITEM.ItemGroup = 2;
