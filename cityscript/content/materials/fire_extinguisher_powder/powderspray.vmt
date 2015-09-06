@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "fire_extinguisher_powder/powderspray"
+	"$translucent" "1"
+}
