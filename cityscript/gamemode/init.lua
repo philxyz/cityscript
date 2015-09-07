@@ -46,6 +46,10 @@ include( "client_resources.lua" ); -- Sends files to the client
 include( "animations.lua" ); -- Animations
 include( "doors.lua" ); -- Doors
 
+-- Required Workshop Addons
+-- CSS Realistic Weapons (originally by Worshipper, fixed for GM13 by "S o h")
+resource.AddWorkshop("104479034")
+
 AntiCopy = {"atm", "storage_box", "sent_nuke_detpack", "sent_nuke_radiation", "item_prop", "token_bundle", "token_printer", "spawned_shipment", "toxic_lab", "toxic", "sent_nuke_part", "sent_nuke", "door_ram", "lockpick", "med_kit", "gmod_tool"}
 NotAllowedToPickup = {}
 

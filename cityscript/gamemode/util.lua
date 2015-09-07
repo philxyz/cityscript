@@ -68,7 +68,7 @@ function CAKE.InitTime() -- Load the time from a text file or default value, thi
 	CAKE.ClockDay = tonumber(unclumped[1])
 	CAKE.ClockMonth = tonumber(unclumped[2])
 	CAKE.ClockYear = tonumber(unclumped[3])
-	CAKE.ClockMins = tonumber(unclumped[4])
+	CAKE.ClockMins = tonumber(unclumped[4]) or 1
 	
 	SetGlobalString("time", "Loading..")
 	

@@ -33,6 +33,10 @@ function GM:PlayerGiveSWEP( ply )
 	
 end
 
+function math.IsFinite(num)
+	return not (num ~= num and num ~= math.huge and num ~= -math.huge)
+end
+
 -- This is the F1 menu
 function GM:ShowHelp( ply )
 	local PlyCharTable = {}
@@ -493,9 +497,42 @@ function ccUseItem( ply, cmd, args )
 end
 concommand.Add( "rp_useitem", ccUseItem );
 
+function ccSetMoney(ply, cmd, args)
+	if not args[1] or not tonumber(args[2]) or not math.IsFinite(tonumber(args[2])) or not ply:IsSuperAdmin() then
+		CAKE.Response(ply, TEXT.SetMoneyUsedIncorrectly)
+		return
+	end
+
+	local amt = math.floor(tonumber(args[2]))
+
+	local tp = nil
+
+	local plys = player.GetAll()
+	for k, v in ipairs(plys) do
+		if v:GetName():lower():find(args[1]:lower()) then
+			tp = v
+			break
+		end
+	end
+
+	if tp != nil then
+		if amt > 0 then
+			CAKE.ChangeMoney(tp, -CAKE.GetCharField(tp, "money"))
+			CAKE.ChangeMoney( tp, amt );
+			CAKE.Response( ply, TEXT.YouGaveX_Y_Tokens(target:Nick(), amt) );
+			CAKE.Response( tp, TEXT.X_GaveYouY_Tokens(ply:Nick(), amt) );
+		else
+			CAKE.Response( ply, "Invalid Amount" );
+		end
+	else
+		CAKE.Response( ply, "Player Not Found" );
+	end
+end
+concommand.Add( "rp_setmoney", ccSetMoney );
+
 function ccGiveMoney( ply, cmd, args )
 
-	if not args[1] or not tonumber(args[1]) or not args[2] or not tonumber(args[2]) then
+	if not args[1] or not tonumber(args[1]) or not math.IsFinite(tonumber(args[1])) or not args[2] or not tonumber(args[2]) or not math.IsFinite(tonumber(args[2])) then
 		CAKE.Response(ply, TEXT.GiveMoneyUsedIncorrectly)
 		return
 	end
