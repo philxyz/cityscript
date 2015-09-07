@@ -519,7 +519,7 @@ function ccSetMoney(ply, cmd, args)
 		if amt > 0 then
 			CAKE.ChangeMoney(tp, -CAKE.GetCharField(tp, "money"))
 			CAKE.ChangeMoney( tp, amt );
-			CAKE.Response( ply, TEXT.YouGaveX_Y_Tokens(target:Nick(), amt) );
+			CAKE.Response( ply, TEXT.YouGaveX_Y_Tokens(tp:Nick(), amt) );
 			CAKE.Response( tp, TEXT.X_GaveYouY_Tokens(ply:Nick(), amt) );
 		else
 			CAKE.Response( ply, "Invalid Amount" );
