@@ -1,0 +1,31 @@
+This is the TODO list for CityScript.
+
+It contains things I plan to add or change.
+I keep it inside the git repo so I don't lose it.
+This list is for my own reference.
+Some of these things might not make sense to you.
+I probably won't implement everything you see here
+at any one moment.
+
+philxyz 2015
+================================================================================
+
+- CSS Realistic Weapons
+	- Ensure weapon give works on pickup
+		- XM1014 doesn't work (weapon_xm1014)
+		
+	- Ensure addon download is triggered
+- Remember active tab index
+- Tile Images for Weapons
+- Roleplaying Vehicles Addon (or find another)
+- Fix player animations / models
+	- Fix character selection.
+		- Make it so that any "non-special-class" player can be chosen when creating a new character.
+		- Player can have a maximum of 5 characters. They need to delete one to create one after that.
+		- When a player changes to another team, change the model as appropriate but keep the old one
+		  in case they change that team back again
+		- Persist the team change per character to the character in the list
+		- Drop the concept of having a title
+	- On death:
+		- Reset active tab index
+		- Clicking brings up the character list for selecting a character and pre-selects the first.
