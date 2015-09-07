@@ -44,9 +44,12 @@ function QuakeThink()
 			table.insert(lastmagnitudes, math.floor((force / 10) + .5) / 10)
 			timer.Simple(10, function() TremorReport(alert) end)
 			for k, e in pairs(en) do
+				if not IsValid(e) then
+					continue
+				end
 				local rand = math.random(650,1000)
 				if rand < force and rand % 2 == 0 then
-					if en:GetClass() ~= "atm" then
+					if e:GetClass() ~= "atm" then
 						e:Fire("enablemotion", "", 0)
 						constraint.RemoveAll(e)
 					end
