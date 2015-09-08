@@ -1,4 +1,4 @@
-ITEM.Name = "XM1014 Auto Sniper Shipment";
+ITEM.Name = "M4 Pump Shotgun Shipment";
 ITEM.Class = "weapon_xm1014_shipment";
 ITEM.ContentClass = "weapon_xm1014"
 ITEM.ContentCount = 10
