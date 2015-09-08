@@ -7,14 +7,6 @@
 -- Contains the concommands and changes the way other concommands work.
 -------------------------------
 
--- Deprecated, PlayerGiveSwep does the same thing.
--- function NoSweps( ply, cmd, args )
--- 
--- 	if( ply:IsSuperAdmin( ) ) then ply:Give( args[ 1 ] ); else return false; end
--- 	
--- end
--- concommand.Add( "gm_giveswep", NoSweps );
-
 function GM:PlayerSpawnSWEP( ply, class )
 
 	CAKE.CallTeamHook( "PlayerSpawnSWEP", ply, class ); -- Perhaps allow certain flags to use sweps, eh?
@@ -105,8 +97,6 @@ end
 
 -- Disallows suicide
 function GM:CanPlayerSuicide( ply )
-
-	
 
 	if( ply:GetTable().Arrested or CAKE.ConVars[ "SuicideEnabled" ] != "1" ) then
 	
