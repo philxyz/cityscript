@@ -10,14 +10,16 @@ at any one moment.
 philxyz 2015
 ================================================================================
 
-- CSS Realistic Weapons
-	- Ensure weapon give works on pickup
-		- XM1014 doesn't work (weapon_xm1014)
-		
-	- Ensure addon download is triggered
-- Remember active tab index
 - Tile Images for Weapons
+- Other Weapon Packs
+	- M9K
+	
+- Remember active tab index
 - Roleplaying Vehicles Addon (or find another)
+	- [LW]
+	- SGM Cars
+	- TDM Cars
+	- SCars Slim, SCars Basic, and SCars Extra
 - Fix player animations / models
 	- Fix character selection.
 		- Make it so that any "non-special-class" player can be chosen when creating a new character.
