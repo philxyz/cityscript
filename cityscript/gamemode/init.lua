@@ -43,7 +43,6 @@ include( "schema.lua" ); -- Schema system
 include( "plugins.lua" ); -- Plugin system
 include( "teams.lua" ); -- Teams system
 include( "client_resources.lua" ); -- Sends files to the client
-include( "animations.lua" ); -- Animations
 include( "doors.lua" ); -- Doors
 
 -- Required Workshop Addons
@@ -258,10 +257,6 @@ function GM:PlayerSpawn( ply )
 	CAKE.CallHook( "PlayerSpawn", ply )
 	CAKE.CallTeamHook( "PlayerSpawn", ply ); -- Change player speeds perhaps?
 	
-end
-
-function GM:ShowSpare2(ply)
-	HolsterToggle(ply)
 end
 
 function GM:PlayerSetModel(ply)

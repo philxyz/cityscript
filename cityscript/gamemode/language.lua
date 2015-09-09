@@ -457,5 +457,5 @@ TEXT.HelpLong = {
 	"Nori for Cakescript G2",
 	"SB Spy for Combo Fists",
 	"Feihc for Fire Extinguisher",
-	"Rick Dark, Botman, thenoman for NPC model animations"
+	"Rick Dark, Botman"
 }
