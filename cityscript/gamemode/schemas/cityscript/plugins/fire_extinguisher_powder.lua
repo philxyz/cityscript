@@ -13,7 +13,6 @@ if SERVER then
 	resource.AddFile("sound/spray_start.wav")
 	resource.AddFile("sound/spray_hold.wav")
 	resource.AddFile("sound/spray_end.wav")
-	AddCSLuaFile("effects/fire_extinguisher_powder/init.lua")
 	resource.AddFile("materials/fire_extinguisher_powder/powderspray.vmt")
 	resource.AddFile("materials/fire_extinguisher_powder/w_fire_extinguisher_powder.vmt")
 	--resource.AddFile("materials/fire_extinguisher_powder/.vmt")
