@@ -10,7 +10,6 @@ at any one moment.
 philxyz 2015
 ================================================================================
 
-- Remove holstering
 - Tile Images for Weapons
 - Other Weapon Packs
 	- M9K
@@ -21,8 +20,7 @@ philxyz 2015
 	- SGM Cars
 	- TDM Cars
 	- SCars Slim, SCars Basic, and SCars Extra
-- Fix player animations / models
-	- Fix character selection.
+- Fix character selection.
 		- Make it so that any "non-special-class" player can be chosen when creating a new character.
 		- Player can have a maximum of 5 characters. They need to delete one to create one after that.
 		- When a player changes to another team, change the model as appropriate but keep the old one
