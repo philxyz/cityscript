@@ -21,8 +21,8 @@ function ccSetModel( ply, cmd, args )
 
 		else
 		
-			CAKE.CallHook( "CharacterCreation_SetModel", ply, "models/humans/group01/male_01.mdl" );
-			CAKE.SetCharField(ply, "model", "models/humans/group01/male_01.mdl" );
+			CAKE.CallHook( "CharacterCreation_SetModel", ply, "models/player/group01/male_01.mdl" );
+			CAKE.SetCharField(ply, "model", "models/player/group01/male_01.mdl" );
 			
 		end
 		

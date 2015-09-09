@@ -1,4 +1,4 @@
-NPC_ANIMS_ENABLED = true
+NPC_ANIMS_ENABLED = false
 CAN_SELECT_NPCMODEL = true
 
 --Weapons that are always aimed
@@ -190,38 +190,38 @@ NPCAnim.CitizenMaleAnim = { }
 NPCAnim.CitizenMaleModels = 
 {
 
-	        "models/humans/group01/male_01.mdl",
-              "models/humans/group01/male_02.mdl",
-              "models/humans/group01/male_03.mdl",
-              "models/humans/group01/male_04.mdl",
-              "models/humans/group01/male_06.mdl",
-              "models/humans/group01/male_07.mdl",
-              "models/humans/group01/male_08.mdl",
-              "models/humans/group01/male_09.mdl",
-              "models/humans/group02/male_01.mdl",
-              "models/humans/group02/male_02.mdl",
-              "models/humans/group02/male_03.mdl",
-              "models/humans/group02/male_04.mdl",
-              "models/humans/group02/male_06.mdl",
-              "models/humans/group02/male_07.mdl",
-              "models/humans/group02/male_08.mdl",
-              "models/humans/group02/male_09.mdl",
-              "models/humans/group03/male_01.mdl",
-              "models/humans/group03/male_02.mdl",
-              "models/humans/group03/male_03.mdl",
-              "models/humans/group03/male_04.mdl",
-              "models/humans/group03/male_06.mdl",
-              "models/humans/group03/male_07.mdl",
-              "models/humans/group03/male_08.mdl",
-              "models/humans/group03/male_09.mdl",
-              "models/humans/group03m/male_01.mdl",
-              "models/humans/group03m/male_02.mdl",
-              "models/humans/group03m/male_03.mdl",
-              "models/humans/group03m/male_04.mdl",
-              "models/humans/group03m/male_06.mdl",
-              "models/humans/group03m/male_07.mdl",
-              "models/humans/group03m/male_08.mdl",
-              "models/humans/group03m/male_09.mdl"
+	      "models/player/group01/male_01.mdl",
+              "models/player/group01/male_02.mdl",
+              "models/player/group01/male_03.mdl",
+              "models/player/group01/male_04.mdl",
+              "models/player/group01/male_06.mdl",
+              "models/player/group01/male_07.mdl",
+              "models/player/group01/male_08.mdl",
+              "models/player/group01/male_09.mdl",
+              "models/player/group02/male_01.mdl",
+              "models/player/group02/male_02.mdl",
+              "models/player/group02/male_03.mdl",
+              "models/player/group02/male_04.mdl",
+              "models/player/group02/male_06.mdl",
+              "models/player/group02/male_07.mdl",
+              "models/player/group02/male_08.mdl",
+              "models/player/group02/male_09.mdl",
+              "models/player/group03/male_01.mdl",
+              "models/player/group03/male_02.mdl",
+              "models/player/group03/male_03.mdl",
+              "models/player/group03/male_04.mdl",
+              "models/player/group03/male_06.mdl",
+              "models/player/group03/male_07.mdl",
+              "models/player/group03/male_08.mdl",
+              "models/player/group03/male_09.mdl",
+              "models/player/group03m/male_01.mdl",
+              "models/player/group03m/male_02.mdl",
+              "models/player/group03m/male_03.mdl",
+              "models/player/group03m/male_04.mdl",
+              "models/player/group03m/male_06.mdl",
+              "models/player/group03m/male_07.mdl",
+              "models/player/group03m/male_08.mdl",
+              "models/player/group03m/male_09.mdl"
 }
 
 
@@ -233,15 +233,15 @@ for k, v in pairs( NPCAnim.CitizenMaleModels ) do
 end
 
 
-NPCAnim.CitizenMaleAnim["idle"] = "ACT_IDLE"
-NPCAnim.CitizenMaleAnim["walk"] = "ACT_WALK"
-NPCAnim.CitizenMaleAnim["run"] = "ACT_RUN"
-NPCAnim.CitizenMaleAnim["jump"] = "ACT_JUMP"
-NPCAnim.CitizenMaleAnim["land"] = "ACT_LAND"
-NPCAnim.CitizenMaleAnim["glide"] = "ACT_GLIDE"
-NPCAnim.CitizenMaleAnim["sit"] = "ACT_BUSY_SIT_CHAIR"
-NPCAnim.CitizenMaleAnim["crouch"] = "ACT_COVER_LOW"
-NPCAnim.CitizenMaleAnim["crouchwalk"] = "ACT_WALK_CROUCH"
+NPCAnim.CitizenMaleAnim["idle"] = ACT_IDLE
+NPCAnim.CitizenMaleAnim["walk"] = ACT_WALK
+NPCAnim.CitizenMaleAnim["run"] = ACT_RUN
+NPCAnim.CitizenMaleAnim["jump"] = ACT_JUMP
+NPCAnim.CitizenMaleAnim["land"] = ACT_LAND
+NPCAnim.CitizenMaleAnim["glide"] = ACT_GLIDE
+NPCAnim.CitizenMaleAnim["sit"] = ACT_BUSY_SIT_CHAIR
+NPCAnim.CitizenMaleAnim["crouch"] = ACT_COVER_LOW
+NPCAnim.CitizenMaleAnim["crouchwalk"] = ACT_WALK_CROUCH
  
 NPCAnim.CitizenMaleAnim["pistolidle"] = "ACT_IDLE"
 NPCAnim.CitizenMaleAnim["pistolwalk"] = "ACT_WALK"
@@ -369,30 +369,30 @@ NPCAnim.CitizenFemaleAnim = { }
 NPCAnim.CitizenFemaleModels = 
 {
 	
-              "models/Humans/Group01/Female_01.mdl",
-              "models/Humans/Group01/Female_02.mdl",
-              "models/Humans/Group01/Female_03.mdl",
-              "models/Humans/Group01/Female_04.mdl",
-              "models/Humans/Group01/Female_06.mdl",
-              "models/Humans/Group01/Female_07.mdl",
-              "models/Humans/Group02/Female_01.mdl",
-              "models/Humans/Group02/Female_02.mdl",
-              "models/Humans/Group02/Female_03.mdl",
-              "models/Humans/Group02/Female_04.mdl",
-              "models/Humans/Group02/Female_06.mdl",
-              "models/Humans/Group02/Female_07.mdl",
-              "models/Humans/Group03/Female_01.mdl",
-              "models/Humans/Group03/Female_02.mdl",
-              "models/Humans/Group03/Female_03.mdl",
-              "models/Humans/Group03/Female_04.mdl",
-              "models/Humans/Group03/Female_06.mdl",
-              "models/Humans/Group03/Female_07.mdl",
-              "models/Humans/Group03m/Female_01.mdl",
-              "models/Humans/Group03m/Female_02.mdl",
-              "models/Humans/Group03m/Female_03.mdl",
-              "models/Humans/Group03m/Female_04.mdl",
-              "models/Humans/Group03m/Female_06.mdl",
-              "models/Humans/Group03m/Female_07.mdl"	  
+              "models/player/group01/female_01.mdl",
+              "models/player/group01/female_02.mdl",
+              "models/player/group01/female_03.mdl",
+              "models/player/group01/female_04.mdl",
+              "models/player/group01/female_06.mdl",
+              "models/player/group01/female_07.mdl",
+              "models/player/group02/female_01.mdl",
+              "models/player/group02/female_02.mdl",
+              "models/player/group02/female_03.mdl",
+              "models/player/group02/female_04.mdl",
+              "models/player/group02/female_06.mdl",
+              "models/player/group02/female_07.mdl",
+              "models/player/group03/female_01.mdl",
+              "models/player/group03/female_02.mdl",
+              "models/player/group03/female_03.mdl",
+              "models/player/group03/female_04.mdl",
+              "models/player/group03/female_06.mdl",
+              "models/player/group03/female_07.mdl",
+              "models/player/group03m/female_01.mdl",
+              "models/player/group03m/female_02.mdl",
+              "models/player/group03m/female_03.mdl",
+              "models/player/group03m/female_04.mdl",
+              "models/player/group03m/female_06.mdl",
+              "models/player/group03m/female_07.mdl"	  
 }
 
 for k, v in pairs( NPCAnim.CitizenFemaleModels ) do
@@ -896,7 +896,7 @@ end
 
 local function FindEnumeration( actname )
 
-	for k, v in pairs ( _E ) do
+	for k, v in pairs ( _G ) do
 		if(  k == actname ) then
 			return tonumber( v );
 		end
@@ -927,7 +927,7 @@ local act = nil;
 local seq = nil;
 local actid = nil;
 
-function NPCAnim.SetPlayerAnimation( ply, weapanim )
+function NPCAnim.CalcMainActivity( ply, velocity )
 
 
 	if( not NPC_ANIMS_ENABLED ) then return; end
@@ -945,11 +945,11 @@ function NPCAnim.SetPlayerAnimation( ply, weapanim )
 		crouch = "crouch";
 	end
 	
-	if( ply:GetVelocity():Length() >= 120 and ply:KeyDown( IN_SPEED )) then
+	if( velocity:Length2D() >= 120 and ply:KeyDown( IN_SPEED )) then
 
 		seqname = seqname .. crouch .. "run";
 	
-	elseif( ply:GetVelocity():Length() >= 1 ) then
+	elseif( velocity:Length2D() >= 1 ) then
 	
 		seqname = seqname .. crouch .. "walk";
 	
@@ -965,11 +965,10 @@ function NPCAnim.SetPlayerAnimation( ply, weapanim )
 
 	local AnimTable = GetAnimTable( ply );
 	
-	if( ( weapanim == PLAYER_ATTACK1 or weapanim == PLAYER_RELOAD ) and weap:IsValid() ) then
-
+	if( ( weap:GetActivity() == ACT_VM_PRIMARYATTACK or weap:GetActivity() == ACT_VM_RELOAD ) and weap:IsValid() ) then
 		local act = nil;
 	
-		if( weapanim == PLAYER_RELOAD ) then
+		if( weap:GetActivity() == ACT_VM_RELOAD ) then
 
 			local actname = string.gsub( seqname, "aim", "" ) .. "reload";
 			actname = string.gsub( actname, "idle", "" );
@@ -980,9 +979,11 @@ function NPCAnim.SetPlayerAnimation( ply, weapanim )
 				return;
 			end
 
+			ply.CalcIdeal = act
+			ply.CalcSeqOverride = -1
 			ply:RestartGesture( act );
 		
-			return true;
+			return act, -1;
 			
 		else
 		
@@ -997,10 +998,12 @@ function NPCAnim.SetPlayerAnimation( ply, weapanim )
 					return;
 				end
 
+				ply.CalcIdeal = act
+
 				ply:RestartGesture( act );
 				ply:Weapon_SetActivity( act, 0 );
 				
-				return true;
+				return act, -1;
 				
 			end
 		
@@ -1025,14 +1028,14 @@ function NPCAnim.SetPlayerAnimation( ply, weapanim )
 		seq = ply:SelectWeightedSequence( actid );
 	end
 
-	if ( ply:GetSequence() == seq ) then return true; end
+	if ( ply:GetSequence() == seq ) then return seq, -1; end
 
 	ply:SetPlaybackRate( 1 );
 	ply:ResetSequence( seq );
 	ply:SetCycle( 1 );
 	
-	return true;
+	return seq, -1;
 
 end
 	
-hook.Add( "SetPlayerAnimation", "NPCAnim.SetPlayerAnimation", NPCAnim.SetPlayerAnimation );
+--hook.Add( "CalcMainActivity", "NPCAnim.CalcMainActivity", NPCAnim.CalcMainActivity );
