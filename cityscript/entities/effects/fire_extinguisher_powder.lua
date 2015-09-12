@@ -1,6 +1,7 @@
 function EFFECT:Init(data)
 	self.data = data
 	self.particles = 6
+	self:Display()
 end
 
 function EFFECT:Think()
@@ -24,7 +25,10 @@ function EFFECT.CollideCallback(particle, hitpos, hitnormal)
 	particle:SetEndSize(0)
 end
 
-function EFFECT:Render()
+-- Don't use EFFECT:Render() since it doesn't get called on the client
+-- when using util.Effect() on a dedicated server. - 2015-09-11
+
+function EFFECT:Display()
 	local vOffset = self.data:GetOrigin()
 	local vAngle = self.data:GetAngles()
 	local forwards = self.data:GetNormal()

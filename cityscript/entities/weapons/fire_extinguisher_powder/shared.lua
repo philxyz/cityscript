@@ -118,15 +118,15 @@ function SWEP:SprayFoam()
 end
 
 function SWEP:PrimaryAttack()
+	if not IsFirstTimePredicted() then return end
 	-- Can't fire again yet
 
 	if self:GetAttacking() then return end
 
-	if SERVER and game.SinglePlayer() then
+	if game.SinglePlayer() then
 		self:CallOnClient("PrimaryAttack")
 	end
 
-	if not IsFirstTimePredicted() then return end
 	self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
 	self:SetNextPrimaryTime(CurTime() + self.Owner:GetViewModel():SequenceDuration())
 	self:SetAttacking(true)
@@ -134,23 +134,3 @@ function SWEP:PrimaryAttack()
 	sound.Play("spray_start.wav", self:GetPos(), 75, 100, 1.0)
 	self:SprayFoam()
 end
-
---[[ -- This is only for testing when the need exists to randomly ignite things.
-function SWEP:SecondaryAttack()
-	if SERVER then
-		local rhand = self.Owner:LookupBone("ValveBiped.Bip01_R_Hand")
-		local wHandPos, wHandAngle = self.Owner:GetBonePosition(rhand)
-		local pav = self.Owner:GetAimVector()
-		local up = pav:Angle():Up():Angle()
-		up:RotateAroundAxis(pav:Angle():Up(), 90)
-		local wOffset, wAngle = LocalToWorld(Vector(9.5, -4.8, -2), up, wHandPos, wHandAngle)
-		local line = util.TraceLine({
-			start = wOffset,
-			endpos = wOffset + self.Owner:GetAimVector() * 350,
-		})
-		if line.Entity then
-			line.Entity:Ignite(15)
-		end
-	end
-end
-]]
