@@ -15,7 +15,7 @@ SWEP.Secondary.DefaultClip = 0
 
 SWEP.Spawnable = true -- TODO: make false for RP games after testing.
 SWEP.UseHands = true
-SWEP.ViewModel = "models/weapons/v_fire_extinguisher_powder.mdl"
+SWEP.ViewModel = "models/fire_extinguisher_powder/v_fire_extinguisher_powder.mdl"
 SWEP.ViewModelFOV = 54
 SWEP.WorldModel = "models/fire_extinguisher_powder/w_fire_extinguisher_powder.mdl"
 
@@ -41,33 +41,37 @@ end
 
 function SWEP:Initialize()
 	self:SetHoldType(self.HoldType)
-	self:SetNextPrimaryTime(0)
+	self:SetNextPrimaryFire(0)
 	self:SetAttacking(false)
-	self.NextHoldSoundTime = 0
 end
 
 function SWEP:SetupDataTables()
-	self:NetworkVar("Float", 0, "NextPrimaryTime")
+	self:NetworkVar("Float", 0.0, "NextHoldSndTime")
+	self:NetworkVar("Float", 1.0, "SprayTime")
 	self:NetworkVar("Bool", 0, "Attacking")
 end
 
 function SWEP:Deploy()
 	self:SendWeaponAnim(ACT_VM_DRAW)
-	self:SetNextPrimaryTime(CurTime() + self.Owner:GetViewModel():SequenceDuration())
+	self:SetNextPrimaryFire(CurTime() + self.Owner:GetViewModel():SequenceDuration())
 end
 
 function SWEP:Think()
 	if self:GetAttacking() then
-		if CurTime() >= self:GetNextPrimaryTime() and self.Owner:KeyPressed(IN_ATTACK) then
-			self:SendWeaponAnim(ACT_VM_IDLE_1)
-		elseif self.Owner:KeyReleased(IN_ATTACK) then
+		if self.Owner:KeyDown(IN_ATTACK) then
+			if CurTime() >= self:GetNextPrimaryFire() then
+				if IsFirstTimePredicted() then
+					self:SendWeaponAnim(ACT_VM_IDLE_1)
+				end
+			end
+		elseif self.Owner:KeyDownLast(IN_ATTACK) then
 			self:SetAttacking(false)
 			self:SendWeaponAnim(ACT_VM_RELEASE)
 			sound.Play("spray_end.wav", self:GetPos(), 75, 100, 1.0)
 		end
 
-		if CurTime() >= self.NextHoldSoundTime then
-			self.NextHoldSoundTime = CurTime() + 0.367
+		if CurTime() >= self:GetNextHoldSndTime() then
+			self:SetNextHoldSndTime(CurTime() + 0.367)
 			sound.Play("spray_hold.wav", self:GetPos(), 75, 100, 1.0)
 		end
 
@@ -75,20 +79,37 @@ function SWEP:Think()
 	end
 end
 
+function SWEP:PrimaryAttack()
+	if self:GetAttacking() then return end
+
+	if IsFirstTimePredicted() then
+		self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
+		self:SetNextPrimaryFire(CurTime() + self.Owner:GetViewModel():SequenceDuration())
+		self:SetNextHoldSndTime(CurTime() + 0.5122)
+		self:SetAttacking(true)
+		sound.Play("spray_start.wav", self:GetPos(), 75, 100, 1.0)
+	end
+end
+
 function SWEP:SprayFoam()
-	if self.SprayTime == nil or CurTime() >= self.SprayTime then
-		local edata = EffectData()
+	if CurTime() >= self:GetSprayTime() then
 		local rhand = self.Owner:LookupBone("ValveBiped.Bip01_R_Hand")
 		local wHandPos, wHandAngle = self.Owner:GetBonePosition(rhand)
 		local pav = self.Owner:GetAimVector()
 		local up = pav:Angle():Up():Angle()
 		up:RotateAroundAxis(pav:Angle():Up(), 90)
 		local wOffset, wAngle = LocalToWorld(Vector(9.5, -4.8, -2), up, wHandPos, wHandAngle)
-		edata:SetOrigin(wOffset)
-		edata:SetAngles(wAngle)
-		edata:SetNormal(self.Owner:GetAimVector())
-		edata:SetEntity(self.Owner)
-		util.Effect("fire_extinguisher_powder", edata)
+
+		if SERVER or (CLIENT and IsFirstTimePredicted()) then
+			local edata = EffectData()
+			edata:SetOrigin(wOffset)
+			edata:SetAngles(wAngle)
+			edata:SetEntity(self)
+			edata:SetNormal(self.Owner:GetAimVector())
+
+			util.Effect("fire_extinguisher_powder", edata)
+		end
+
 		local line = util.TraceLine({
 			start = wOffset,
 			endpos = wOffset + self.Owner:GetAimVector() * 350,
@@ -101,36 +122,11 @@ function SWEP:SprayFoam()
 				if SERVER then
 					t:Extinguish()
 				end
-				-- puff of smoke
-				local ed2 = EffectData()
-				ed2:SetOrigin(t:GetPos())
-				ed2:SetAngles(t:GetAngles())
-				ed2:SetEntity(t)
-				ed2:SetNormal(Vector(0, 0, 1))
-				util.Effect("hitsmoke", ed2)
 			end
 		end
 
-		self.SprayTime = CurTime() + 0.08
+		self:SetSprayTime(CurTime() + 0.08)
 	else
 		return
 	end
-end
-
-function SWEP:PrimaryAttack()
-	if not IsFirstTimePredicted() then return end
-	-- Can't fire again yet
-
-	if self:GetAttacking() then return end
-
-	if game.SinglePlayer() then
-		self:CallOnClient("PrimaryAttack")
-	end
-
-	self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
-	self:SetNextPrimaryTime(CurTime() + self.Owner:GetViewModel():SequenceDuration())
-	self:SetAttacking(true)
-	self.NextHoldSoundTime = CurTime() + 0.5122
-	sound.Play("spray_start.wav", self:GetPos(), 75, 100, 1.0)
-	self:SprayFoam()
 end

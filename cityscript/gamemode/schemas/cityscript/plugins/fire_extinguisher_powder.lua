@@ -16,6 +16,6 @@ if SERVER then
 	resource.AddFile("materials/fire_extinguisher_powder/powderspray.vmt")
 	resource.AddFile("materials/fire_extinguisher_powder/w_fire_extinguisher_powder.vmt")
 	resource.AddFile("models/fire_extinguisher_powder/w_fire_extinguisher_powder.mdl")
-	resource.AddFile("models/weapons/v_fire_extinguisher_powder.mdl")
+	resource.AddFile("models/fire_extinguisher_powder/v_fire_extinguisher_powder.mdl")
 	AddCSLuaFile("effects/fire_extinguisher_powder.lua")
 end
