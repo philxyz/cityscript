@@ -13,7 +13,6 @@ philxyz 2015
 - Other Weapon Packs
 	- M9K
 	
-- Remember active tab index
 - Roleplaying Vehicles Addon (or find another)
 	- [LW]
 	- SGM Cars
@@ -27,5 +26,4 @@ philxyz 2015
 		- Persist the team change per character to the character in the list
 		- Drop the concept of having a title
 	- On death:
-		- Reset active tab index
 		- Clicking brings up the character list for selecting a character and pre-selects the first.
