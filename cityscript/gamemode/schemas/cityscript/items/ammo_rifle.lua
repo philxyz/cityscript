@@ -1,7 +1,7 @@
 ITEM.Name = "Rifle Ammo";
 ITEM.Class = "ammo_rifle";
 ITEM.Description = "Use wisely!";
-ITEM.Model = "models/Items/BoxSRounds.mdl";
+ITEM.Model = "models/items/BoxSRounds.mdl";
 ITEM.Purchaseable = false;
 ITEM.Price = 0;
 ITEM.ItemGroup = 3;

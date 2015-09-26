@@ -1,7 +1,7 @@
 ITEM.Name = "Pistol Ammo";
 ITEM.Class = "ammo_pistol";
 ITEM.Description = "Don't forget to reload!";
-ITEM.Model = "models/Items/BoxBuckshot.mdl";
+ITEM.Model = "models/items/BoxBuckshot.mdl";
 ITEM.Purchaseable = false;
 ITEM.Price = 0;
 ITEM.ItemGroup = 3;
