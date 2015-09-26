@@ -209,7 +209,9 @@ function meta:RefreshBusiness( )
 				umsg.String( v.Class );
 				umsg.String( v.Description );
 				umsg.String( v.Model );
+				umsg.String( v.ContentModel );
 				umsg.Long( v.Price );
+				umsg.Bool( v.ContentClass ~= nil );
 			umsg.End( );
 			
 		end

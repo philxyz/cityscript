@@ -1,8 +1,9 @@
 ITEM.Name = "Dual Elites Shipment";
 ITEM.Class = "weapon_dual-elites_shipment";
 ITEM.ContentClass = "weapon_elites"
-ITEM.ContentCount = 10
-ITEM.ContentItemWeight = 3.2
+ITEM.ContentModel = "models/weapons/w_pist_p228.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3.2;
 ITEM.Description = "10 pack";
 ITEM.Model = "models/Items/item_item_crate.mdl";
 ITEM.Purchaseable = true;

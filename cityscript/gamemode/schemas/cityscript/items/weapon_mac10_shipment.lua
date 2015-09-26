@@ -1,8 +1,9 @@
 ITEM.Name = "Mac 10 Shipment";
 ITEM.Class = "weapon_mac10_shipment";
-ITEM.ContentClass = "weapon_mac10"
-ITEM.ContentCount = 10
-ITEM.ContentItemWeight = 5.4
+ITEM.ContentClass = "weapon_mac10";
+ITEM.ContentModel = "models/weapons/w_smg_mac10.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 5.4;
 ITEM.Description = "10 pack";
 ITEM.Model = "models/Items/item_item_crate.mdl";
 ITEM.Purchaseable = true;

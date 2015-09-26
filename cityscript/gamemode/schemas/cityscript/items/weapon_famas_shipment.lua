@@ -1,8 +1,9 @@
 ITEM.Name = "Famas Shipment";
 ITEM.Class = "weapon_famas_shipment";
-ITEM.ContentClass = "weapon_famas"
-ITEM.ContentCount = 10
-ITEM.ContentItemWeight = 4.1
+ITEM.ContentClass = "weapon_famas";
+ITEM.ContentModel = "models/weapons/w_pist_p228.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 4.1;
 ITEM.Description = "10 pack";
 ITEM.Model = "models/Items/item_item_crate.mdl";
 ITEM.Purchaseable = true;

@@ -26,7 +26,9 @@ function AddBusinessItem(data)
 	itemdata.Class = data:ReadString();
 	itemdata.Description = data:ReadString();
 	itemdata.Model = data:ReadString();
+	itemdata.ContentModel = data:ReadString();
 	itemdata.Price = data:ReadLong();
+	itemdata.IsShipment = data:ReadBool();
 	
 	table.insert(BusinessTable, itemdata);
 end
@@ -756,10 +758,21 @@ function CreatePlayerMenu()
 	Inventory:EnableVerticalScrollbar(true);
 	
 	for k, v in pairs(InventoryTable) do
-		local spawnicon = vgui.Create( "SpawnIcon");
+		local spawnicon = vgui.Create( "SpawnIcon" );
 		spawnicon:SetSize( 128, 128 );
 		spawnicon:SetModel(v.Model);
 		spawnicon:SetToolTip(v.Description);
+
+		if v.Class == "fire_extinguisher_powder" then
+			ang_new = spawnicon:GetLookAng():RotateAroundAxis(Vector(0, 1, 0), 135)
+			spawnicon:RebuildSpawnIconEx({
+				ent = spawnicon:GetEntity(),
+				cam_pos = spawnicon:GetCamPos(),
+				cam_ang = ang_new,
+				cam_fov = spawnicon:GetFOV()
+			})
+			spawnicon:PerformLayout()
+		end
 		
 		local function DeleteMyself()
 			spawnicon:Remove()
@@ -802,6 +815,15 @@ function CreatePlayerMenu()
 				spawnicon:SetSize( 128, 128 );
 				spawnicon:SetModel(v.Model);
 				spawnicon:SetToolTip(v.Description);
+				local itemView
+				if v.IsShipment then
+					itemView = vgui.Create( "DModelPanel", spawnicon);
+					itemView:SetSize( 128, 128 );
+					itemView:SetModel( v.ContentModel );
+					itemView:SetLookAt( Vector(0, 0, 0) );
+					itemView:SetCamPos( Vector(-20, 0, 0) );
+					itemView:SetAnimSpeed( 8 );
+				end
 				
 				spawnicon.DoClick = function ( btn )
 				
@@ -813,6 +835,10 @@ function CreatePlayerMenu()
 						end
 					ContextMenu:Open();
 					
+				end
+
+				if itemView then
+					itemView.DoClick = spawnicon.DoClick
 				end
 				
 				spawnicon.PaintOver = function()

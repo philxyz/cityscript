@@ -1,6 +1,7 @@
 ITEM.Name = "SG552 Shipment";
 ITEM.Class = "weapon_sg552_shipment";
 ITEM.ContentClass = "weapon_sg552"
+ITEM.ContentModel = "models/weapons/w_rif_sg552.mdl"
 ITEM.ContentCount = 10
 ITEM.ContentItemWeight = 3.5
 ITEM.Description = "10 pack";

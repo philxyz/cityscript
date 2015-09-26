@@ -1,8 +1,9 @@
 ITEM.Name = "Flashbang Shipment";
 ITEM.Class = "weapon_flashbang_shipment";
 ITEM.ContentClass = "weapon_flash"
-ITEM.ContentCount = 10
-ITEM.ContentItemWeight = 3.8
+ITEM.ContentModel = "models/weapons/w_eq_flashbang.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3.8;
 ITEM.Description = "10 pack";
 ITEM.Model = "models/Items/item_item_crate.mdl";
 ITEM.Purchaseable = true;

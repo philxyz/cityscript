@@ -1,8 +1,9 @@
 ITEM.Name = "M4 Pump Shotgun Shipment";
 ITEM.Class = "weapon_xm1014_shipment";
-ITEM.ContentClass = "weapon_xm1014"
-ITEM.ContentCount = 10
-ITEM.ContentItemWeight = 4.2
+ITEM.ContentClass = "weapon_xm1014";
+ITEM.ContentModel = "models/weapons/w_shot_xm1014.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 4.2;
 ITEM.Description = "10 pack";
 ITEM.Model = "models/Items/item_item_crate.mdl";
 ITEM.Purchaseable = true;

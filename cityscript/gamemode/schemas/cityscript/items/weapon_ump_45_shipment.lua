@@ -1,8 +1,9 @@
 ITEM.Name = "UMP 45 Shipment";
 ITEM.Class = "weapon_ump_45_shipment";
-ITEM.ContentClass = "weapon_ump_45"
-ITEM.ContentCount = 10
-ITEM.ContentItemWeight = 2.8
+ITEM.ContentClass = "weapon_ump_45";
+ITEM.ContentModel = "models/weapons/w_smg_ump45.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 2.8;
 ITEM.Description = "10 pack";
 ITEM.Model = "models/Items/item_item_crate.mdl";
 ITEM.Purchaseable = true;

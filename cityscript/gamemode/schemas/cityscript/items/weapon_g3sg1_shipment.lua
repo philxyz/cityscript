@@ -1,8 +1,9 @@
 ITEM.Name = "G3SG1 Sniper Shipment";
 ITEM.Class = "weapon_g3sg1_shipment";
-ITEM.ContentClass = "weapon_g3sg1"
-ITEM.ContentCount = 10
-ITEM.ContentItemWeight = 4.0
+ITEM.ContentClass = "weapon_g3sg1";
+ITEM.ContentModel = "models/weapons/w_snip_g3sg1.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 4.0;
 ITEM.Description = "10 pack";
 ITEM.Model = "models/Items/item_item_crate.mdl";
 ITEM.Purchaseable = true;
