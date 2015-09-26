@@ -49,6 +49,28 @@ include( "doors.lua" ); -- Doors
 -- CSS Realistic Weapons (originally by Worshipper, fixed for GM13 by "S o h")
 resource.AddWorkshop("104479034")
 
+-- CSS Weapons on M9K Base
+resource.AddWorkshop("108720350")
+
+-- M9K Assault Rifles
+resource.AddWorkshop("128089118")
+
+-- M9K Small Arms Pack
+resource.AddWorkshop("128093075")
+
+-- Mad Cow's FOF Weapons
+resource.AddWorkshop("165696777")
+
+-- M9K Heavy Weapons
+resource.AddWorkshop("128091208")
+
+-- M9K Specialities
+resource.AddWorkshop("144982052")
+
+-- Shuriken SWEP
+resource.AddWorkshop("124609721")
+
+
 AntiCopy = {"atm", "storage_box", "sent_nuke_detpack", "sent_nuke_radiation", "item_prop", "token_bundle", "token_printer", "spawned_shipment", "toxic_lab", "toxic", "sent_nuke_part", "sent_nuke", "door_ram", "lockpick", "med_kit", "gmod_tool"}
 NotAllowedToPickup = {}
 
