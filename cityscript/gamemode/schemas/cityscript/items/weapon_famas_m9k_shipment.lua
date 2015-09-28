@@ -1,7 +1,7 @@
-ITEM.Name = "Famas Shipment";
-ITEM.Class = "weapon_famas_shipment";
-ITEM.ContentClass = "weapon_famas";
-ITEM.ContentModel = "models/weapons/w_pist_p228.mdl";
+ITEM.Name = "Famas (M9K) Shipment";
+ITEM.Class = "weapon_famas_m9k_shipment";
+ITEM.ContentClass = "bb_famas_alt";
+ITEM.ContentModel = "models/weapons/3_rif_famas.mdl";
 ITEM.ContentCount = 10;
 ITEM.ContentItemWeight = 4.1;
 ITEM.Description = "10 pack";

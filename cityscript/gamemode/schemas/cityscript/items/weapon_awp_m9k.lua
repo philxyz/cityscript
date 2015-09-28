@@ -1,10 +1,9 @@
-ITEM.Name = "Steyr AUG";
-ITEM.Class = "weapon_aug";
-ITEM.GiveClass = "weapon_real_cs_aug";
+ITEM.Name = "Arctic Warfare Magnum (M9K)";
+ITEM.Class = "bb_awp_alt";
 ITEM.Description = "Assault Rifle";
-ITEM.Model = "models/weapons/w_rif_aug.mdl";
-ITEM.Purchaseable = false;
-ITEM.Price = 0;
+ITEM.Model = "models/weapons/3_snip_awp.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 650;
 ITEM.ItemGroup = 3;
 
 function ITEM:Drop(ply)
@@ -17,6 +16,6 @@ function ITEM:Pickup(ply)
 end
 
 function ITEM:UseItem(ply)
-	ply:Give(self.GiveClass)
+	ply:Give("bb_awp_alt")
 	self:Remove()
 end

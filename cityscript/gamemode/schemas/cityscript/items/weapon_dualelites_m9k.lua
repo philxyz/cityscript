@@ -1,10 +1,9 @@
-ITEM.Name = "G3SG1";
-ITEM.Class = "weapon_g3sg1";
-ITEM.GiveClass = "weapon_real_cs_g3sg1";
+ITEM.Name = "Dual Elites (M9K)";
+ITEM.Class = "bb_dualelites_alt";
 ITEM.Description = "Pistol";
-ITEM.Model = "models/weapons/w_snip_g3sg1.mdl";
-ITEM.Purchaseable = false;
-ITEM.Price = 0;
+ITEM.Model = "models/weapons/w_pist_elite.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 160;
 ITEM.ItemGroup = 3;
 
 function ITEM:Drop(ply)
@@ -17,6 +16,6 @@ function ITEM:Pickup(ply)
 end
 
 function ITEM:UseItem(ply)
-	ply:Give(self.GiveClass)
+	ply:Give("bb_dualelites_alt")
 	self:Remove()
 end

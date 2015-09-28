@@ -33,7 +33,6 @@ ChosenModel = "";
 ValidCakeModels = {};
 
 function AddModel( data )
-
 	table.insert( ValidCakeModels, data:ReadString( ) )
 	
 end

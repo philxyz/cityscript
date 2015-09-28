@@ -1,7 +1,7 @@
-ITEM.Name = "Galil Shipment";
-ITEM.Class = "weapon_galil_shipment";
-ITEM.ContentClass = "weapon_galil";
-ITEM.ContentModel = "models/weapons/w_rif_galil.mdl";
+ITEM.Name = "Galil (M9K) Shipment";
+ITEM.Class = "weapon_galil_m9k_shipment";
+ITEM.ContentClass = "bb_galil_alt";
+ITEM.ContentModel = "models/weapons/3_rif_galil.mdl";
 ITEM.ContentCount = 10;
 ITEM.ContentItemWeight = 3.85;
 ITEM.Description = "10 pack";

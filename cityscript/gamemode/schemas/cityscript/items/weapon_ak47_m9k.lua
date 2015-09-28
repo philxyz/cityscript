@@ -1,10 +1,9 @@
-ITEM.Name = "Kalashnikov AK47";
-ITEM.Class = "weapon_ak47";
-ITEM.GiveClass = "weapon_real_cs_ak47";
+ITEM.Name = "Kalashnikov AK47 (M9K)";
+ITEM.Class = "bb_ak47_alt";
 ITEM.Description = "Assault Rifle";
-ITEM.Model = "models/weapons/w_rif_ak47.mdl";
-ITEM.Purchaseable = false;
-ITEM.Price = 0;
+ITEM.Model = "models/weapons/3_rif_ak47.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 230;
 ITEM.ItemGroup = 3;
 
 function ITEM:Drop(ply)
@@ -17,6 +16,6 @@ function ITEM:Pickup(ply)
 end
 
 function ITEM:UseItem(ply)
-	ply:Give(self.GiveClass)
+	ply:Give("bb_ak47_alt")
 	self:Remove()
 end

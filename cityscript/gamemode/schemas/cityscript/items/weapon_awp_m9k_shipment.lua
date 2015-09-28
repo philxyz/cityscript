@@ -1,0 +1,11 @@
+ITEM.Name = "AWP (M9K) Shipment";
+ITEM.Class = "weapon_awp_m9k_shipment";
+ITEM.ContentClass = "bb_awp_alt";
+ITEM.ContentModel = "models/weapons/3_snip_awp.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 12;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 5850;
+ITEM.ItemGroup = 3;

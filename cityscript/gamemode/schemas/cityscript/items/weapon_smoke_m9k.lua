@@ -1,10 +1,9 @@
-ITEM.Name = "Smoke Grenade";
-ITEM.Class = "weapon_smoke";
-ITEM.GiveClass = "weapon_real_cs_smoke";
+ITEM.Name = "Smoke Grenade (M9K)";
+ITEM.Class = "bb_css_smoke_alt";
 ITEM.Description = "Provides momentary cover";
-ITEM.Model = "models/weapons/w_eq_smokegrenade.mdl";
-ITEM.Purchaseable = false;
-ITEM.Price = 0;
+ITEM.Model = "models/weapons/w_eq_smokegrenade_thrown.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 180;
 ITEM.ItemGroup = 3;
 
 function ITEM:Drop(ply)
@@ -17,6 +16,6 @@ function ITEM:Pickup(ply)
 end
 
 function ITEM:UseItem(ply)
-	ply:Give(self.GiveClass)
+	ply:Give("bb_css_smoke_alt")
 	self:Remove()
 end

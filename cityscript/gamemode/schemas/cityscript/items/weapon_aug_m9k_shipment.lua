@@ -1,7 +1,7 @@
-ITEM.Name = "AUG Shipment";
-ITEM.Class = "weapon_aug_shipment";
-ITEM.ContentClass = "weapon_aug";
-ITEM.ContentModel = "models/weapons/w_rif_aug.mdl";
+ITEM.Name = "Steyr AUG (M9K) Shipment";
+ITEM.Class = "weapon_aug_m9k_shipment";
+ITEM.ContentClass = "bb_aug_alt";
+ITEM.ContentModel = "models/weapons/3_rif_aug.mdl";
 ITEM.ContentCount = 10;
 ITEM.ContentItemWeight = 6.2;
 ITEM.Description = "10 pack";

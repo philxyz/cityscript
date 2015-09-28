@@ -1,10 +1,9 @@
-ITEM.Name = "Five-Seven";
-ITEM.Class = "weapon_five_seven";
-ITEM.GiveClass = "weapon_real_cs_five-seven";
+ITEM.Name = "D.Eagle (M9K)";
+ITEM.Class = "bb_deagle_alt";
 ITEM.Description = "Pistol";
-ITEM.Model = "models/weapons/w_pist_fiveseven.mdl";
-ITEM.Purchaseable = false;
-ITEM.Price = 0;
+ITEM.Model = "models/weapons/3_pist_deagle.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 150;
 ITEM.ItemGroup = 3;
 
 function ITEM:Drop(ply)
@@ -17,6 +16,6 @@ function ITEM:Pickup(ply)
 end
 
 function ITEM:UseItem(ply)
-	ply:Give(self.GiveClass)
+	ply:Give("bb_deagle_alt")
 	self:Remove()
 end

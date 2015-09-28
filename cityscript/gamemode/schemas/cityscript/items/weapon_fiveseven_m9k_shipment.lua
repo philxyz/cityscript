@@ -1,7 +1,7 @@
-ITEM.Name = "Five-Seven Shipment";
-ITEM.Class = "weapon_five_seven_shipment";
-ITEM.ContentClass = "weapon_five_seven"
-ITEM.ContentModel = "models/weapons/w_pist_fiveseven.mdl";
+ITEM.Name = "FiveSeven (M9K) Shipment";
+ITEM.Class = "weapon_fiveseven_m9k_shipment";
+ITEM.ContentClass = "bb_fiveseven_alt";
+ITEM.ContentModel = "models/weapons/3_pist_fiveseven.mdl";
 ITEM.ContentCount = 10;
 ITEM.ContentItemWeight = 1.8;
 ITEM.Description = "10 pack";

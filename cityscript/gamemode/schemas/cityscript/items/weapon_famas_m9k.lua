@@ -1,10 +1,9 @@
-ITEM.Name = "Galil";
-ITEM.Class = "weapon_galil";
-ITEM.GiveClass = "weapon_real_cs_galil";
+ITEM.Name = "Famas (M9K)";
+ITEM.Class = "bb_famas_alt";
 ITEM.Description = "Assault Rifle";
-ITEM.Model = "models/weapons/w_rif_galil.mdl";
-ITEM.Purchaseable = false;
-ITEM.Price = 0;
+ITEM.Model = "models/weapons/3_rif_famas.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 400;
 ITEM.ItemGroup = 3;
 
 function ITEM:Drop(ply)
@@ -17,6 +16,6 @@ function ITEM:Pickup(ply)
 end
 
 function ITEM:UseItem(ply)
-	ply:Give(self.GiveClass)
+	ply:Give(self.Class)
 	self:Remove()
 end

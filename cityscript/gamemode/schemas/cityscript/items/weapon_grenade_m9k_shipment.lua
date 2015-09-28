@@ -1,7 +1,7 @@
-ITEM.Name = "Grenade Shipment";
-ITEM.Class = "weapon_grenade_shipment";
-ITEM.ContentClass = "weapon_grenade";
-ITEM.ContentModel = "models/weapons/w_eq_fraggrenade.mdl";
+ITEM.Name = "Frag Grenade (M9K) Shipment";
+ITEM.Class = "weapon_frag_m9k_shipment";
+ITEM.ContentClass = "bb_cssfrag_alt";
+ITEM.ContentModel = "models/weapons/w_eq_fraggrenade_thrown.mdl";
 ITEM.ContentCount = 10;
 ITEM.ContentItemWeight = 0.3;
 ITEM.Description = "10 pack";
