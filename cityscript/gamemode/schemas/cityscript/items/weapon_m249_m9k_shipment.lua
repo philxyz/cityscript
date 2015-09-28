@@ -1,7 +1,7 @@
-ITEM.Name = "M249 Shipment";
-ITEM.Class = "weapon_m249_shipment";
-ITEM.ContentClass = "weapon_m249";
-ITEM.ContentModel = "models/weapons/w_mach_m249para.mdl";
+ITEM.Name = "M249 (M9K) Shipment";
+ITEM.Class = "weapon_m249_m9k_shipment";
+ITEM.ContentClass = "bb_m249_alt";
+ITEM.ContentModel = "models/weapons/3_mach_m249para.mdl";
 ITEM.ContentCount = 10;
 ITEM.ContentItemWeight = 8.2;
 ITEM.Description = "10 pack";

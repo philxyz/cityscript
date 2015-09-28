@@ -1,0 +1,11 @@
+ITEM.Name = "M3 Shotgun (M9K) Shipment";
+ITEM.Class = "weapon_m3_m9k_shipment";
+ITEM.ContentClass = "bb_m3_alt";
+ITEM.ContentModel = "models/weapons/3_shot_m3super90.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 8;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 1750;
+ITEM.ItemGroup = 3;

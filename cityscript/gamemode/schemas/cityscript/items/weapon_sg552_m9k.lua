@@ -1,10 +1,9 @@
-ITEM.Name = "MP5A5";
-ITEM.Class = "weapon_mp5a5";
-ITEM.GiveClass = "weapon_real_cs_mp5a5";
+ITEM.Name = "SG552 (M9K)";
+ITEM.Class = "bb_sg552_alt";
 ITEM.Description = "Assault Rifle";
-ITEM.Model = "models/weapons/w_smg_mp5.mdl";
-ITEM.Purchaseable = false;
-ITEM.Price = 0;
+ITEM.Model = "models/weapons/3_rif_sg552.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 400;
 ITEM.ItemGroup = 3;
 
 function ITEM:Drop(ply)
@@ -17,6 +16,6 @@ function ITEM:Pickup(ply)
 end
 
 function ITEM:UseItem(ply)
-	ply:Give(self.GiveClass)
+	ply:Give(self.Class)
 	self:Remove()
 end

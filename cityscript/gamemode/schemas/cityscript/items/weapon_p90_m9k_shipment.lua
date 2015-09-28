@@ -1,7 +1,7 @@
-ITEM.Name = "P90 Shipment";
-ITEM.Class = "weapon_p90_shipment";
-ITEM.ContentClass = "weapon_p90";
-ITEM.ContentModel = "models/weapons/w_smg_p90.mdl";
+ITEM.Name = "P90 (M9K) Shipment";
+ITEM.Class = "weapon_p90_m9k_shipment";
+ITEM.ContentClass = "bb_p90_alt";
+ITEM.ContentModel = "models/weapons/3_smg_p90.mdl";
 ITEM.ContentCount = 10;
 ITEM.ContentItemWeight = 4.2;
 ITEM.Description = "10 pack";

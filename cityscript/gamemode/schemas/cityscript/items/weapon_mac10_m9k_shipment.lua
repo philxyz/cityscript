@@ -1,7 +1,7 @@
-ITEM.Name = "Mac 10 Shipment";
-ITEM.Class = "weapon_mac10_shipment";
-ITEM.ContentClass = "weapon_mac10";
-ITEM.ContentModel = "models/weapons/w_smg_mac10.mdl";
+ITEM.Name = "Mac 10 (M9K) Shipment";
+ITEM.Class = "weapon_mac10_m9k_shipment";
+ITEM.ContentClass = "bb_mac10_alt";
+ITEM.ContentModel = "models/weapons/3_smg_mac10.mdl";
 ITEM.ContentCount = 10;
 ITEM.ContentItemWeight = 5.4;
 ITEM.Description = "10 pack";

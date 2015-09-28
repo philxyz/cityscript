@@ -1,0 +1,11 @@
+ITEM.Name = "Glock 18 (M9K) Shipment";
+ITEM.Class = "weapon_glock_m9k_shipment";
+ITEM.ContentClass = "bb_glock_alt";
+ITEM.ContentModel = "models/weapons/3_pist_glock18.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 2.1;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 950;
+ITEM.ItemGroup = 3;

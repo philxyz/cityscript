@@ -1,7 +1,7 @@
-ITEM.Name = "M4A1 Shipment";
-ITEM.Class = "weapon_m4a1_shipment";
-ITEM.ContentClass = "weapon_m4a1";
-ITEM.ContentModel = "models/weapons/w_rif_m4a1.mdl";
+ITEM.Name = "M4A1 (M9K) Shipment";
+ITEM.Class = "weapon_m4a1_m9k_shipment";
+ITEM.ContentClass = "bb_m4a1_alt";
+ITEM.ContentModel = "models/weapons/3_rif_m4a1.mdl";
 ITEM.ContentCount = 10;
 ITEM.ContentItemWeight = 3.9;
 ITEM.Description = "10 pack";

@@ -1,0 +1,11 @@
+ITEM.Name = "USP (M9K) Shipment";
+ITEM.Class = "weapon_usp_m9k_shipment";
+ITEM.ContentClass = "bb_usp_alt";
+ITEM.ContentModel = "models/weapons/3_pist_usp.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 1.2;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 1900;
+ITEM.ItemGroup = 3;

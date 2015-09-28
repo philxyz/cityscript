@@ -1,10 +1,9 @@
-ITEM.Name = "USP";
-ITEM.Class = "weapon_usp";
-ITEM.GiveClass = "weapon_real_cs_usp";
+ITEM.Name = "Glock 18 (M9K)";
+ITEM.Class = "bb_glock_alt";
 ITEM.Description = "Pistol";
-ITEM.Model = "models/weapons/w_pist_usp.mdl";
-ITEM.Purchaseable = false;
-ITEM.Price = 0;
+ITEM.Model = "models/weapons/3_pist_glock18.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 100;
 ITEM.ItemGroup = 3;
 
 function ITEM:Drop(ply)
@@ -17,6 +16,6 @@ function ITEM:Pickup(ply)
 end
 
 function ITEM:UseItem(ply)
-	ply:Give(self.GiveClass)
+	ply:Give(self.Class)
 	self:Remove()
 end

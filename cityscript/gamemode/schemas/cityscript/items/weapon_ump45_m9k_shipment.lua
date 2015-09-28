@@ -1,0 +1,11 @@
+ITEM.Name = "UMP 45 (M9K) Shipment";
+ITEM.Class = "weapon_ump45_m9k_shipment";
+ITEM.ContentClass = "bb_ump45_alt";
+ITEM.ContentModel = "models/weapons/3_smg_ump45.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 2300;
+ITEM.ItemGroup = 3;

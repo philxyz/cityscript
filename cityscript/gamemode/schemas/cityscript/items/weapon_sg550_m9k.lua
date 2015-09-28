@@ -1,10 +1,9 @@
-ITEM.Name = "SG550";
-ITEM.Class = "weapon_sg550";
-ITEM.GiveClass = "weapon_real_cs_sg550";
+ITEM.Name = "SG550 (M9K)";
+ITEM.Class = "bb_sg550_alt";
 ITEM.Description = "Sniper Rifle";
-ITEM.Model = "models/weapons/w_snip_sg550.mdl";
-ITEM.Purchaseable = false;
-ITEM.Price = 0;
+ITEM.Model = "models/weapons/3_snip_sg550.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 515;
 ITEM.ItemGroup = 3;
 
 function ITEM:Drop(ply)
@@ -17,6 +16,6 @@ function ITEM:Pickup(ply)
 end
 
 function ITEM:UseItem(ply)
-	ply:Give(self.GiveClass)
+	ply:Give(self.Class)
 	self:Remove()
 end

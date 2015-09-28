@@ -1,10 +1,9 @@
-ITEM.Name = "Steyr Scout";
-ITEM.Class = "weapon_scout";
-ITEM.GiveClass = "weapon_real_cs_scout";
+ITEM.Name = "Scout (M9K)";
+ITEM.Class = "bb_scout_alt";
 ITEM.Description = "Sniper Rifle";
-ITEM.Model = "models/weapons/w_snip_scout.mdl";
-ITEM.Purchaseable = false;
-ITEM.Price = 0;
+ITEM.Model = "models/weapons/3_snip_scout.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 490;
 ITEM.ItemGroup = 3;
 
 function ITEM:Drop(ply)
@@ -17,6 +16,6 @@ function ITEM:Pickup(ply)
 end
 
 function ITEM:UseItem(ply)
-	ply:Give(self.GiveClass)
+	ply:Give(self.Class)
 	self:Remove()
 end

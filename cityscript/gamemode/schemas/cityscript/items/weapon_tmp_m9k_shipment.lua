@@ -1,7 +1,7 @@
-ITEM.Name = "Machine Pistol Shipment";
-ITEM.Class = "weapon_tmp_shipment";
-ITEM.ContentClass = "weapon_tmp";
-ITEM.ContentModel = "models/weapons/w_smg_tmp.mdl";
+ITEM.Name = "TMP (M9K) Shipment";
+ITEM.Class = "weapon_tmp_m9k_shipment";
+ITEM.ContentClass = "bb_tmp_alt";
+ITEM.ContentModel = "models/weapons/3_smg_tmp.mdl";
 ITEM.ContentCount = 10;
 ITEM.ContentItemWeight = 2.9;
 ITEM.Description = "10 pack";

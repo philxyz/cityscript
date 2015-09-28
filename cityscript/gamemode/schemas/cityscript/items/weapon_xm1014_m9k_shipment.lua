@@ -1,7 +1,7 @@
-ITEM.Name = "M4 Pump Shotgun Shipment";
-ITEM.Class = "weapon_xm1014_shipment";
-ITEM.ContentClass = "weapon_xm1014";
-ITEM.ContentModel = "models/weapons/w_shot_xm1014.mdl";
+ITEM.Name = "XM1014 (M9K) Shipment";
+ITEM.Class = "weapon_xm1014_m9k_shipment";
+ITEM.ContentClass = "bb_xm1014_alt";
+ITEM.ContentModel = "models/weapons/3_shot_xm1014.mdl";
 ITEM.ContentCount = 10;
 ITEM.ContentItemWeight = 4.2;
 ITEM.Description = "10 pack";
