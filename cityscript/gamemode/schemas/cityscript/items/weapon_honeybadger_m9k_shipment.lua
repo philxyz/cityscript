@@ -1,0 +1,11 @@
+ITEM.Name = "Honey Badger (M9K) Shipment";
+ITEM.Class = "weapon_honeybadger_m9k_shipment";
+ITEM.ContentClass = "m9k_honeybadger";
+ITEM.ContentModel = "models/weapons/w_aac_honeybadger.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3.15;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 2400;
+ITEM.ItemGroup = 3;

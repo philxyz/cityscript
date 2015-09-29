@@ -1,0 +1,11 @@
+ITEM.Name = "Magpul PDR (M9K) Shipment";
+ITEM.Class = "weapon_magpulpdr_m9k_shipment";
+ITEM.ContentClass = "m9k_magpulpdr";
+ITEM.ContentModel = "models/weapons/w_magpul_pdr.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 2.85;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 2300;
+ITEM.ItemGroup = 3;

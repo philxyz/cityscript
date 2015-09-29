@@ -1,0 +1,11 @@
+ITEM.Name = "Scar (M9K) Shipment";
+ITEM.Class = "weapon_scar_m9k_shipment";
+ITEM.ContentClass = "m9k_scar";
+ITEM.ContentModel = "models/weapons/w_fn_scar_h.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3.5;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 2950;
+ITEM.ItemGroup = 3;

@@ -1,0 +1,11 @@
+ITEM.Name = "AK74 (M9K) Shipment";
+ITEM.Class = "weapon_ak74_m9k_shipment";
+ITEM.ContentClass = "m9k_ak74";
+ITEM.ContentModel = "models/weapons/w_tct_ak47.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 2.9;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 2850;
+ITEM.ItemGroup = 3;

@@ -1,0 +1,11 @@
+ITEM.Name = "MP5SD (M9K) Shipment";
+ITEM.Class = "weapon_mp5sd_m9k_shipment";
+ITEM.ContentClass = "m9k_mp5sd";
+ITEM.ContentModel = "models/weapons/w_hk_mp5sd.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3.6;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 2980;
+ITEM.ItemGroup = 3;

@@ -1,0 +1,11 @@
+ITEM.Name = "H&K 416 Shipment";
+ITEM.Class = "weapon_m416_m9k_shipment";
+ITEM.ContentClass = "m9k_m416";
+ITEM.ContentModel = "models/weapons/w_hk_416.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3.7;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 2850;
+ITEM.ItemGroup = 3;

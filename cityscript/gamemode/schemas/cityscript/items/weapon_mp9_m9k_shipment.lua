@@ -1,0 +1,11 @@
+ITEM.Name = "MP9 (M9K) Shipment";
+ITEM.Class = "weapon_mp9_m9k_shipment";
+ITEM.ContentClass = "m9k_mp9";
+ITEM.ContentModel = "models/weapons/w_brugger_thomet_mp9.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 4.1;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 2230;
+ITEM.ItemGroup = 3;

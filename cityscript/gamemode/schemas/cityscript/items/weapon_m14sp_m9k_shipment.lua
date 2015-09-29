@@ -1,0 +1,11 @@
+ITEM.Name = "M14SP Shipment";
+ITEM.Class = "weapon_m14sp_m9k_shipment";
+ITEM.ContentClass = "m9k_m14sp";
+ITEM.ContentModel = "models/weapons/w_snip_m14sp.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 4.7;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 3250;
+ITEM.ItemGroup = 3;

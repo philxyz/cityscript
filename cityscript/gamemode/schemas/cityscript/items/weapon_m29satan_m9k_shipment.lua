@@ -1,0 +1,11 @@
+ITEM.Name = "M29 Satan (M9K) Shipment";
+ITEM.Class = "weapon_m29satan_m9k_shipment";
+ITEM.ContentClass = "m9k_m29satan";
+ITEM.ContentModel = "models/weapons/w_m29_satan.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 0.81;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 2900;
+ITEM.ItemGroup = 3;

@@ -1,0 +1,11 @@
+ITEM.Name = "H&K G3A3 Shipment";
+ITEM.Class = "weapon_g3a3_m9k_shipment";
+ITEM.ContentClass = "m9k_g3a3";
+ITEM.ContentModel = "models/weapons/w_hk_g3.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3.2;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 2860;
+ITEM.ItemGroup = 3;

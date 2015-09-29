@@ -1,0 +1,11 @@
+ITEM.Name = "Scoped Taurus (M9K) Shipment";
+ITEM.Class = "weapon_scoped_taurus_m9k_shipment";
+ITEM.ContentClass = "m9k_scoped_taurus";
+ITEM.ContentModel = "models/weapons/w_raging_bull_scoped.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 0.82;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 2000;
+ITEM.ItemGroup = 3;

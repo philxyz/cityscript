@@ -1,0 +1,11 @@
+ITEM.Name = "Bizon PP19 (M9K) Shipment";
+ITEM.Class = "weapon_bizonp19_m9k_shipment";
+ITEM.ContentClass = "m9k_bizonp19";
+ITEM.ContentModel = "models/weapons/w_pp19_bizon.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3.6;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 3580;
+ITEM.ItemGroup = 3;

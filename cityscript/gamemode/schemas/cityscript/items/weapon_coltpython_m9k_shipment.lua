@@ -1,0 +1,11 @@
+ITEM.Name = "Colt Python (M9K) Shipment";
+ITEM.Class = "weapon_coltpython_m9k_shipment";
+ITEM.ContentClass = "m9k_coltpython";
+ITEM.ContentModel = "models/weapons/w_colt_python.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 0.45;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 1900;
+ITEM.ItemGroup = 3;

@@ -1,0 +1,11 @@
+ITEM.Name = "AN94 (M9K) Shipment";
+ITEM.Class = "weapon_an94_m9k_shipment";
+ITEM.ContentClass = "m9k_an94";
+ITEM.ContentModel = "models/weapons/w_rif_an_94.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 2.3;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 2350;
+ITEM.ItemGroup = 3;

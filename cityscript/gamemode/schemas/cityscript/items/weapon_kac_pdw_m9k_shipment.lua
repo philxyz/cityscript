@@ -1,0 +1,11 @@
+ITEM.Name = "KAC PDW (M9K) Shipment";
+ITEM.Class = "weapon_kac_pdw_m9k_shipment";
+ITEM.ContentClass = "m9k_kac_pdw";
+ITEM.ContentModel = "models/weapons/w_kac_pdw.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3.15;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 2650;
+ITEM.ItemGroup = 3;

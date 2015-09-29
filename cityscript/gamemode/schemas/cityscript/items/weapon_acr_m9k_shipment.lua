@@ -1,0 +1,11 @@
+ITEM.Name = "ACR (M9K) Shipment";
+ITEM.Class = "weapon_acr_m9k_shipment";
+ITEM.ContentClass = "m9k_acr";
+ITEM.ContentModel = "models/weapons/w_masada_acr.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3.4;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 3450;
+ITEM.ItemGroup = 3;

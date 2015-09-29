@@ -1,0 +1,11 @@
+ITEM.Name = "Remington 1858 (M9K) Shipment";
+ITEM.Class = "weapon_remington1858_m9k_shipment";
+ITEM.ContentClass = "m9k_remington1858";
+ITEM.ContentModel = "models/weapons/w_remington_1858.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 0.8;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 1858;
+ITEM.ItemGroup = 3;

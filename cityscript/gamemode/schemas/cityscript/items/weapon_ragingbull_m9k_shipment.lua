@@ -1,0 +1,11 @@
+ITEM.Name = "Raging Bull (M9K) Shipment";
+ITEM.Class = "weapon_ragingbull_m9k_shipment";
+ITEM.ContentClass = "m9k_ragingbull";
+ITEM.ContentModel = "models/weapons/w_taurus_raging_bull.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 1.1;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 1980;
+ITEM.ItemGroup = 3;
