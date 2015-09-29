@@ -12,19 +12,20 @@ philxyz 2015
 
 - Other Weapon Packs
 	- M9K
-		CSS Weapons on M9K Base (ammo boxes)
-		M9K Assault Rifles
-		M9K Small Arms Pack
-		M9K Heavy Weapons
-		M9K Specialities
-		Mad Cow's FOF Weapons
-		Shuriken SWEP
+		+ CSS Weapons on M9K Base (ammo boxes)
+		+ M9K Assault Rifles
+		- M9K Small Arms Pack m9k_sig_p229r+
+		- M9K Heavy Weapons (BM Dealer)
+		- M9K Specialities (BM Dealer)
+		- Mad Cow's FOF Weapons (Gun Dealer)
+		- Shuriken SWEP (BM Dealer)
 	
 - Roleplaying Vehicles Addon (or find another)
 	- [LW]
 	- SGM Cars
 	- TDM Cars
 	- SCars Slim, SCars Basic, and SCars Extra
+
 - Fix character selection.
 		- Make it so that any "non-special-class" player can be chosen when creating a new character.
 		- Player can have a maximum of 5 characters. They need to delete one to create one after that.
