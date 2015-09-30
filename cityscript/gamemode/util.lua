@@ -52,15 +52,15 @@ end
 
 function CAKE.InitTime() -- Load the time from a text file or default value, this occurs on gamemode initialization.
 
-	local clumpedtime = "1 1 2012 1"
+	local clumpedtime = "1 1 " .. tostring(os.date("*t").year + 3) .. " 1"
 	
-	if(file.Exists("CakeScript/time.txt", "DATA")) then
+	if(file.Exists("cakescript/time.txt", "DATA")) then
 	
-		clumpedtime = file.Read("CakeScript/time.txt")
+		clumpedtime = file.Read("cakescript/time.txt")
 		
 	else
 	
-		file.Write("CakeScript/time.txt", "1 1 2012 1")
+		file.Write("cakescript/time.txt", "1 1 " .. tostring(os.date("*t").year + 3) .. " 1")
 		
 	end
 	
@@ -70,14 +70,14 @@ function CAKE.InitTime() -- Load the time from a text file or default value, thi
 	CAKE.ClockYear = tonumber(unclumped[3])
 	CAKE.ClockMins = tonumber(unclumped[4]) or 1
 	
-	SetGlobalString("time", "Loading..")
+	SetGlobalString("time", "Loading...")
 	
 end
 
 function CAKE.SaveTime()
 
 	local clumpedtime = CAKE.ClockDay .. " " .. CAKE.ClockMonth .. " " .. CAKE.ClockYear .. " " .. CAKE.ClockMins
-	file.Write("CakeScript/time.txt", clumpedtime)
+	file.Write("cakescript/time.txt", clumpedtime)
 	
 end
 
