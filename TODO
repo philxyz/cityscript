@@ -26,12 +26,14 @@ philxyz 2015
 	- TDM Cars
 	- SCars Slim, SCars Basic, and SCars Extra
 
+- New token bundle model
+
 - Fix character selection.
 		- Make it so that any "non-special-class" player can be chosen when creating a new character.
-		- Player can have a maximum of 5 characters. They need to delete one to create one after that.
 		- When a player changes to another team, change the model as appropriate but keep the old one
 		  in case they change that team back again
 		- Persist the team change per character to the character in the list
-		- Drop the concept of having a title
-	- On death:
-		- Clicking brings up the character list for selecting a character and pre-selects the first.
+
+- Prop protection
+	- If something isn't frozen, anyone can touch it.
+	- Spawned props have a timeout before other players can touch them
