@@ -109,26 +109,6 @@ function GM:CanPlayerSuicide( ply )
 	
 end
 
--- Set Title
-function ccSetTitle( ply, cmd, args )
-
-	local title = args[ 1 ];
-	
-	if( string.len( title ) > 33 ) then
-	
-		CAKE.Response( ply, TEXT.LongTitle );
-		return;
-		
-	end
-	
-	CAKE.SetCharField( ply, "title", title );
-	ply:SetNWString("title", title);
-	
-	return;
-	
-end
-concommand.Add( "rp_title", ccSetTitle );
-
 -- Change IC Name
 function ccChangeName( ply, cmd, args )
 

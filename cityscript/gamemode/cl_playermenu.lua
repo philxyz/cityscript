@@ -261,11 +261,6 @@ function InitHUDMenu()
 	label:SetPos(8, 25);
 	label:SetText(TEXT.Name .. ": " .. LocalPlayer():Nick());
 	
-	local label3 = vgui.Create("DLabel", HUDMenu);
-	label3:SetWide(0);
-	label3:SetPos(8, 40);
-	label3:SetText(TEXT.Title .. ": " .. LocalPlayer():GetNWString("title"));
-	
 	local label4 = vgui.Create("DLabel", HUDMenu);
 	label4:SetWide(0);
 	label4:SetPos(8, 55);
@@ -287,8 +282,6 @@ function InitHUDMenu()
 	function UpdateGUIData()
 		label:SetText(TEXT.Name .. ": " .. LocalPlayer():Nick());
 		
-		label3:SetText(TEXT.Title .. ": " .. LocalPlayer():GetNWString("title"));
-		
 		label4:SetText(TEXT.Association .. ": " .. team.GetName(LocalPlayer():Team()));
 
 		if lastmodel ~= LocalPlayer():GetModel() then
@@ -304,7 +297,6 @@ function InitHUDMenu()
 		HUDMenu:SetPos(ScrW() - FadeSize - 5, 5 );
 		
 		label:SetWide(FadeSize - 128);
-		label3:SetWide(FadeSize - 128);
 		label4:SetWide(FadeSize - 128);
 		
 		if spawnicon:IsHovered() then
@@ -325,14 +317,14 @@ local function WarnPlayer(ply)
 	Derma_StringRequest(TEXT.WarningTo(ply:Name()),
 		TEXT.Warning .. ":",
 		"",
-		function(warning) RunConsoleCommand("rp_admin", "warn", tostring(ply:UserID()), "\"" .. warning .. "\"") end)
+		function(warning) RunConsoleCommand("rp_admin", "warn", tostring(ply:UserID()), warning) end)
 end
 
 local function KickPlayer(ply)
 	Derma_StringRequest(TEXT.ReasonForKicking(ply:Name()),
 		TEXT.Reason .. ":",
 		"",
-		function(reason) RunConsoleCommand("rp_admin", "kick", tostring(ply:UserID()), "\"" .. reason .. "\"") end)
+		function(reason) RunConsoleCommand("rp_admin", "kick", tostring(ply:UserID()), reason) end)
 end
 
 local function BanPlayer(ply)
@@ -348,7 +340,7 @@ local function BanPlayer(ply)
 			"",
 			function(reason)
 				if timeText == TEXT.Always then timeText = "PERMA" end
-				RunConsoleCommand("rp_admin", "ban", tostring(ply:UserID()), "\"" .. string.upper(timeText) .. ": " .. reason .. "\"", tostring(banMinutes))
+				RunConsoleCommand("rp_admin", "ban", tostring(ply:UserID()), string.upper(timeText) .. ": " .. reason, tostring(banMinutes))
 			end)
 	end
 
@@ -463,10 +455,6 @@ function CreatePlayerMenu()
 	
 	local DataList2 = vgui.Create( "DPanelList" )
 	
-	local label2 = vgui.Create("DLabel");
-	label2:SetText(TEXT.Title .. ": " .. LocalPlayer():GetNWString("title"));
-	DataList2:AddItem(label2);
-	
 	local label3 = vgui.Create("DLabel");
 	label3:SetText(TEXT.Association .. ": " .. team.GetName(LocalPlayer():Team()));
 	DataList2:AddItem(label3);
@@ -564,18 +552,6 @@ function CreatePlayerMenu()
 	lastname:SetPos(40, 50);
 	lastname:SetText("");
 
-	local label = vgui.Create("DLabel");
-	info:AddItem(label);
-	label:SetSize(100,25);
-	label:SetPos(5, 80);
-	label:SetText(TEXT.Title .. ": ");
-
-	local title = vgui.Create("DTextEntry");
-	info:AddItem(title);
-	title:SetSize(205, 25);
-	title:SetPos(80, 80);
-	title:SetText(TEXT.Unemployed);
-
 	local spawnicon = nil;
 
 	local modelform = vgui.Create( "DForm" );
@@ -603,9 +579,8 @@ function CreatePlayerMenu()
 		end
 		
 		RunConsoleCommand("rp_startcreate");
-		RunConsoleCommand("rp_setmodel", "\"" .. ChosenModel .. "\"");
-		RunConsoleCommand("rp_changename", "\"" .. firstname:GetValue() .. " " .. lastname:GetValue() .. "\"");
-		RunConsoleCommand("rp_title", "\"" .. string.sub(title:GetValue(), 1, 32) .. "\"");
+		RunConsoleCommand("rp_setmodel", ChosenModel);
+		RunConsoleCommand("rp_changename", firstname:GetValue() .. " " .. lastname:GetValue());
 		LocalPlayer().MyModel = ""
 		RunConsoleCommand("rp_finishcreate");
 		
@@ -651,7 +626,7 @@ function CreatePlayerMenu()
 		end
 		
 		function mdlPanel:OnMousePressed()
-		
+			print("selected character " .. tostring(n))
 			RunConsoleCommand("rp_selectchar", tostring(n));
 			LocalPlayer().MyModel = ""
 			PlayerMenu:Remove();
@@ -666,14 +641,10 @@ function CreatePlayerMenu()
 		end
 		
 		function InitAnim()
-		
-			if(mdlPanel.Entity) then
-			
-				local iSeq = mdlPanel.Entity:LookupSequence( "idle_angry" );
+			if IsValid(mdlPanel.Entity) then
+				local iSeq = mdlPanel.Entity:LookupSequence( "idle_all_angry" );
 				mdlPanel.Entity:ResetSequence(iSeq);
-			
 			end
-			
 		end
 		
 		InitAnim()
@@ -685,11 +656,11 @@ function CreatePlayerMenu()
 	chars:SetSize(250, 100);
 	chars:SetMultiSelect(false)
 	chars:AddColumn(TEXT.CharacterName);
-	
+
 	function chars:DoDoubleClick(LineID, Line)
 		n = LineID
 		mdlPanel:SetModel(ExistingChars[n]['model']);
-		InitAnim();
+		InitAnim()
 	end
 	
 	for k, v in pairs(ExistingChars) do
@@ -899,10 +870,6 @@ function CreatePlayerMenu()
 		local label = vgui.Create( "DLabel" );
 		label:SetText( TEXT.OOCName .. ": " .. v:Name() );
 		DataList2:AddItem( label );
-		
-		local label2 = vgui.Create( "DLabel" );
-		label2:SetText( TEXT.Title .. ": " .. v:GetNWString("title") );
-		DataList2:AddItem( label2 );
 		
 		local label3 = vgui.Create( "DLabel" );
 		label3:SetText( TEXT.Association .. ": " .. team.GetName(v:Team()) );

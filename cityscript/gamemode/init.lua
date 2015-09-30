@@ -444,21 +444,20 @@ function GM:PlayerDeath(ply, weapon, killer)
 	CAKE.DeathMode(ply);
 	CAKE.CallHook("PlayerDeath", ply);
 	CAKE.CallTeamHook("PlayerDeath", ply);
-	
 end
 
 function GM:PlayerDeathThink(ply)
 
 	ply.nextsecond = CAKE.NilFix(ply.nextsecond, CurTime())
-	ply.deathtime = CAKE.NilFix(ply.deathtime, 120);
+	ply.deathtime = CAKE.NilFix(ply.deathtime, 30);
 	
 	if(CurTime() > ply.nextsecond) then
 	
-		if(ply.deathtime < 120) then
+		if(ply.deathtime < 10) then
 		
 			ply.deathtime = ply.deathtime + 1;
 			ply.nextsecond = CurTime() + 1;
-			ply:SetNWInt("deathmoderemaining", 120 - ply.deathtime);
+			ply:SetNWInt("deathmoderemaining", 30 - ply.deathtime);
 			
 		else
 		
@@ -474,11 +473,11 @@ function GM:PlayerDeathThink(ply)
 	
 end
 
-function GM:DoPlayerDeath( ply, attacker, dmginfo )
+--function GM:DoPlayerDeath( ply, attacker, dmginfo )
 
 	-- We don't want kills, deaths, nor ragdolls being made. Kthx. -- O RLY? (philxyz)
 	
-end
+--end
 
 function GM:PlayerUse(ply, entity)
 	if(CAKE.IsDoor(entity)) then

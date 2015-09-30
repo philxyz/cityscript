@@ -40,6 +40,7 @@ function CAKE.DeathMode( ply )
 	
 	ply.deathtime = 0;
 	ply.nextsecond = CurTime( ) + 1;	
+	ply:PrintMessage(HUD_PRINTCENTER, "YOU ARE DYING... SHOUT FOR A MEDIC!");
 end
 
 local meta = FindMetaTable( "Player" );

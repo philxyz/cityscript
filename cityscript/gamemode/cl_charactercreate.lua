@@ -39,17 +39,11 @@ end
 usermessage.Hook( "addmodel", AddModel );
 
 function SetChosenModel( mdl )
-
 	if( table.HasValue( ValidCakeModels, mdl ) ) then	
-	
 		ChosenModel = mdl
-		
 	else
-	
 		LocalPlayer( ):PrintMessage( 3, CAKE.ChosenModel .. TEXT.XisNotAValidModel );
-		
 	end
-	
 end
 
 ExistingChars = {  }

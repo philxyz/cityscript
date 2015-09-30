@@ -14,19 +14,27 @@ function ccSetModel( ply, cmd, args )
 	
 	if( ply:GetDTInt(0) == 1 ) then
 	
-		if( table.HasValue( CAKE.ValidModels, string.lower( mdl ) ) ) then
-			
+		print("searching ValidModels table for " .. string.lower( mdl ) .. " ...")
+
+		local found = false
+		for k, v in pairs(CAKE.ValidModels) do
+			print("checking model " .. v)
+			if v == string.lower( mdl ) then
+				found = true
+				break
+			end
+		end
+
+		if found then
+			print("Model was found")
 			CAKE.CallHook( "CharacterCreation_SetModel", ply, mdl );
 			CAKE.SetCharField(ply, "model", mdl );
 
 		else
-		
+			print("Model was not found for some reason")
 			CAKE.CallHook( "CharacterCreation_SetModel", ply, "models/player/group01/male_01.mdl" );
 			CAKE.SetCharField(ply, "model", "models/player/group01/male_01.mdl" );
-			
 		end
-		
-		
 	end
 	
 	return;
@@ -103,35 +111,24 @@ end
 concommand.Add( "rp_finishcreate", ccFinishCreate );
 
 function ccSelectChar( ply, cmd, args )
-
-	local uid = args[ 1 ];
+	local uid = tonumber(args[ 1 ]);
 	local SteamID = CAKE.FormatSteamID(ply:SteamID());
-	
-	if( CAKE.PlayerData[ SteamID ][ "characters" ][ uid ] != nil ) then
-	
+
+	if ( CAKE.PlayerData[ SteamID ][ "characters" ][ uid ] != nil ) then
 		ply:SetNWString( "uid", uid );
 		CAKE.ResendCharData( ply );
-		
 		ply:SetDTInt(0, 1);
-	
 		ply:SetTeam( 1 );
 		CAKE.CallHook( "CharacterSelect_PostSetTeam", ply, CAKE.PlayerData[ SteamID ][ "characters" ][ uid ] );
-		
 		ply:RefreshInventory( )
 		ply:RefreshBusiness( )
-		
 		ply:ConCommand( "fadein" );
-		
 		ply:Spawn( );
 		
 		CAKE.CallHook( "CharacterSelected", ply, CAKE.PlayerData[ SteamID ][ "characters" ][ uid ] );
-		
 	else
-		
 		return;
-		
 	end
-
 end
 concommand.Add( "rp_selectchar", ccSelectChar );
 
