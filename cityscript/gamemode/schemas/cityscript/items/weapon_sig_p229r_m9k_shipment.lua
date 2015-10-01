@@ -1,0 +1,11 @@
+ITEM.Name = "SIG Sauer P229R (M9K) Shipment";
+ITEM.Class = "weapon_sig_p229r_m9k_shipment";
+ITEM.ContentClass = "m9k_sig_p229r";
+ITEM.ContentModel = "models/weapons/w_sig_229r.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 1.1;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 1650;
+ITEM.ItemGroup = 3;

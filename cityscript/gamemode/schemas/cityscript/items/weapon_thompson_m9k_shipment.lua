@@ -1,0 +1,11 @@
+ITEM.Name = "Tommy Gun (M9K) Shipment";
+ITEM.Class = "weapon_thompson_m9k_shipment";
+ITEM.ContentClass = "m9k_thompson";
+ITEM.ContentModel = "models/weapons/w_tommy_gun.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 2.36;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 3700;
+ITEM.ItemGroup = 3;

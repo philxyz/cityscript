@@ -1,0 +1,11 @@
+ITEM.Name = "H&K USC (M9K) Shipment";
+ITEM.Class = "weapon_usc_m9k_shipment";
+ITEM.ContentClass = "m9k_usc";
+ITEM.ContentModel = "models/weapons/w_hk_usc.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 2.8;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 3700;
+ITEM.ItemGroup = 3;

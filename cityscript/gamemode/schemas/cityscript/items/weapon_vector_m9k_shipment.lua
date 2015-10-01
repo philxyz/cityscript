@@ -1,0 +1,11 @@
+ITEM.Name = "KRISS Vector (M9K) Shipment";
+ITEM.Class = "weapon_vector_m9k_shipment";
+ITEM.ContentClass = "m9k_vector";
+ITEM.ContentModel = "models/weapons/w_kriss_vector.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 2.95;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 3850;
+ITEM.ItemGroup = 3;

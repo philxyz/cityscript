@@ -1,0 +1,11 @@
+ITEM.Name = "UZI (M9K) Shipment";
+ITEM.Class = "weapon_uzi_m9k_shipment";
+ITEM.ContentClass = "m9k_uzi";
+ITEM.ContentModel = "models/weapons/w_uzi_imi.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3.19;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 3250;
+ITEM.ItemGroup = 3;
