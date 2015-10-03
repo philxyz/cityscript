@@ -20,6 +20,9 @@ philxyz 2015
 		- Mad Cow's FOF Weapons (Gun Dealer)
 		- Shuriken SWEP (BM Dealer)
 
+	- Fix ammo inconsistencies when picking up weapons
+		- This is something gmod does but we can improve upon it.
+
 - Items
 	- Fix nuke
 	- Move Nuke stuff to BM Dealer and remove Nuclear Scientist Class
