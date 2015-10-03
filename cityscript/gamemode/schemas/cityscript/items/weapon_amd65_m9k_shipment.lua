@@ -1,4 +1,4 @@
-ITEM.Name = "AMD65 (M9K) Shipment";
+ITEM.Name = "AMD65 (M9K)";
 ITEM.Class = "weapon_amd65_m9k_shipment";
 ITEM.ContentClass = "m9k_amd65";
 ITEM.ContentModel = "models/weapons/w_amd_65.mdl";

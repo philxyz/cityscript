@@ -1,4 +1,4 @@
-ITEM.Name = "S&W Model 3 Russian (M9K) Shipment";
+ITEM.Name = "S&W Model 3 Russian (M9K)";
 ITEM.Class = "weapon_model3russian_m9k_shipment";
 ITEM.ContentClass = "m9k_model3russian";
 ITEM.ContentModel = "models/weapons/w_model_3_rus.mdl";

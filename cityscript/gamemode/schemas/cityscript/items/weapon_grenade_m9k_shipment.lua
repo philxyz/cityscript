@@ -1,4 +1,4 @@
-ITEM.Name = "Frag Grenade (M9K) Shipment";
+ITEM.Name = "Frag Grenade (M9K)";
 ITEM.Class = "weapon_frag_m9k_shipment";
 ITEM.ContentClass = "bb_cssfrag_alt";
 ITEM.ContentModel = "models/weapons/w_eq_fraggrenade_thrown.mdl";

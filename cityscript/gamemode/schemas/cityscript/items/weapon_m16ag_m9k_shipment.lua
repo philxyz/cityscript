@@ -1,4 +1,4 @@
-ITEM.Name = "M16A4 ACOG (M9K) Shipment";
+ITEM.Name = "M16A4 ACOG (M9K)";
 ITEM.Class = "weapon_m16ag_m9k_shipment";
 ITEM.ContentClass = "m9k_m16a4_acog";
 ITEM.ContentModel = "models/weapons/w_dmg_m16ag.mdl";

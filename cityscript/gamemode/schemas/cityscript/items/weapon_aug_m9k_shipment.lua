@@ -1,4 +1,4 @@
-ITEM.Name = "Steyr AUG (M9K) Shipment";
+ITEM.Name = "Steyr AUG (M9K)";
 ITEM.Class = "weapon_aug_m9k_shipment";
 ITEM.ContentClass = "bb_aug_alt";
 ITEM.ContentModel = "models/weapons/3_rif_aug.mdl";

@@ -1,4 +1,4 @@
-ITEM.Name = "P90 (M9K) Shipment";
+ITEM.Name = "P90 (M9K)";
 ITEM.Class = "weapon_p90_m9k_shipment";
 ITEM.ContentClass = "bb_p90_alt";
 ITEM.ContentModel = "models/weapons/3_smg_p90.mdl";

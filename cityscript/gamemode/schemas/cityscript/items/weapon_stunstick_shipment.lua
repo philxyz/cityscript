@@ -1,4 +1,4 @@
-ITEM.Name = "Police Stun Baton Shipment";
+ITEM.Name = "Police Stun Baton";
 ITEM.Class = "weapon_stunstick_shipment";
 ITEM.ContentClass = "weapon_stunstick";
 ITEM.ContentModel = "models/weapons/w_stunbaton.mdl";

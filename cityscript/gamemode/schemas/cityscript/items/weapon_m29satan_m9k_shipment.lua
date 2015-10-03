@@ -1,4 +1,4 @@
-ITEM.Name = "M29 Satan (M9K) Shipment";
+ITEM.Name = "M29 Satan (M9K)";
 ITEM.Class = "weapon_m29satan_m9k_shipment";
 ITEM.ContentClass = "m9k_m29satan";
 ITEM.ContentModel = "models/weapons/w_m29_satan.mdl";

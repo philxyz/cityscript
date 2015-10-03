@@ -1,4 +1,4 @@
-ITEM.Name = "Vally (M9K)";
+ITEM.Name = "AS VAL (M9K)";
 ITEM.Class = "m9k_val";
 ITEM.Description = "Assault Rifle";
 ITEM.Model = "models/weapons/w_dmg_vally.mdl";

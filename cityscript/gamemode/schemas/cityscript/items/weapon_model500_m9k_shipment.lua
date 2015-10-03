@@ -1,4 +1,4 @@
-ITEM.Name = "S&W Model 500 (M9K) Shipment";
+ITEM.Name = "S&W Model 500 (M9K)";
 ITEM.Class = "weapon_model500_m9k_shipment";
 ITEM.ContentClass = "m9k_model500";
 ITEM.ContentModel = "models/weapons/w_sw_model_500.mdl";

@@ -1,4 +1,4 @@
-ITEM.Name = "UMP 45 (M9K) Shipment";
+ITEM.Name = "UMP 45 (M9K)";
 ITEM.Class = "weapon_ump45_m9k_shipment";
 ITEM.ContentClass = "bb_ump45_alt";
 ITEM.ContentModel = "models/weapons/3_smg_ump45.mdl";

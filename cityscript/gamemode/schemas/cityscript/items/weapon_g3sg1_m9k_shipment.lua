@@ -1,4 +1,4 @@
-ITEM.Name = "G3SG1 (M9K) Shipment";
+ITEM.Name = "G3SG1 (M9K)";
 ITEM.Class = "weapon_g3sg1_m9k_shipment";
 ITEM.ContentClass = "bb_g3sg1_alt";
 ITEM.ContentModel = "models/weapons/3_pist_fiveseven.mdl";

@@ -1,4 +1,4 @@
-ITEM.Name = "Colt Python (M9K) Shipment";
+ITEM.Name = "Colt Python (M9K)";
 ITEM.Class = "weapon_coltpython_m9k_shipment";
 ITEM.ContentClass = "m9k_coltpython";
 ITEM.ContentModel = "models/weapons/w_colt_python.mdl";

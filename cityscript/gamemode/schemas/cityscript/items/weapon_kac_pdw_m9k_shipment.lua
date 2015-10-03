@@ -1,4 +1,4 @@
-ITEM.Name = "KAC PDW (M9K) Shipment";
+ITEM.Name = "KAC PDW (M9K)";
 ITEM.Class = "weapon_kac_pdw_m9k_shipment";
 ITEM.ContentClass = "m9k_kac_pdw";
 ITEM.ContentModel = "models/weapons/w_kac_pdw.mdl";

@@ -1,4 +1,4 @@
-ITEM.Name = "Galil (M9K) Shipment";
+ITEM.Name = "Galil (M9K)";
 ITEM.Class = "weapon_galil_m9k_shipment";
 ITEM.ContentClass = "bb_galil_alt";
 ITEM.ContentModel = "models/weapons/3_rif_galil.mdl";

@@ -1,4 +1,4 @@
-ITEM.Name = "AWP (M9K) Shipment";
+ITEM.Name = "AWP (M9K)";
 ITEM.Class = "weapon_awp_m9k_shipment";
 ITEM.ContentClass = "bb_awp_alt";
 ITEM.ContentModel = "models/weapons/3_snip_awp.mdl";

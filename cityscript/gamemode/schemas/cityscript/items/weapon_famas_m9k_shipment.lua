@@ -1,4 +1,4 @@
-ITEM.Name = "Famas (M9K) Shipment";
+ITEM.Name = "Famas (M9K)";
 ITEM.Class = "weapon_famas_m9k_shipment";
 ITEM.ContentClass = "bb_famas_alt";
 ITEM.ContentModel = "models/weapons/3_rif_famas.mdl";

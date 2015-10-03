@@ -1,4 +1,4 @@
-ITEM.Name = "MP5 (M9K) Shipment";
+ITEM.Name = "MP5 (M9K)";
 ITEM.Class = "weapon_mp5_m9k_shipment";
 ITEM.ContentClass = "bb_mp5_alt";
 ITEM.ContentModel = "models/weapons/3_smg_mp5.mdl";

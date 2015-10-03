@@ -1,4 +1,4 @@
-ITEM.Name = "MP9 (M9K) Shipment";
+ITEM.Name = "MP9 (M9K)";
 ITEM.Class = "weapon_mp9_m9k_shipment";
 ITEM.ContentClass = "m9k_mp9";
 ITEM.ContentModel = "models/weapons/w_brugger_thomet_mp9.mdl";

@@ -1,4 +1,4 @@
-ITEM.Name = "Tommy Gun (M9K) Shipment";
+ITEM.Name = "Tommy Gun (M9K)";
 ITEM.Class = "weapon_thompson_m9k_shipment";
 ITEM.ContentClass = "m9k_thompson";
 ITEM.ContentModel = "models/weapons/w_tommy_gun.mdl";

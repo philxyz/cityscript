@@ -1,11 +1,11 @@
-ITEM.Name = "ACR (M9K)";
+ITEM.Name = ".357 Magnum";
 ITEM.Class = "weapon_acr_m9k_shipment";
-ITEM.ContentClass = "m9k_acr";
-ITEM.ContentModel = "models/weapons/w_masada_acr.mdl";
+ITEM.ContentClass = "weapon_357";
+ITEM.ContentModel = "models/weapons/w_357.mdl";
 ITEM.ContentCount = 10;
-ITEM.ContentItemWeight = 3.4;
+ITEM.ContentItemWeight = 0.8;
 ITEM.Description = "10 pack";
 ITEM.Model = "models/items/item_item_crate.mdl";
 ITEM.Purchaseable = true;
-ITEM.Price = 3450;
+ITEM.Price = 3900;
 ITEM.ItemGroup = 3;

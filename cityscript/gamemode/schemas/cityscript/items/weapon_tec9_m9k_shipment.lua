@@ -1,4 +1,4 @@
-ITEM.Name = "TEC-9 (M9K) Shipment";
+ITEM.Name = "TEC-9 (M9K)";
 ITEM.Class = "weapon_sten_m9k_shipment";
 ITEM.ContentClass = "m9k_tec9";
 ITEM.ContentModel = "models/weapons/w_intratec_tec9.mdl";

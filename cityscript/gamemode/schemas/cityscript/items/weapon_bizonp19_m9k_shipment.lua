@@ -1,4 +1,4 @@
-ITEM.Name = "Bizon PP19 (M9K) Shipment";
+ITEM.Name = "Bizon PP19 (M9K)";
 ITEM.Class = "weapon_bizonp19_m9k_shipment";
 ITEM.ContentClass = "m9k_bizonp19";
 ITEM.ContentModel = "models/weapons/w_pp19_bizon.mdl";

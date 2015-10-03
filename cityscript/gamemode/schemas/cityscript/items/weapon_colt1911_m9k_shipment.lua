@@ -1,4 +1,4 @@
-ITEM.Name = "Colt 1911 (M9K) Shipment";
+ITEM.Name = "Colt 1911 (M9K)";
 ITEM.Class = "weapon_colt1911_m9k_shipment";
 ITEM.ContentClass = "m9k_colt1911";
 ITEM.ContentModel = "models/weapons/s_dmgf_co1911.mdl";

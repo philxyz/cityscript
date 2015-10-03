@@ -1,4 +1,4 @@
-ITEM.Name = "Glock 18 (M9K) Shipment";
+ITEM.Name = "Glock 18 (M9K)";
 ITEM.Class = "weapon_glock_m9k_shipment";
 ITEM.ContentClass = "bb_glock_alt";
 ITEM.ContentModel = "models/weapons/3_pist_glock18.mdl";

@@ -1,4 +1,4 @@
-ITEM.Name = "TAR21 (M9K) Shipment";
+ITEM.Name = "TAR21 (M9K)";
 ITEM.Class = "weapon_tar21_m9k_shipment";
 ITEM.ContentClass = "m9k_tar21";
 ITEM.ContentModel = "models/weapons/w_imi_tar21.mdl";

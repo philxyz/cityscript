@@ -1,4 +1,4 @@
-ITEM.Name = "H&K G36C Shipment";
+ITEM.Name = "H&K G36C (M9K)";
 ITEM.Class = "weapon_g36_m9k_shipment";
 ITEM.ContentClass = "m9k_g36";
 ITEM.ContentModel = "models/weapons/w_hk_g36c.mdl";

@@ -1,4 +1,4 @@
-ITEM.Name = "P08 Luger (M9K) Shipment";
+ITEM.Name = "P08 Luger (M9K)";
 ITEM.Class = "weapon_luger_m9k_shipment";
 ITEM.ContentClass = "m9k_luger";
 ITEM.ContentModel = "models/weapons/w_luger_p08.mdl";

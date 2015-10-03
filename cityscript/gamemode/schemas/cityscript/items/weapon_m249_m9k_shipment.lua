@@ -1,4 +1,4 @@
-ITEM.Name = "M249 (M9K) Shipment";
+ITEM.Name = "M249 (M9K)";
 ITEM.Class = "weapon_m249_m9k_shipment";
 ITEM.ContentClass = "bb_m249_alt";
 ITEM.ContentModel = "models/weapons/3_mach_m249para.mdl";

@@ -1,4 +1,4 @@
-ITEM.Name = "L85 Shipment";
+ITEM.Name = "L85 (M9K)";
 ITEM.Class = "weapon_l85_m9k_shipment";
 ITEM.ContentClass = "m9k_l85";
 ITEM.ContentModel = "models/weapons/w_hk_g3.mdl";

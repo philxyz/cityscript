@@ -1,4 +1,4 @@
-ITEM.Name = "SG552 (M9K) Shipment";
+ITEM.Name = "SG552 (M9K)";
 ITEM.Class = "weapon_sg552_m9k_shipment";
 ITEM.ContentClass = "bb_sg552_alt";
 ITEM.ContentModel = "models/weapons/3_rif_sg552.mdl";

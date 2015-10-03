@@ -1,4 +1,4 @@
-ITEM.Name = "Shotgun Shipment";
+ITEM.Name = "Shotgun";
 ITEM.Class = "weapon_pumpshotgun_shipment";
 ITEM.ContentClass = "weapon_pumpshotgun";
 ITEM.ContentModel = "models/weapons/w_shot_m3super90.mdl";

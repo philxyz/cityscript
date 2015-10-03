@@ -1,4 +1,4 @@
-ITEM.Name = "TMP (M9K) Shipment";
+ITEM.Name = "TMP (M9K)";
 ITEM.Class = "weapon_tmp_m9k_shipment";
 ITEM.ContentClass = "bb_tmp_alt";
 ITEM.ContentModel = "models/weapons/3_smg_tmp.mdl";

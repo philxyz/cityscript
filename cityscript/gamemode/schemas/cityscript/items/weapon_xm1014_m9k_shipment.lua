@@ -1,4 +1,4 @@
-ITEM.Name = "XM1014 (M9K) Shipment";
+ITEM.Name = "XM1014 (M9K)";
 ITEM.Class = "weapon_xm1014_m9k_shipment";
 ITEM.ContentClass = "bb_xm1014_alt";
 ITEM.ContentModel = "models/weapons/3_shot_xm1014.mdl";

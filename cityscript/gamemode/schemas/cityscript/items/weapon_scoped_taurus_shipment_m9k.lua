@@ -1,4 +1,4 @@
-ITEM.Name = "Scoped Taurus (M9K) Shipment";
+ITEM.Name = "Scoped Taurus (M9K)";
 ITEM.Class = "weapon_scoped_taurus_m9k_shipment";
 ITEM.ContentClass = "m9k_scoped_taurus";
 ITEM.ContentModel = "models/weapons/w_raging_bull_scoped.mdl";

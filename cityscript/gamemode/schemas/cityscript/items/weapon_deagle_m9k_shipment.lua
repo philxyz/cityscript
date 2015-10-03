@@ -1,4 +1,4 @@
-ITEM.Name = "D.Eagle (M9K) Shipment";
+ITEM.Name = "Deagle (M9K)";
 ITEM.Class = "weapon_deagle_m9k_shipment";
 ITEM.ContentClass = "bb_deagle_alt";
 ITEM.ContentModel = "models/weapons/3_pist_deagle.mdl";

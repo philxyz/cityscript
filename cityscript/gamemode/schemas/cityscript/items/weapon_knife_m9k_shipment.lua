@@ -1,4 +1,4 @@
-ITEM.Name = "Knife (M9K) Shipment";
+ITEM.Name = "Knife (M9K)";
 ITEM.Class = "weapon_bb_knife_m9k_shipment";
 ITEM.ContentClass = "bb_css_knife_alt";
 ITEM.ContentModel = "models/weapons/3_knife_t.mdl";

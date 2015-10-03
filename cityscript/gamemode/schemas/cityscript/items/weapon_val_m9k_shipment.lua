@@ -1,4 +1,4 @@
-ITEM.Name = "Vally (M9K) Shipment";
+ITEM.Name = "AS VAL (M9K)";
 ITEM.Class = "weapon_val_m9k_shipment";
 ITEM.ContentClass = "m9k_tar21";
 ITEM.ContentModel = "models/weapons/w_dmg_vally.mdl";

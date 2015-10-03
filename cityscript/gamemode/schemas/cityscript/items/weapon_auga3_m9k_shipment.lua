@@ -1,4 +1,4 @@
-ITEM.Name = "AUG A3 (M9K) Shipment";
+ITEM.Name = "AUG A3 (M9K)";
 ITEM.Class = "weapon_auga3_m9k_shipment";
 ITEM.ContentClass = "m9k_auga3";
 ITEM.ContentModel = "models/weapons/w_auga3.mdl";

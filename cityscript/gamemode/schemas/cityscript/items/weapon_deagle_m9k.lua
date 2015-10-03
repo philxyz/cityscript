@@ -1,4 +1,4 @@
-ITEM.Name = "D.Eagle (M9K)";
+ITEM.Name = "Deagle (M9K)";
 ITEM.Class = "bb_deagle_alt";
 ITEM.Description = "Pistol";
 ITEM.Model = "models/weapons/3_pist_deagle.mdl";

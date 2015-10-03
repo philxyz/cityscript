@@ -1,4 +1,4 @@
-ITEM.Name = "C4 (M9K) Shipment";
+ITEM.Name = "C4 (M9K)";
 ITEM.Class = "weapon_c4_m9k_shipment";
 ITEM.ContentClass = "bb_planted_alt_c4";
 ITEM.ContentModel = "models/weapons/2_c4_planted.mdl";

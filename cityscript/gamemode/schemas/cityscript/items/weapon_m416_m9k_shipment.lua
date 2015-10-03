@@ -1,4 +1,4 @@
-ITEM.Name = "H&K 416 Shipment";
+ITEM.Name = "H&K 416";
 ITEM.Class = "weapon_m416_m9k_shipment";
 ITEM.ContentClass = "m9k_m416";
 ITEM.ContentModel = "models/weapons/w_hk_416.mdl";

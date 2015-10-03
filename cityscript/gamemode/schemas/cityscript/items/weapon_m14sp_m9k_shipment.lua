@@ -1,4 +1,4 @@
-ITEM.Name = "M14SP Shipment";
+ITEM.Name = "M14SP";
 ITEM.Class = "weapon_m14sp_m9k_shipment";
 ITEM.ContentClass = "m9k_m14sp";
 ITEM.ContentModel = "models/weapons/w_snip_m14sp.mdl";

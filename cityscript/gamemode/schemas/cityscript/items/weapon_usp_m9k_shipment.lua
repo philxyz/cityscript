@@ -1,4 +1,4 @@
-ITEM.Name = "USP (M9K) Shipment";
+ITEM.Name = "USP (M9K)";
 ITEM.Class = "weapon_usp_m9k_shipment";
 ITEM.ContentClass = "bb_usp_alt";
 ITEM.ContentModel = "models/weapons/3_pist_usp.mdl";

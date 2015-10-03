@@ -1,4 +1,4 @@
-ITEM.Name = "SIG Sauer P229R (M9K) Shipment";
+ITEM.Name = "SIG Sauer P229R (M9K)";
 ITEM.Class = "weapon_sig_p229r_m9k_shipment";
 ITEM.ContentClass = "m9k_sig_p229r";
 ITEM.ContentModel = "models/weapons/w_sig_229r.mdl";

@@ -1,4 +1,4 @@
-ITEM.Name = "AN94 (M9K) Shipment";
+ITEM.Name = "AN94 (M9K)";
 ITEM.Class = "weapon_an94_m9k_shipment";
 ITEM.ContentClass = "m9k_an94";
 ITEM.ContentModel = "models/weapons/w_rif_an_94.mdl";

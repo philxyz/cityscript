@@ -1,4 +1,4 @@
-ITEM.Name = "Remington 1858 (M9K) Shipment";
+ITEM.Name = "Remington 1858 (M9K)";
 ITEM.Class = "weapon_remington1858_m9k_shipment";
 ITEM.ContentClass = "m9k_remington1858";
 ITEM.ContentModel = "models/weapons/w_remington_1858.mdl";

@@ -1,4 +1,4 @@
-ITEM.Name = "F2000 (M9K) Shipment";
+ITEM.Name = "F2000 (M9K)";
 ITEM.Class = "weapon_f2000_m9k_shipment";
 ITEM.ContentClass = "m9k_f2000";
 ITEM.ContentModel = "models/weapons/w_fn_f2000.mdl";

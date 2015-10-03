@@ -1,4 +1,4 @@
-ITEM.Name = "KRISS Vector (M9K) Shipment";
+ITEM.Name = "KRISS Vector (M9K)";
 ITEM.Class = "weapon_vector_m9k_shipment";
 ITEM.ContentClass = "m9k_vector";
 ITEM.ContentModel = "models/weapons/w_kriss_vector.mdl";

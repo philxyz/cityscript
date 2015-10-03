@@ -1,4 +1,4 @@
-ITEM.Name = "Smoke Grenade (M9K) Shipment";
+ITEM.Name = "Smoke Grenade (M9K)";
 ITEM.Class = "weapon_smoke_m9k_shipment";
 ITEM.ContentClass = "bb_css_smoke_alt";
 ITEM.ContentModel = "models/weapons/w_eq_smokegrenade_thrown.mdl";

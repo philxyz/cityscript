@@ -1,4 +1,4 @@
-ITEM.Name = "M92 Beretta (M9K) Shipment";
+ITEM.Name = "M92 Beretta (M9K)";
 ITEM.Class = "weapon_m92beretta_m9k_shipment";
 ITEM.ContentClass = "m9k_m92beretta";
 ITEM.ContentModel = "models/weapons/w_beretta_m92.mdl";

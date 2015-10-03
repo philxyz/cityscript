@@ -1,4 +1,4 @@
-ITEM.Name = "FiveSeven (M9K) Shipment";
+ITEM.Name = "FiveSeven (M9K)";
 ITEM.Class = "weapon_fiveseven_m9k_shipment";
 ITEM.ContentClass = "bb_fiveseven_alt";
 ITEM.ContentModel = "models/weapons/3_pist_fiveseven.mdl";

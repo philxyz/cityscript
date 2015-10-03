@@ -1,4 +1,4 @@
-ITEM.Name = "Magpul PDR (M9K) Shipment";
+ITEM.Name = "Magpul PDR (M9K)";
 ITEM.Class = "weapon_magpulpdr_m9k_shipment";
 ITEM.ContentClass = "m9k_magpulpdr";
 ITEM.ContentModel = "models/weapons/w_magpul_pdr.mdl";

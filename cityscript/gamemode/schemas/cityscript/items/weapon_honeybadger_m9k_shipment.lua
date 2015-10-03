@@ -1,4 +1,4 @@
-ITEM.Name = "Honey Badger (M9K) Shipment";
+ITEM.Name = "Honey Badger (M9K)";
 ITEM.Class = "weapon_honeybadger_m9k_shipment";
 ITEM.ContentClass = "m9k_honeybadger";
 ITEM.ContentModel = "models/weapons/w_aac_honeybadger.mdl";

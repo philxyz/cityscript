@@ -1,0 +1,11 @@
+ITEM.Name = "Winch. 97 (M9K)";
+ITEM.Class = "weapon_winch1897_m9k_shipment";
+ITEM.ContentClass = "m9k_1897winchester";
+ITEM.ContentModel = "models/weapons/w_winchester_1897_trench.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 2.8;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 3385;
+ITEM.ItemGroup = 5;

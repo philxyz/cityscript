@@ -1,4 +1,4 @@
-ITEM.Name = "Raging Bull (M9K) Shipment";
+ITEM.Name = "Raging Bull (M9K)";
 ITEM.Class = "weapon_ragingbull_m9k_shipment";
 ITEM.ContentClass = "m9k_ragingbull";
 ITEM.ContentModel = "models/weapons/w_taurus_raging_bull.mdl";

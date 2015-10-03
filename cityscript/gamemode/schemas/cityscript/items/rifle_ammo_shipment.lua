@@ -1,4 +1,4 @@
-ITEM.Name = "Rifle Ammo Shipment";
+ITEM.Name = "Rifle Ammo";
 ITEM.Class = "weapon_rifle_ammo_shipment";
 ITEM.ContentClass = "ammo_rifle"
 ITEM.ContentCount = 10

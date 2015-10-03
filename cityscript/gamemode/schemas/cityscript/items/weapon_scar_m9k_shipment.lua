@@ -1,4 +1,4 @@
-ITEM.Name = "Scar (M9K) Shipment";
+ITEM.Name = "Scar (M9K)";
 ITEM.Class = "weapon_scar_m9k_shipment";
 ITEM.ContentClass = "m9k_scar";
 ITEM.ContentModel = "models/weapons/w_fn_scar_h.mdl";

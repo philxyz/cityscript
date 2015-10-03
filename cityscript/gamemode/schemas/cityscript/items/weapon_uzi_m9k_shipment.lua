@@ -1,4 +1,4 @@
-ITEM.Name = "UZI (M9K) Shipment";
+ITEM.Name = "UZI (M9K)";
 ITEM.Class = "weapon_uzi_m9k_shipment";
 ITEM.ContentClass = "m9k_uzi";
 ITEM.ContentModel = "models/weapons/w_uzi_imi.mdl";

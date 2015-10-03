@@ -1,10 +1,10 @@
-ITEM.Name = "Winch. 73 (M9K)";
-ITEM.Class = "m9k_winchester73";
+ITEM.Name = "Winch. 97 Carbine (M9K)";
+ITEM.Class = "m9k_1897winchester";
 ITEM.Description = "Shotgun";
-ITEM.Model = "models/weapons/w_winchester_1873.mdl";
+ITEM.Model = "models/weapons/w_winchester_1897_trench.mdl";
 ITEM.Purchaseable = true;
-ITEM.Price = 335;
-ITEM.ItemGroup = 3;
+ITEM.Price = 348;
+ITEM.ItemGroup = 5;
 
 function ITEM:Drop(ply)
 	

@@ -1,4 +1,4 @@
-ITEM.Name = "Dual Elites (M9K) Shipment";
+ITEM.Name = "Dual Elites (M9K)";
 ITEM.Class = "weapon_dualelites_m9k_shipment";
 ITEM.ContentClass = "bb_dualelites_alt";
 ITEM.ContentModel = "models/weapons/w_pist_elite.mdl";

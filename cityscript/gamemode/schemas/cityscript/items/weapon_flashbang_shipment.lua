@@ -1,4 +1,4 @@
-ITEM.Name = "Flashbang Shipment";
+ITEM.Name = "Flashbang";
 ITEM.Class = "weapon_flashbang_shipment";
 ITEM.ContentClass = "weapon_flash"
 ITEM.ContentModel = "models/weapons/w_eq_flashbang.mdl";

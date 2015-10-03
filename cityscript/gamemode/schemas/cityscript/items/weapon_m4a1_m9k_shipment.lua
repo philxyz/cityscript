@@ -1,4 +1,4 @@
-ITEM.Name = "M4A1 (M9K) Shipment";
+ITEM.Name = "M4A1 (M9K)";
 ITEM.Class = "weapon_m4a1_m9k_shipment";
 ITEM.ContentClass = "bb_m4a1_alt";
 ITEM.ContentModel = "models/weapons/3_rif_m4a1.mdl";

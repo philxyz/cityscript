@@ -1,4 +1,4 @@
-ITEM.Name = "H&K G3A3 Shipment";
+ITEM.Name = "H&K G3A3";
 ITEM.Class = "weapon_g3a3_m9k_shipment";
 ITEM.ContentClass = "m9k_g3a3";
 ITEM.ContentModel = "models/weapons/w_hk_g3.mdl";

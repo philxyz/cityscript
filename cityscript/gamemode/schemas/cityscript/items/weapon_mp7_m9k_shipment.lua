@@ -1,4 +1,4 @@
-ITEM.Name = "H&K MP7 (M9K) Shipment";
+ITEM.Name = "H&K MP7 (M9K)";
 ITEM.Class = "weapon_mp7_m9k_shipment";
 ITEM.ContentClass = "m9k_mp7";
 ITEM.ContentModel = "models/weapons/w_mp7_silenced.mdl";

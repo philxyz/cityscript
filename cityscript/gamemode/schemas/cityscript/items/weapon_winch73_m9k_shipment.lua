@@ -1,4 +1,4 @@
-ITEM.Name = "Winch. 73 Carbine (M9K) Shipment";
+ITEM.Name = "Winch. 73 (M9K)";
 ITEM.Class = "weapon_winch73_m9k_shipment";
 ITEM.ContentClass = "m9k_winchester73";
 ITEM.ContentModel = "models/weapons/w_winchester_1873.mdl";

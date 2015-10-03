@@ -1,4 +1,4 @@
-ITEM.Name = "Scout (M9K) Shipment";
+ITEM.Name = "Scout (M9K)";
 ITEM.Class = "weapon_scout_m9k_shipment";
 ITEM.ContentClass = "bb_scout_alt";
 ITEM.ContentModel = "models/weapons/3_snip_scout.mdl";

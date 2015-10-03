@@ -1,4 +1,4 @@
-ITEM.Name = "Mac 10 (M9K) Shipment";
+ITEM.Name = "Mac 10 (M9K)";
 ITEM.Class = "weapon_mac10_m9k_shipment";
 ITEM.ContentClass = "bb_mac10_alt";
 ITEM.ContentModel = "models/weapons/3_smg_mac10.mdl";

@@ -1,4 +1,4 @@
-ITEM.Name = "AK47 (M9K) Shipment";
+ITEM.Name = "AK47 (M9K)";
 ITEM.Class = "weapon_ak47_m9k_shipment";
 ITEM.ContentClass = "bb_ak47_alt";
 ITEM.ContentModel = "models/weapons/3_rif_ak47.mdl";

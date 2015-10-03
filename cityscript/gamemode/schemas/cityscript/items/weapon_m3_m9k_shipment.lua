@@ -1,4 +1,4 @@
-ITEM.Name = "M3 Shotgun (M9K) Shipment";
+ITEM.Name = "M3 Shotgun (M9K)";
 ITEM.Class = "weapon_m3_m9k_shipment";
 ITEM.ContentClass = "bb_m3_alt";
 ITEM.ContentModel = "models/weapons/3_shot_m3super90.mdl";
