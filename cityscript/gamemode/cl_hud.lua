@@ -16,6 +16,20 @@ surface.CreateFont( "PlInfoFont", {
 	antialias = true
 })
 
+surface.CreateFont( "PlAmmoFont1", {
+	font = "ChatFont",
+	size = 72,
+	weight = 120,
+	antialias = true
+})
+
+surface.CreateFont( "PlAmmoFont2", {
+        font = "ChatFont",
+        size = 36,
+        weight = 120,
+        antialias = true
+})
+
 local function DrawTime( )
 
 	draw.DrawText( GetGlobalString( "time" ), "PlInfoFont", 10, 10, Color( 255,255,255,255 ), 0 );
@@ -87,7 +101,7 @@ end
 
 function DrawInfoPanel()
 	local hx = 9
-	local hy = ScrH() - 25
+	local hy = ScrH() - 22
 	local hw = 190
 	local hh = 10
 
@@ -214,6 +228,23 @@ function DrawPlayerInfo( )
 	
 end
 
+function DrawAmmoDisplay( )
+	local ply = LocalPlayer()
+	local wep = ply:GetActiveWeapon()
+
+	if IsValid(wep) then
+		local ammoCount = ply:GetAmmoCount(wep:GetPrimaryAmmoType())
+
+		draw.DrawText(tostring(wep:Clip1()), "PlAmmoFont1", ScrW() - 120, ScrH() - 80, Color(255, 255, 255, 240), TEXT_ALIGN_RIGHT)
+		draw.DrawText(tostring(ammoCount), "PlAmmoFont2", ScrW() - 78, ScrH() - 84, Color(255, 255, 255, 240), TEXT_ALIGN_LEFT)
+
+		draw.RoundedBox(0, ScrW() - 102, ScrH() - 80, 8, 60, Color(0, 0, 0, 255))
+
+		local barHeight = math.floor((wep:Clip1() / wep:GetMaxClip1()) * 58)
+		draw.RoundedBox(0, ScrW() - 101, ScrH() - 21 - barHeight, 6, barHeight, Color(255, 255, 255, 240))
+	end
+end
+
 function GM:HUDPaint( )
 
 	local tr = LocalPlayer():GetEyeTrace()
@@ -243,4 +274,5 @@ function GM:HUDPaint( )
 	DrawPlayerInfo( );
 	DrawTargetInfo( );
 	DrawInfoPanel( );
+	DrawAmmoDisplay( );
 end
