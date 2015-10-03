@@ -19,6 +19,10 @@ philxyz 2015
 		- M9K Specialities (BM Dealer)
 		- Mad Cow's FOF Weapons (Gun Dealer)
 		- Shuriken SWEP (BM Dealer)
+
+- Items
+	- Fix nuke
+	- Move Nuke stuff to BM Dealer and remove Nuclear Scientist Class
 	
 - Roleplaying Vehicles Addon (or find another)
 	- [LW]
@@ -32,8 +36,9 @@ philxyz 2015
 		- Make it so that any "non-special-class" player can be chosen when creating a new character.
 		- When a player changes to another team, change the model as appropriate but keep the old one
 		  in case they change that team back again
-		- Persist the team change per character to the character in the list
 
 - Prop protection
 	- If something isn't frozen, anyone can touch it.
 	- Spawned props have a timeout before other players can touch them
+
+- Update help menu to represent current state
