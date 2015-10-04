@@ -23,6 +23,7 @@ util.AddNetworkString( "show_help" );
 
 -- Server Includes
 include( "shared.lua" ); -- Shared Functions
+include( "sv_upp.lua" ); -- Unobtrusive Prop Protection
 include( "log.lua" ); -- Logging functions
 include( "error_handling.lua" ); -- Error handling functions
 include( "util.lua" ); -- Functions
@@ -70,9 +71,11 @@ resource.AddWorkshop("144982052")
 -- Shuriken SWEP
 resource.AddWorkshop("124609721")
 
+-- Nuke
+resource.AddWorkshop("106565409")
+
 
 AntiCopy = {"atm", "storage_box", "sent_nuke_detpack", "sent_nuke_radiation", "item_prop", "token_bundle", "token_printer", "spawned_shipment", "toxic_lab", "toxic", "sent_nuke_part", "sent_nuke", "door_ram", "lockpick", "med_kit", "gmod_tool"}
-NotAllowedToPickup = {}
 
 DB.Init()
 
@@ -598,3 +601,15 @@ function GM:OnNPCKilled(victim, ent, weapon)
 		end
 	end
 end
+
+function PlayerSpawnedProp(ply, model, ent)
+	ent:SetNWString("creator", ply:Name())
+	ent:SetNWEntity("c_ent", ply)
+end
+hook.Add("PlayerSpawnedProp", "SetPropCreatorInfo", PlayerSpawnedProp);
+
+function PlayerSpawnedVehicle(ply, ent)
+	ent:SetNWString("creator", ply:Name())
+	ent:SetNWEntity("c_ent", ply)
+end
+hook.Add("PlayerSpawnedVehicle", "SetVehicleCreatorInfo", PlayerSpawnedVehicle);

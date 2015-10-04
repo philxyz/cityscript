@@ -44,13 +44,6 @@ philxyz 2015
 		- Make it so that any "non-special-class" player can be chosen when creating a new character.
 		- When a player changes to another team, change the model as appropriate but keep the old one
 		  in case they change that team back again
-
-- Prop protection
-	- Players can't unfreeze props that they didn't create
-	- /allow <name> to get around the above
-	- Spawned props have a 3-second timeout before other players can interact with them
-
-	- Can't throw things with grav gun at any time.
-	- physgun disabled on shipments, weapons, anything as listed
+		- Make character selection more obvious
 
 - Update help menu to represent current state
