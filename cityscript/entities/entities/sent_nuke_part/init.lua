@@ -2,16 +2,16 @@ AddCSLuaFile( "cl_init.lua" )
 AddCSLuaFile( "shared.lua" )
 include( 'shared.lua' )
 
-local GoBoom = function(ent,owner)
+local GoBoom = function(ent, fragments)
+	for k, v in pairs(fragments) do
+                v:Remove()
+        end
+
 	local nuke = ents.Create("sent_nuke")
 	nuke:SetPos( ent:GetPos() )
-	nuke:SetOwner(owner)
+	nuke:SetOwner(ent)
 	nuke:Spawn()
 	nuke:Activate()
-	local e = ents.FindByClass("sent_nuke_part")
-	for k, v in pairs(e) do
-		v:Remove()
-	end
 end
 
 function ENT:Initialize()
@@ -42,22 +42,19 @@ end
 function ENT:Think()
 	if self.LastThink and CurTime() > self.LastThink + 5 then return end
 
-	local counter = 0
-	local lowestEntIndex = true
+	local fragments = {}
+	table.insert(fragments, self)
 
-	-- Every 5 seconds, look for 9 other similar props
+	-- Every 5 seconds, look for 9 other nearby fissile material
 	for k, v in pairs(ents.FindInSphere(self:GetPos(), 100)) do
 		if v:GetClass() == "sent_nuke_part" then
-			counter = counter + 1
-			if self:EntIndex() < v:EntIndex() then
-				lowestEntIndex = false
-			end
+			table.insert(fragments, v)
 		end
-		if counter == 10 then break end
+		if #fragments >= 10 then break end
 	end
 
-	if lowestEntIndex and counter >= 10 then
-		GoBoom(self, self)
+	if #fragments >= 10 then
+		GoBoom(self, fragments)
 	end
 
 	if not self.LastThink then self.LastThink = CurTime() end

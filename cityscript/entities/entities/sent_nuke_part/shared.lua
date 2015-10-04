@@ -1,5 +1,5 @@
 ENT.Type 			= "anim"
-ENT.PrintName		= "Partial Nuclear Device"
+ENT.PrintName			= "CAUTION! Fissile Material"
 ENT.Author			= "Teta_Bonita / philxyz"
 
 ENT.Spawnable			= false
