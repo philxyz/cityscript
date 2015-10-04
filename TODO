@@ -28,9 +28,10 @@ philxyz 2015
 
 	- Highlight Business Tiles
 
-- Items
-	- Fix nuke
-	
+- Ability to delete players
+
+	- SQL Backend (SQLite)
+
 - Roleplaying Vehicles Addon (or find another)
 	- [LW]
 	- SGM Cars
