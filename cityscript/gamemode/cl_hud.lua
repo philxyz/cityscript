@@ -7,6 +7,8 @@
 -- General HUD stuff.
 -------------------------------
 
+include("cl_upp.lua");
+
 LocalPlayer().MyModel = "" -- Has to be blank for the initial value, so it will create a spawnicon in the first place.
 
 surface.CreateFont( "PlInfoFont", {
@@ -275,4 +277,5 @@ function GM:HUDPaint( )
 	DrawTargetInfo( );
 	DrawInfoPanel( );
 	DrawAmmoDisplay( );
+	UPP.DrawUI( );
 end
