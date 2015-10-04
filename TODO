@@ -26,6 +26,8 @@ philxyz 2015
 
 	- M9K-Specific Ammo shipments
 
+	- Highlight Business Tiles
+
 - Items
 	- Fix nuke
 	
@@ -43,7 +45,11 @@ philxyz 2015
 		  in case they change that team back again
 
 - Prop protection
-	- If something isn't frozen, anyone can touch it.
-	- Spawned props have a timeout before other players can touch them
+	- Players can't unfreeze props that they didn't create
+	- /allow <name> to get around the above
+	- Spawned props have a 3-second timeout before other players can interact with them
+
+	- Can't throw things with grav gun at any time.
+	- physgun disabled on shipments, weapons, anything as listed
 
 - Update help menu to represent current state
