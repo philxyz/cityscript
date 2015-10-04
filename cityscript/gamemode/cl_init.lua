@@ -29,6 +29,7 @@ surface.CreateFont("ScoreboardText", {
 
 -- Client Includes
 include( "shared.lua" );
+include( "cl_upp.lua" ); -- Unobtrusive Prop Protection
 include( "player_shared.lua" );
 include( "cl_hud.lua" );
 include( "cl_charactercreate.lua" );
