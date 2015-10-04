@@ -243,14 +243,16 @@ end
 function CAKE.GetCharField( ply, fieldname )
 
 	local SteamID = CAKE.FormatSteamID( ply:SteamID() );
+
+	print("GetCharField(ply, " .. tostring(fieldname));
 	
 	-- Check to see if this is a valid field
 	if( fieldname and CAKE.CharacterDataFields[ fieldname ] ) then
-		if CAKE.PlayerData[ SteamID ][ "characters" ][ ply:GetNWString( "uid" ) ] == nil then
-			print("No table into which to index: " .. fieldname .. " obtainable from " .. tostring(ply:GetNWString( "uid" )));
+		if CAKE.PlayerData[ SteamID ][ "characters" ][ tonumber(ply:GetNWString( "uid" )) ] == nil then
+			return ""
+		else
+			return CAKE.NilFix(CAKE.PlayerData[ SteamID ][ "characters" ][ tonumber(ply:GetNWString( "uid" )) ][ fieldname ], "");
 		end
-
-		return CAKE.NilFix(CAKE.PlayerData[ SteamID ][ "characters" ][ ply:GetNWString( "uid" ) ][ fieldname ], "");
 	else
 		return "";
 	end
