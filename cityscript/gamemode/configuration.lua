@@ -39,7 +39,6 @@ CAKE.ConVars[ "GroceryStoreOwnerPcnt" ] = 20
 CAKE.ConVars[ "GunStoreOwnerPcnt" ] = 18
 CAKE.ConVars[ "CarDealershipOwnerPcnt" ] = 18
 CAKE.ConVars[ "BlackMarketDealerPcnt" ] = 16
-CAKE.ConVars[ "NuclearScientistPcnt" ] = 18
 CAKE.ConVars[ "MedicalSpecialistPcnt" ] = 22
 CAKE.ConVars[ "BloodBrothersGangPcnt" ] = 28
 CAKE.ConVars[ "VontoriniGangPcnt" ] = 28

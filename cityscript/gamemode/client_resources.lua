@@ -18,6 +18,7 @@ function AddResource( res_type, path )
 end
 
 -- LUA Files
+AddResource( "lua", "cl_upp.lua" ); -- Unobtrusive Prop Protection
 AddResource( "lua", "language.lua" ); -- Language Text
 AddResource( "lua", "shared.lua" ); -- Shared Functions
 AddResource( "lua", "cl_playermenu.lua"); -- The F1 playermenu

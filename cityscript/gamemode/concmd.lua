@@ -187,8 +187,6 @@ function ccFlag( ply, cmd, args )
 		if CheckLimit(FlagTo.name, CAKE.ConVars[ "CarDealershipOwnerPcnt" ]) then return; end
 	elseif FlagTo.name == TEXT.BlackMarketDealer then
 		if CheckLimit(FlagTo.name, CAKE.ConVars[ "BlackMarketDealerPcnt" ]) then return; end
-	elseif FlagTo.name == TEXT.NuclearScientist then
-		if CheckLimit(FlagTo.name, CAKE.ConVars[ "NuclearScientistPcnt" ]) then return; end
 	elseif FlagTo.name == TEXT.MedicalSpecialist then
 		if CheckLimit(FlagTo.name, CAKE.ConVars[ "MedicalSpecialistPcnt" ]) then return; end
 	elseif FlagTo.name == TEXT.BloodBrothersGangMember then

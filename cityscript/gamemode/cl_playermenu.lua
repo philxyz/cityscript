@@ -1,3 +1,17 @@
+surface.CreateFont( "ItemFont", {
+        font = "ChatFont",
+        size = 12,
+        weight = 180,
+        antialias = true
+})
+
+surface.CreateFont( "ItemFontCash", {
+        font = "ChatFont",
+        size = 14,
+        weight = 200,
+        antialias = true
+})
+
 InventoryTable = {}
 
 function AddItem(data)
@@ -303,9 +317,14 @@ function InitHUDMenu()
 			if FadeSize < 400 then
 				FadeSize = FadeSize + 5
 			end
+			label:SetVisible( true );
+			label4:SetVisible( true );
 		else
 			if FadeSize > 130 then
 				FadeSize = FadeSize - 5
+			else
+				label:SetVisible( false );
+				label4:SetVisible( false );
 			end
 		end
 		
@@ -614,9 +633,9 @@ function CreatePlayerMenu()
 		mdlPanel:SetAmbientLight( Color( 50, 50, 50 ) )
 		mdlPanel:SetDirectionalLight( BOX_TOP, Color( 255, 255, 255 ) )
 		mdlPanel:SetDirectionalLight( BOX_FRONT, Color( 255, 255, 255 ) )
-		mdlPanel:SetCamPos( Vector( 100, 0, 40 ) )
-		mdlPanel:SetLookAt( Vector( 0, 0, 40 ) )
-		mdlPanel:SetFOV( 70 )
+		mdlPanel:SetCamPos( Vector( 150, 0, 0 ) )
+		mdlPanel:SetLookAt( Vector( 0, 0, 0 ) )
+		mdlPanel:SetFOV( 78 )
 
 		mdlPanel.PaintOver = function()
 			surface.SetTextColor(Color(255,255,255,255));
@@ -813,19 +832,28 @@ function CreatePlayerMenu()
 				end
 				
 				spawnicon.PaintOver = function()
-					surface.SetTextColor(Color(255,255,255,255));
-					surface.SetFont("DefaultSmall");
-					surface.SetTextPos(64 - surface.GetTextSize(v.Name .. " (" .. v.Price .. ")") / 2, 5);
-					surface.DrawText(v.Name .. " (" .. v.Price .. ")")
+					surface.SetTextColor(Color(255, 255, 255, 255));
+					surface.SetFont("ItemFont");
+
+					surface.SetTextPos(64 - surface.GetTextSize(v.Name) / 2, 5);
+					surface.DrawText(v.Name)
+
+					surface.SetTextPos(64 - surface.GetTextSize(v.Description) / 2, 17);
+					surface.DrawText(v.Description);
+
+					surface.SetFont("ItemFontCash");
+					local toShow = tostring(v.Price) .. " Tokens"
+					surface.SetTextPos(128 - surface.GetTextSize(toShow) - 2, 115)
+					surface.DrawText(toShow)
 				end
-				
+			--[[	
 				spawnicon.PaintOverHovered = function()
 					surface.SetTextColor(Color(255,255,255,255));
 					surface.SetFont("DefaultSmall");
 					surface.SetTextPos(64 - surface.GetTextSize(v.Name .. " (" .. v.Price .. ")") / 2, 5);
 					surface.DrawText(v.Name .. " (" .. v.Price .. ")")
 				end
-				
+				]]
 				Business:AddItem(spawnicon);
 			end
 		elseif(!TeamTable[LocalPlayer():Team()].business) then
