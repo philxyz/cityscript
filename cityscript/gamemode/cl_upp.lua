@@ -18,8 +18,8 @@ function UPP.DrawUI()
 			surface.SetDrawColor(10, 10, 10, 255)
 			surface.SetFont("ScoreboardText")
 			local wid, hei = surface.GetTextSize(creator)
-			surface.DrawRect(ScrW() - wid - 12, 162, wid + 12, hei+6)
-			draw.DrawText(creator, "ScoreboardText", ScrW() - 2, 165, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
+			surface.DrawRect(ScrW() - wid - 18, 162, wid + 18, hei+6)
+			draw.DrawText(creator, "ScoreboardText", ScrW() - 8, 165, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
 		end
 	end
 end
