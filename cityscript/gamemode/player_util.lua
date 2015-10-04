@@ -114,10 +114,11 @@ function meta:Arrest(time)
 		self:PrintMessage(HUD_PRINTCENTER, TEXT.ArrestMessage(time))
 		for k, v in pairs(player.GetAll()) do
 			if v ~= self then
-				v:PrintMessage(HUD_PRINTCENTER, TEXT.ArrestMessage2(self:Name()))
+				v:PrintMessage(HUD_PRINTCENTER, TEXT.ArrestMessage2(self:Name(), time))
 			end
 		end
-		timer.Create(self:SteamID() .. "jailtimer", time, 1, function() self:Unarrest() end)
+		local s = self
+		timer.Create(self:SteamID() .. "jailtimer", time, 1, function() s:Unarrest() end)
 	end
 end
 

@@ -11,7 +11,6 @@ function SCHEMA.SetUp( )
 	-- Guns: 3
 	-- Cars: 4
 	-- Black Market: 5
-	-- Nuke Components: 6
 	-- Medical Supplies: 7
 	
 	-- Door + Radio + Sound Groups
@@ -31,7 +30,6 @@ function SCHEMA.SetUp( )
 	CAKE.AddTeam( CAKE.CityScriptTeam( TEXT.GunStoreOwner, nil, nil, nil, nil, nil, "gun", nil, nil, nil, { 3 }, 0, true, true, nil) );
 	CAKE.AddTeam( CAKE.CityScriptTeam( TEXT.CarDealershipOwner, nil, nil, nil, nil, nil, "car", nil, nil, nil, { 4 }, 0, true, true, nil) );
 	CAKE.AddTeam( CAKE.CityScriptTeam( TEXT.BlackMarketDealer, nil, nil, nil, nil, nil, "bm", nil, nil, nil, { 5 }, 0, true, true, false) );
-	CAKE.AddTeam( CAKE.CityScriptTeam( TEXT.NuclearScientist, Color( 93, 58, 62, 255 ), "models/kleiner.mdl", true, false, nil, "nuclear", nil, { 7 }, nil, { 6 }, 0, true, true, false) );
 	CAKE.AddTeam( CAKE.CityScriptTeam( TEXT.MedicalSpecialist, nil, nil, nil, nil, nil, "doctor", { 2 }, { 2 }, nil, { 7 }, 0, true, true, nil) ); -- Doctor
 
 	CAKE.AddTeam( CAKE.CityScriptTeam( TEXT.BloodBrothersGangLeader, Color(255, 0, 0, 255), "models/player/group03/", true, true, nil, "bloodldr", { 3 }, { 3 }, { 3 }, { 1 }, 10, true, false, nil) );
