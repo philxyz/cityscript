@@ -59,9 +59,6 @@ resource.AddWorkshop("128089118")
 -- M9K Small Arms Pack
 resource.AddWorkshop("128093075")
 
--- Mad Cow's FOF Weapons
-resource.AddWorkshop("165696777")
-
 -- M9K Heavy Weapons
 resource.AddWorkshop("128091208")
 
