@@ -104,6 +104,7 @@ TEXT.Unemployed = "Unemployed"
 TEXT.Appearance = "Appearance"
 TEXT.SelectModel = "Select Model"
 TEXT.Apply = "Apply" -- (verb)
+TEXT.CreateNewCharacter = "Create New Character"
 TEXT.FirstNameLastNameError = "You must enter a first and last name!"
 TEXT.SelectCharacter = "Select Character"
 TEXT.CharacterName = "Character Name"

@@ -585,7 +585,7 @@ function CreatePlayerMenu()
 
 	local apply = vgui.Create("DButton");
 	apply:SetSize(100, 25);
-	apply:SetText(TEXT.Apply);
+	apply:SetText(TEXT.CreateCharacter);
 	apply.DoClick = function ( btn )
 		if(firstname:GetValue() == "" or lastname:GetValue() == "") then
 			LocalPlayer():PrintMessage(3, TEXT.FirstNameLastNameError);
@@ -633,9 +633,9 @@ function CreatePlayerMenu()
 		mdlPanel:SetAmbientLight( Color( 50, 50, 50 ) )
 		mdlPanel:SetDirectionalLight( BOX_TOP, Color( 255, 255, 255 ) )
 		mdlPanel:SetDirectionalLight( BOX_FRONT, Color( 255, 255, 255 ) )
-		mdlPanel:SetCamPos( Vector( 150, 0, 0 ) )
-		mdlPanel:SetLookAt( Vector( 0, 0, 0 ) )
-		mdlPanel:SetFOV( 78 )
+		mdlPanel:SetCamPos( Vector( 150, 0, 40 ) )
+		mdlPanel:SetLookAt( Vector( 0, 0, 40 ) )
+		mdlPanel:SetFOV( 70 )
 
 		mdlPanel.PaintOver = function()
 			surface.SetTextColor(Color(255,255,255,255));
