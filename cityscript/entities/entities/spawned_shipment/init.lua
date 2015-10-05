@@ -99,6 +99,6 @@ function ENT:Destruct()
 	owner = player.GetByID(owner)
 	
 	for i=1, count, 1 do
-		CAKE.CreateItem(owner, self:GetNWString("contents"), Vector(vPoint.x, vPoint.y, vPoint.z + (i*5)), Angle(0,0,0))
+		CAKE.CreateItem(owner, self:GetNWString("contents"), Vector(vPoint.x, vPoint.y, vPoint.z + (i*10)), Angle(0,0,0))
 	end
 end
