@@ -585,7 +585,7 @@ function CreatePlayerMenu()
 
 	local apply = vgui.Create("DButton");
 	apply:SetSize(100, 25);
-	apply:SetText(TEXT.CreateCharacter);
+	apply:SetText(TEXT.CreateNewCharacter);
 	apply.DoClick = function ( btn )
 		if(firstname:GetValue() == "" or lastname:GetValue() == "") then
 			LocalPlayer():PrintMessage(3, TEXT.FirstNameLastNameError);
@@ -676,10 +676,14 @@ function CreatePlayerMenu()
 	chars:SetMultiSelect(false)
 	chars:AddColumn(TEXT.CharacterName);
 
-	function chars:DoDoubleClick(LineID, Line)
+	function chars:OnRowSelected(Line, Line)
 		n = LineID
 		mdlPanel:SetModel(ExistingChars[n]['model']);
 		InitAnim()
+	end
+
+	function chars:DoDoubleClick(LineID, Line)
+		mdlPanel:OnMousePressed()
 	end
 	
 	for k, v in pairs(ExistingChars) do
