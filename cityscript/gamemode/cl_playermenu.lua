@@ -676,7 +676,7 @@ function CreatePlayerMenu()
 	chars:SetMultiSelect(false)
 	chars:AddColumn(TEXT.CharacterName);
 
-	function chars:OnRowSelected(Line, Line)
+	function chars:OnRowSelected(LineID, Line)
 		n = LineID
 		mdlPanel:SetModel(ExistingChars[n]['model']);
 		InitAnim()
