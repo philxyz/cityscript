@@ -44,4 +44,6 @@ philxyz 2015
 		  in case they change that team back again
 		- Make character selection more obvious
 
+- Replace concmds with net.
+
 - Update help menu to represent current state
