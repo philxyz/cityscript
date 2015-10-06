@@ -1,0 +1,11 @@
+ITEM.Name = "H&K SL8 (M9K)";
+ITEM.Class = "weapon_sl8_m9k_shipment";
+ITEM.ContentClass = "m9k_sl8";
+ITEM.ContentModel = "models/weapons/w_hk_sl8.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3.7;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 3240;
+ITEM.ItemGroup = 5;

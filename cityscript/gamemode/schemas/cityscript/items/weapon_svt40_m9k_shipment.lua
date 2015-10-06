@@ -1,0 +1,11 @@
+ITEM.Name = "SVT 40 (M9K)";
+ITEM.Class = "weapon_svt40_m9k_shipment";
+ITEM.ContentClass = "m9k_svt40";
+ITEM.ContentModel = "models/weapons/w_svt_40.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3.8;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 4475;
+ITEM.ItemGroup = 5;

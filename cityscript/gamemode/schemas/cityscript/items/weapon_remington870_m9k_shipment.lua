@@ -1,0 +1,11 @@
+ITEM.Name = "Remington 870 (M9K)";
+ITEM.Class = "weapon_remington870_m9k_shipment";
+ITEM.ContentClass = "m9k_remington870";
+ITEM.ContentModel = "models/weapons/w_remington_870_tact.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 2.27;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 4830;
+ITEM.ItemGroup = 5;

@@ -1,0 +1,11 @@
+ITEM.Name = "SPAS 12 (M9K)";
+ITEM.Class = "weapon_spas12_m9k_shipment";
+ITEM.ContentClass = "m9k_spas12";
+ITEM.ContentModel = "models/weapons/w_spas_12.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 4.15;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 5350;
+ITEM.ItemGroup = 5;

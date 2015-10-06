@@ -1,0 +1,11 @@
+ITEM.Name = "PKM (M9K)";
+ITEM.Class = "weapon_pkm_m9k_shipment";
+ITEM.ContentClass = "m9k_pkm";
+ITEM.ContentModel = "models/weapons/w_mach_russ_pkm.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 2.2;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 2850;
+ITEM.ItemGroup = 5;

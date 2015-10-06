@@ -1,0 +1,11 @@
+ITEM.Name = "Double Barrel Shotgun (M9K)";
+ITEM.Class = "weapon_dbarrel_m9k_shipment";
+ITEM.ContentClass = "m9k_dbarrel";
+ITEM.ContentModel = "models/weapons/w_browning_auto.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 2.05;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 1600;
+ITEM.ItemGroup = 5;

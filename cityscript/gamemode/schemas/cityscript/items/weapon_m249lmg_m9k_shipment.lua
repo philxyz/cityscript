@@ -1,0 +1,11 @@
+ITEM.Name = "M249 LMG (M9K)";
+ITEM.Class = "weapon_m249lmg_m9k_shipment";
+ITEM.ContentClass = "m9k_m249lmg";
+ITEM.ContentModel = "models/weapons/w_m249_machine_gun.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 3895;
+ITEM.ItemGroup = 5;

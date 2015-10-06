@@ -244,8 +244,6 @@ function CAKE.GetCharField( ply, fieldname )
 
 	local SteamID = CAKE.FormatSteamID( ply:SteamID() );
 
-	print("GetCharField(ply, " .. tostring(fieldname));
-	
 	-- Check to see if this is a valid field
 	if( fieldname and CAKE.CharacterDataFields[ fieldname ] ) then
 		if CAKE.PlayerData[ SteamID ][ "characters" ][ tonumber(ply:GetNWString( "uid" )) ] == nil then

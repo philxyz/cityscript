@@ -1,0 +1,11 @@
+ITEM.Name = "Barret M82 (M9K)";
+ITEM.Class = "weapon_barret_m82_m9k_shipment";
+ITEM.ContentClass = "m9k_barret_m82";
+ITEM.ContentModel = "models/weapons/w_barret_m82.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 2.95;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 6150;
+ITEM.ItemGroup = 5;

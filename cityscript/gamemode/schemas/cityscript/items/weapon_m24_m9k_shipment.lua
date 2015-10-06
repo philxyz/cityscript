@@ -1,0 +1,11 @@
+ITEM.Name = "M24 (M9K)";
+ITEM.Class = "weapon_m24_m9k_shipment";
+ITEM.ContentClass = "m9k_m24";
+ITEM.ContentModel = "models/weapons/w_snip_m24_6.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 3200;
+ITEM.ItemGroup = 5;

@@ -1,0 +1,11 @@
+ITEM.Name = "Ares Shrike (M9K)";
+ITEM.Class = "weapon_ares_shrike_m9k_shipment";
+ITEM.ContentClass = "m9k_ares_shrike";
+ITEM.ContentModel = "models/weapons/w_ares_shrike.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3.5;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 4360;
+ITEM.ItemGroup = 5;

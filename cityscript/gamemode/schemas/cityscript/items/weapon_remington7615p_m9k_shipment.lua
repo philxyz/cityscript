@@ -1,0 +1,11 @@
+ITEM.Name = "Remington 7615P (M9K)";
+ITEM.Class = "weapon_remington7615p_m9k_shipment";
+ITEM.ContentClass = "m9k_remington7615p";
+ITEM.ContentModel = "models/weapons/w_remington_7615p.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3.64;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 6650;
+ITEM.ItemGroup = 5;

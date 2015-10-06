@@ -1,0 +1,11 @@
+ITEM.Name = "SVD Dragunov (M9K)";
+ITEM.Class = "weapon_dragunov_m9k_shipment";
+ITEM.ContentClass = "m9k_dragunov";
+ITEM.ContentModel = "models/weapons/w_svd_dragunov.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 2.18;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 6500;
+ITEM.ItemGroup = 5;

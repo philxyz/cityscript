@@ -1,0 +1,11 @@
+ITEM.Name = "Browning Auto 5 (M9K)";
+ITEM.Class = "weapon_browning_auto_5_m9k_shipment";
+ITEM.ContentClass = "m9k_browningauto5";
+ITEM.ContentModel = "models/weapons/w_browning_auto.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 1.9;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 3900;
+ITEM.ItemGroup = 5;

@@ -1,0 +1,11 @@
+ITEM.Name = "Thompson Contender G2 (M9K)";
+ITEM.Class = "weapon_contender_m9k_shipment";
+ITEM.ContentClass = "m9k_contender";
+ITEM.ContentModel = "models/weapons/w_browning_auto.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3.24;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 4800;
+ITEM.ItemGroup = 5;

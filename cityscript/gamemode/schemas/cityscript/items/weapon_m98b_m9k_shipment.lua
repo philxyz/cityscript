@@ -1,0 +1,11 @@
+ITEM.Name = "Barret M98B (M9K)";
+ITEM.Class = "weapon_m98b_m9k_shipment";
+ITEM.ContentClass = "m9k_m98b";
+ITEM.ContentModel = "models/weapons/w_barrett_m98b.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 5.4;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 6700;
+ITEM.ItemGroup = 5;
