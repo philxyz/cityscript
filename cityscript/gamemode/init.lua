@@ -65,9 +65,6 @@ resource.AddWorkshop("128091208")
 -- M9K Specialities
 resource.AddWorkshop("144982052")
 
--- Shuriken SWEP
-resource.AddWorkshop("124609721")
-
 -- Nuke
 resource.AddWorkshop("106565409")
 
