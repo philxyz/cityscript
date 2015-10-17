@@ -1,10 +1,10 @@
-ITEM.Name = "Rifle Ammo";
-ITEM.Class = "weapon_rifle_ammo_shipment";
-ITEM.ContentClass = "ammo_rifle"
+ITEM.Name = "Sniper Ammo (M9K)";
+ITEM.Class = "weapon_sniper_rounds_ammo_m9k_shipment";
+ITEM.ContentClass = "m9k_ammo_sniper_rounds"
 ITEM.ContentCount = 10
 ITEM.ContentItemWeight = 0.32
 ITEM.Description = "10 pack";
 ITEM.Model = "models/items/item_item_crate.mdl";
 ITEM.Purchaseable = true;
-ITEM.Price = 350;
+ITEM.Price = 905;
 ITEM.ItemGroup = 3;

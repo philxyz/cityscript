@@ -1,0 +1,10 @@
+ITEM.Name = ".357 Ammo (M9K)";
+ITEM.Class = "weapon_357_ammo_m9k_shipment";
+ITEM.ContentClass = "m9k_ammo_357"
+ITEM.ContentCount = 10
+ITEM.ContentItemWeight = 0.16
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 500;
+ITEM.ItemGroup = 3;
