@@ -1,0 +1,11 @@
+ITEM.Name = "Sticky Grenade (M9K)";
+ITEM.Class = "weapon_sticky_grenade_m9k_shipment";
+ITEM.ContentClass = "m9k_sticky_grenade";
+ITEM.ContentModel = "models/weapons/w_sticky_grenade.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 1;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 3270;
+ITEM.ItemGroup = 5;

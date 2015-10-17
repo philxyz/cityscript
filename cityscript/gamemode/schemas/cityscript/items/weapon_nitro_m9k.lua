@@ -1,9 +1,9 @@
-ITEM.Name = "M134 Minigun (M9K)";
-ITEM.Class = "m9k_minigun";
-ITEM.Description = "Machine Gun";
-ITEM.Model = "models/weapons/w_m134_minigun.mdl";
+ITEM.Name = "Nitroglycerin (M9K)";
+ITEM.Class = "m9k_nitro";
+ITEM.Description = "Explosives";
+ITEM.Model = "models/weapons/w_nitro.mdl";
 ITEM.Purchaseable = true;
-ITEM.Price = 410;
+ITEM.Price = 2310;
 ITEM.ItemGroup = 5;
 
 function ITEM:Drop(ply)

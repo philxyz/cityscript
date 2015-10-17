@@ -16,7 +16,7 @@ philxyz 2015
 		+ M9K Assault Rifles
 		+ M9K Small Arms Pack
 		+ M9K Heavy Weapons (BM Dealer)
-		- M9K Specialities (BM Dealer)
+		+ M9K Specialities (BM Dealer)
 
 	- Fix ammo inconsistencies when picking up weapons
 		- This is something gmod does but we can improve upon it.

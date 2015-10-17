@@ -1,0 +1,11 @@
+ITEM.Name = "Milkor Mk1 (M9K)";
+ITEM.Class = "weapon_milkor_m9k_shipment";
+ITEM.ContentClass = "m9k_milkormgl";
+ITEM.ContentModel = "models/weapons/w_milkor_mgl1.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3.45;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 8510;
+ITEM.ItemGroup = 5;

@@ -1,0 +1,11 @@
+ITEM.Name = "Damascus (M9K)";
+ITEM.Class = "weapon_damascus_m9k_shipment";
+ITEM.ContentClass = "m9k_damascus";
+ITEM.ContentModel = "models/weapons/w_damascus_sword.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 2.3;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 7100;
+ITEM.ItemGroup = 5;

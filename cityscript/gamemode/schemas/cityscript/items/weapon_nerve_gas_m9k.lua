@@ -1,9 +1,9 @@
-ITEM.Name = "M134 Minigun (M9K)";
-ITEM.Class = "m9k_minigun";
-ITEM.Description = "Machine Gun";
-ITEM.Model = "models/weapons/w_m134_minigun.mdl";
+ITEM.Name = "Sarin Gas (M9K)";
+ITEM.Class = "m9k_nerve_gas";
+ITEM.Description = "Chemical";
+ITEM.Model = "models/weapons/w_grenade.mdl";
 ITEM.Purchaseable = true;
-ITEM.Price = 410;
+ITEM.Price = 1950;
 ITEM.ItemGroup = 5;
 
 function ITEM:Drop(ply)

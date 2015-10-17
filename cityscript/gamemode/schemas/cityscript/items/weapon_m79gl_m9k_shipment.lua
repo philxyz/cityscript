@@ -1,0 +1,11 @@
+ITEM.Name = "M79 GL (M9K)";
+ITEM.Class = "weapon_m79_gl_m9k_shipment";
+ITEM.ContentClass = "m9k_m79gl";
+ITEM.ContentModel = "models/weapons/w_m79_grenadelauncher.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 3.95;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 5750;
+ITEM.ItemGroup = 5;

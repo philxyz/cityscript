@@ -4,7 +4,7 @@ ITEM.Description = "Shotgun";
 ITEM.Model = "models/weapons/w_remington_870_tact.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 496;
-ITEM.ItemGroup = 6;
+ITEM.ItemGroup = 5;
 
 function ITEM:Drop(ply)
 	

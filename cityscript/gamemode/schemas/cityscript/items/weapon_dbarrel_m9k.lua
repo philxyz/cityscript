@@ -4,7 +4,7 @@ ITEM.Description = "Shotgun";
 ITEM.Model = "models/weapons/w_double_barrel_shotgun.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 180;
-ITEM.ItemGroup = 6;
+ITEM.ItemGroup = 5;
 
 function ITEM:Drop(ply)
 	

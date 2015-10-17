@@ -1,9 +1,9 @@
-ITEM.Name = "M134 Minigun (M9K)";
-ITEM.Class = "m9k_minigun";
-ITEM.Description = "Machine Gun";
-ITEM.Model = "models/weapons/w_m134_minigun.mdl";
+ITEM.Name = "Sticky Grenade (M9K)";
+ITEM.Class = "m9k_sticky_grenade";
+ITEM.Description = "Grenade";
+ITEM.Model = "models/weapons/w_sticky_grenade.mdl";
 ITEM.Purchaseable = true;
-ITEM.Price = 410;
+ITEM.Price = 355;
 ITEM.ItemGroup = 5;
 
 function ITEM:Drop(ply)

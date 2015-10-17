@@ -4,7 +4,7 @@ ITEM.Description = "Sniper Rifle";
 ITEM.Model = "models/weapons/w_hk_sl8.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 330;
-ITEM.ItemGroup = 6;
+ITEM.ItemGroup = 5;
 
 function ITEM:Drop(ply)
 	

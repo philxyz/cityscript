@@ -1,0 +1,11 @@
+ITEM.Name = "Sarin Gas (M9K)";
+ITEM.Class = "weapon_nerve_gas_m9k_shipment";
+ITEM.ContentClass = "m9k_nerve_gas";
+ITEM.ContentModel = "models/weapons/w_grenade.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 0.45;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 18500;
+ITEM.ItemGroup = 5;

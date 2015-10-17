@@ -4,7 +4,7 @@ ITEM.Description = "Machine Gun";
 ITEM.Model = "models/weapons/w_ares_shrike.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 460;
-ITEM.ItemGroup = 6;
+ITEM.ItemGroup = 5;
 
 function ITEM:Drop(ply)
 	

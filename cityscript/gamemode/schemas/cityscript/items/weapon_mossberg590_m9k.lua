@@ -4,7 +4,7 @@ ITEM.Description = "Shotgun";
 ITEM.Model = "models/weapons/w_mossberg_590.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 446;
-ITEM.ItemGroup = 6;
+ITEM.ItemGroup = 5;
 
 function ITEM:Drop(ply)
 	

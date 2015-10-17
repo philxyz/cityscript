@@ -1,0 +1,11 @@
+ITEM.Name = "Machete (M9K)";
+ITEM.Class = "weapon_machete_m9k_shipment";
+ITEM.ContentClass = "m9k_machete";
+ITEM.ContentModel = "models/weapons/w_fc2_machete.mdl";
+ITEM.ContentCount = 10;
+ITEM.ContentItemWeight = 2.72;
+ITEM.Description = "10 pack";
+ITEM.Model = "models/items/item_item_crate.mdl";
+ITEM.Purchaseable = true;
+ITEM.Price = 4420;
+ITEM.ItemGroup = 5;

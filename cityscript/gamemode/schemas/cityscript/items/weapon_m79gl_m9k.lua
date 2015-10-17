@@ -1,9 +1,9 @@
-ITEM.Name = "M134 Minigun (M9K)";
-ITEM.Class = "m9k_minigun";
-ITEM.Description = "Machine Gun";
-ITEM.Model = "models/weapons/w_m134_minigun.mdl";
+ITEM.Name = "M79 GL (M9K)";
+ITEM.Class = "m9k_m79gl";
+ITEM.Description = "Grenade Launcher";
+ITEM.Model = "models/weapons/w_m79_grenadelauncher.mdl";
 ITEM.Purchaseable = true;
-ITEM.Price = 410;
+ITEM.Price = 595;
 ITEM.ItemGroup = 5;
 
 function ITEM:Drop(ply)

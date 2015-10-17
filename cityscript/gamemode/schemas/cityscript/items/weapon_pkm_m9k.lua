@@ -4,7 +4,7 @@ ITEM.Description = "Machine Gun";
 ITEM.Model = "models/weapons/w_mach_russ_pkm.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 295;
-ITEM.ItemGroup = 6;
+ITEM.ItemGroup = 5;
 
 function ITEM:Drop(ply)
 	

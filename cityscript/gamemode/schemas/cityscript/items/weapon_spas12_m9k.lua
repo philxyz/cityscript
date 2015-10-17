@@ -4,7 +4,7 @@ ITEM.Description = "12-bore Shotgun";
 ITEM.Model = "models/weapons/w_spas_12.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 545;
-ITEM.ItemGroup = 6;
+ITEM.ItemGroup = 5;
 
 function ITEM:Drop(ply)
 	
