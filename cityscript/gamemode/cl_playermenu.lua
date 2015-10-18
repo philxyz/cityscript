@@ -790,6 +790,11 @@ function CreatePlayerMenu()
 			ContextMenu:Open();
 			
 		end
+
+		spawnicon.Paint = function()
+			surface.SetDrawColor(Color(76, 76, 77, 255));
+			surface.DrawRect(0, 0, 128, 128);
+		end
 		
 		spawnicon.PaintOver = function()
 			surface.SetTextColor(Color(255,255,255,255));
@@ -802,7 +807,7 @@ function CreatePlayerMenu()
 			surface.SetTextColor(Color(255,255,255,255));
 			surface.SetFont("DefaultSmall");
 			surface.SetTextPos(64 - surface.GetTextSize(v.Name) / 2, 5);
-			surface.DrawText(v.Name)
+			surface.DrawText(v.Name .. " test")
 		end
 		
 		Inventory:AddItem(spawnicon);
@@ -828,6 +833,7 @@ function CreatePlayerMenu()
 					itemView:SetLookAt( Vector(0, 0, 0) );
 					itemView:SetCamPos( Vector(-20, 0, 0) );
 					itemView:SetAnimSpeed( 8 );
+					itemView:SetToolTip(v.Description);
 				end
 				
 				spawnicon.DoClick = function ( btn )
@@ -845,8 +851,13 @@ function CreatePlayerMenu()
 				if itemView then
 					itemView.DoClick = spawnicon.DoClick
 				end
+
+				spawnicon.Paint = function()
+					surface.SetDrawColor(Color(76, 76, 77, 255));
+					surface.DrawRect(0, 0, 128, 128);
+				end
 				
-				spawnicon.PaintOver = function()
+				spawnicon.PaintOver = function(self)
 					surface.SetTextColor(Color(255, 255, 255, 255));
 					surface.SetFont("ItemFont");
 
@@ -861,14 +872,7 @@ function CreatePlayerMenu()
 					surface.SetTextPos(128 - surface.GetTextSize(toShow) - 2, 115)
 					surface.DrawText(toShow)
 				end
-			--[[	
-				spawnicon.PaintOverHovered = function()
-					surface.SetTextColor(Color(255,255,255,255));
-					surface.SetFont("DefaultSmall");
-					surface.SetTextPos(64 - surface.GetTextSize(v.Name .. " (" .. v.Price .. ")") / 2, 5);
-					surface.DrawText(v.Name .. " (" .. v.Price .. ")")
-				end
-				]]
+
 				Business:AddItem(spawnicon);
 			end
 		elseif(!TeamTable[LocalPlayer():Team()].business) then
