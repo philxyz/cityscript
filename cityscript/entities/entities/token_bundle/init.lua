@@ -4,12 +4,15 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 function ENT:Initialize()
-	self:SetModel("models/props/cs_assault/money.mdl")
+	self:SetModel("models/token_banknote.mdl")
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:SetSolid(SOLID_VPHYSICS)
 	local phys = self:GetPhysicsObject()
-	if phys and phys:IsValid() then phys:Wake() end
+
+	if phys and phys:IsValid() then
+		phys:Wake()
+	end
 
 	self:GetTable().MoneyBag = true
 	self:GetTable().Amount = 0
