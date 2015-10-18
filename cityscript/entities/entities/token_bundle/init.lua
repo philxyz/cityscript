@@ -15,7 +15,7 @@ function ENT:Initialize()
 	end
 
 	self:GetTable().MoneyBag = true
-	self:GetTable().Amount = 0
+	self:Setamount(0)
 end
 
 function ENT:Pickup(ply)
@@ -23,13 +23,9 @@ function ENT:Pickup(ply)
 	return false
 end
 
-function ENT:SetValue(value)
-	self:GetTable().Amount = value
-end
-
 function ENT:UseItem(ply)
-	CAKE.ChangeMoney( ply,  self:GetTable().Amount);
-	ply:ConCommand("say " .. TEXT.MePocketsABundleOfTokens);
+	CAKE.ChangeMoney( ply,  self:Getamount());
+	ply:ConCommand("say " .. TEXT.MePocketsABundleOfTokens(self:Getamount()));
 	self:Remove();
 end
 

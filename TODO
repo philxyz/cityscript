@@ -10,7 +10,6 @@ at any one moment.
 philxyz 2015
 ================================================================================
 
-- New token bundle model with 2d3d amount tag
 - Replace concmds with net.
 - Prop buddy system
 - SQL Backend (SQLite)

@@ -79,7 +79,7 @@ function ENT:CreateMoneybag()
 	local moneybag = ents.Create("token_bundle")
 	moneybag:SetPos(Vector(MoneyPos.x + 15, MoneyPos.y, MoneyPos.z + 15))
 	moneybag:Spawn()
-	moneybag:SetValue(250)
+	moneybag:Setamount(250)
 
 	self.dt.sparking = false
 	timer.Simple(math.random(40, 350), function() self:PrintMore() end) -- Print more cash in 40 to 350 seconds

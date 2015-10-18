@@ -328,7 +328,7 @@ function SpewMoney(amount, pos)
 			local moneybag = ents.Create("token_bundle")
 			moneybag:SetPos(pos)
 			moneybag:Spawn()
-			moneybag:SetValue(500)
+			moneybag:Setamount(500)
 		end
 	end
 	amount = amount - (mod500 * 500)
@@ -340,7 +340,7 @@ function SpewMoney(amount, pos)
 			local moneybag = ents.Create("token_bundle")
 			moneybag:SetPos(pos)
 			moneybag:Spawn()
-			moneybag:SetValue(100)
+			moneybag:Setamount(100)
 		end
 	end
 	amount = amount - (mod100 * 100)
@@ -352,7 +352,7 @@ function SpewMoney(amount, pos)
 			local moneybag = ents.Create("token_bundle")
 			moneybag:SetPos(pos)
 			moneybag:Spawn()
-			moneybag:SetValue(50)
+			moneybag:Setamount(50)
 		end
 	end
 	amount = amount - (mod50 * 50)
@@ -364,7 +364,7 @@ function SpewMoney(amount, pos)
 			local moneybag = ents.Create("token_bundle")
 			moneybag:SetPos(pos)
 			moneybag:Spawn()
-			moneybag:SetValue(20)
+			moneybag:Setamount(20)
 		end
 	end
 	amount = amount - (mod20 * 20)
@@ -376,7 +376,7 @@ function SpewMoney(amount, pos)
 			local moneybag = ents.Create("token_bundle")
 			moneybag:SetPos(pos)
 			moneybag:Spawn()
-			moneybag:SetValue(10)
+			moneybag:Setamount(10)
 		end
 	end
 	amount = amount - (mod10 * 10)
@@ -388,7 +388,7 @@ function SpewMoney(amount, pos)
 			local moneybag = ents.Create("token_bundle")
 			moneybag:SetPos(pos)
 			moneybag:Spawn()
-			moneybag:SetValue(5)
+			moneybag:Setamount(5)
 		end
 	end
 	amount = amount - (mod5 * 5)
@@ -399,7 +399,7 @@ function SpewMoney(amount, pos)
 			local moneybag = ents.Create("token_bundle")
 			moneybag:SetPos(pos)
 			moneybag:Spawn()
-			moneybag:SetValue(1)
+			moneybag:Setamount(1)
 		end
 	end
 end
