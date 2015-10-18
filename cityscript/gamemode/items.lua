@@ -12,7 +12,7 @@ function CAKE.LoadItem( schema, filename )
 	
 end
 
-function CAKE.CreateItem( ply, class, pos, ang )
+function CAKE.CreateItem( ply, class, pos, ang, fromBackpack )
 
 	if( CAKE.ItemData[ class ] == nil ) then return; end
 	
@@ -31,6 +31,25 @@ function CAKE.CreateItem( ply, class, pos, ang )
 		item:SetNWString( "Owner", "Shared" ); -- Do this explicitly for vehicles
 	else
 		item = ents.Create( itemtable.Sent or "item_prop" );
+	end
+
+	local wepTable = weapons.GetStored( itemtable.Class )
+	if not wepTable then
+		wepTable = scripted_ents.GetStored( itemtable.Class )
+		if wepTable then
+			wepTable = wepTable.t or scripted_ents.Get( itemtable.Class )
+		end
+	end
+
+	if wepTable == nil then
+		print("wepTable is nil for class " .. tostring(itemtable.Class))
+	else
+		print("wepTable is present for class " .. tostring(itemtable.Class))
+		item:SetNWInt("Clip1A", (fromBackpack and 0) or wepTable.Primary.DefaultClip or 0)
+		item:SetNWInt("PAmmoType", game.GetAmmoID(wepTable.Primary.Ammo or 0) or "")
+
+		item:SetNWInt("Clip2A", (fromBackpack and 0) or wepTable.Secondary.DefaultClip or 0)
+		item:SetNWInt("SAmmoType", game.GetAmmoID(wepTable.Secondary.Ammo or 0) or "")
 	end
 
 	if item:GetClass() == "storage_box" then item.ply = ply end
@@ -54,6 +73,8 @@ function CAKE.CreateItem( ply, class, pos, ang )
 	if itemtable.VehicleExtras then
 		item:Fire("setbodygroup", itemtable.VehicleExtras)
 	end
+
+	return item
 end
 
 function ccCreateItem( ply, cmd, args )
@@ -73,7 +94,7 @@ function ccDropItem( ply, cmd, args )
 	local inv = CAKE.GetCharField( ply, "inventory" );
 	for k, v in pairs( inv ) do
 		if( v == args[ 1 ] ) then
-			CAKE.CreateItem( ply, args[ 1 ], ply:CalcDrop( ), Angle(0,0,0) );
+			CAKE.CreateItem( ply, args[ 1 ], ply:CalcDrop( ), Angle(0,0,0), true );
 			ply:TakeItem( args[ 1 ] );
 			return;
 		end

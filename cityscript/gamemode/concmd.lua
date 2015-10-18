@@ -441,6 +441,8 @@ function ccPickupItem( ply, cmd, args )
 		item:GetPos( ):Distance( ply:GetShootPos( ) ) < 100 ) then
 
 		if item:Pickup(ply) ~= false then
+			ply:GiveAmmo(item:GetNWInt("Clip1A"), game.GetAmmoName(item:GetNWInt("PAmmoType")))
+			ply:GiveAmmo(item:GetNWInt("Clip2A"), game.GetAmmoName(item:GetNWInt("SAmmoType")))
 			if item:GetClass() == "spawned_weapon" then
 				ply:GiveItem( item.class );
 			else
@@ -464,6 +466,24 @@ function ccUseItem( ply, cmd, args )
 
 end
 concommand.Add( "rp_useitem", ccUseItem );
+
+function ccTakeAmmo(ply, cmd, args)
+	local item = ents.GetByIndex(tonumber(args[ 1 ]))
+
+	if item ~= nil and IsValid(item) and (not CAKE.IsDoor(item) and not item:IsVehicle() and not item:IsPlayer() and not item:IsNPC()) and item.UseItem and item:GetPos():Distance(ply:GetShootPos()) < 100 then
+
+		print("giving ammo...")
+		print(tostring(item:GetNWInt("Clip1A")) .. " units of " .. tostring(game.GetAmmoName(item:GetNWInt("PAmmoType") or 0) or ""))
+		print(tostring(item:GetNWInt("Clip2A")) .. " units of " .. tostring(game.GetAmmoName(item:GetNWInt("SAmmoType") or 0) or ""))
+
+		ply:GiveAmmo(item:GetNWInt("Clip1A"), tostring(game.GetAmmoName(item:GetNWInt("PAmmoType") or 0) or ""))
+		item:SetNWInt("Clip1A", 0)
+
+		ply:GiveAmmo(item:GetNWInt("Clip2A"), tostring(game.GetAmmoName(item:GetNWInt("SAmmoType") or 0) or ""))
+		item:SetNWInt("Clip2A", 0)
+	end
+end
+concommand.Add( "rp_takeammo", ccTakeAmmo );
 
 function ccSetMoney(ply, cmd, args)
 	if not args[1] or not tonumber(args[2]) or not math.IsFinite(tonumber(args[2])) or not ply:IsSuperAdmin() then

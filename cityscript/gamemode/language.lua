@@ -57,6 +57,7 @@ TEXT.Ban = "Ban" -- (verb)
 TEXT.Reason = "Reason"
 TEXT.ReasonForBanningName = function(name) return "Reason for banning " .. name end
 TEXT.UseItem = "Use Item"
+TEXT.TakeAmmo = "Take Ammo"
 TEXT.PlaceInBackpack = "Place in Backpack"
 TEXT.SelectModel = "Select Model"
 TEXT.Rotate = "Rotate"

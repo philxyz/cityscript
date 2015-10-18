@@ -11,9 +11,6 @@ philxyz 2015
 ================================================================================
 
 - Other Weapon Packs
-	- Fix ammo inconsistencies when picking up weapons
-		- This is something gmod does but we can improve upon it.
-
 	- Highlight Business Tiles
 
 - Ability to delete players
