@@ -97,8 +97,23 @@ function ENT:Destruct()
 
 	local owner = self.dt.ownIndex
 	owner = player.GetByID(owner)
-	
-	for i=1, count, 1 do
-		CAKE.CreateItem(owner, self:GetNWString("contents"), Vector(vPoint.x, vPoint.y, vPoint.z + (i*10)), Angle(0,0,0))
+
+	-- Lay out the items in a grid above the box.
+
+	local vspacing = 12
+	local hspacing = 8
+
+	for i=1, count do
+		local horizPos = math.mod(i, 3)
+		local y = 0
+		if horizPos == 2 then
+			y = -1
+		elseif horizPos == 0 then
+			y = 1
+		end
+
+		local z = math.ceil(i / 3)
+
+		CAKE.CreateItem(owner, self:GetNWString("contents"), Vector(vPoint.x, vPoint.y + (y * hspacing), vPoint.z + (z * vspacing)), Angle(0,0,0))
 	end
 end
