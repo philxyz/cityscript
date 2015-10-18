@@ -10,29 +10,21 @@ at any one moment.
 philxyz 2015
 ================================================================================
 
-- Other Weapon Packs
-	- Highlight Business Tiles
-
+- New token bundle model with 2d3d amount tag
+- Replace concmds with net.
 - Prop buddy system
-
+- SQL Backend (SQLite)
 - Ability to delete players
-
-	- SQL Backend (SQLite)
-
 - Roleplaying Vehicles Addon (or find another)
 	- [LW]
 	- SGM Cars
 	- TDM Cars
 	- SCars Slim, SCars Basic, and SCars Extra
 
-- New token bundle model
-
 - Fix character selection.
 		- Make it so that any "non-special-class" player can be chosen when creating a new character.
 		- When a player changes to another team, change the model as appropriate but keep the old one
 		  in case they change that team back again
 		- Make character selection more obvious
-
-- Replace concmds with net.
 
 - Update help menu to represent current state
