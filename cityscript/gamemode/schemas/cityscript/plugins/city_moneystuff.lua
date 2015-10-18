@@ -57,7 +57,7 @@ local function DropTokens(ply, args)
 	local moneybag = ents.Create("token_bundle")
 	moneybag:SetPos(tr.HitPos)
 	moneybag:Spawn()
-	moneybag:GetTable().Amount = amount
+	moneybag:Setamount(amount)
 
 	return ""
 end
@@ -144,7 +144,7 @@ local function WithdrawTokens(ply, args)
 				tb:SetPos(trace.Entity:GetPos() + (trace.Entity:GetForward() * 10))
 				tb:SetNWString("Owner", "Shared")
 				tb:Spawn()
-				tb:GetTable().Amount = money
+				tb:Setamount(money)
 				CAKE.Response(ply, TEXT.ConfirmWithdrawal(money))
 			end
 		end

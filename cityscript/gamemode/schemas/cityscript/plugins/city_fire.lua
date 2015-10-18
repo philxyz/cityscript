@@ -84,7 +84,7 @@ function LightOthers(igniter)
 				if prop:GetTable().MoneyBag then
 					prop:Remove()
 					for k, v in pairs(player.GetAll()) do
-						CAKE.Response(v, TEXT.FireShock(e:GetTable().Amount))
+						CAKE.Response(v, TEXT.FireShock(e:Getamount()))
 					end
 				end
 			end
