@@ -126,9 +126,6 @@ local function InitHiddenButton()
 				else
 					-- if the weapon is already being held, you can't pick it up - but you can take its default ammo if there is some.
 
-					print("class is: " .. target:GetClass())
-					print("target.class is: " .. tostring(target.class))
-
 					if (target:GetClass() == "spawned_weapon" and LocalPlayer():HasWeapon(target.class)) or LocalPlayer():HasWeapon(target:GetNWString("Class")) then
 						if (target:GetNWInt("Clip1A") or 0) > 0 or (target:GetNWInt("Clip2A") or 0) > 0 then
 							ContextMenu:AddOption(TEXT.TakeAmmo, function() RunConsoleCommand("rp_takeammo", tostring(target:EntIndex())) end);

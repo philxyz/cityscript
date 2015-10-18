@@ -472,11 +472,11 @@ function ccTakeAmmo(ply, cmd, args)
 
 	if item ~= nil and IsValid(item) and (not CAKE.IsDoor(item) and not item:IsVehicle() and not item:IsPlayer() and not item:IsNPC()) and item.UseItem and item:GetPos():Distance(ply:GetShootPos()) < 100 then
 
-		if item:GetNWInt("Clip1A") or 0 > 0 then
+		if (item:GetNWInt("Clip1A") or 0) > 0 then
 			CAKE.Response( ply, "Found " .. tostring(item:GetNWInt("Clip1A")) .. " units of " .. tostring(game.GetAmmoName(item:GetNWInt("PAmmoType") or 0) or "") ..  " ammunition." );
 		end
 
-		if item:GetNWInt("Clip2A") or 0 > 0 then
+		if (item:GetNWInt("Clip2A") or 0) > 0 then
 			CAKE.Response( ply, "Found " .. tostring(item:GetNWInt("Clip2A")) .. " units of " .. tostring(game.GetAmmoName(item:GetNWInt("SAmmoTpe") or 0) or "") ..  " ammunition." );
 		end
 
