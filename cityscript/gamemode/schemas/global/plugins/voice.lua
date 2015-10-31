@@ -60,9 +60,9 @@ concommand.Add( "rp_listvoices", ccListVoice)
 function CAKE.AddVoice(id, path, soundgroup, text, fa)
 	local voice = {}
 	voice.path = path
-	voice.soundgroup = CAKE.NilFix(soundgroup, 0)
-	voice.line = CAKE.NilFix(text, "")
-	voice.femalealt = CAKE.NilFix(fa, "")
+	voice.soundgroup = soundgroup or 0
+	voice.line = text or ""
+	voice.femalealt = fa or ""
 	
 	CAKE.Voices[id] = voice
 end
