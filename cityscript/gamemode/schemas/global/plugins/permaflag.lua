@@ -21,7 +21,7 @@ concommand.Add("rp_permaflag", SetPermaflag)
 
 function Permaflag_Set(ply)
 	for k, v in pairs(CAKE.Teams) do
-		if .flag_key == CAKE.GetCharField(ply, "permaflag") then
+		if v.flag_key == CAKE.GetCharField(ply, "permaflag") then
 			if table.HasValue(CAKE.GetCharField(ply, "flags"), CAKE.GetCharField(ply, "permaflag")) or v.public == true then
 				ply:SetTeam(k)
 			else
