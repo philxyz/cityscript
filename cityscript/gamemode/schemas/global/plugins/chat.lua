@@ -94,7 +94,7 @@ function PLUGIN.Init( ) -- We run this in init, because this is called after the
 	
 	CAKE.SimpleChatCommand(TEXT.SlashMeCommand, CAKE.ConVars.MeRange, "*** $1 $3") -- Me chat
 	CAKE.SimpleChatCommand(TEXT.YellCommand, CAKE.ConVars.YellRange, "$1 [YELL]: $3") -- Yell chat
-	CAKE.SimpleChatCommand(TEXT.WhisperCommand, CAKE.ConVars.WhisperRange., "$1 [WHISPER]: $3") -- Whisper chat
+	CAKE.SimpleChatCommand(TEXT.WhisperCommand, CAKE.ConVars.WhisperRange, "$1 [WHISPER]: $3") -- Whisper chat
 	CAKE.SimpleChatCommand(".//", CAKE.ConVars.LOOCRange, "$1 | $2 [LOOC]: $3") -- Local OOC Chat
 	CAKE.SimpleChatCommand("[[", CAKE.ConVars.LOOCRange, "$1 | $2 [LOOC]: $3") -- Local OOC Chat
 
