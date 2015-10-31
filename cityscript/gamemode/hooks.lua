@@ -60,7 +60,7 @@ function CAKE.CallHook(hook_name, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8
 			
 			CAKE.DayLog("script.txt", TEXT.RunningHook .. ": " .. unique)
 			
-			(func( (arg1 or nil), (arg2 or nil), (arg3 or nil), (arg4 or nil), (arg5 or nil), (arg6 or nil), (arg7 or nil), (arg8 or nil), (arg9 or nil), (arg10 or nil)) or 1)
+			func( (arg1 or nil), (arg2 or nil), (arg3 or nil), (arg4 or nil), (arg5 or nil), (arg6 or nil), (arg7 or nil), (arg8 or nil), (arg9 or nil), (arg10 or nil))
 			
 			if override == 0 then
 				return 0

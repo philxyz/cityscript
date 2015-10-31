@@ -141,7 +141,7 @@ function CAKE.ResendCharData(ply) -- Network all of the player's character data
 		return;
 	end
 	
-	for fieldname, data in pairs(CAKE.PlayerData[SteamID].characters[ply:GetNWString("uid")] do
+	for fieldname, data in pairs(CAKE.PlayerData[SteamID].characters[ply:GetNWString("uid")]) do
 		if type(data) ~= "table" then
 			ply:SetNWString(fieldname, tostring(data))
 		end
