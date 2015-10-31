@@ -29,7 +29,7 @@ function Broadcast(ply, text)
 end
 
 function Advertise(ply, text)
-	if CAKE.ConVars.AdvertiseEnabled. == "1" then
+	if CAKE.ConVars.AdvertiseEnabled == "1" then
 		if tonumber(CAKE.GetCharField(ply, "money")) >= CAKE.ConVars.AdvertisePrice then
 			CAKE.ChangeMoney(ply, 0 - CAKE.ConVars.AdvertisePrice)
 		
