@@ -36,15 +36,16 @@ function CAKE.CreateItem(ply, class, pos, ang, fromBackpack)
 		end
 	end
 
-	if wepTable == nil then
-		print("wepTable is nil for class " .. tostring(itemtable.Class))
-	else
-		print("wepTable is present for class " .. tostring(itemtable.Class))
-		item:SetNWInt("Clip1A", (fromBackpack and 0) or wepTable.Primary.DefaultClip or 0)
-		item:SetNWInt("PAmmoType", game.GetAmmoID(wepTable.Primary.Ammo or 0) or "")
+	if wepTable ~= nil then
+		if wepTable.Primary ~= nil then
+			item:SetNWInt("Clip1A", (fromBackpack and 0) or wepTable.Primary.DefaultClip or 0)
+			item:SetNWInt("PAmmoType", game.GetAmmoID(wepTable.Primary.Ammo or 0) or "")
+		end
 
-		item:SetNWInt("Clip2A", (fromBackpack and 0) or wepTable.Secondary.DefaultClip or 0)
-		item:SetNWInt("SAmmoType", game.GetAmmoID(wepTable.Secondary.Ammo or 0) or "")
+		if wepTable.Secondary ~= nil then
+			item:SetNWInt("Clip2A", (fromBackpack and 0) or wepTable.Secondary.DefaultClip or 0)
+			item:SetNWInt("SAmmoType", game.GetAmmoID(wepTable.Secondary.Ammo or 0) or "")
+		end
 	end
 
 	if item:GetClass() == "storage_box" then item.ply = ply end
