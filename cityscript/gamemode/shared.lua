@@ -18,16 +18,13 @@ local DoorTypes =
 
 }
 
-function CAKE.IsDoor( door )
+function CAKE.IsDoor(door)
 
-	local class = door:GetClass();
+	local class = door:GetClass()
 	
-	for k, v in pairs( DoorTypes ) do
-	
-		if( v == class ) then return true; end
-	
+	for k, v in pairs(DoorTypes) do
+		if v == class then return true; end
 	end
 	
-	return false;
-
+	return false
 end

@@ -1,6 +1,6 @@
-PLUGIN.Name = "Jail Code from DarkRP"; -- What is the plugin name
-PLUGIN.Author = "philxyz"; -- Author of the plugin
-PLUGIN.Description = "A set of jail-related chat commands"; -- The description or purpose of the plugin
+PLUGIN.Name = "Jail Code from DarkRP" -- What is the plugin name
+PLUGIN.Author = "philxyz" -- Author of the plugin
+PLUGIN.Description = "A set of jail-related chat commands" -- The description or purpose of the plugin
 
 local JailPos = function(ply)
 	if ply:IsAdmin() or ply:IsSuperAdmin() then

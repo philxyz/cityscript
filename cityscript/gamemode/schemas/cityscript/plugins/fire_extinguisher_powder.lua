@@ -2,9 +2,9 @@
 -- by philxyz 2015
 -- MIT License
 
-PLUGIN.Name = "Fire Extinguisher"; -- What is the plugin name
-PLUGIN.Author = "philxyz"; -- Author of the plugin
-PLUGIN.Description = "Extinguisher Resources"; -- The description or purpose of the plugin
+PLUGIN.Name = "Fire Extinguisher" -- What is the plugin name
+PLUGIN.Author = "philxyz" -- Author of the plugin
+PLUGIN.Description = "Extinguisher Resources" -- The description or purpose of the plugin
 
 function PLUGIN.Init()
 end

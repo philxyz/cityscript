@@ -1,6 +1,6 @@
-PLUGIN.Name = "/give, /dropmoney, /moneydrop Commands"; -- What is the plugin name
-PLUGIN.Author = "philxyz"; -- Author of the plugin
-PLUGIN.Description = "A set of money-related chat commands"; -- The description or purpose of the plugin
+PLUGIN.Name = "/give, /dropmoney, /moneydrop Commands" -- What is the plugin name
+PLUGIN.Author = "philxyz" -- Author of the plugin
+PLUGIN.Description = "A set of money-related chat commands" -- The description or purpose of the plugin
 
 local function GiveTokens(ply, args)
 	if args == "" then return "" end
@@ -9,6 +9,11 @@ local function GiveTokens(ply, args)
 
 	if IsValid(trace.Entity) and trace.Entity:IsPlayer() and trace.Entity:GetPos():Distance(ply:GetPos()) < 150 then
 		local amount = math.floor(tonumber(args))
+
+		if not math.IsFinite(amount) then
+			CAKE.Response(ply, TEXT.NotFiniteNumber)
+			return ""
+		end
 
 		if amount < 1 then
 			CAKE.Response(ply, TEXT.MustBeAtLeast1Token)
@@ -32,9 +37,14 @@ local function GiveTokens(ply, args)
 end
 
 local function DropTokens(ply, args)
-	if args == "" or not tonumber(args) then return "" end
+	if args == "" or not tonumber(args) or not math.IsFinite(tonumber(args)) then return "" end
 
 	local amount = math.floor(tonumber(args))
+
+	if not math.IsFinite(amount) then
+		CAKE.Response(ply, TEXT.NotFiniteNumber)
+		return ""
+	end
 
 	if amount < 1 then
 		CAKE.Response(ply, TEXT.MustBeAtLeast1Token)
@@ -108,6 +118,10 @@ local function DepositTokens(ply, args)
 	if trace.Entity and trace.Entity:GetNWBool("ATM") then
 		if args and tonumber(args) then
 			local money = math.floor(tonumber(args))
+			if not math.IsFinite(money) then
+				CAKE.Response(ply, TEXT.NotFiniteNumber)
+				return ""
+			end
 			if money < 0 then
 				CAKE.Response(ply, TEXT.MustBeAtLeast1Token)
 				return ""
@@ -131,6 +145,10 @@ local function WithdrawTokens(ply, args)
 		if args and tonumber(args) then
 			args = math.floor(tonumber(args))
 			local money = math.floor(tonumber(args))
+			if not math.IsFinite(money) then
+				CAKE.Response(ply, TEXT.NotFiniteNumber)
+				return ""
+			end
 			if money < 0 then
 				CAKE.Response(ply, TEXT.MustBeAtLeast1Token)
 				return ""
@@ -163,6 +181,10 @@ local function TransferTokens(ply, args)
 				return ""
 			end
 			local money = math.floor(tonumber(argTable[1]))
+			if not math.IsFinite(money) then
+				CAKE.Response(ply, TEXT.NotFiniteNumber)
+				return ""
+			end
 			local targetPlayer = CAKE.FindPlayer(argTable[2])
 			if money < 0 then
 				CAKE.Response(ply, TEXT.MustBeAtLeast1Token)

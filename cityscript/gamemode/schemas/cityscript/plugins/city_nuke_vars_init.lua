@@ -1,6 +1,6 @@
-PLUGIN.Name = "CityScript Nuke Setup Plugin"; -- What is the pugin name
-PLUGIN.Author = "T.Bonita + philxyz"; -- Author of the plugin
-PLUGIN.Description = "Nuke Convars"; -- The description or purpose of the plugin
+PLUGIN.Name = "CityScript Nuke Setup Plugin" -- What is the pugin name
+PLUGIN.Author = "T.Bonita + philxyz" -- Author of the plugin
+PLUGIN.Description = "Nuke Convars" -- The description or purpose of the plugin
 
 function PLUGIN.Init( )
 	

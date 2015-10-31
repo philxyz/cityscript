@@ -8,43 +8,42 @@
 -------------------------------
 
 -- Set up the gamemode
-DeriveGamemode( "sandbox" );
-GM.Name = "CityScript";
+DeriveGamemode("sandbox")
+GM.Name = "CityScript"
 
 -- Define global variables
-CAKE = {  };
-CAKE.Running = false;
-CAKE.Loaded = false;
+CAKE = {}
+CAKE.Running = false
+CAKE.Loaded = false
 
 DB = {}
 
 -- String Tables
-util.AddNetworkString( "show_help" );
+util.AddNetworkString("show_help")
 
 -- Server Includes
-include( "shared.lua" ); -- Shared Functions
-include( "sv_upp.lua" ); -- Unobtrusive Prop Protection
-include( "log.lua" ); -- Logging functions
-include( "error_handling.lua" ); -- Error handling functions
-include( "util.lua" ); -- Functions
-include( "hooks.lua" ); -- CakeScript Hook System
-include( "configuration.lua" ); -- Configuration data
-include( "player_data.lua" ); -- Player data functions
-include( "data.lua" ); -- SQLite functionality (police-related bits from DarkRP - uses DarkRP jail positions)
-include( "player_shared.lua" ); -- Shared player functions
-include( "player_util.lua" ); -- Player functions
-include( "admin.lua" ); -- Admin functions
-include( "admin_cc.lua" ); -- Admin commands
-include( "chat.lua" ); -- Chat Commands
-include( "daynight.lua" ); -- Day/Night and Cloc
-include( "concmd.lua" ); -- Concommands
-include( "charactercreate.lua" ); -- Character Creation functions
-include( "items.lua" ); -- Items system
-include( "schema.lua" ); -- Schema system
-include( "plugins.lua" ); -- Plugin system
-include( "teams.lua" ); -- Teams system
-include( "client_resources.lua" ); -- Sends files to the client
-include( "doors.lua" ); -- Doors
+include("shared.lua") -- Shared Functions
+include("sv_upp.lua") -- Unobtrusive Prop Protection
+include("log.lua") -- Logging functions
+include("error_handling.lua") -- Error handling functions
+include("util.lua") -- Functions
+include("hooks.lua") -- CakeScript Hook System
+include("configuration.lua") -- Configuration data
+include("player_data.lua") -- Player data functions
+include("data.lua") -- SQLite functionality (police-related bits from DarkRP - uses DarkRP jail positions)
+include("player_shared.lua") -- Shared player functions
+include("player_util.lua") -- Player functions
+include("admin.lua") -- Admin functions
+include("chat.lua") -- Chat Commands
+include("daynight.lua") -- Day/Night and Cloc
+include("concmd.lua") -- Concommands
+include("charactercreate.lua") -- Character Creation functions
+include("items.lua") -- Items system
+include("schema.lua") -- Schema system
+include("plugins.lua") -- Plugin system
+include("teams.lua") -- Teams system
+include("client_resources.lua") -- Sends files to the client
+include("doors.lua") -- Doors
 
 -- Required Workshop Addons
 -- CSS Realistic Weapons (originally by Worshipper, fixed for GM13 by "S o h")
@@ -68,54 +67,49 @@ resource.AddWorkshop("144982052")
 -- Nuke
 resource.AddWorkshop("106565409")
 
-
 AntiCopy = {"atm", "storage_box", "sent_nuke_detpack", "sent_nuke_radiation", "item_prop", "token_bundle", "token_printer", "spawned_shipment", "toxic_lab", "toxic", "sent_nuke_part", "sent_nuke", "door_ram", "lockpick", "med_kit", "gmod_tool", "token_banknote"}
 
 DB.Init()
 
-CAKE.LoadSchema( CAKE.ConVars[ "Schema" ] ); -- Load the schema and plugins, this is NOT initializing.
+CAKE.LoadSchema(CAKE.ConVars.Schema) -- Load the schema and plugins, this is NOT initializing.
 
-CAKE.Loaded = true; -- Tell the server that we're loaded up
+CAKE.Loaded = true -- Tell the server that we're loaded up
 
 -- Each time a player connects, they get a new ID
 sessionid = 0
 
-function GM:Initialize( ) -- Initialize the gamemode
-	
+function GM:Initialize() -- Initialize the gamemode
 	-- My reasoning for this certain order is due to the fact that plugins are meant to modify the gamemode sometimes.
 	-- Plugins need to be initialized before gamemode and schema so it can modify the way that the plugins and schema actually work.
 	-- AKA, hooks.
 	
-	CAKE.DayLog( "script.txt", TEXT.PluginsInit );
-	CAKE.InitPlugins( );
+	CAKE.DayLog("script.txt", TEXT.PluginsInit)
+	CAKE.InitPlugins()
 	
-	CAKE.DayLog( "script.txt", TEXT.SchemasInit );
-	CAKE.InitSchemas( );
+	CAKE.DayLog("script.txt", TEXT.SchemasInit)
+	CAKE.InitSchemas()
 	
-	CAKE.DayLog( "script.txt", TEXT.GamemodeInit );
+	CAKE.DayLog("script.txt", TEXT.GamemodeInit)
 	
 	-- game.ConsoleCommand( "exec cakevars.cfg\n" ) -- Put any configuration variables in cfg/cakevars.cfg, set it using rp_admin setconvar varname value
 	-- DEPRECATED
 
 	GAMEMODE.Name = "CityScript"
 	
-	CAKE.InitTime();
-	CAKE.LoadDoors();
+	CAKE.InitTime()
+	CAKE.LoadDoors()
 	
-	timer.Create( "timesave", 120, 0, CAKE.SaveTime );
-	timer.Create( "sendtime", 1, 0, CAKE.SendTime );
+	timer.Create("timesave", 120, 0, CAKE.SaveTime)
+	timer.Create("sendtime", 1, 0, CAKE.SendTime)
 	
 	-- SALAARIIEEESS?!?!?!?!?!?! :O
-	timer.Create( "givemoney", CAKE.ConVars[ "SalaryInterval" ] * 60, 0, function( )
-		if( CAKE.ConVars[ "SalaryEnabled" ] == "1" ) then
-		
-			for k, v in pairs( player.GetAll( ) ) do
-			
-				if( CAKE.Teams[ v:Team( ) ] != nil and CAKE.Teams[ v:Team( ) ][ "salary" ] > 0 ) then
-				
+	timer.Create("givemoney", CAKE.ConVars.SalaryInterval * 60, 0, function()
+		if CAKE.ConVars.SalaryEnabled == "1" then
+			for k, v in pairs(player.GetAll()) do
+				if CAKE.Teams[v:Team()] ~= nil and CAKE.Teams[v:Team()].salary > 0 then
 					if not v:GetTable().Arrested then
-						CAKE.ChangeBankMoney( v, CAKE.Teams[ v:Team( ) ][ "salary" ] );
-						CAKE.Response( v, TEXT.PayAnnouncement(CAKE.Teams[ v:Team( ) ][ "salary" ]) );
+						CAKE.ChangeBankMoney(v, CAKE.Teams[v:Team()].salary)
+						CAKE.Response(v, TEXT.PayAnnouncement(CAKE.Teams[v:Team()].salary))
 					else
 						CAKE.Response(ply, TEXT.PayDayMissedBecauseArrested)
 					end
@@ -126,70 +120,67 @@ function GM:Initialize( ) -- Initialize the gamemode
 			
 		end
 
-	end )
+	end)
 	
-	CAKE.CallHook("GamemodeInitialize");
+	CAKE.CallHook("GamemodeInitialize")
 	
-	CAKE.Running = true;
-	
+	CAKE.Running = true
 end
 
 -- Player Initial Spawn
-function GM:PlayerInitialSpawn( ply )
+function GM:PlayerInitialSpawn(ply)
 
 	-- Call the hook before we start initializing the player
-	CAKE.CallHook( "Player_Preload", ply );
+	CAKE.CallHook("Player_Preload", ply)
 	
 	-- Send them valid models
-	for k, v in pairs( CAKE.ValidModels ) do
-		umsg.Start( "addmodel", ply );
-		
-			umsg.String( v );
-			
-		umsg.End( );
+	for k, v in pairs(CAKE.ValidModels) do
+		umsg.Start("addmodel", ply)
+			umsg.String(v)
+		umsg.End()
 	end
 	
 	-- Set some default variables
 	ply.LastHax = os.time()-20
-	ply.Ready = false;
-	ply:SetNWInt( "chatopen", 0 );
-	ply:ChangeMaxHealth(CAKE.ConVars[ "DefaultHealth" ]);
-	ply:ChangeMaxArmor(0);
-	ply:ChangeMaxWalkSpeed(CAKE.ConVars[ "WalkSpeed" ]);
-	ply:ChangeMaxRunSpeed(CAKE.ConVars[ "RunSpeed" ]);
+	ply.Ready = false
+	ply:SetNWInt("chatopen", 0)
+	ply:ChangeMaxHealth(CAKE.ConVars.DefaultHealth)
+	ply:ChangeMaxArmor(0)
+	ply:ChangeMaxWalkSpeed(CAKE.ConVars.WalkSpeed)
+	ply:ChangeMaxRunSpeed(CAKE.ConVars.RunSpeed)
 
 	sessionid = sessionid + 1
 	ply.SID = sessionid
 	
 	-- Check if they are admins
-	if( table.HasValue( SuperAdmins, ply:SteamID( ) ) ) then ply:SetUserGroup( "superadmin" ); end
-	if( table.HasValue( Admins, ply:SteamID( ) ) ) then ply:SetUserGroup( "admin" ); end
+	if table.HasValue(SuperAdmins, ply:SteamID()) then ply:SetUserGroup("superadmin"); end
+	if table.HasValue(Admins, ply:SteamID()) then ply:SetUserGroup("admin"); end
 	
 	-- Send them all the teams
-	CAKE.InitTeams( ply );
+	CAKE.InitTeams(ply)
 	
 	-- Load their data, or create a new datafile for them.
-	CAKE.LoadPlayerDataFile( ply );
+	CAKE.LoadPlayerDataFile(ply)
 
 	-- Call the hook after we have finished initializing the player
-	CAKE.CallHook( "Player_Postload", ply );
+	CAKE.CallHook("Player_Postload", ply)
 	
-	self.BaseClass:PlayerInitialSpawn( ply )
-
+	self.BaseClass:PlayerInitialSpawn(ply)
 end
 
-function GM:PlayerSetHandsModel( ply, ent )
-	local simplemodel = player_manager.TranslateToPlayerModelName( ply:GetModel( ) );
-	local info = player_manager.TranslatePlayerHands( simplemodel );
-	if ( info ) then
-		ent:SetModel( info.model );
-		ent:SetSkin( info.skin );
-		ent:SetBodyGroups( info.body );
+function GM:PlayerSetHandsModel(ply, ent)
+	local simplemodel = player_manager.TranslateToPlayerModelName(ply:GetModel())
+	local info = player_manager.TranslatePlayerHands(simplemodel)
+
+	if info then
+		ent:SetModel(info.model)
+		ent:SetSkin(info.skin)
+		ent:SetBodyGroups(info.body)
 	end
 end
 
 function GM:CanTool(ply, trace, mode)
-	if not self.BaseClass:CanTool(ply, trace, mode) then return false end
+	if not self.BaseClass:CanTool(ply, trace, mode) then return false; end
 
 	if IsValid(trace.Entity) then
 		if trace.Entity.onlyremover then
@@ -204,68 +195,61 @@ function GM:CanTool(ply, trace, mode)
 			return false
 		end
 	end
+
 	return true
 end
 
 function GM:PlayerLoadout(ply)
+	CAKE.CallHook("PlayerLoadout", ply)
 
-	CAKE.CallHook( "PlayerLoadout", ply );
-	if(ply:GetNWInt( "charactercreate" ) != 1) then
+	if ply:GetNWInt("charactercreate") ~= 1 then
 	
 		-- if(ply:IsAdmin() or ply:IsSuperAdmin()) then ply:Give("gmod_tool"); end
 		
-		if(CAKE.Teams[ply:Team()] != nil) then
-		
-			for k, v in pairs(CAKE.Teams[ply:Team()]["weapons"]) do
-			
-				ply:Give(v);
-				
+		if CAKE.Teams[ply:Team()] ~= nil then
+			for k, v in pairs(CAKE.Teams[ply:Team()].weapons) do
+				ply:Give(v)
 			end
-			
 		end
 
 		ply:Give("hands")
-		ply:Give("hl2_combo_fists");
+		ply:Give("hl2_combo_fists")
 		
-		ply:SelectWeapon("hands");
-		
+		ply:SelectWeapon("hands")
 	end
-	
 end
 
-function GM:PlayerSpawn( ply )
-	
-	if (CAKE.PlayerData[CAKE.FormatSteamID(ply:SteamID())] == nil) then
-		return; -- Player data isn't loaded. This is an initial spawn.
+function GM:PlayerSpawn(ply)
+	if CAKE.PlayerData[CAKE.FormatSteamID(ply:SteamID())] == nil then
+		return -- Player data isn't loaded. This is an initial spawn.
 	end
 
-	ply:SetupHands( );
+	ply:SetupHands()
 	
-	ply:StripWeapons( );
+	ply:StripWeapons()
 
-	self.BaseClass:PlayerSpawn( ply )
+	self.BaseClass:PlayerSpawn(ply)
 	
-	GAMEMODE:SetPlayerSpeed( ply, CAKE.ConVars[ "WalkSpeed" ], CAKE.ConVars[ "RunSpeed" ] );
+	GAMEMODE:SetPlayerSpeed(ply, CAKE.ConVars.WalkSpeed, CAKE.ConVars.RunSpeed)
 	
-	if ( ply:GetNWInt("deathmode") == 1 ) then
-	
-		ply:SetNWInt("deathmode" , 0);
-		ply:SetViewEntity( ply );
-		
+	if ply:GetNWInt("deathmode") == 1 then
+		ply:SetNWInt("deathmode", 0)
+		ply:SetViewEntity(ply)
 	end
 	
 	if ply.FlagChangeHealth then
-		ply:SetHealth(ply.FlagChangeHealth);
-		ply.FlagChangeHealth = nil;
+		ply:SetHealth(ply.FlagChangeHealth)
+		ply.FlagChangeHealth = nil
 	end
 
 	-- Reset all the variables
-	ply:ChangeMaxHealth(CAKE.ConVars[ "DefaultHealth" ] - ply:MaxHealth());
-	ply:ChangeMaxArmor(0 - ply:MaxArmor());
-	ply:ChangeMaxWalkSpeed(CAKE.ConVars[ "WalkSpeed" ] - ply:MaxWalkSpeed());
-	ply:ChangeMaxRunSpeed(CAKE.ConVars[ "RunSpeed" ] - ply:MaxRunSpeed());
+	ply:ChangeMaxHealth(CAKE.ConVars.DefaultHealth - ply:MaxHealth())
+	ply:ChangeMaxArmor(0 - ply:MaxArmor())
+	ply:ChangeMaxWalkSpeed(CAKE.ConVars.WalkSpeed - ply:MaxWalkSpeed())
+	ply:ChangeMaxRunSpeed(CAKE.ConVars.RunSpeed - ply:MaxRunSpeed())
 
 	local CustomSpawnPos = DB.RetrieveTeamSpawnPos(ply)
+
 	if CustomSpawnPos then
 		print(tostring(#CustomSpawnPos) .. " custom spawns positions found for team: " .. tostring(ply:Team()))
 		local selected = math.random(1, #CustomSpawnPos)
@@ -273,49 +257,34 @@ function GM:PlayerSpawn( ply )
 		ply:SetPos(CustomSpawnPos[selected])
 	end
 	
-	CAKE.CallHook( "PlayerSpawn", ply )
-	CAKE.CallTeamHook( "PlayerSpawn", ply ); -- Change player speeds perhaps?
-	
+	CAKE.CallHook("PlayerSpawn", ply)
+	CAKE.CallTeamHook("PlayerSpawn", ply) -- Change player speeds perhaps?
 end
 
 function GM:PlayerSetModel(ply)
-	
-	if(CAKE.Teams[ply:Team()] != nil) then
-	
-		if(CAKE.Teams[ply:Team()].default_model == true) then
-		
-			if(CAKE.Teams[ply:Team()].partial_model == true) then
-			
-				local m = CAKE.Teams[ply:Team()]["model_path"] .. string.sub(ply:GetNWString("model"), 23, string.len(ply:GetNWString("model")));
-				ply:SetModel(m);
-				CAKE.CallHook( "PlayerSetModel", ply, m);
-				
-			elseif(CAKE.Teams[ply:Team()].partial_model == false) then
-			
-				local m = CAKE.Teams[ply:Team()]["model_path"];
-				ply:SetModel(m);
-				CAKE.CallHook( "PlayerSetModel", ply, m);
-				
+	if CAKE.Teams[ply:Team()] ~= nil then
+		if CAKE.Teams[ply:Team()].default_model == true then
+			if CAKE.Teams[ply:Team()].partial_model == true then
+				local m = CAKE.Teams[ply:Team()].model_path .. string.sub(ply:GetNWString("model"), 23, string.len(ply:GetNWString("model")))
+				ply:SetModel(m)
+				CAKE.CallHook("PlayerSetModel", ply, m)
+			elseif CAKE.Teams[ply:Team()].partial_model == false then
+				local m = CAKE.Teams[ply:Team()]["model_path"]
+				ply:SetModel(m)
+				CAKE.CallHook("PlayerSetModel", ply, m)
 			end
-			
 		else
-		
 			local m = ply:GetNWString("model")
-			ply:SetModel(m);
-			CAKE.CallHook( "PlayerSetModel", ply, m);
-
+			ply:SetModel(m)
+			CAKE.CallHook("PlayerSetModel", ply, m)
 		end
-		
 	else
-		
-		local m = "models/kleiner.mdl";
-		ply:SetModel("models/kleiner.mdl");
-		CAKE.CallHook( "PlayerSetModel", ply, m);
-		
+		local m = "models/kleiner.mdl"
+		ply:SetModel("models/kleiner.mdl")
+		CAKE.CallHook("PlayerSetModel", ply, m)
 	end
 	
-	CAKE.CallTeamHook( "PlayerSetModel", ply, m); -- Hrm. Looks like the teamhook will take priority over the regular hook.. PREPARE FOR HELLFIRE (puts on helmet)
-
+	CAKE.CallTeamHook("PlayerSetModel", ply, m); -- Hrm. Looks like the teamhook will take priority over the regular hook.. PREPARE FOR HELLFIRE (puts on helmet)
 end
 
 function SpewMoney(amount, pos)
@@ -405,7 +374,6 @@ function SpewMoney(amount, pos)
 end
 
 function GM:PlayerDeath(ply, weapon, killer)
-
 	if ply:HasWeapon("weapon_physcannon") then
 		ply:DropWeapon(ply:GetWeapon("weapon_physcannon"))
 	end
@@ -426,11 +394,11 @@ function GM:PlayerDeath(ply, weapon, killer)
 		ply.NextSpawnTime = CurTime() + 4
 	end
 
-	if CAKE.ConVars[ "Allow_Cash_Looting" ] then
+	if CAKE.ConVars.Allow_Cash_Looting then
 		-- Money
-		math.randomseed(CAKE.GetCharField( ply, "money" ))
+		math.randomseed(CAKE.GetCharField(ply, "money"))
 		local amt = math.floor(tonumber(CAKE.GetCharField( ply, "money" )) * math.random())
-		if amt > CAKE.ConVars[ "Max_Cash_Drop_On_Death" ] then amt = CAKE.ConVars[ "Max_Cash_Drop_On_Death" ] end
+		if amt > CAKE.ConVars.Max_Cash_Drop_On_Death then amt = CAKE.ConVars.Max_Cash_Drop_On_Death end
 		-- Drop the cash on the floor
 		CAKE.ChangeMoney(ply, -amt)
 		SpewMoney(amt, ply:GetPos())
@@ -438,54 +406,47 @@ function GM:PlayerDeath(ply, weapon, killer)
 
 	ply:GetTable().DeathPos = ply:GetPos()
 	
-	CAKE.DeathMode(ply);
-	CAKE.CallHook("PlayerDeath", ply);
-	CAKE.CallTeamHook("PlayerDeath", ply);
+	CAKE.DeathMode(ply)
+	CAKE.CallHook("PlayerDeath", ply)
+	CAKE.CallTeamHook("PlayerDeath", ply)
 end
 
 function GM:PlayerDeathThink(ply)
-
-	ply.nextsecond = CAKE.NilFix(ply.nextsecond, CurTime())
-	ply.deathtime = CAKE.NilFix(ply.deathtime, 30);
+	ply.nextsecond = ply.nextsecond or CurTime()
+	ply.deathtime = ply.deathtime or 30
 	
-	if(CurTime() > ply.nextsecond) then
-	
-		if(ply.deathtime < 10) then
-		
-			ply.deathtime = ply.deathtime + 1;
-			ply.nextsecond = CurTime() + 1;
-			ply:SetNWInt("deathmoderemaining", 30 - ply.deathtime);
-			
+	if CurTime() > ply.nextsecond then
+		if ply.deathtime < 10 then
+			ply.deathtime = ply.deathtime + 1
+			ply.nextsecond = CurTime() + 1
+			ply:SetNWInt("deathmoderemaining", 30 - ply.deathtime)
 		else
-		
-			ply.deathtime = nil;
-			ply.nextsecond = nil;
-			ply:Spawn();
-			ply:SetNWInt("deathmode", 0);
-			ply:SetNWInt("deathmoderemaining", 0);
-			
+			ply.deathtime = nil
+			ply.nextsecond = nil
+			ply:Spawn()
+			ply:SetNWInt("deathmode", 0)
+			ply:SetNWInt("deathmoderemaining", 0)
 		end
-		
 	end
-	
 end
 
---function GM:DoPlayerDeath( ply, attacker, dmginfo )
+--function GM:DoPlayerDeath(ply, attacker, dmginfo)
 
 	-- We don't want kills, deaths, nor ragdolls being made. Kthx. -- O RLY? (philxyz)
 	
 --end
 
 function GM:PlayerUse(ply, entity)
-	if(CAKE.IsDoor(entity)) then
+	if CAKE.IsDoor(entity) then
 		local doorgroups = CAKE.GetDoorGroup(entity)
 		for k, v in pairs(doorgroups) do
-			if(table.HasValue(CAKE.Teams[ply:Team()]["door_groups"], v)) then
-				return false;
+			if table.HasValue(CAKE.Teams[ply:Team()].door_groups, v) then
+				return false
 			end
 		end
 	end
-	return self.BaseClass:PlayerUse(ply, entity);
+
+	return self.BaseClass:PlayerUse(ply, entity)
 end
 
 function GM:PlayerCanPickupWeapon(ply, class)
@@ -513,6 +474,7 @@ end
 
 function GM:GravGunOnDropped(ply, ent)
 	local entphys = ent:GetPhysicsObject()
+
 	if ply:KeyDown(IN_ATTACK) then
 		-- it was launched
 		entphys:EnableMotion(false)
@@ -541,7 +503,7 @@ function GM:PlayerDisconnected(ply)
 	end
 	-- If you're arrested when you disconnect, you will serve your time again when you reconnect!
 	if ply:GetTable().Arrested then
-		DB.StoreJailStatus(ply, CAKE.ConVars[ "Jail_Time" ])
+		DB.StoreJailStatus(ply, CAKE.ConVars.Jail_Time)
 	end
 end
 
@@ -589,9 +551,9 @@ function GM:OnNPCKilled(victim, ent, weapon)
 		end
 
 		-- if we know by now who killed the NPC, pay them.
-		if ent and CAKE.ConVars[ "NPC_Kill_Pay" ] > 0 then
-			CAKE.ChangeBankMoney(ent, CAKE.ConVars[ "NPC_Kill_Pay" ])
-			CAKE.Response(ent, TEXT.BankedTokensForNPCKill(tostring(CAKE.ConVars[ "NPC_Kill_Pay" ])))
+		if ent and CAKE.ConVars.NPC_Kill_Pay > 0 then
+			CAKE.ChangeBankMoney(ent, CAKE.ConVars.NPC_Kill_Pay)
+			CAKE.Response(ent, TEXT.BankedTokensForNPCKill(tostring(CAKE.ConVars.NPC_Kill_Pay)))
 		end
 	end
 end
@@ -600,10 +562,10 @@ function PlayerSpawnedProp(ply, model, ent)
 	ent:SetNWString("creator", ply:Name())
 	ent:SetNWEntity("c_ent", ply)
 end
-hook.Add("PlayerSpawnedProp", "SetPropCreatorInfo", PlayerSpawnedProp);
+hook.Add("PlayerSpawnedProp", "SetPropCreatorInfo", PlayerSpawnedProp)
 
 function PlayerSpawnedVehicle(ply, ent)
 	ent:SetNWString("creator", ply:Name())
 	ent:SetNWEntity("c_ent", ply)
 end
-hook.Add("PlayerSpawnedVehicle", "SetVehicleCreatorInfo", PlayerSpawnedVehicle);
+hook.Add("PlayerSpawnedVehicle", "SetVehicleCreatorInfo", PlayerSpawnedVehicle)

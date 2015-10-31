@@ -1,6 +1,6 @@
 PLUGIN.Name = "CityScript Misc"; -- What is the pugin name
 PLUGIN.Author = "philxyz"; -- Author of the plugin
-PLUGIN.Description = "Miscellaneous Functionality"; -- The description or purpose of the plugin
+PLUGIN.Description = "Miscellaneous Functionality" -- The description or purpose of the plugin
 
 -- Remove certain items (toxiclabs, moneyprinters, etc)
 local function RemoveItem(ply)

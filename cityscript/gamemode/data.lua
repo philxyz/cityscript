@@ -296,5 +296,5 @@ function DB.RetrieveRandomZombieSpawnPos()
 			return Vector(r.x, r.y, r.z)
 		end
 	end
-	return Vector(r.x, r.y, r.z) + Vector(0,0,70)        
+	return Vector(r.x, r.y, r.z) + Vector(0, 0, 70)        
 end

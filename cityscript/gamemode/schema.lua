@@ -7,74 +7,54 @@
 -- Loads and configures the schema
 -------------------------------
 
-CAKE.Schemas = {  };
+CAKE.Schemas = {}
 
-function CAKE.LoadSchema( schema )
+function CAKE.LoadSchema(schema)
 
-	local path = "schemas/" .. schema .. ".lua";
+	local path = "schemas/" .. schema .. ".lua"
 	
-	SCHEMA = {  };
+	SCHEMA = {}
 	
-	include( path );
+	include(path)
 	
-	CAKE.DayLog( "script.txt", TEXT.LoadingSchema(SCHEMA.Name, SCHEMA.Author, SCHEMA.Description) );
+	CAKE.DayLog("script.txt", TEXT.LoadingSchema(SCHEMA.Name, SCHEMA.Author, SCHEMA.Description))
 	
-	table.insert( CAKE.Schemas, SCHEMA );
+	table.insert(CAKE.Schemas, SCHEMA)
 	
 	-- Load the plugins
+	local list = file.Find("cityscript/gamemode/schemas/" .. schema .. "/plugins/*.lua", "lsv")
 	
-	local list = file.Find( "cityscript/gamemode/schemas/" .. schema .. "/plugins/*.lua", "lsv" );
-	
-	for k, v in pairs( list ) do
-	
-		CAKE.LoadPlugin( schema, v );
-		
+	for k, v in pairs(list) do
+		CAKE.LoadPlugin(schema, v)
 	end
 	
 	-- Load the items
-	local list = file.Find( "cityscript/gamemode/schemas/" .. schema .. "/items/*.lua", "lsv" );
+	local list = file.Find("cityscript/gamemode/schemas/" .. schema .. "/items/*.lua", "lsv")
 	
-	for k, v in pairs( list ) do
-	
-		CAKE.LoadItem( schema, v );
-		
+	for k, v in pairs(list) do
+		CAKE.LoadItem(schema, v)
 	end
 	
-	if( SCHEMA.Base != nil ) then
-	
-		CAKE.LoadSchema( SCHEMA.Base )
-		
+	if SCHEMA.Base ~= nil then
+		CAKE.LoadSchema(SCHEMA.Base)
 	end
-	
 end
 
-function CAKE.InitSchemas( )
-
-	for _, SCHEMA in pairs( CAKE.Schemas ) do
-		
-		CAKE.CallHook( "InitSchema", SCHEMA );
-		SCHEMA.SetUp( );
-		
+function CAKE.InitSchemas()
+	for _, SCHEMA in pairs( CAKE.Schemas) do
+		CAKE.CallHook("InitSchema", SCHEMA)
+		SCHEMA.SetUp()
 	end
-	
 end
 
-CAKE.ValidModels = {};
+CAKE.ValidModels = {}
 
 function CAKE.AddModels(mdls)
-
-	if(type(mdls) == "table") then
-	
+	if type(mdls) == "table" then
 		for k, v in pairs(mdls) do
-
 			table.insert(CAKE.ValidModels, v)
-
 		end
-		
 	else
-	
 		table.insert(CAKE.ValidModels, mdls)
-		
 	end
-	
 end

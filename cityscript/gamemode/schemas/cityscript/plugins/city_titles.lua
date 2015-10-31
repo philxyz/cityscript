@@ -1,6 +1,6 @@
-PLUGIN.Name = "Title Setting Code"; -- What is the plugin name
-PLUGIN.Author = "philxyz"; -- Author of the plugin
-PLUGIN.Description = "A set of title-related chat commands"; -- The description or purpose of the plugin
+PLUGIN.Name = "Title Setting Code" -- What is the plugin name
+PLUGIN.Author = "philxyz" -- Author of the plugin
+PLUGIN.Description = "A set of title-related chat commands" -- The description or purpose of the plugin
 
 local function SetTitle(ply, args)
 	local trace = ply:GetEyeTrace()

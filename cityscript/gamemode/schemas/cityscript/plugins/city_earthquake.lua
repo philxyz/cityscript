@@ -2,9 +2,9 @@
 -- by philxyz 2007-2010
 -- MIT License
 
-PLUGIN.Name = "Earthquake"; -- What is the plugin name
-PLUGIN.Author = "philxyz"; -- Author of the plugin
-PLUGIN.Description = "Earthquake code."; -- The description or purpose of the plugin
+PLUGIN.Name = "Earthquake" -- What is the plugin name
+PLUGIN.Author = "philxyz" -- Author of the plugin
+PLUGIN.Description = "Earthquake code." -- The description or purpose of the plugin
 
 function PLUGIN.Init()
 end

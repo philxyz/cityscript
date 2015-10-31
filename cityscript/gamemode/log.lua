@@ -8,28 +8,26 @@
 -------------------------------
 
 -- Anything that would be logged would be passed to this.
-function CAKE.DayLog( outputfile, text )
+function CAKE.DayLog(outputfile, text)
+	local month = os.date("%m")
+	local day = os.date("%d")
+	local year = os.date("%Y")
 
-	local month = os.date( "%m" );
-	local day = os.date( "%d" );
-	local year = os.date( "%Y" );
+	local curdate = month .. "-" .. day .. "-" .. year
 
-	local curdate = month .. "-" .. day .. "-" .. year;
+	local filedir = "cakescript/logs/daylogs/" .. curdate .. "/" .. outputfile
 
-	local filedir = "CakeScript/logs/daylogs/" .. curdate .. "/" .. outputfile;
-
-	local old = CAKE.NilFix(file.Read( filedir, "DATA" ), "");
+	local old = file.Read(filedir, "DATA") or ""
 	
-	local hours = os.date( "%H" );
-	local mins = os.date( "%M" );
-	local secs = os.date( "%S" );
+	local hours = os.date("%H")
+	local mins = os.date("%M")
+	local secs = os.date("%S")
 	
 	local curtime = hours .. ":" .. mins .. ":" .. secs
 	
-	CAKE.CallHook( "WriteDayLog", filedir, text );
+	CAKE.CallHook("WriteDayLog", filedir, text)
 	
-	text = string.gsub(text, "\n", ""); -- \n fix for all those basteds. >:O
+	text = string.gsub(text, "\n", "")
 	
-	file.Write( filedir, old .. "\n" .. curtime .. " " .. text );
-	
+	file.Write(filedir, old .. "\n" .. curtime .. " " .. text)
 end

@@ -9,59 +9,30 @@
 
 -- Oh, don't mind me.. just adding a useful function.
 function string.explode(str)
-
-	local rets = {};
+	local rets = {}
 	
 	for i=1, string.len(str) do
-	
-		rets[i] = string.sub(str, i, i);
-		
+		rets[i] = string.sub(str, i, i)
 	end
 	
-	return rets;
-
+	return rets
 end
 
 function CAKE.ReferenceFix(data)
-
-	if(type(data) == "table") then
-	
-		return table.Copy(data);
-		
+	if type(data) == "table" then
+		return table.Copy(data)
 	else
-	
-		return data;
-		
+		return data
 	end
-	
-end
-
-function CAKE.NilFix(val, default)
-
-	if(val == nil) then
-	
-		return default;
-	
-	else
-	
-		return val;
-		
-	end
-	
 end
 
 function CAKE.InitTime() -- Load the time from a text file or default value, this occurs on gamemode initialization.
-
 	local clumpedtime = "1 1 " .. tostring(os.date("*t").year + 3) .. " 1"
 	
-	if(file.Exists("cakescript/time.txt", "DATA")) then
-	
+	if file.Exists("cakescript/time.txt", "DATA") then
 		clumpedtime = file.Read("cakescript/time.txt")
-		
 	else
-	
 		file.Write("cakescript/time.txt", "1 1 " .. tostring(os.date("*t").year + 3) .. " 1")
-		
 	end
 	
 	local unclumped = string.Explode(" ", clumpedtime)
@@ -71,45 +42,35 @@ function CAKE.InitTime() -- Load the time from a text file or default value, thi
 	CAKE.ClockMins = tonumber(unclumped[4]) or 1
 	
 	SetGlobalString("time", "Loading...")
-	
 end
 
 function CAKE.SaveTime()
-
 	local clumpedtime = CAKE.ClockDay .. " " .. CAKE.ClockMonth .. " " .. CAKE.ClockYear .. " " .. CAKE.ClockMins
 	file.Write("cakescript/time.txt", clumpedtime)
-	
 end
 
 function CAKE.SendTime()
-
-	local nHours = string.format("%02.f", math.floor(CAKE.ClockMins / 60));
-	local nMins = string.format("%02.f", math.floor(CAKE.ClockMins - (nHours*60)));
+	local nHours = string.format("%02.f", math.floor(CAKE.ClockMins / 60))
+	local nMins = string.format("%02.f", math.floor(CAKE.ClockMins - (nHours*60)))
 	
-	if(tonumber(nHours) > 12) then 
-	
+	if tonumber(nHours) > 12 then 
 		nHours = nHours - 12
-		timez = "PM";
-		
+		timez = "PM"
 	else
-	
-		timez = "AM";
-		
+		timez = "AM"
 	end
 	
-	if(tonumber(nHours) == 0) then
-	
+	if tonumber(nHours) == 0 then
 		nHours = 12
-		
 	end
 
 	local monthLeadingZero = ""
 	local dayLeadingZero = ""
+
 	if CAKE.ClockMonth < 10 then monthLeadingZero = "0" end
 	if CAKE.ClockDay < 10 then dayLeadingZero = "0" end
 	
 	SetGlobalString("time", CAKE.ClockYear .. "-" .. monthLeadingZero .. CAKE.ClockMonth .. "-" .. dayLeadingZero .. CAKE.ClockDay .. " | " .. nHours .. ":" .. nMins .. timez)
-	
 end
 
 function CAKE.FindPlayer(name)
@@ -121,11 +82,11 @@ function CAKE.FindPlayer(name)
 			return v
 		end
 
-		if(string.find(string.lower(v:Nick()), string.lower(name)) != nil) then
+		if string.find(string.lower(v:Nick()), string.lower(name)) ~= nil then
 			return v
 		end
 			
-		if(string.find(string.lower(v:Name()), string.lower(name)) != nil) then
+		if string.find(string.lower(v:Name()), string.lower(name)) ~= nil then
 			return v
 		end
 	end

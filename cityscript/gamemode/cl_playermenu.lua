@@ -16,107 +16,107 @@ InventoryTable = {}
 
 function AddItem(data)
 	local itemdata = {}
-	itemdata.Name = data:ReadString();
-	itemdata.Class = data:ReadString();
-	itemdata.Description = data:ReadString();
-	itemdata.Model = data:ReadString();
+	itemdata.Name = data:ReadString()
+	itemdata.Class = data:ReadString()
+	itemdata.Description = data:ReadString()
+	itemdata.Model = data:ReadString()
 	
-	table.insert(InventoryTable, itemdata);
+	table.insert(InventoryTable, itemdata)
 end
-usermessage.Hook("addinventory", AddItem);
+usermessage.Hook("addinventory", AddItem)
 
 function ClearItems()
-	
 	InventoryTable = {}
-	
 end
-usermessage.Hook("clearinventory", ClearItems);
+usermessage.Hook("clearinventory", ClearItems)
 
-BusinessTable = {};
+BusinessTable = {}
 
 function AddBusinessItem(data)
 	local itemdata = {}
-	itemdata.Name = data:ReadString();
-	itemdata.Class = data:ReadString();
-	itemdata.Description = data:ReadString();
-	itemdata.Model = data:ReadString();
-	itemdata.ContentModel = data:ReadString();
-	itemdata.Price = data:ReadLong();
-	itemdata.IsShipment = data:ReadBool();
+	itemdata.Name = data:ReadString()
+	itemdata.Class = data:ReadString()
+	itemdata.Description = data:ReadString()
+	itemdata.Model = data:ReadString()
+	itemdata.ContentModel = data:ReadString()
+	itemdata.Price = data:ReadLong()
+	itemdata.IsShipment = data:ReadBool()
 	
-	table.insert(BusinessTable, itemdata);
+	table.insert(BusinessTable, itemdata)
 end
-usermessage.Hook("addbusiness", AddBusinessItem);
+usermessage.Hook("addbusiness", AddBusinessItem)
 
 function ClearBusinessItems()
-	
 	BusinessTable = {}
-	
 end
-usermessage.Hook("clearbusiness", ClearBusinessItems);
+usermessage.Hook("clearbusiness", ClearBusinessItems)
 
 local function InitHiddenButton()
 	HiddenButton = vgui.Create("DButton")
-	HiddenButton:SetSize(ScrW(), ScrH());
-	HiddenButton:SetText("");
-	HiddenButton:SetDrawBackground(false);
-	HiddenButton:SetDrawBorder(false);
+	HiddenButton:SetSize(ScrW(), ScrH())
+	HiddenButton:SetText("")
+	HiddenButton:SetDrawBackground(false)
+	HiddenButton:SetDrawBorder(false)
+
 	HiddenButton.DoRightClick = function()
-		local Vect = gui.ScreenToVector(gui.MouseX(), gui.MouseY());
-		local tracedata = {};
-		tracedata.start = LocalPlayer():GetShootPos();
-		tracedata.endpos = LocalPlayer():GetShootPos() + (Vect * 100);
-		tracedata.filter = LocalPlayer();
-		local trace = util.TraceLine(tracedata);
+		local Vect = gui.ScreenToVector(gui.MouseX(), gui.MouseY())
+		local tracedata = {}
+		tracedata.start = LocalPlayer():GetShootPos()
+		tracedata.endpos = LocalPlayer():GetShootPos() + (Vect * 100)
+		tracedata.filter = LocalPlayer()
+		local trace = util.TraceLine(tracedata)
 		
-		if(trace.HitNonWorld) then
-			local target = trace.Entity;
+		if trace.HitNonWorld then
+			local target = trace.Entity
 			
 			local ContextMenu = DermaMenu()
-				if(CAKE.IsDoor(target) or target:IsVehicle()) then
+				if CAKE.IsDoor(target) or target:IsVehicle() then
 					if not target:GetNWBool("notRentable") then
-						ContextMenu:AddOption(TEXT.RentUnrent, function() RunConsoleCommand("rp_purchasedoor", tostring(target:EntIndex())) end);
-						ContextMenu:AddOption(TEXT.Lock, function() RunConsoleCommand("rp_lockdoor", tostring(target:EntIndex())) end);
-						ContextMenu:AddOption(TEXT.Unlock, function() RunConsoleCommand("rp_unlockdoor", tostring(target:EntIndex())) end);
+						ContextMenu:AddOption(TEXT.RentUnrent, function() RunConsoleCommand("rp_purchasedoor", tostring(target:EntIndex())) end)
+						ContextMenu:AddOption(TEXT.Lock, function() RunConsoleCommand("rp_lockdoor", tostring(target:EntIndex())) end)
+						ContextMenu:AddOption(TEXT.Unlock, function() RunConsoleCommand("rp_unlockdoor", tostring(target:EntIndex())) end)
 					end
+
 					if LocalPlayer():IsSuperAdmin() then
 						if target:GetNWBool("nonRentable") then
-							ContextMenu:AddOption(TEXT.EnableRenting, function() RunConsoleCommand("rp_doorrenting", tostring(target:EntIndex()), "1") end);
+							ContextMenu:AddOption(TEXT.EnableRenting, function() RunConsoleCommand("rp_doorrenting", tostring(target:EntIndex()), "1") end)
 						else
-							ContextMenu:AddOption(TEXT.DisableRenting, function() RunConsoleCommand("rp_doorrenting", tostring(target:EntIndex()), "0") end);
+							ContextMenu:AddOption(TEXT.DisableRenting, function() RunConsoleCommand("rp_doorrenting", tostring(target:EntIndex()), "0") end)
 						end
 					end
-				elseif(target:IsPlayer()) then
+				elseif target:IsPlayer() then
 					local function PopupCredits()
-						local CreditPanel = vgui.Create( "DFrame" );
-						CreditPanel:SetPos((ScrW()/2)-100, (ScrH()/2)-87);
-						CreditPanel:SetSize( 200, 175 )
-						CreditPanel:SetTitle( TEXT.GivePersonTokens(target:Nick()));
-						CreditPanel:SetVisible(true);
-						CreditPanel:SetDraggable(true);
-						CreditPanel:ShowCloseButton(true);
-						CreditPanel:MakePopup();
+						local CreditPanel = vgui.Create("DFrame")
+						CreditPanel:SetPos((ScrW()/2)-100, (ScrH()/2)-87)
+						CreditPanel:SetSize(200, 175)
+						CreditPanel:SetTitle(TEXT.GivePersonTokens(target:Nick()))
+						CreditPanel:SetVisible(true)
+						CreditPanel:SetDraggable(true)
+						CreditPanel:ShowCloseButton(true)
+						CreditPanel:MakePopup()
 						
-						local Credits = vgui.Create( "DNumSlider", CreditPanel );
-						Credits:SetPos( 25, 50 );
-						Credits:SetWide(150);
-						Credits:SetText("Tokens to Give");
-						Credits:SetMin( 0 );
-						Credits:SetMax( tonumber(LocalPlayer():GetNWString("money")) );
-						Credits:SetDecimals( 0 );
+						local Credits = vgui.Create("DNumSlider", CreditPanel)
+						Credits:SetPos(25, 50)
+						Credits:SetWide(150)
+						Credits:SetText("Tokens to Give")
+						Credits:SetMin(0)
+						Credits:SetMax(tonumber(LocalPlayer():GetNWString("money")))
+						Credits:SetDecimals(0)
 						
-						local Give = vgui.Create( "DButton", CreditPanel );
-						Give:SetText("Give");
-						Give:SetPos( 25, 125 );
-						Give:SetSize( 150, 25 );
+						local Give = vgui.Create("DButton", CreditPanel)
+						Give:SetText("Give")
+						Give:SetPos(25, 125)
+						Give:SetSize(150, 25)
+
 						Give.DoClick = function()
-							RunConsoleCommand("rp_givemoney", tostring(target:EntIndex()), tostring(Credits:GetValue()));
-							CreditPanel:Remove();
-							CreditPanel = nil;
+							RunConsoleCommand("rp_givemoney", tostring(target:EntIndex()), tostring(Credits:GetValue()))
+							CreditPanel:Remove()
+							CreditPanel = nil
 						end
 					end
 					
-					ContextMenu:AddOption(TEXT.GiveTokens, PopupCredits);
+					ContextMenu:AddOption(TEXT.GiveTokens, PopupCredits)
+
 					if LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() then
 						ContextMenu:AddOption(TEXT.Warn, function() WarnPlayer(target) end)
 						ContextMenu:AddOption(TEXT.Kick, function() KickPlayer(target) end)
@@ -128,215 +128,201 @@ local function InitHiddenButton()
 
 					if (target:GetClass() == "spawned_weapon" and LocalPlayer():HasWeapon(target.class)) or LocalPlayer():HasWeapon(target:GetNWString("Class")) then
 						if (target:GetNWInt("Clip1A") or 0) > 0 or (target:GetNWInt("Clip2A") or 0) > 0 then
-							ContextMenu:AddOption(TEXT.TakeAmmo, function() RunConsoleCommand("rp_takeammo", tostring(target:EntIndex())) end);
+							ContextMenu:AddOption(TEXT.TakeAmmo, function() RunConsoleCommand("rp_takeammo", tostring(target:EntIndex())) end)
 						end
 					else
-						ContextMenu:AddOption(TEXT.UseItem, function() RunConsoleCommand("rp_useitem",  tostring(target:EntIndex())) end);
+						ContextMenu:AddOption(TEXT.UseItem, function() RunConsoleCommand("rp_useitem",  tostring(target:EntIndex())) end)
 					end
-					ContextMenu:AddOption(TEXT.PlaceInBackpack, function() RunConsoleCommand("rp_pickup", tostring(target:EntIndex())) end);
+
+					ContextMenu:AddOption(TEXT.PlaceInBackpack, function() RunConsoleCommand("rp_pickup", tostring(target:EntIndex())) end)
 				end
 			ContextMenu:SetPos(ScrW()/2, ScrH()/2)
-			ContextMenu:Open();
+			ContextMenu:Open()
 		end
 	end
 end
 
 function CreateModelWindow()
-
-	if(ModelWindow) then
-	
-		ModelWindow:Remove();
-		ModelWindow = nil;
-		
+	if ModelWindow then
+		ModelWindow:Remove()
+		ModelWindow = nil
 	end
 
-	ModelWindow = vgui.Create( "DFrame" )
-	ModelWindow:SetTitle(TEXT.SelectModel);
+	ModelWindow = vgui.Create("DFrame")
+	ModelWindow:SetTitle(TEXT.SelectModel)
 
-	local mdlPanel = vgui.Create( "DModelPanel", ModelWindow )
-	mdlPanel:SetSize( 300, 300 )
-	mdlPanel:SetPos( 10, 20 )
-	mdlPanel:SetModel( ValidCakeModels[1] )
-	mdlPanel:SetAnimSpeed( 0.0 )
-	mdlPanel:SetAnimated( false )
-	mdlPanel:SetAmbientLight( Color( 50, 50, 50 ) )
-	mdlPanel:SetDirectionalLight( BOX_TOP, Color( 255, 255, 255 ) )
-	mdlPanel:SetDirectionalLight( BOX_FRONT, Color( 255, 255, 255 ) )
-	mdlPanel:SetCamPos( Vector( 50, 0, 50 ) )
-	mdlPanel:SetLookAt( Vector( 0, 0, 50 ) )
-	mdlPanel:SetFOV( 70 )
+	local mdlPanel = vgui.Create("DModelPanel", ModelWindow)
+	mdlPanel:SetSize(300, 300)
+	mdlPanel:SetPos(10, 20)
+	mdlPanel:SetModel(ValidCakeModels[1])
+	mdlPanel:SetAnimSpeed(0.0)
+	mdlPanel:SetAnimated(false)
+	mdlPanel:SetAmbientLight(Color(50, 50, 50))
+	mdlPanel:SetDirectionalLight(BOX_TOP, Color(255, 255, 255))
+	mdlPanel:SetDirectionalLight(BOX_FRONT, Color(255, 255, 255))
+	mdlPanel:SetCamPos(Vector(50, 0, 50))
+	mdlPanel:SetLookAt(Vector(0, 0, 50))
+	mdlPanel:SetFOV(70)
 
-	local RotateSlider = vgui.Create("DNumSlider", ModelWindow);
-	RotateSlider:SetMax(360);
-	RotateSlider:SetMin(0);
-	RotateSlider:SetText(TEXT.Rotate);
-	RotateSlider:SetDecimals( 0 );
-	RotateSlider:SetWidth(300);
-	RotateSlider:SetPos(10, 290);
+	local RotateSlider = vgui.Create("DNumSlider", ModelWindow)
+	RotateSlider:SetMax(360)
+	RotateSlider:SetMin(0)
+	RotateSlider:SetText(TEXT.Rotate)
+	RotateSlider:SetDecimals(0)
+	RotateSlider:SetWidth(300)
+	RotateSlider:SetPos(10, 290)
 
-	local BodyButton = vgui.Create("DButton", ModelWindow);
-	BodyButton:SetText(TEXT.Body);
+	local BodyButton = vgui.Create("DButton", ModelWindow)
+	BodyButton:SetText(TEXT.Body)
 	BodyButton.DoClick = function()
-
-		mdlPanel:SetCamPos( Vector( 50, 0, 50) );
-		mdlPanel:SetLookAt( Vector( 0, 0, 50) );
-		mdlPanel:SetFOV( 70 );
-		
+		mdlPanel:SetCamPos(Vector(50, 0, 50))
+		mdlPanel:SetLookAt(Vector(0, 0, 50))
+		mdlPanel:SetFOV(70)
 	end
-	BodyButton:SetPos(10, 40);
+	BodyButton:SetPos(10, 40)
 
-	local FaceButton = vgui.Create("DButton", ModelWindow);
-	FaceButton:SetText(TEXT.Face);
+	local FaceButton = vgui.Create("DButton", ModelWindow)
+	FaceButton:SetText(TEXT.Face)
+
 	FaceButton.DoClick = function()
-
-		mdlPanel:SetCamPos( Vector( 50, 0, 60) );
-		mdlPanel:SetLookAt( Vector( 0, 0, 60) );
-		mdlPanel:SetFOV( 40 );
-		
+		mdlPanel:SetCamPos(Vector(50, 0, 60))
+		mdlPanel:SetLookAt(Vector(0, 0, 60))
+		mdlPanel:SetFOV(40)
 	end
-	FaceButton:SetPos(10, 60);
+	FaceButton:SetPos(10, 60)
 
-	local FarButton = vgui.Create("DButton", ModelWindow);
-	FarButton:SetText(TEXT.Far);
+	local FarButton = vgui.Create("DButton", ModelWindow)
+	FarButton:SetText(TEXT.Far)
+
 	FarButton.DoClick = function()
-
-		mdlPanel:SetCamPos( Vector( 100, 0, 30) );
-		mdlPanel:SetLookAt( Vector( 0, 0, 30) );
-		mdlPanel:SetFOV( 70 );
-		
+		mdlPanel:SetCamPos(Vector(100, 0, 30))
+		mdlPanel:SetLookAt(Vector(0, 0, 30))
+		mdlPanel:SetFOV(70)
 	end
-	FarButton:SetPos(10, 80);
+	FarButton:SetPos(10, 80)
 	
-	local OkButton = vgui.Create("DButton", ModelWindow);
-	OkButton:SetText(TEXT.OK);
-	OkButton.DoClick = function()
+	local OkButton = vgui.Create("DButton", ModelWindow)
+	OkButton:SetText(TEXT.OK)
 
-		SetChosenModel(mdlPanel.Entity:GetModel());
-		ModelWindow:Remove();
-		ModelWindow = nil;
-		
+	OkButton.DoClick = function()
+		SetChosenModel(mdlPanel.Entity:GetModel())
+		ModelWindow:Remove()
+		ModelWindow = nil
 	end
-	OkButton:SetPos(10, 100);
+
+	OkButton:SetPos(10, 100)
 
 	function mdlPanel:LayoutEntity(Entity)
-
-		self:RunAnimation();
-		Entity:SetAngles( Angle( 0, RotateSlider:GetValue(), 0) )
-		
+		self:RunAnimation()
+		Entity:SetAngles(Angle(0, RotateSlider:GetValue(), 0))
 	end
 
-	local i = 1;
+	local i = 1
 	
-	local LastMdl = vgui.Create( "DButton", ModelWindow )
+	local LastMdl = vgui.Create("DButton", ModelWindow)
 	LastMdl:SetText("Prev")
 	LastMdl.DoClick = function()
-
-		i = i - 1;
+		i = i - 1
 		
-		if(i == 0) then
-			i = #ValidCakeModels;
+		if i == 0 then
+			i = #ValidCakeModels
 		end
 		
-		mdlPanel:SetModel(ValidCakeModels[i]);
-		
+		mdlPanel:SetModel(ValidCakeModels[i])
 	end
 
-	LastMdl:SetPos(10, 165);
+	LastMdl:SetPos(10, 165)
 
-	local NextMdl = vgui.Create( "DButton", ModelWindow )
+	local NextMdl = vgui.Create("DButton", ModelWindow)
 	NextMdl:SetText("Next")
 	NextMdl.DoClick = function()
+		i = i + 1
 
-		i = i + 1;
-
-		if(i > #ValidCakeModels) then
-			i = 1;
+		if i > #ValidCakeModels then
+			i = 1
 		end
 		
-		mdlPanel:SetModel(ValidCakeModels[i]);
-		
+		mdlPanel:SetModel(ValidCakeModels[i])
 	end
-	NextMdl:SetPos( 245, 165);
+	NextMdl:SetPos(245, 165)
 	
-	ModelWindow:SetSize( 320, 330 )
-	ModelWindow:Center()	
+	ModelWindow:SetSize(320, 330)
+	ModelWindow:Center()
 	ModelWindow:MakePopup()
-	ModelWindow:SetKeyboardInputEnabled( false )
-	
+	ModelWindow:SetKeyboardInputEnabled(false)
 end
 
 function InitHUDMenu()
+	InitHiddenButton()
 
-	InitHiddenButton();
-
-	HUDMenu = vgui.Create( "DFrame" )
-	HUDMenu:SetPos( ScrW() - 130 - 5, 5 )
-	HUDMenu:SetSize( 130, 150 )
-	HUDMenu:SetTitle( TEXT.PlayerInformation )
-	HUDMenu:SetVisible( true )
-	HUDMenu:SetDraggable( false )
-	HUDMenu:ShowCloseButton( false )
-	HUDMenu:SetAnimationEnabled( true )
+	HUDMenu = vgui.Create("DFrame")
+	HUDMenu:SetPos(ScrW() - 130 - 5, 5)
+	HUDMenu:SetSize(130, 150)
+	HUDMenu:SetTitle(TEXT.PlayerInformation)
+	HUDMenu:SetVisible(true)
+	HUDMenu:SetDraggable(false)
+	HUDMenu:ShowCloseButton(false)
+	HUDMenu:SetAnimationEnabled(true)
 	
-	local label = vgui.Create("DLabel", HUDMenu);
-	label:SetWide(0);
-	label:SetPos(8, 25);
-	label:SetText(TEXT.Name .. ": " .. LocalPlayer():Nick());
+	local label = vgui.Create("DLabel", HUDMenu)
+	label:SetWide(0)
+	label:SetPos(8, 25)
+	label:SetText(TEXT.Name .. ": " .. LocalPlayer():Nick())
 	
-	local label4 = vgui.Create("DLabel", HUDMenu);
-	label4:SetWide(0);
-	label4:SetPos(8, 55);
-	label4:SetText(TEXT.Association .. ": " .. team.GetName(LocalPlayer():Team()));
+	local label4 = vgui.Create("DLabel", HUDMenu)
+	label4:SetWide(0)
+	label4:SetPos(8, 55)
+	label4:SetText(TEXT.Association .. ": " .. team.GetName(LocalPlayer():Team()))
 	
-	local spawnicon = vgui.Create( "SpawnIcon", HUDMenu);
-	spawnicon:SetSize( 128, 128 );
-	spawnicon:SetModel(LocalPlayer():GetModel());
-	spawnicon:SetPos(1,21);
+	local spawnicon = vgui.Create("SpawnIcon", HUDMenu)
+	spawnicon:SetSize(128, 128)
+	spawnicon:SetModel(LocalPlayer():GetModel())
+	spawnicon:SetPos(1, 21)
 	print("Model: " .. LocalPlayer():GetModel())
-	spawnicon:SetToolTip(TEXT.OpenPlayerMenu);
-	spawnicon:SetAnimationEnabled( true );
+	spawnicon:SetToolTip(TEXT.OpenPlayerMenu)
+	spawnicon:SetAnimationEnabled(true)
 
 	local lastmodel = LocalPlayer():GetModel()
 	
-	local FadeSize = 130;
+	local FadeSize = 130
 	local NeedsUpdate = false
 	
 	function UpdateGUIData()
-		label:SetText(TEXT.Name .. ": " .. LocalPlayer():Nick());
+		label:SetText(TEXT.Name .. ": " .. LocalPlayer():Nick())
 		
-		label4:SetText(TEXT.Association .. ": " .. team.GetName(LocalPlayer():Team()));
+		label4:SetText(TEXT.Association .. ": " .. team.GetName(LocalPlayer():Team()))
 
 		if lastmodel ~= LocalPlayer():GetModel() then
 			lastmodel = LocalPlayer():GetModel()
 			spawnicon:SetModel(LocalPlayer():GetModel())
 		end
-		spawnicon:SetToolTip(TEXT.PlayerImage);
+		spawnicon:SetToolTip(TEXT.PlayerImage)
 	end
 	
 	spawnicon.PaintOver = function()
-		spawnicon:SetPos(FadeSize - 129, 21);
-		HUDMenu:SetSize(FadeSize, 150);
-		HUDMenu:SetPos(ScrW() - FadeSize - 5, 5 );
+		spawnicon:SetPos(FadeSize - 129, 21)
+		HUDMenu:SetSize(FadeSize, 150)
+		HUDMenu:SetPos(ScrW() - FadeSize - 5, 5)
 		
-		label:SetWide(FadeSize - 128);
-		label4:SetWide(FadeSize - 128);
+		label:SetWide(FadeSize - 128)
+		label4:SetWide(FadeSize - 128)
 		
 		if spawnicon:IsHovered() then
 			if FadeSize < 400 then
 				FadeSize = FadeSize + 5
 			end
-			label:SetVisible( true );
-			label4:SetVisible( true );
+			label:SetVisible(true)
+			label4:SetVisible(true)
 		else
 			if FadeSize > 130 then
 				FadeSize = FadeSize - 5
 			else
-				label:SetVisible( false );
-				label4:SetVisible( false );
+				label:SetVisible(false)
+				label4:SetVisible(false)
 			end
 		end
 		
-		UpdateGUIData();
+		UpdateGUIData()
 	end
 end
 
@@ -433,260 +419,266 @@ local function BanPlayer(ply)
 end
 
 function CreatePlayerMenu()
-	if(PlayerMenu) then
-		PlayerMenu:Remove();
-		PlayerMenu = nil;
+	if PlayerMenu then
+		PlayerMenu:Remove()
+		PlayerMenu = nil
 	end
 	
-	PlayerMenu = vgui.Create( "DFrame" )
-	PlayerMenu:SetPos( ScrW() / 2 - 320, ScrH() / 2 - 240 )
-	PlayerMenu:SetSize( 640, 480 )
-	PlayerMenu:SetTitle( TEXT.PlayerMenu )
-	PlayerMenu:SetVisible( true )
-	PlayerMenu:SetDraggable( true )
-	PlayerMenu:ShowCloseButton( true )
+	PlayerMenu = vgui.Create("DFrame")
+	PlayerMenu:SetPos(ScrW() / 2 - 320, ScrH() / 2 - 240)
+	PlayerMenu:SetSize(640, 480)
+	PlayerMenu:SetTitle(TEXT.PlayerMenu)
+	PlayerMenu:SetVisible(true)
+	PlayerMenu:SetDraggable(true)
+	PlayerMenu:ShowCloseButton(true)
 	PlayerMenu:MakePopup()
 	
-	PropertySheet = vgui.Create( "DPropertySheet" )
+	PropertySheet = vgui.Create("DPropertySheet")
 	PropertySheet:SetParent(PlayerMenu)
-	PropertySheet:SetPos( 2, 30 )
-	PropertySheet:SetSize( 636, 448 )
+	PropertySheet:SetPos(2, 30)
+	PropertySheet:SetSize(636, 448)
+
 	PropertySheet.Paint = function()
 		-- A nice, dark background color so you can read the text
-		surface.SetDrawColor( 40, 40, 40, 255 )
-		surface.DrawRect( 0, 0, PropertySheet:GetWide(), PropertySheet:GetTall())
+		surface.SetDrawColor(40, 40, 40, 255)
+		surface.DrawRect(0, 0, PropertySheet:GetWide(), PropertySheet:GetTall())
 	end
 	
-	local PlayerInfo = vgui.Create( "DPanelList" )
-	PlayerInfo:SetPadding(20);
-	PlayerInfo:SetSpacing(20);
-	PlayerInfo:EnableHorizontal(false);
+	local PlayerInfo = vgui.Create("DPanelList")
+	PlayerInfo:SetPadding(20)
+	PlayerInfo:SetSpacing(20)
+	PlayerInfo:EnableHorizontal(false)
 	
-	local icdata = vgui.Create( "DForm" );
-	icdata:SetPadding(4);
-	icdata:SetName(LocalPlayer():Nick() or "");
+	local icdata = vgui.Create("DForm")
+	icdata:SetPadding(4)
+	icdata:SetName(LocalPlayer():Nick() or "")
 	
-	local FullData = vgui.Create("DPanelList");
-	FullData:SetSize(0, 84);
-	FullData:SetPadding(10);
+	local FullData = vgui.Create("DPanelList")
+	FullData:SetSize(0, 84)
+	FullData:SetPadding(10)
 	
-	local DataList = vgui.Create("DIconLayout");
-	DataList:SetSize(0, 64);
-	DataList:SetSpaceY(0);
-	DataList:SetSpaceX(0);
+	local DataList = vgui.Create("DIconLayout")
+	DataList:SetSize(0, 64)
+	DataList:SetSpaceY(0)
+	DataList:SetSpaceX(0)
 	
-	local spawnicon = vgui.Create( "SpawnIcon");
-	spawnicon:SetModel(LocalPlayer():GetModel());
-	spawnicon:SetSize( 64, 64 );
-	DataList:Add(spawnicon):SetSize(64, 64);
+	local spawnicon = vgui.Create("SpawnIcon")
+	spawnicon:SetModel(LocalPlayer():GetModel())
+	spawnicon:SetSize(64, 64)
+	DataList:Add(spawnicon):SetSize(64, 64)
 	
-	local DataList2 = vgui.Create( "DPanelList" )
+	local DataList2 = vgui.Create("DPanelList")
 	
-	local label3 = vgui.Create("DLabel");
-	label3:SetText(TEXT.Association .. ": " .. team.GetName(LocalPlayer():Team()));
-	DataList2:AddItem(label3);
+	local label3 = vgui.Create("DLabel")
+	label3:SetText(TEXT.Association .. ": " .. team.GetName(LocalPlayer():Team()))
+	DataList2:AddItem(label3)
 
-	local Divider = vgui.Create("DHorizontalDivider");
-	Divider:SetLeft(spawnicon);
-	Divider:SetRight(DataList2);
-	Divider:SetLeftWidth(64);
-	Divider:SetHeight(64);
+	local Divider = vgui.Create("DHorizontalDivider")
+	Divider:SetLeft(spawnicon)
+	Divider:SetRight(DataList2)
+	Divider:SetLeftWidth(64)
+	Divider:SetHeight(64)
 	
-	DataList:Add(spawnicon);
-	DataList:Add(DataList2);
-	DataList:Add(Divider);
+	DataList:Add(spawnicon)
+	DataList:Add(DataList2)
+	DataList:Add(Divider)
 
 	FullData:AddItem(DataList)
 	
 	icdata:AddItem(FullData)
 	
-	local vitals = vgui.Create( "DForm" );
-	vitals:SetPadding(4);
-	vitals:SetName(TEXT.VitalSigns);
+	local vitals = vgui.Create("DForm")
+	vitals:SetPadding(4)
+	vitals:SetName(TEXT.VitalSigns)
 	
-	local VitalData = vgui.Create("DPanelList");
+	local VitalData = vgui.Create("DPanelList")
 	VitalData:SetAutoSize(true)
-	VitalData:SetPadding(10);
-	vitals:AddItem(VitalData);
+	VitalData:SetPadding(10)
+	vitals:AddItem(VitalData)
 	
 	local healthstatus = ""
-	local hp = LocalPlayer():Health();
+	local hp = LocalPlayer():Health()
 	
-	if(!LocalPlayer():Alive()) then healthstatus = TEXT.Dead;
-	elseif(hp > 95) then healthstatus = TEXT.Healthy;
-	elseif(hp > 50 and hp < 95) then healthstatus = TEXT.OK;
-	elseif(hp > 30 and hp < 50) then healthstatus = TEXT.NearDeath;
-	elseif(hp > 1 and hp < 30) then healthstatus = TEXT.DeathImminent; end
+	if(!LocalPlayer():Alive()) then healthstatus = TEXT.Dead
+	elseif(hp > 95) then healthstatus = TEXT.Healthy
+	elseif(hp > 50 and hp < 95) then healthstatus = TEXT.OK
+	elseif(hp > 30 and hp < 50) then healthstatus = TEXT.NearDeath
+	elseif(hp > 1 and hp < 30) then
+		healthstatus = TEXT.DeathImminent
+	end
 	
-	local health = vgui.Create("DLabel");
-	health:SetText("Vitals: " .. healthstatus);
-	VitalData:AddItem(health);
+	local health = vgui.Create("DLabel")
+	health:SetText("Vitals: " .. healthstatus)
+	VitalData:AddItem(health)
 	
 	PlayerInfo:AddItem(icdata)
 	PlayerInfo:AddItem(vitals)
 	
-	CharPanel = vgui.Create( "DPanelList" )
-	CharPanel:SetPadding(20);
-	CharPanel:SetSpacing(20);
-	CharPanel:EnableHorizontal(false);
+	CharPanel = vgui.Create("DPanelList")
+	CharPanel:SetPadding(20)
+	CharPanel:SetSpacing(20)
+	CharPanel:EnableHorizontal(false)
 	
-	local newcharform = vgui.Create( "DForm" );
-	newcharform:SetPadding(4);
-	newcharform:SetName(TEXT.NewCharacter);
-	newcharform:SetAutoSize(true);
+	local newcharform = vgui.Create("DForm")
+	newcharform:SetPadding(4)
+	newcharform:SetName(TEXT.NewCharacter)
+	newcharform:SetAutoSize(true)
 	
-	local CharMenu = vgui.Create( "DPanelList" )
-	newcharform:AddItem(CharMenu);
-	CharMenu:SetSize( 316, 386 )
-	CharMenu:SetPadding(10);
-	CharMenu:SetSpacing(20);
-	CharMenu:EnableVerticalScrollbar();
-	CharMenu:EnableHorizontal(false);
-
-
+	local CharMenu = vgui.Create("DPanelList")
+	newcharform:AddItem(CharMenu)
+	CharMenu:SetSize(316, 386)
+	CharMenu:SetPadding(10)
+	CharMenu:SetSpacing(20)
+	CharMenu:EnableVerticalScrollbar()
+	CharMenu:EnableHorizontal(false)
 	
-	local label = vgui.Create("DLabel");
-	CharMenu:AddItem(label);
-	label:SetSize(400, 25);
-	label:SetPos(5, 25);
-	label:SetText(TEXT.WelcomeToCakescriptG2);
+	local label = vgui.Create("DLabel")
+	CharMenu:AddItem(label)
+	label:SetSize(400, 25)
+	label:SetPos(5, 25)
+	label:SetText(TEXT.WelcomeToCakescriptG2)
 
-	local info = vgui.Create( "DForm" );
-	info:SetName(TEXT.PersonalInformation);
-	CharMenu:AddItem(info);
+	local info = vgui.Create("DForm")
+	info:SetName(TEXT.PersonalInformation)
+	CharMenu:AddItem(info)
 
-	local label = vgui.Create("DLabel");
-	info:AddItem(label);
-	label:SetSize(30,25);
-	label:SetPos(150, 50);
-	label:SetText(TEXT.First .. ": ");
+	local label = vgui.Create("DLabel")
+	info:AddItem(label)
+	label:SetSize(30, 25)
+	label:SetPos(150, 50)
+	label:SetText(TEXT.First .. ": ")
 
-	local firstname = vgui.Create("DTextEntry");
-	info:AddItem(firstname);
-	firstname:SetSize(100,25);
-	firstname:SetPos(185, 50);
-	firstname:SetText("");
+	local firstname = vgui.Create("DTextEntry")
+	info:AddItem(firstname)
+	firstname:SetSize(100, 25)
+	firstname:SetPos(185, 50)
+	firstname:SetText("")
 
-	local label = vgui.Create("DLabel");
-	info:AddItem(label);
-	label:SetSize(30,25);
-	label:SetPos(5, 50);
-	label:SetText(TEXT.Last .. ": ");
+	local label = vgui.Create("DLabel")
+	info:AddItem(label)
+	label:SetSize(30,25)
+	label:SetPos(5, 50)
+	label:SetText(TEXT.Last .. ": ")
 
-	local lastname = vgui.Create("DTextEntry");
-	info:AddItem(lastname);
-	lastname:SetSize(100,25);
-	lastname:SetPos(40, 50);
-	lastname:SetText("");
+	local lastname = vgui.Create("DTextEntry")
+	info:AddItem(lastname)
+	lastname:SetSize(100, 25)
+	lastname:SetPos(40, 50)
+	lastname:SetText("")
 
-	local spawnicon = nil;
+	local spawnicon = nil
 
-	local modelform = vgui.Create( "DForm" );
-	modelform:SetPadding(4);
-	modelform:SetName(TEXT.Appearance);
-	CharMenu:AddItem(modelform);
+	local modelform = vgui.Create("DForm")
+	modelform:SetPadding(4)
+	modelform:SetName(TEXT.Appearance)
+	CharMenu:AddItem(modelform)
 
-	local OpenButton = vgui.Create( "DButton" );
-	OpenButton:SetText("Select Model");
-	OpenButton.DoClick = CreateModelWindow;
-	modelform:AddItem(OpenButton);
+	local OpenButton = vgui.Create("DButton")
+	OpenButton:SetText("Select Model")
+	OpenButton.DoClick = CreateModelWindow
+	modelform:AddItem(OpenButton)
 
-	local apply = vgui.Create("DButton");
-	apply:SetSize(100, 25);
-	apply:SetText(TEXT.CreateNewCharacter);
-	apply.DoClick = function ( btn )
-		if(firstname:GetValue() == "" or lastname:GetValue() == "") then
-			LocalPlayer():PrintMessage(3, TEXT.FirstNameLastNameError);
-			return;
+	local apply = vgui.Create("DButton")
+	apply:SetSize(100, 25)
+	apply:SetText(TEXT.CreateNewCharacter)
+
+	apply.DoClick = function (btn)
+		if firstname:GetValue() == "" or lastname:GetValue() == "" then
+			LocalPlayer():PrintMessage(3, TEXT.FirstNameLastNameError)
+			return
 		end
 		
-		if(!table.HasValue(ValidCakeModels, ChosenModel)) then
-			LocalPlayer():PrintMessage(3, ChosenModel .. " " .. TEXT.XisNotAValidModel);
-			return;
+		if not table.HasValue(ValidCakeModels, ChosenModel) then
+			LocalPlayer():PrintMessage(3, ChosenModel .. " " .. TEXT.XisNotAValidModel)
+			return
 		end
 		
-		RunConsoleCommand("rp_startcreate");
-		RunConsoleCommand("rp_setmodel", ChosenModel);
-		RunConsoleCommand("rp_changename", firstname:GetValue() .. " " .. lastname:GetValue());
+		net.Start("ncStartCreate")
+		net.SendToServer()
+
+		net.Start("ncSetModel")
+		net.WriteString(ChosenModel)
+		net.SendToServer()
+
+		RunConsoleCommand("rp_changename", firstname:GetValue() .. " " .. lastname:GetValue())
+
 		LocalPlayer().MyModel = ""
-		RunConsoleCommand("rp_finishcreate");
+
+		net.Start("ncFinishCreate")
+		net.SendToServer()
 		
-		PlayerMenu:Remove();
-		PlayerMenu = nil;
+		PlayerMenu:Remove()
+		PlayerMenu = nil
 	end
-	CharMenu:AddItem(apply);
+	CharMenu:AddItem(apply)
 
-	local selectcharform = vgui.Create( "DForm" );
+	local selectcharform = vgui.Create("DForm")
 	selectcharform:SetPadding(4);
-	selectcharform:SetName(TEXT.SelectCharacter);
-	selectcharform:SetSize(316, 386);
+	selectcharform:SetName(TEXT.SelectCharacter)
+	selectcharform:SetSize(316, 386)
 
-	local charlist = vgui.Create( "DPanelList" );
+	local charlist = vgui.Create("DPanelList")
 	
-	charlist:SetSize( 316, 386 )
-	charlist:SetPadding(10);
-	charlist:SetSpacing(20);
-	charlist:EnableVerticalScrollbar();
-	charlist:EnableHorizontal(true);
+	charlist:SetSize(316, 386)
+	charlist:SetPadding(10)
+	charlist:SetSpacing(20)
+	charlist:EnableVerticalScrollbar()
+	charlist:EnableHorizontal(true)
 
-	
-	local n = 1;
-	if(ExistingChars[n] != nil) then
-	
-		mdlPanel = vgui.Create( "DModelPanel" )
-		mdlPanel:SetSize( 280, 280 )
-		mdlPanel:SetModel( ExistingChars[n]['model'] )
-		mdlPanel:SetAnimSpeed( 0.0 )
-		mdlPanel:SetAnimated( false )
-		mdlPanel:SetAmbientLight( Color( 50, 50, 50 ) )
-		mdlPanel:SetDirectionalLight( BOX_TOP, Color( 255, 255, 255 ) )
-		mdlPanel:SetDirectionalLight( BOX_FRONT, Color( 255, 255, 255 ) )
-		mdlPanel:SetCamPos( Vector( 150, 0, 40 ) )
-		mdlPanel:SetLookAt( Vector( 0, 0, 40 ) )
-		mdlPanel:SetFOV( 70 )
+	local n = 1
+
+	if ExistingChars[n] ~= nil then
+		mdlPanel = vgui.Create("DModelPanel")
+		mdlPanel:SetSize(280, 280)
+		mdlPanel:SetModel(ExistingChars[n]['model'])
+		mdlPanel:SetAnimSpeed(0.0)
+		mdlPanel:SetAnimated(false)
+		mdlPanel:SetAmbientLight(Color(50, 50, 50))
+		mdlPanel:SetDirectionalLight(BOX_TOP, Color(255, 255, 255))
+		mdlPanel:SetDirectionalLight(BOX_FRONT, Color(255, 255, 255))
+		mdlPanel:SetCamPos(Vector(150, 0, 40))
+		mdlPanel:SetLookAt(Vector(0, 0, 40))
+		mdlPanel:SetFOV(70)
 
 		mdlPanel.PaintOver = function()
-			surface.SetTextColor(Color(255,255,255,255));
-			surface.SetFont("Trebuchet18");
-			surface.SetTextPos((280 - surface.GetTextSize(ExistingChars[n]['name'])) / 2, 260);
+			surface.SetTextColor(Color(255, 255, 255, 255))
+			surface.SetFont("Trebuchet18")
+			surface.SetTextPos((280 - surface.GetTextSize(ExistingChars[n]['name'])) / 2, 260)
 			surface.DrawText(ExistingChars[n]['name'])
 		end
 		
 		function mdlPanel:OnMousePressed()
 			print("selected character " .. tostring(n))
-			RunConsoleCommand("rp_selectchar", tostring(n));
+			RunConsoleCommand("rp_selectchar", tostring(n))
 			LocalPlayer().MyModel = ""
-			PlayerMenu:Remove();
-			PlayerMenu = nil;
-			
+			PlayerMenu:Remove()
+			PlayerMenu = nil
 		end
 
 		function mdlPanel:LayoutEntity(Entity)
-
-			self:RunAnimation();
-			
+			self:RunAnimation()
 		end
 		
 		function InitAnim()
 			if IsValid(mdlPanel.Entity) then
-				local iSeq = mdlPanel.Entity:LookupSequence( "idle_all_angry" );
-				mdlPanel.Entity:ResetSequence(iSeq);
+				local iSeq = mdlPanel.Entity:LookupSequence("idle_all_angry")
+				mdlPanel.Entity:ResetSequence(iSeq)
 			end
 		end
 		
 		InitAnim()
-		charlist:AddItem(mdlPanel);
-		
+
+		charlist:AddItem(mdlPanel)
 	end
 	
-	local chars = vgui.Create("DListView");
-	chars:SetSize(250, 100);
+	local chars = vgui.Create("DListView")
+	chars:SetSize(250, 100)
 	chars:SetMultiSelect(false)
-	chars:AddColumn(TEXT.CharacterName);
+	chars:AddColumn(TEXT.CharacterName)
 
 	function chars:OnRowSelected(LineID, Line)
 		n = LineID
-		mdlPanel:SetModel(ExistingChars[n]['model']);
+		mdlPanel:SetModel(ExistingChars[n].model)
 		InitAnim()
 	end
 
@@ -695,75 +687,73 @@ function CreatePlayerMenu()
 	end
 	
 	for k, v in pairs(ExistingChars) do
-		chars:AddLine(v['name']);
+		chars:AddLine(v.name)
 	end
 	
-	selectcharform:AddItem(chars);
-	selectcharform:AddItem(charlist);
+	selectcharform:AddItem(chars)
+	selectcharform:AddItem(charlist)
 
+	local divider = vgui.Create("DHorizontalDivider")
+	divider:SetLeft(newcharform)
+	divider:SetRight(selectcharform)
+	divider:SetLeftWidth(316);
 
-	local divider = vgui.Create("DHorizontalDivider");
-	divider:SetLeft(newcharform);
-	divider:SetRight(selectcharform);
-	divider:SetLeftWidth(316); 
-
-	CharPanel:AddItem(newcharform);
-	CharPanel:AddItem(selectcharform);
-	CharPanel:AddItem(divider);
+	CharPanel:AddItem(newcharform)
+	CharPanel:AddItem(selectcharform)
+	CharPanel:AddItem(divider)
 	
-	CityCommands = vgui.Create( "DPanelList" )
-	CityCommands:SetPadding(20);
-	CityCommands:SetSpacing(20);
-	CityCommands:EnableHorizontal(true);
-	CityCommands:EnableVerticalScrollbar(true);
+	CityCommands = vgui.Create("DPanelList")
+	CityCommands:SetPadding(20)
+	CityCommands:SetSpacing(20)
+	CityCommands:EnableHorizontal(true)
+	CityCommands:EnableVerticalScrollbar(true)
 	
-	local CityFlags = vgui.Create("DListView");
-	CityFlags:SetSize(550,446);
+	local CityFlags = vgui.Create("DListView")
+	CityFlags:SetSize(550, 446)
 	CityFlags:SetMultiSelect(false)
-	CityFlags:AddColumn(TEXT.FlagName);
-	CityFlags:AddColumn(TEXT.Salary);
-	CityFlags:AddColumn(TEXT.BusinessAccess);
-	CityFlags:AddColumn(TEXT.PublicFlag);
-	CityFlags:AddColumn(TEXT.FlagKey);
+	CityFlags:AddColumn(TEXT.FlagName)
+	CityFlags:AddColumn(TEXT.Salary)
+	CityFlags:AddColumn(TEXT.BusinessAccess)
+	CityFlags:AddColumn(TEXT.PublicFlag)
+	CityFlags:AddColumn(TEXT.FlagKey)
 	
 	function CityFlags:DoDoubleClick(LineID, Line)
-		RunConsoleCommand("rp_flag", TeamTable[LineID].flagkey);
-		PlayerMenu:Remove();
-		PlayerMenu = nil;
-		
+		RunConsoleCommand("rp_flag", TeamTable[LineID].flagkey)
+		PlayerMenu:Remove()
+		PlayerMenu = nil
 	end
 	
 	for k, v in pairs(TeamTable) do
-		local yesno = "";
-		if(v.public) then
-			yesno = TEXT.Yes;
-		elseif(!v.public) then
-			yesno = TEXT.No;
+		local yesno = ""
+		if v.public then
+			yesno = TEXT.Yes
+		elseif not v.public then
+			yesno = TEXT.No
 		end
 		
-		local yesno2 = "";
-		if(v.business) then
-			yesno2 = TEXT.Yes;
-		elseif(!v.business) then
-			yesno2 = TEXT.No;
+		local yesno2 = ""
+		if v.business then
+			yesno2 = TEXT.Yes
+		elseif not v.business then
+			yesno2 = TEXT.No
 		end
 		
-		CityFlags:AddLine(v.name, tostring(v.salary), yesno2, yesno, v.flagkey);
+		CityFlags:AddLine(v.name, tostring(v.salary), yesno2, yesno, v.flagkey)
 	end
 	
-	CityCommands:AddItem(CityFlags);
+	CityCommands:AddItem(CityFlags)
 	
-	Inventory = vgui.Create( "DPanelList" )
-	Inventory:SetPadding(20);
-	Inventory:SetSpacing(20);
-	Inventory:EnableHorizontal(true);
-	Inventory:EnableVerticalScrollbar(true);
+	Inventory = vgui.Create("DPanelList")
+	Inventory:SetPadding(20)
+	Inventory:SetSpacing(20)
+	Inventory:EnableHorizontal(true)
+	Inventory:EnableVerticalScrollbar(true)
 	
 	for k, v in pairs(InventoryTable) do
-		local spawnicon = vgui.Create( "SpawnIcon" );
-		spawnicon:SetSize( 128, 128 );
-		spawnicon:SetModel(v.Model);
-		spawnicon:SetToolTip(v.Description);
+		local spawnicon = vgui.Create("SpawnIcon")
+		spawnicon:SetSize(128, 128)
+		spawnicon:SetModel(v.Model)
+		spawnicon:SetToolTip(v.Description)
 
 		if v.Class == "fire_extinguisher_powder" then
 			ang_new = spawnicon:GetLookAng():RotateAroundAxis(Vector(0, 1, 0), 135)
@@ -780,69 +770,66 @@ function CreatePlayerMenu()
 			spawnicon:Remove()
 		end
 		
-		spawnicon.DoClick = function ( btn )
-		
+		spawnicon.DoClick = function (btn)
 			local ContextMenu = DermaMenu()
 				ContextMenu:AddOption("Drop", function() RunConsoleCommand("rp_dropitem", v.Class); DeleteMyself(); end);
-			ContextMenu:Open();
-			
+			ContextMenu:Open()
 		end
 
 		spawnicon.Paint = function()
-			surface.SetDrawColor(Color(76, 76, 77, 255));
-			surface.DrawRect(0, 0, 128, 128);
+			surface.SetDrawColor(Color(76, 76, 77, 255))
+			surface.DrawRect(0, 0, 128, 128)
 		end
 		
 		spawnicon.PaintOver = function()
-			surface.SetTextColor(Color(255,255,255,255));
-			surface.SetFont("DefaultSmall");
-			surface.SetTextPos(64 - surface.GetTextSize(v.Name) / 2, 5);
+			surface.SetTextColor(Color(255, 255, 255, 255))
+			surface.SetFont("DefaultSmall")
+			surface.SetTextPos(64 - surface.GetTextSize(v.Name) / 2, 5)
 			surface.DrawText(v.Name)
 		end
 		
 		spawnicon.PaintOverHovered = function()
-			surface.SetTextColor(Color(255,255,255,255));
-			surface.SetFont("DefaultSmall");
-			surface.SetTextPos(64 - surface.GetTextSize(v.Name) / 2, 5);
+			surface.SetTextColor(Color(255, 255, 255, 255))
+			surface.SetFont("DefaultSmall")
+			surface.SetTextPos(64 - surface.GetTextSize(v.Name) / 2, 5)
 			surface.DrawText(v.Name .. " test")
 		end
 		
-		Inventory:AddItem(spawnicon);
+		Inventory:AddItem(spawnicon)
 	end
 	
-	Business = vgui.Create( "DPanelList" )
-	Business:SetPadding(20);
-	Business:SetSpacing(20);
-	Business:EnableHorizontal(true);
-	Business:EnableVerticalScrollbar(true);
-	if(TeamTable[LocalPlayer():Team()] != nil) then
-		if(TeamTable[LocalPlayer():Team()].business) then
+	Business = vgui.Create("DPanelList")
+	Business:SetPadding(20)
+	Business:SetSpacing(20)
+	Business:EnableHorizontal(true)
+	Business:EnableVerticalScrollbar(true)
+
+	if TeamTable[LocalPlayer():Team()] ~= nil then
+		if TeamTable[LocalPlayer():Team()].business then
 			for k, v in pairs(BusinessTable) do
-				local spawnicon = vgui.Create( "SpawnIcon");
-				spawnicon:SetSize( 128, 128 );
-				spawnicon:SetModel(v.Model);
-				spawnicon:SetToolTip(v.Description);
+				local spawnicon = vgui.Create("SpawnIcon")
+				spawnicon:SetSize(128, 128)
+				spawnicon:SetModel(v.Model)
+				spawnicon:SetToolTip(v.Description)
 				local itemView
 				if v.IsShipment then
-					itemView = vgui.Create( "DModelPanel", spawnicon);
-					itemView:SetSize( 128, 128 );
-					itemView:SetModel( v.ContentModel );
-					itemView:SetLookAt( Vector(0, 0, 0) );
-					itemView:SetCamPos( Vector(-20, 0, 0) );
-					itemView:SetAnimSpeed( 8 );
-					itemView:SetToolTip(v.Description);
+					itemView = vgui.Create("DModelPanel", spawnicon)
+					itemView:SetSize(128, 128)
+					itemView:SetModel(v.ContentModel)
+					itemView:SetLookAt(Vector(0, 0, 0))
+					itemView:SetCamPos(Vector(-20, 0, 0))
+					itemView:SetAnimSpeed(8)
+					itemView:SetToolTip(v.Description)
 				end
 				
-				spawnicon.DoClick = function ( btn )
-				
+				spawnicon.DoClick = function (btn)
 					local ContextMenu = DermaMenu()
-						if(tonumber(LocalPlayer():GetNWString("money")) >= v.Price) then
-							ContextMenu:AddOption(TEXT.Purchase, function() RunConsoleCommand("rp_buyitem", v.Class); end);
+						if tonumber(LocalPlayer():GetNWString("money")) >= v.Price then
+							ContextMenu:AddOption(TEXT.Purchase, function() RunConsoleCommand("rp_buyitem", v.Class); end)
 						else
-							ContextMenu:AddOption(TEXT.NotEnoughTokens);
+							ContextMenu:AddOption(TEXT.NotEnoughTokens)
 						end
-					ContextMenu:Open();
-					
+					ContextMenu:Open()
 				end
 
 				if itemView then
@@ -850,113 +837,113 @@ function CreatePlayerMenu()
 				end
 
 				spawnicon.Paint = function()
-					surface.SetDrawColor(Color(76, 76, 77, 255));
-					surface.DrawRect(0, 0, 128, 128);
+					surface.SetDrawColor(Color(76, 76, 77, 255))
+					surface.DrawRect(0, 0, 128, 128)
 				end
 				
 				spawnicon.PaintOver = function(self)
-					surface.SetTextColor(Color(255, 255, 255, 255));
-					surface.SetFont("ItemFont");
+					surface.SetTextColor(Color(255, 255, 255, 255))
+					surface.SetFont("ItemFont")
 
-					surface.SetTextPos(64 - surface.GetTextSize(v.Name) / 2, 5);
+					surface.SetTextPos(64 - surface.GetTextSize(v.Name) / 2, 5)
 					surface.DrawText(v.Name)
 
-					surface.SetTextPos(64 - surface.GetTextSize(v.Description) / 2, 17);
-					surface.DrawText(v.Description);
+					surface.SetTextPos(64 - surface.GetTextSize(v.Description) / 2, 17)
+					surface.DrawText(v.Description)
 
-					surface.SetFont("ItemFontCash");
+					surface.SetFont("ItemFontCash")
 					local toShow = tostring(v.Price) .. " Tokens"
 					surface.SetTextPos(128 - surface.GetTextSize(toShow) - 2, 115)
 					surface.DrawText(toShow)
 				end
 
-				Business:AddItem(spawnicon);
+				Business:AddItem(spawnicon)
 			end
-		elseif(!TeamTable[LocalPlayer():Team()].business) then
+		elseif not TeamTable[LocalPlayer():Team()].business then
 			local label = vgui.Create("DLabel")
-			label:SetText(TEXT.NoAccessToBusinessTab);
-			label:SetWide(400);
+			label:SetText(TEXT.NoAccessToBusinessTab)
+			label:SetWide(400)
 			
-			Business:AddItem(label);
+			Business:AddItem(label)
 		end
 	end
 	
-	Scoreboard = vgui.Create( "DListLayout" )
+	Scoreboard = vgui.Create("DListLayout")
 
 	-- Let's draw the SCOREBOARD.
 	
 	for k, v in pairs(player.GetAll()) do
-		local FullData = vgui.Create("DPanelList");
-		FullData:SetSize(0, 84);
-		FullData:SetPadding(10);
+		local FullData = vgui.Create("DPanelList")
+		FullData:SetSize(0, 84)
+		FullData:SetPadding(10)
 
-		local DataList = vgui.Create("DIconLayout");
-		DataList:SetSize(0, 64);
-		DataList:SetSpaceY(0);
-		DataList:SetSpaceX(0);
+		local DataList = vgui.Create("DIconLayout")
+		DataList:SetSize(0, 64)
+		DataList:SetSpaceY(0)
+		DataList:SetSpaceX(0)
 
-		local spawnicon = vgui.Create( "SpawnIcon");
-		spawnicon:SetModel( LocalPlayer( ):GetModel( ) );
-		spawnicon:SetSize( 64, 64 );
+		local spawnicon = vgui.Create("SpawnIcon")
+		spawnicon:SetModel(LocalPlayer():GetModel())
+		spawnicon:SetSize(64, 64)
 		spawnicon.DoClick = function()
 			if LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() then
-				local AdminFunctions = DermaMenu();
+				local AdminFunctions = DermaMenu()
 				AdminFunctions:AddOption(TEXT.Warn, function() WarnPlayer(v) end)
 				AdminFunctions:AddOption(TEXT.Kick, function() KickPlayer(v) end)
 				AdminFunctions:AddOption(TEXT.Ban, function() BanPlayer(v) end)
 				AdminFunctions:Open()
 			end
 		end
-		DataList:Add( spawnicon );
+		DataList:Add(spawnicon)
 
-		local DataList2 = vgui.Create( "DPanelList" );
+		local DataList2 = vgui.Create("DPanelList")
 		
-		local label = vgui.Create( "DLabel" );
-		label:SetText( TEXT.OOCName .. ": " .. v:Name() );
-		DataList2:AddItem( label );
+		local label = vgui.Create("DLabel")
+		label:SetText( TEXT.OOCName .. ": " .. v:Name())
+		DataList2:AddItem(label)
 		
-		local label3 = vgui.Create( "DLabel" );
-		label3:SetText( TEXT.Association .. ": " .. team.GetName(v:Team()) );
-		DataList2:AddItem( label3 );
+		local label3 = vgui.Create("DLabel")
+		label3:SetText(TEXT.Association .. ": " .. team.GetName(v:Team()))
+		DataList2:AddItem(label3)
 
-		local Divider = vgui.Create( "DHorizontalDivider" );
-		Divider:SetLeft( spawnicon );
-		Divider:SetRight( DataList2 );
-		Divider:SetLeftWidth( 64 );
-		Divider:SetHeight( 64 );
+		local Divider = vgui.Create("DHorizontalDivider")
+		Divider:SetLeft(spawnicon)
+		Divider:SetRight(DataList2)
+		Divider:SetLeftWidth(64)
+		Divider:SetHeight(64)
 
-		DataList:Add( spawnicon );
-		DataList:Add( DataList2 );
-		DataList:Add( Divider );
+		DataList:Add(spawnicon)
+		DataList:Add(DataList2)
+		DataList:Add(Divider)
 
-		FullData:AddItem( DataList );
+		FullData:AddItem(DataList)
 
-		Scoreboard:Add(FullData);
+		Scoreboard:Add(FullData)
 	end
 
-	local Help = vgui.Create( "DPanelList" )
-	Help:SetPadding(20);
-	Help:EnableHorizontal(false);
-	Help:EnableVerticalScrollbar(true);
+	local Help = vgui.Create("DPanelList")
+	Help:SetPadding(20)
+	Help:EnableHorizontal(false)
+	Help:EnableVerticalScrollbar(true)
 	
 	local function AddHelpLine(text)
-			local label = vgui.Create("DLabel");
-			label:SetText(text);
-			label:SizeToContents();
-			Help:AddItem(label);
+		local label = vgui.Create("DLabel")
+		label:SetText(text)
+		label:SizeToContents()
+		Help:AddItem(label)
 	end
 	
 	for k, v in pairs(TEXT.HelpLong) do
-		AddHelpLine(v);
+		AddHelpLine(v)
 	end
 
 	local Admin
 	if LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() then
-		Admin = vgui.Create( "DPanelList" )
-		Admin:SetPadding(20);
-		Admin:SetSpacing(20);
-		Admin:EnableHorizontal(true);
-		Admin:EnableVerticalScrollbar(true);
+		Admin = vgui.Create("DPanelList")
+		Admin:SetPadding(20)
+		Admin:SetSpacing(20)
+		Admin:EnableHorizontal(true)
+		Admin:EnableVerticalScrollbar(true)
 		local buttonsCommands = {}
 		buttonsCommands["Spawn a New ATM"] = TEXT.NewATMCommand
 		buttonsCommands["Freeze an ATM (look at it first)"] = TEXT.FreezeATMCommand
@@ -984,15 +971,15 @@ function CreatePlayerMenu()
 		end
 	end
 	
-	PropertySheet:AddSheet( TEXT.PlayerMenu, PlayerInfo, "icon16/user.png", false, false, TEXT.GeneralInfo);
-	PropertySheet:AddSheet( TEXT.CharacterMenu, CharPanel, "icon16/group.png", false, false, TEXT.CharSwitchOrNew);
-	PropertySheet:AddSheet( TEXT.Roles, CityCommands, "icon16/wrench.png", false, false, TEXT.CommonCommandsOrFlag);
+	PropertySheet:AddSheet( TEXT.PlayerMenu, PlayerInfo, "icon16/user.png", false, false, TEXT.GeneralInfo)
+	PropertySheet:AddSheet( TEXT.CharacterMenu, CharPanel, "icon16/group.png", false, false, TEXT.CharSwitchOrNew)
+	PropertySheet:AddSheet( TEXT.Roles, CityCommands, "icon16/wrench.png", false, false, TEXT.CommonCommandsOrFlag)
 	PropertySheet:AddSheet( TEXT.Backpack, Inventory, "icon16/box.png", false, false, TEXT.ViewYourInventory)
-	PropertySheet:AddSheet( TEXT.Business, Business, "icon16/box.png", false, false, TEXT.PurchaseItems);
-	PropertySheet:AddSheet( TEXT.Scoreboard, Scoreboard, "icon16/application_view_detail.png", false, false, TEXT.ViewScoreboard);		
-	PropertySheet:AddSheet( TEXT.Help, Help, "icon16/magnifier.png", false, false, TEXT.HelpTextMenu);
+	PropertySheet:AddSheet( TEXT.Business, Business, "icon16/box.png", false, false, TEXT.PurchaseItems)
+	PropertySheet:AddSheet( TEXT.Scoreboard, Scoreboard, "icon16/application_view_detail.png", false, false, TEXT.ViewScoreboard)
+	PropertySheet:AddSheet( TEXT.Help, Help, "icon16/magnifier.png", false, false, TEXT.HelpTextMenu)
 	if LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() then
-		PropertySheet:AddSheet( "Admin", Admin, "icon16/application_view_detail.png", false, false, TEXT.AdminCommandsMenu);
+		PropertySheet:AddSheet( "Admin", Admin, "icon16/application_view_detail.png", false, false, TEXT.AdminCommandsMenu)
 	end
 end
-usermessage.Hook("playermenu", CreatePlayerMenu);
+usermessage.Hook("playermenu", CreatePlayerMenu)

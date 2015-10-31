@@ -1,6 +1,6 @@
-PLUGIN.Name = "Zombie"; -- What is the plugin name
-PLUGIN.Author = "philxyz"; -- Author of the plugin
-PLUGIN.Description = "Zombie script"; -- The description or purpose of the plugin
+PLUGIN.Name = "Zombie" -- What is the plugin name
+PLUGIN.Author = "philxyz" -- Author of the plugin
+PLUGIN.Description = "Zombie script" -- The description or purpose of the plugin
 
 local timeLeft2 = 10
 local zombieOn = false

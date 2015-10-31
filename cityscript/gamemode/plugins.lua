@@ -8,49 +8,37 @@
 -------------------------------
 
 
-CAKE.Plugins = {  };
+CAKE.Plugins = {}
 
-function CAKE.LoadPlugin( schema, filename )
+function CAKE.LoadPlugin(schema, filename)
+	CAKE.CallHook("LoadPlugin", schema, filename)
 	
-	CAKE.CallHook( "LoadPlugin", schema, filename );
+	local path = "schemas/" .. schema .. "/plugins/" .. filename
 	
-	local path = "schemas/" .. schema .. "/plugins/" .. filename;
+	PLUGIN = {}
 	
-	PLUGIN = {  };
+	include(path)
 	
-	include( path );
+	CAKE.DayLog("script.txt", TEXT.LoadingPluginBy(PLUGIN.Name, PLUGIN.Author, PLUGIN.Description))
 	
-	CAKE.DayLog( "script.txt", TEXT.LoadingPluginBy(PLUGIN.Name, PLUGIN.Author, PLUGIN.Description) );
-	
-	table.insert( CAKE.Plugins, PLUGIN );
-	
+	table.insert(CAKE.Plugins, PLUGIN)
 end
 
-function CAKE.ReRoute( )
-
-	for k, v in pairs( CAKE ) do
-	
-		if( type( v ) == "function" ) then
-		
-			GM[ k ] = CAKE[ k ];
-			
+function CAKE.ReRoute()
+	for k, v in pairs(CAKE) do
+		if type(v) == "function" then
+			GM[k] = CAKE[k]
 		end
-		
 	end
-	
 end
 
-function CAKE.InitPlugins( )
-
-	for _, PLUGIN in pairs( CAKE.Plugins ) do
+function CAKE.InitPlugins()
+	for _, PLUGIN in pairs(CAKE.Plugins) do
+		CAKE.CallHook("InitPlugin", _, PLUGIN)
+		CAKE.DayLog("script.txt", TEXT.InitializingPlugin .. ": " .. PLUGIN.Name)
 		
-		CAKE.CallHook( "InitPlugin", _, PLUGIN );
-		CAKE.DayLog("script.txt", TEXT.InitializingPlugin .. ": " .. PLUGIN.Name);
-		
-		if(PLUGIN.Init) then
-			PLUGIN.Init( );
+		if PLUGIN.Init then
+			PLUGIN.Init()
 		end
-		
 	end
-	
 end

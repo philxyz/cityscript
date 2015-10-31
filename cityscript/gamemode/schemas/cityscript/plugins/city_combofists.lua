@@ -1,6 +1,6 @@
-PLUGIN.Name = "Combo Fists 1.11"; -- What is the plugin name
-PLUGIN.Author = "L337N008 / Kogitsune / lopoi"; -- Author of the plugin
-PLUGIN.Description = "Combo-Fists Plugin."; -- The description or purpose of the plugin
+PLUGIN.Name = "Combo Fists 1.11" -- What is the plugin name
+PLUGIN.Author = "L337N008 / Kogitsune / lopoi" -- Author of the plugin
+PLUGIN.Description = "Combo-Fists Plugin." -- The description or purpose of the plugin
 
 resource.AddFile("models/weapons/w_fists_t.mdl")
 resource.AddFile("models/weapons/w_fists_t.vvd")

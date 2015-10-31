@@ -1,6 +1,6 @@
-PLUGIN.Name = "Meteor"; -- What is the plugin name
-PLUGIN.Author = "philxyz"; -- Author of the plugin
-PLUGIN.Description = "Meteor script"; -- The description or purpose of the plugin
+PLUGIN.Name = "Meteor" -- What is the plugin name
+PLUGIN.Author = "philxyz" -- Author of the plugin
+PLUGIN.Description = "Meteor script" -- The description or purpose of the plugin
 
 local stormOn = false
 local timeLeft = 10

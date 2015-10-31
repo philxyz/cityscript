@@ -9,16 +9,16 @@
 -------------------------------
 
 -- Set up the gamemode
-DeriveGamemode( "sandbox" );
-GM.Name = "CakeScript G2 1.0.0";
+DeriveGamemode("sandbox")
+GM.Name = "CakeScript G2 1.0.0"
 
 -- Define global variables
-CAKE = {  };
-CAKE.Running = false;
-CAKE.Loaded = false;
+CAKE = {}
+CAKE.Running = false
+CAKE.Loaded = false
 
-CAKE.models = {  };
-readysent = false;
+CAKE.models = {}
+readysent = false
 
 surface.CreateFont("ScoreboardText", {
         font = "Tahoma",
@@ -28,32 +28,25 @@ surface.CreateFont("ScoreboardText", {
 })
 
 -- Client Includes
-include( "shared.lua" );
-include( "cl_upp.lua" ); -- Unobtrusive Prop Protection
-include( "player_shared.lua" );
-include( "cl_hud.lua" );
-include( "cl_charactercreate.lua" );
-include( "cl_playermenu.lua" );
-include( "cl_binds.lua" );
+include("shared.lua")
+include("cl_upp.lua") -- Unobtrusive Prop Protection
+include("player_shared.lua")
+include("cl_hud.lua")
+include("cl_charactercreate.lua")
+include("cl_playermenu.lua")
+include("cl_binds.lua")
 
-CAKE.Loaded = true;
+CAKE.Loaded = true
 
 -- Initialize the gamemode
-function GM:Initialize( )
-
-	CAKE.Running = true;
-
-	self.BaseClass:Initialize( );
-
+function GM:Initialize()
+	CAKE.Running = true
+	self.BaseClass:Initialize()
 end
 
-function GM:Think( )
-
-	if( vgui and readysent == false ) then -- VGUI is initalized, tell the server we're ready for character creation.
-	
-		LocalPlayer( ):ConCommand( "rp_ready\n" );
-		readysent = true;
-		
+function GM:Think()
+	if vgui and readysent == false then -- VGUI is initalized, tell the server we're ready for character creation.
+		LocalPlayer():ConCommand("rp_ready\n")
+		readysent = true
 	end
-	
 end

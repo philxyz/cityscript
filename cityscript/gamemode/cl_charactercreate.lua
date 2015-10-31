@@ -7,72 +7,64 @@
 -- Houses some functions for the character creation.
 -------------------------------
 
-TeamTable = {};
+TeamTable = {}
 
 function SetUpTeam(data)
-
 	local newteam = {}
-	newteam.id = data:ReadLong();
-	newteam.name = data:ReadString();
-	newteam.r = data:ReadLong();
-	newteam.g = data:ReadLong();
-	newteam.b = data:ReadLong();
-	newteam.a = data:ReadLong();
-	newteam.public = data:ReadBool();
-	newteam.salary = data:ReadLong();
-	newteam.flagkey = data:ReadString();
-	newteam.business = data:ReadBool();
+	newteam.id = data:ReadLong()
+	newteam.name = data:ReadString()
+	newteam.r = data:ReadLong()
+	newteam.g = data:ReadLong()
+	newteam.b = data:ReadLong()
+	newteam.a = data:ReadLong()
+	newteam.public = data:ReadBool()
+	newteam.salary = data:ReadLong()
+	newteam.flagkey = data:ReadString()
+	newteam.business = data:ReadBool()
 	
-	team.SetUp(newteam.id, newteam.name, Color(newteam.r,newteam.g,newteam.b,newteam.a));
-	TeamTable[newteam.id] = newteam;
-	
+	team.SetUp(newteam.id, newteam.name, Color(newteam.r,newteam.g,newteam.b,newteam.a))
+	TeamTable[newteam.id] = newteam
 end
-usermessage.Hook("setupteam", SetUpTeam);
+usermessage.Hook("setupteam", SetUpTeam)
 
-ChosenModel = "";
-ValidCakeModels = {};
+ChosenModel = ""
+ValidCakeModels = {}
 
-function AddModel( data )
-	table.insert( ValidCakeModels, data:ReadString( ) )
-	
+function AddModel(data)
+	table.insert(ValidCakeModels, data:ReadString())
 end
-usermessage.Hook( "addmodel", AddModel );
+usermessage.Hook("addmodel", AddModel)
 
-function SetChosenModel( mdl )
-	if( table.HasValue( ValidCakeModels, mdl ) ) then	
+function SetChosenModel(mdl)
+	if table.HasValue(ValidCakeModels, mdl) then
 		ChosenModel = mdl
 	else
-		LocalPlayer( ):PrintMessage( 3, CAKE.ChosenModel .. TEXT.XisNotAValidModel );
+		LocalPlayer():PrintMessage(3, CAKE.ChosenModel .. TEXT.XisNotAValidModel)
 	end
 end
 
-ExistingChars = {  }
+ExistingChars = {}
 
-function ReceiveChar( data )
-
-	local n = data:ReadLong( );
-	ExistingChars[ n ] = {  }
-	ExistingChars[ n ][ 'name' ] = data:ReadString();
-	ExistingChars[ n ][ 'model' ] = data:ReadString();
+function ReceiveChar(data)
+	local n = data:ReadLong()
+	ExistingChars[n] = {}
+	ExistingChars[n].name = data:ReadString()
+	ExistingChars[n].model = data:ReadString()
 	
 end
-usermessage.Hook( "ReceiveChar", ReceiveChar );
+usermessage.Hook("ReceiveChar", ReceiveChar)
 
+local function CharacterCreatePanel(msg)
+	CreatePlayerMenu()
+	PlayerMenu:ShowCloseButton(false)
+	PropertySheet:SetActiveTab(PropertySheet.Items[2].Tab)
+	PropertySheet.SetActiveTab = function() end
 
-local function CharacterCreatePanel( msg )
-
-	CreatePlayerMenu( )
-	PlayerMenu:ShowCloseButton( false )
-	PropertySheet:SetActiveTab( PropertySheet.Items[ 2 ].Tab );
-	PropertySheet.SetActiveTab = function( ) end;
-
-	InitHUDMenu( );
+	InitHUDMenu()
 
 	-- If we should show the help info screen, do so.
-	if msg:ReadBool( ) then
-
-		ShowHelpPopup( );
+	if msg:ReadBool() then
+		ShowHelpPopup()
 	end
-
 end
-usermessage.Hook( "_cC", CharacterCreatePanel );
+usermessage.Hook("_cC", CharacterCreatePanel)

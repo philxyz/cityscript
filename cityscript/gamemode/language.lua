@@ -35,6 +35,7 @@ TEXT.ShowZombieCommand = "/showzombie"
 TEXT.ChooseATeamBeforeCreatingSpawns = "Please choose a team before creating or destroying spawn positions..."
 TEXT.RemovedAllSpawns = function(teamID) return "All custom spawn positions for team: " .. tostring(teamID) .. " removed! Use " .. TEXT.AddSpawnCommand .. " to create new ones." end
 TEXT.Amount = "amount"
+TEXT.NotFiniteNumber = "Amount given is not a finite number"
 TEXT.Citizen = "Citizen"
 TEXT.NameOrUserID = "name|userid"
 TEXT.Tokens = "Tokens"
@@ -439,24 +440,28 @@ TEXT.HelpLong = {
 	TEXT.AddExtraJailPosCommand .. " - Add an extra jail position. (admin / superadmin)",
 	"",
 	"",
-	"RECOMMENDED WORKSHOP PACKAGES FOR 100% FUNCTIONALITY:",
+	"REQUIRED WORKSHOP ADDONS FOR 100% FUNCTIONALITY:",
 	"",
-	"Required Addon: Counter-Strike: Source Game Content",
-	"Required Addon: CSS Realistic Weapons by Worshipper",
-	"Required Addon: Roleplaying Vehicles 1.0 by NastDye - http://www.garrysmod.org/downloads/?a=view&id=74216",
+	"CSS Weapons on M9K Base (108720350)",
+	"M9K Assault Rifles (128089118)",
+	"M9K Small Arms Pack (128093075)",
+	"M9K Heavy Weapons (128091208)",
+	"M9K Specialities (144982052)",
+	"Nuke (106565409),
 	"",
-	"BE AWARE: The Police Vehicles inside the zip are NOT addons and need to go directly into the garrysmod folder structure",
+	"Please note that for a server installation, you should copy these addons",
+	"from your client game's addons folder to your server's addons folder.",
+	"On the server, they should be named "ds_<id>.gma" where <id> is the id",
+	"of the workshop package.",
 	"",
-	"Required Addon: Nuke 4 by T.Bonita - http://www.garrysmod.org/downloads/?a=view&id=42571",
-	"",
-	"Optional Addon: Vehicle Upgrade addon by DarkNovaClan - http://www.garrysmod.org/downloads/?a=view&id=37419",
-	"Optional Addon: Skinswitcher by Mihara - http://www.garrysmod.org/downloads/?a=view&id=32752",
-	"Optional Addon: Sickness Vehicles for CityScript - http://www.garrysmod.org/downloads/?a=view&id=91119",
+	"You should also create a Workshop Collection containing the above packages",
+	"and supply it on the srcds command line - e.g. +host_workshop_collection <id>",
 	"",
 	"",
 	"CREDITS:",
-	"Nori for Cakescript G2",
+	"Nori / LuaBanana for Cakescript G2",
+	"philxyz for CityScript schema",
 	"SB Spy for Combo Fists",
-	"Feihc for Fire Extinguisher",
+	"philxyz for Fire Extinguisher",
 	"Rick Dark, Botman"
 }

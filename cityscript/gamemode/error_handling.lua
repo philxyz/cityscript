@@ -7,28 +7,24 @@
 -- This helps with errors, and catches them before they break the script.
 -------------------------------
 
-function ErrorHandler( func, args, ret, errcode )
+function ErrorHandler(func, args, ret, errcode)
+	CAKE.CallHook("ErrorHandler", func, args, ret, errcode)
 	
-	CAKE.CallHook( "ErrorHandler", func, args, ret, errcode);
+	local s = func .. "() " .. TEXT.Failed .. ": " .. func .. "(" .. table.concat(args, ",") .. ") " .. TEXT.FailedWithError .. " " .. errcode .. ": " .. (ErrorCodes[errcode] or TEXT.InvalidErrorCode)
 	
-	local s = func .. "() " .. TEXT.Failed .. ": " .. func .. "(" .. table.concat( args, "," ) .. ") " .. TEXT.FailedWithError .. " " .. errcode .. ": " .. CAKE.NilFix(ErrorCodes[errcode], TEXT.InvalidErrorCode);
+	CAKE.DayLog("errors.txt", s)
+	print(s)
 	
-	CAKE.DayLog( "errors.txt", s);
-	print(s);
-	
-	return ret;
-	
+	return ret
 end
 
-ErrorCodes = {};
+ErrorCodes = {}
 
 function AddCode(id, text)
-
-	ErrorCodes[id] = text;
-	
+	ErrorCodes[id] = text
 end
 
 -- Error Codes
-for i=1,8 do
-	AddCode(i, TEXT.Error[i]);
+for i=1, 8 do
+	AddCode(i, TEXT.Error[i])
 end

@@ -8,182 +8,146 @@
 -------------------------------	
 	
 -- Set Model
-function ccSetModel( ply, cmd, args )
-
-	local mdl = args[ 1 ];
+util.AddNetworkString("ncSetModel")
+net.Receive("ncSetModel", function(len, client)
+	local mdl = net.ReadString()
 	
-	if( ply:GetDTInt(0) == 1 ) then
-	
-		print("searching ValidModels table for " .. string.lower( mdl ) .. " ...")
-
+	if client:GetDTInt(0) == 1 then
 		local found = false
+
 		for k, v in pairs(CAKE.ValidModels) do
-			print("checking model " .. v)
-			if v == string.lower( mdl ) then
+			if v == string.lower(mdl) then
 				found = true
 				break
 			end
 		end
 
 		if found then
-			print("Model was found")
-			CAKE.CallHook( "CharacterCreation_SetModel", ply, mdl );
-			CAKE.SetCharField(ply, "model", mdl );
-
+			CAKE.CallHook("CharacterCreation_SetModel", client, mdl)
+			CAKE.SetCharField(client, "model", mdl)
 		else
-			print("Model was not found for some reason")
-			CAKE.CallHook( "CharacterCreation_SetModel", ply, "models/player/group01/male_01.mdl" );
-			CAKE.SetCharField(ply, "model", "models/player/group01/male_01.mdl" );
+			CAKE.CallHook("CharacterCreation_SetModel", client, "models/player/group01/male_01.mdl")
+			CAKE.SetCharField(client, "model", "models/player/group01/male_01.mdl")
 		end
 	end
 	
-	return;
-end
-concommand.Add( "rp_setmodel", ccSetModel );
+	return
+end)
 
--- Start Creation
-function ccStartCreate( ply, cmd, args )
-	
-	local PlyCharTable = CAKE.PlayerData[ CAKE.FormatSteamID( ply:SteamID() ) ][ "characters" ]
-	
+util.AddNetworkString("ncStartCreate")
+net.Receive("ncStartCreate", function(len, client)
+	-- Start Creation
+	local PlyCharTable = CAKE.PlayerData[CAKE.FormatSteamID(client:SteamID())]["characters"]
+
 	-- Find the highest Unique ID
-	local high = 0;
-	
-	for k, v in pairs( PlyCharTable ) do
-	
-		k = tonumber( k );
-		high = tonumber( high );
+	local high = 0
+
+	for k, v in pairs(PlyCharTable) do
+		k = tonumber(k)
+		high = tonumber(high)
 		
-		if( k > high ) then 
-		
-			high = k;
-			
+		if k > high then
+			high = k
 		end
-		
 	end
-	
-	high = high + 1;
-	ply:SetNWString( "uid", tostring(high) );
-	
-	ply:SetDTInt(0, 1);
-	CAKE.PlayerData[ CAKE.FormatSteamID( ply:SteamID() ) ][ "characters" ][ tostring(high) ] = {  }
-	
-	CAKE.CallHook( "CharacterCreation_Start", ply );
-	
-end
-concommand.Add( "rp_startcreate", ccStartCreate );
+
+	high = high + 1
+	client:SetNWString("uid", tostring(high))
+	client:SetDTInt(0, 1)
+	CAKE.PlayerData[CAKE.FormatSteamID(client:SteamID())]["characters"][tostring(high)] = {}
+	CAKE.CallHook("CharacterCreation_Start", client)
+end)
 
 -- Finish Creation
-function ccFinishCreate( ply, cmd, args )
+util.AddNetworkString("ncFinishCreate")
+net.Receive("ncFinishCreate", function(len, client)
+	if client:GetDTInt(0) == 1 then
+		client:SetDTInt(0, 1)
 
-	if( ply:GetDTInt(0) == 1 ) then
-		
-		ply:SetDTInt(0, 1)
-		
-		local SteamID = CAKE.FormatSteamID( ply:SteamID() );
-		
-		for fieldname, default in pairs( CAKE.CharacterDataFields ) do
-		
-			if( CAKE.PlayerData[ SteamID ][ "characters" ][ ply:GetNWString( "uid" ) ][ fieldname ] == nil) then
-
-				CAKE.PlayerData[ SteamID ][ "characters" ][ ply:GetNWString( "uid" ) ][ fieldname ] = CAKE.ReferenceFix(default);
-		
+		local SteamID = CAKE.FormatSteamID(client:SteamID())
+		for fieldname, default in pairs(CAKE.CharacterDataFields) do
+			if CAKE.PlayerData[SteamID]["characters"][client:GetNWString("uid")][fieldname] == nil then
+				CAKE.PlayerData[SteamID]["characters"][client:GetNWString("uid")][fieldname] = CAKE.ReferenceFix(default)
 			end
-			
 		end
-		
-		CAKE.ResendCharData( ply );
 
-		ply:RefreshInventory( )
-		ply:RefreshBusiness( )
-		
-		ply:SetTeam( 1 );
-		
-		ply:Spawn( );
-		
-		ply:ConCommand( "fadein" );
-		
-		CAKE.CallHook( "CharacterCreation_Finished", ply, ply:GetNWString( "uid" ) );
-		
+		CAKE.ResendCharData(client)
+
+		client:RefreshInventory()
+		client:RefreshBusiness()
+		client:SetTeam(1)
+		client:Spawn()
+		client:ConCommand("fadein")
+		CAKE.CallHook("CharacterCreation_Finished", client, client:GetNWString("uid"))
 	end
-	
-end
-concommand.Add( "rp_finishcreate", ccFinishCreate );
+end)
 
-function ccSelectChar( ply, cmd, args )
-	local uid = tonumber(args[ 1 ]);
-	local SteamID = CAKE.FormatSteamID(ply:SteamID());
+function ccSelectChar(ply, cmd, args)
+	local uid = tonumber(args[1])
+	local SteamID = CAKE.FormatSteamID(ply:SteamID())
 
-	if ( CAKE.PlayerData[ SteamID ][ "characters" ][ uid ] != nil ) then
-		ply:SetNWString( "uid", uid );
-		CAKE.ResendCharData( ply );
-		ply:SetDTInt(0, 1);
-		ply:SetTeam( 1 );
-		CAKE.CallHook( "CharacterSelect_PostSetTeam", ply, CAKE.PlayerData[ SteamID ][ "characters" ][ uid ] );
-		ply:RefreshInventory( )
-		ply:RefreshBusiness( )
-		ply:ConCommand( "fadein" );
-		ply:Spawn( );
+	if CAKE.PlayerData[SteamID]["characters"][uid] != nil then
+		ply:SetNWString("uid", uid)
+		CAKE.ResendCharData(ply)
+		ply:SetDTInt(0, 1)
+		ply:SetTeam(1)
+		CAKE.CallHook("CharacterSelect_PostSetTeam", ply, CAKE.PlayerData[SteamID]["characters"][uid])
+		ply:RefreshInventory()
+		ply:RefreshBusiness()
+		ply:ConCommand("fadein")
+		ply:Spawn()
 		
-		CAKE.CallHook( "CharacterSelected", ply, CAKE.PlayerData[ SteamID ][ "characters" ][ uid ] );
+		CAKE.CallHook("CharacterSelected", ply, CAKE.PlayerData[SteamID]["characters"][uid])
 	else
-		return;
+		return
 	end
 end
-concommand.Add( "rp_selectchar", ccSelectChar );
+concommand.Add("rp_selectchar", ccSelectChar)
 
-function ccReady( ply, cmd, args )
+function ccReady(ply, cmd, args)
 
-	if( ply.Ready == false ) then
-
-		ply.Ready = true;
+	if ply.Ready == false then
+		ply.Ready = true
 	
 		-- Find the highest Unique ID and set it - just in case they want to create a character.
-		local high = 0;
+		local high = 0
 
 		local PlyCharTable = {}
-		local steam = CAKE.FormatSteamID( ply:SteamID() )
-		if steam and CAKE.PlayerData[ steam ] then
-			PlyCharTable = CAKE.PlayerData[ steam ]["characters"];
+		local steam = CAKE.FormatSteamID(ply:SteamID())
+		if steam and CAKE.PlayerData[steam] then
+			PlyCharTable = CAKE.PlayerData[steam]["characters"]
 		end
 		
-		for k, v in pairs( PlyCharTable ) do
+		for k, v in pairs(PlyCharTable) do
 		
-			k = tonumber( k );
-			high = tonumber( high );
+			k = tonumber(k)
+			high = tonumber(high)
 			
-			if( k > high ) then 
-			
-				high = k;
-				
+			if k > high then 
+				high = k
 			end
-			
 		end
 		
-		high = high + 1;
-		ply:SetNWString( "uid", tostring(high) );
+		high = high + 1
+		ply:SetNWString("uid", tostring(high))
 		
-		for k, v in pairs( PlyCharTable ) do -- Send them all their characters for selection
-	
-			umsg.Start( "ReceiveChar", ply );
-				umsg.Long( tonumber(k) );
-				umsg.String( v[ "name" ] );
-				umsg.String( v[ "model" ] );
-			umsg.End( );
-			
+		for k, v in pairs(PlyCharTable) do -- Send them all their characters for selection
+			umsg.Start("ReceiveChar", ply)
+				umsg.Long(tonumber(k))
+				umsg.String(v.name)
+				umsg.String(v.model)
+			umsg.End()
 		end
 		
 		ply:SetDTInt(0, 1)
 		
-		local showHelp = CAKE.GetPlayerField( ply, "showhelppopup" ) == 1
+		local showHelp = CAKE.GetPlayerField(ply, "showhelppopup") == 1
 
-		umsg.Start( "_cC", ply );
-			umsg.Bool(showHelp);
-		umsg.End( );
+		umsg.Start("_cC", ply)
+			umsg.Bool(showHelp)
+		umsg.End()
 		
-		CAKE.CallHook( "PlayerReady", ply );
-		
+		CAKE.CallHook("PlayerReady", ply)
 	end
-	
 end
-concommand.Add( "rp_ready", ccReady );
+concommand.Add("rp_ready", ccReady)

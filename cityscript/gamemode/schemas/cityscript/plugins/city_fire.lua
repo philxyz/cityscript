@@ -2,9 +2,9 @@
 -- by philxyz 2008 - 2010
 -- MIT License
 
-PLUGIN.Name = "Spreadable Fire"; -- What is the plugin name
-PLUGIN.Author = "philxyz"; -- Author of the plugin
-PLUGIN.Description = "Spreadable fire code from SeriousRP gamemode"; -- The description or purpose of the plugin
+PLUGIN.Name = "Spreadable Fire" -- What is the plugin name
+PLUGIN.Author = "philxyz" -- Author of the plugin
+PLUGIN.Description = "Spreadable fire code from SeriousRP gamemode" -- The description or purpose of the plugin
 
 FlammableSENTs =
 {
