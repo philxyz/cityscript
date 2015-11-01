@@ -327,7 +327,7 @@ function ccDoorRenting(ply, cmd, args)
 		return
 	end
 
-	if not args[1] or not tonumber(args[1]) or tonumber(args[1]) < 0 or not math.IsFinite(tonumber(args[1]))
+	if not args[1] or not tonumber(args[1]) or tonumber(args[1]) < 0 or not math.IsFinite(tonumber(args[1])) or
 		(not args[2] or not tonumber(args[2]) or not math.IsFinite(tonumber(args[2])) or (tonumber(args[2]) ~= 0 and tonumber(args[2]) ~= 1)) then
 
 		CAKE.Response(ply, TEXT.DoorRentCommandUsedIncorrectly)
