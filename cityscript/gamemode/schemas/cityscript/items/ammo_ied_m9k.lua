@@ -3,7 +3,7 @@ ITEM.Class = "m9k_improvised_explosive";
 ITEM.Description = "Free Snacks!";
 ITEM.Model = "models/props_junk/cardboard_box004a.mdl";
 ITEM.Purchaseable = true;
-ITEM.Price = 2000;
+ITEM.Price = 1580;
 ITEM.ItemGroup = 5;
 
 function ITEM:Drop(ply)

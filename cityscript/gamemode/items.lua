@@ -84,11 +84,15 @@ concommand.Add("rp_createitem", ccCreateItem)
 function ccDropItem(ply, cmd, args)
 	local inv = CAKE.GetCharField(ply, "inventory")
 
+	print("Dropping item: " .. args[1])
+
 	for k, v in pairs(inv) do
+		-- If an item matches in the inventory
 		if v == args[1] then
+			-- Produce it.
 			CAKE.CreateItem(ply, args[1], ply:CalcDrop(), Angle(0, 0, 0), true)
 			ply:TakeItem(args[1])
-			return
+			break
 		end
 	end
 	

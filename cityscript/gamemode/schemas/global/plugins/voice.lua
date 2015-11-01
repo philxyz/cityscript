@@ -55,7 +55,7 @@ function ccListVoice(ply, cmd, args)
 		end
 	end
 end
-concommand.Add( "rp_listvoices", ccListVoice)
+concommand.Add("rp_listvoices", ccListVoice)
 
 function CAKE.AddVoice(id, path, soundgroup, text, fa)
 	local voice = {}

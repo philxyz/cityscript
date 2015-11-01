@@ -110,12 +110,14 @@ end
 concommand.Add("rp_acceptdeath", ccAcceptDeath)
 
 function ccFlag(ply, cmd, args)
-	local FlagTo = ""
+	local FlagTo = {}
 	
+	-- Find a Team with a matching flag
+	-- if there is one, set that to FlagTo
 	for k, v in pairs(CAKE.Teams) do
 		if v.flag_key == args[1] then
-			FlagTo = v
-			FlagTo.n = k
+			FlagTo = v -- Team Details
+			FlagTo.n = k -- Index into CAKE.Teams at which this Team exists
 			break
 		end
 	end
@@ -146,10 +148,7 @@ function ccFlag(ply, cmd, args)
 		FlagTo.name == TEXT.CityPolice or
 		FlagTo.name == TEXT.BloodBrothersGangLeader or
 		FlagTo.name == TEXT.LaFamigliaVontoriniGangLeader or
-		FlagTo.name == TEXT.HellsAngelsGangLeader or
-		FlagTo.name == TEXT.SkinHeadsGangLeader or
-		FlagTo.name == TEXT.TheLegionGangLeader or
-		FlagTo.name == TEXT.TheWIGangLeader then
+		FlagTo.name == TEXT.TheLegionGangLeader then
 		-- Max is 1
 		for k, v in pairs(player.GetAll()) do
 			if team.GetName(v:Team()) == FlagTo.name then
@@ -173,14 +172,8 @@ function ccFlag(ply, cmd, args)
 		if CheckLimit(FlagTo.name, CAKE.ConVars.BloodBrothersGangPcnt) then return; end
 	elseif FlagTo.name == TEXT.LaFamigliaVontoriniGangMember then
 		if CheckLimit(FlagTo.name, CAKE.ConVars.VontoriniGangPcnt) then return; end
-	elseif FlagTo.name == TEXT.HellsAngelsGangMember then
-		if CheckLimit(FlagTo.name, CAKE.ConVars.HellsAngelsGangPcnt) then return; end
-	elseif FlagTo.name == TEXT.SkinHeadsGangMember then
-		if CheckLimit(FlagTo.name, CAKE.ConVars.SkinHeadsGangPcnt) then return; end
 	elseif FlagTo.name == TEXT.TheLegionGangMember then
 		if CheckLimit(FlagTo.name, CAKE.ConVars.LegionGangPcnt) then return; end
-	elseif FlagTo.name == TEXT.TheWIGangMember then
-		if CheckLimit(FlagTo.name, CAKE.ConVars.WIGangPcnt) then return; end
 	elseif FlagTo.name == TEXT.Citizen then
 		-- It's always OK.
 	else
@@ -198,9 +191,11 @@ function ccFlag(ply, cmd, args)
 		end
 	end
 
+	-- If the player is allowed to become a member of this team (or the team is a public one)
 	if (CAKE.GetCharField(ply, "flags") ~= nil and table.HasValue(CAKE.GetCharField(ply, "flags"), args[1])) or FlagTo.public then
 		local inv = CAKE.GetCharField(ply, "inventory")
 
+		-- If the player has items in their inventory, clear them out.
 		if #inv > 0 then
 			for k, v in pairs(inv) do
 				ply:TakeItem(v)
@@ -209,7 +204,10 @@ function ccFlag(ply, cmd, args)
 			CAKE.Response(ply, TEXT.NewRoleBackpackEmptied)
 		end
 
+		-- Set the player's team
 		ply:SetTeam(FlagTo.n)
+
+		-- Reload their business tab
 		ply:RefreshBusiness()
 		ply.FlagChangeHealth = ply:Health()
 		ply:Spawn()
@@ -249,13 +247,17 @@ concommand.Add("rp_unlockdoor", ccUnLockDoor)
 function ccOpenDoor(ply, cmd, args)
 	local entity = ply:GetEyeTrace().Entity
 	
+	-- If we are looking at a door and are in range of it...
 	if IsValid(entity) and CAKE.IsDoor(entity) and ply:GetPos():Distance(entity:GetPos()) < 200 then
 		local pos = entity:GetPos()
 		
 		for k, v in pairs(CAKE.Doors) do
-			if tonumber(v.x) == math.ceil(tonumber(pos.x)) and tonumber(v.y ) == math.ceil(tonumber(pos.y)) and tonumber(v.z) == math.ceil(tonumber(pos.z)) then
+			-- If the position of one of the doors in CAKE.Doors matches the position of this door
+			if tonumber(v.x) == math.ceil(tonumber(pos.x)) and tonumber(v.y) == math.ceil(tonumber(pos.y)) and tonumber(v.z) == math.ceil(tonumber(pos.z)) then
+				-- and the player is in a team whose door_groups table includes the group that this door is assigned to
 				for k2, v2 in pairs(CAKE.Teams[ply:Team()].door_groups) do
 					if tonumber(v.group) == tonumber(v2) then
+						-- Open the door
 						entity:Fire("toggle", "", 0)
 					end
 				end
@@ -265,7 +267,7 @@ function ccOpenDoor(ply, cmd, args)
 end
 concommand.Add("rp_opendoor", ccOpenDoor)
 
-function ccPurchaseDoor(ply, cmd, args)
+function ccRentDoor(ply, cmd, args)
 	local door = ents.GetByIndex(tonumber(args[1]))
 
 	if door:GetNWBool("nonRentable") then
@@ -317,7 +319,7 @@ function ccPurchaseDoor(ply, cmd, args)
 		end
 	end
 end
-concommand.Add("rp_purchasedoor", ccPurchaseDoor)
+concommand.Add("rp_rentdoor", ccRentDoor)
 
 function ccDoorRenting(ply, cmd, args)
 	if not ply:IsSuperAdmin() then
@@ -325,8 +327,8 @@ function ccDoorRenting(ply, cmd, args)
 		return
 	end
 
-	if not args[1] or not tonumber(args[1]) or tonumber(args[1]) < 0 or
-		(not args[2] or not tonumber(args[2]) or (tonumber(args[2]) ~= 0 and tonumber(args[2]) ~= 1)) then
+	if not args[1] or not tonumber(args[1]) or tonumber(args[1]) < 0 or not math.IsFinite(tonumber(args[1]))
+		(not args[2] or not tonumber(args[2]) or not math.IsFinite(tonumber(args[2])) or (tonumber(args[2]) ~= 0 and tonumber(args[2]) ~= 1)) then
 
 		CAKE.Response(ply, TEXT.DoorRentCommandUsedIncorrectly)
 		return

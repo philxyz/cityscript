@@ -74,10 +74,7 @@ function ENT:SpawnItem(ply, cmd, args)
 end
 
 concommand.Add("drrp_storage_box_spawn", function(ply, cmd, args)
-	c = args[1]
-	eI = tonumber(args[2])
-
-	s = Entity(eI)
+	s = Entity(tonumber(args[1]))
 
 	if s:GetPos():Distance(ply:GetPos()) > 150 then
 		CAKE.Response(ply, TEXT.StandCloserToTheBox)

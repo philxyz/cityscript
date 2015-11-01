@@ -91,13 +91,13 @@ function ccSelectChar(ply, cmd, args)
 		CAKE.ResendCharData(ply)
 		ply:SetDTInt(0, 1)
 		ply:SetTeam(1)
-		CAKE.CallHook("CharacterSelect_PostSetTeam", ply, CAKE.PlayerData[SteamID]["characters"][uid])
+		CAKE.CallHook("CharacterSelect_PostSetTeam", ply, CAKE.PlayerData[SteamID].characters[uid])
 		ply:RefreshInventory()
 		ply:RefreshBusiness()
 		ply:ConCommand("fadein")
 		ply:Spawn()
 		
-		CAKE.CallHook("CharacterSelected", ply, CAKE.PlayerData[SteamID]["characters"][uid])
+		CAKE.CallHook("CharacterSelected", ply, CAKE.PlayerData[SteamID].characters[uid])
 	else
 		return
 	end
@@ -105,7 +105,6 @@ end
 concommand.Add("rp_selectchar", ccSelectChar)
 
 function ccReady(ply, cmd, args)
-
 	if ply.Ready == false then
 		ply.Ready = true
 	

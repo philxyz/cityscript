@@ -1,7 +1,7 @@
 ITEM.Name = "Nuclear Warhead (M9K)";
 ITEM.Class = "item_rpg_round";
 ITEM.Description = "Level-it.";
-ITEM.Model = "models/items/w_grenade.mdl";
+ITEM.Model = "models/weapons/w_missile.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 60000;
 ITEM.ItemGroup = 5;
