@@ -68,7 +68,7 @@ function Admin_Phystrust(ply, cmd, args)
 		CAKE.SetPlayerField(target, "phystrust", 1)
 		target:Give("weapon_physgun")
 		CAKE.Response(target, TEXT.PhysTrustGivenBy(ply:Name()))
-		CAKE.Response(ply, TEXT.PhysTrustRevokedAnnounce(target:Name()))
+		CAKE.Response(ply, TEXT.PhysTrustGivenAnnounce(target:Name()))
 	end
 end
 
