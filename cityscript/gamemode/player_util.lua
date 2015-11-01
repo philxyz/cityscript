@@ -8,6 +8,8 @@
 -------------------------------
 
 function CAKE.Response(ply, msg)
+	if ply == nil then return false end
+
 	if ply:EntIndex() == 0 then
 		print(msg)
 	else
@@ -18,6 +20,8 @@ end
 DecayingRagdolls = {}
 
 function CAKE.DeathMode(ply)
+	if ply == nil then return false end
+
 	CAKE.DayLog("script.txt", TEXT.DeathMode .. " " .. ply:SteamID())
 	local mdl = ply:GetModel()
 	
@@ -137,7 +141,7 @@ function meta:CompleteSentence()
 	end
 end
 
-function meta:GiveItem( class )
+function meta:GiveItem(class)
 	CAKE.DayLog("economy.txt", TEXT.AddingItemToInventory(class, CAKE.FormatCharString(self)))
 
 	local inv = CAKE.GetCharField(self, "inventory")
@@ -212,6 +216,8 @@ function CAKE.FindPlayerBySID(sid)
 end
 
 function CAKE.ChangeMoney(ply, amount) -- Modify someone's money amount.
+	if ply == nil then return false end
+
 	-- NEVAR EVAR LET IT GO NEGATIVE.
 	local money = math.floor(tonumber(CAKE.GetCharField( ply, "money" ) or 0))
 
@@ -226,6 +232,8 @@ function CAKE.ChangeMoney(ply, amount) -- Modify someone's money amount.
 end
 
 function CAKE.ChangeBankMoney(ply, amount) -- Modify someone's bank money amount.
+	if ply == nil then return false end
+
 	local bank = tonumber(CAKE.GetCharField(ply, "bank") or 0)
 
 	-- NEVAR EVAR LET IT GO NEGATIVE.
@@ -238,6 +246,8 @@ function CAKE.ChangeBankMoney(ply, amount) -- Modify someone's bank money amount
 end
 
 function CAKE.SetMoney(ply, amount) -- Set someone's money amount.
+	if ply == nil then return false end
+
 	-- NEVAR EVAR LET IT GO NEGATIVE.
 	if amount < 0 then return false end
 	
@@ -250,6 +260,8 @@ function CAKE.SetMoney(ply, amount) -- Set someone's money amount.
 end
 
 function CAKE.ToxicPlayer(pl, mul) -- TOXIFY
+	if pl == nil then return false end
+
 	mul = mul / 10 * 2
 
 	pl:ConCommand("pp_motionblur 1")
@@ -266,6 +278,8 @@ function CAKE.ToxicPlayer(pl, mul) -- TOXIFY
 end
 
 function CAKE.UnToxicPlayer(pl)
+	if pl == nil then return false end
+
 	pl:ConCommand("pp_motionblur 0")
 	pl:ConCommand("pp_dof 0")
 end
