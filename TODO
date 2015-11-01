@@ -17,13 +17,15 @@ philxyz 2015
 		rp_admin proptrust <name> [1|0]
 		rp_admin extraeffects <name> <amount>
 		rp_admin extravehicles <name> <amount>
-		rp_admin extraprops <name> <amount>
-		rp_admin extraragdolls <name> <amount>
+		rp_admin extraprops <name> <amount>  (PropLimit is set to 30 - just use sbox_maxprops)
+		rp_admin extraragdolls <name> <amount> (RagdollLimit is set to 30 - just use sbox_maxragdolls)
 		rp_admin listvars
-		rp_admin setvar <value>
+		rp_admin setvar <value> - doesn't work
+
 		rp_admin ban <name> <reason> <minutes>
 		rp_admin kick <name> <reason>
 		rp_admin warn <name> <warningmessage>
+
 		rp_givemoney <ent_index> <amount>
 		rp_doorrenting <ent_index> [0|1] (particular door)
 		rp_buyitem CAKE.ItemData index
@@ -53,12 +55,15 @@ philxyz 2015
 		
 	- Test them
 	- Decide which will disappear
-- Replace concmds with net.
-- Replace umsg with net.
+	- Remove them
+
+	- Decide which ones will become "net"-ified.
+	- "net"-ify then
+- Replace umsgs with net.
 
 - Prop buddy system
-- SQL Backend (SQLite)
-- Ability to delete players
+- Move data to SQL Backend (SQLite)
+- Implement the ability to delete characters
 - Roleplaying Vehicles Addon (or find another)
 	- [LW]
 	- SGM Cars
@@ -72,3 +77,5 @@ philxyz 2015
 		- Make character selection more obvious
 
 - Update help menu to represent current state
+
+- Replace ATM model and test angles
