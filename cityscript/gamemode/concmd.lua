@@ -353,7 +353,7 @@ concommand.Add("rp_doorrenting", ccDoorRenting)
 function ccDropWeapon(ply, cmd, args)
 	local wep = ply:GetActiveWeapon()
 	
-	if ItemData[wep:GetClass()] == nil then
+	if CAKE.ItemData[wep:GetClass()] == nil then
 		CAKE.Response(ply, TEXT.WeaponNotDroppable)
 		return
 	end
@@ -451,7 +451,6 @@ end
 concommand.Add("rp_setmoney", ccSetMoney)
 
 function ccGiveMoney(ply, cmd, args)
-
 	if not args[1] or not tonumber(args[1]) or not math.IsFinite(tonumber(args[1])) or not args[2] or not tonumber(args[2]) or not math.IsFinite(tonumber(args[2])) then
 		CAKE.Response(ply, TEXT.GiveMoneyUsedIncorrectly)
 		return
