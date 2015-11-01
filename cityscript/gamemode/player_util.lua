@@ -7,96 +7,81 @@
 -- Useful functions for players.
 -------------------------------
 
-function CAKE.Response( ply, msg )
+function CAKE.Response(ply, msg)
 	if ply:EntIndex() == 0 then
 		print(msg)
 	else
-		ply:PrintMessage( 3, msg );
+		ply:PrintMessage(3, msg)
 	end
 end
 
-DecayingRagdolls = {};
+DecayingRagdolls = {}
 
-function CAKE.DeathMode( ply )
-	CAKE.DayLog( "script.txt", TEXT.DeathMode .. " " .. ply:SteamID( ) );
-	local mdl = ply:GetModel( )
+function CAKE.DeathMode(ply)
+	CAKE.DayLog("script.txt", TEXT.DeathMode .. " " .. ply:SteamID())
+	local mdl = ply:GetModel()
 	
-	local rag = ents.Create( "prop_ragdoll" )
-	rag:SetModel( mdl )
-	rag:SetPos( ply:GetPos( ) )
-	rag:SetAngles( ply:GetAngles( ) )
-	rag.isdeathdoll = true;
-	rag.ply = ply;
-	rag:Spawn( )
+	local rag = ents.Create("prop_ragdoll")
+	rag:SetModel(mdl)
+	rag:SetPos(ply:GetPos())
+	rag:SetAngles(ply:GetAngles())
+	rag.isdeathdoll = true
+	rag.ply = ply
+	rag:Spawn()
 	
-	ply:SetViewEntity( rag );
+	ply:SetViewEntity(rag)
 	
-	ply.deathrag = rag;
+	ply.deathrag = rag
 	
 	local n = #DecayingRagdolls + 1
-	DecayingRagdolls[ n ] = ply.deathrag;
+	DecayingRagdolls[n] = ply.deathrag
 	
-	ply:SetNWInt( "deathmode", 1 )
+	ply:SetNWInt("deathmode", 1)
 	
-	ply.deathtime = 0;
-	ply.nextsecond = CurTime( ) + 1;	
-	ply:PrintMessage(HUD_PRINTCENTER, "YOU ARE DYING... SHOUT FOR A MEDIC!");
+	ply.deathtime = 0
+	ply.nextsecond = CurTime() + 1
+	ply:PrintMessage(HUD_PRINTCENTER, "UNFORTUNATELY, YOU ARE DYING. SHOUT FOR A MEDIC!")
 end
 
-local meta = FindMetaTable( "Player" );
+local meta = FindMetaTable("Player")
 
-function meta:MaxHealth( )
-
-	return self:GetNWFloat("MaxHealth");
-	
+function meta:MaxHealth()
+	return self:GetNWFloat("MaxHealth")
 end
 
-function meta:ChangeMaxHealth( amt )
-
-	self:SetNWFloat("MaxHealth", self:MaxHealth() + amt);
-	
+function meta:ChangeMaxHealth(amt)
+	self:SetNWFloat("MaxHealth", self:MaxHealth() + amt)
 end
 
-function meta:MaxArmor( )
-
-	return self:GetNWFloat("MaxArmor");
-	
+function meta:MaxArmor()
+	return self:GetNWFloat("MaxArmor")
 end
 
-function meta:ChangeMaxArmor( amt )
-
-	self:SetNWFloat("MaxArmor", self:MaxArmor() + amt);
-	
+function meta:ChangeMaxArmor(amt)
+	self:SetNWFloat("MaxArmor", self:MaxArmor() + amt)
 end
 
 function meta:MaxWalkSpeed()
-
-	return self:GetNWFloat("MaxWalkSpeed");
-	
+	return self:GetNWFloat("MaxWalkSpeed")
 end
 
-function meta:ChangeMaxWalkSpeed( amt )
-
-	self:SetNWFloat("MaxWalkSpeed", self:MaxWalkSpeed() + amt);
-	
+function meta:ChangeMaxWalkSpeed(amt)
+	self:SetNWFloat("MaxWalkSpeed", self:MaxWalkSpeed() + amt)
 end
 
-function meta:MaxRunSpeed( )
-
-	return self:GetNWFloat("MaxRunSpeed");
-	
+function meta:MaxRunSpeed()
+	return self:GetNWFloat("MaxRunSpeed")
 end
 
-function meta:ChangeMaxRunSpeed( amt )
-
-	self:SetNWFloat("MaxRunSpeed", self:MaxRunSpeed() + amt);
-	
+function meta:ChangeMaxRunSpeed(amt)
+	self:SetNWFloat("MaxRunSpeed", self:MaxRunSpeed() + amt)
 end
 
 function meta:Arrest(time)
 	if self:GetNWBool("wanted") then
 		self:SetNetworkedBool("wanted", false)
 	end
+
 	-- Always get sent to jail when Arrest() is called, even when already under arrest
 	self:SetPos(DB.RetrieveJailPos())
 
@@ -110,13 +95,17 @@ function meta:Arrest(time)
 		if not time or time == 0 then
 			time = 180
 		end
+
 		DB.StoreJailStatus(self, time)
+
 		self:PrintMessage(HUD_PRINTCENTER, TEXT.ArrestMessage(time))
+
 		for k, v in pairs(player.GetAll()) do
 			if v ~= self then
 				v:PrintMessage(HUD_PRINTCENTER, TEXT.ArrestMessage2(self:Name(), time))
 			end
 		end
+
 		local s = self
 		timer.Create(self:SteamID() .. "jailtimer", time, 1, function() s:Unarrest() end)
 	end
@@ -149,73 +138,69 @@ function meta:CompleteSentence()
 end
 
 function meta:GiveItem( class )
+	CAKE.DayLog("economy.txt", TEXT.AddingItemToInventory(class, CAKE.FormatCharString(self)))
 
-	CAKE.DayLog( "economy.txt", TEXT.AddingItemToInventory(class, CAKE.FormatCharString(self)) );
-	local inv = CAKE.GetCharField( self, "inventory" );
-	table.insert( inv, class );
-	CAKE.SetCharField( self, "inventory", inv);
-	self:RefreshInventory( );
+	local inv = CAKE.GetCharField(self, "inventory")
+	table.insert(inv, class)
 
+	CAKE.SetCharField(self, "inventory", inv)
+	self:RefreshInventory()
 end
 
-function meta:TakeItem( class )
-	local inv = CAKE.GetCharField(self, "inventory" );
+function meta:TakeItem(class)
+	local inv = CAKE.GetCharField(self, "inventory")
 	
-	for k, v in pairs( inv ) do
-		if( v == class ) then
-			inv[ k ] = nil;
-			PrintTable( inv );
-			CAKE.SetCharField( self, "inventory", inv);
-			self:RefreshInventory( );
-			CAKE.DayLog( "economy.txt", TEXT.RemovingItemFromInventory(class, CAKE.FormatCharString( self )));
-			return;
+	for k, v in pairs(inv) do
+		if v == class then
+			inv[k] = nil
+			PrintTable(inv)
+			CAKE.SetCharField(self, "inventory", inv)
+			self:RefreshInventory()
+			CAKE.DayLog("economy.txt", TEXT.RemovingItemFromInventory(class, CAKE.FormatCharString(self)))
+			return
 		end
 	end
-	
 end
 
-function meta:ClearInventory( )
-	umsg.Start( "clearinventory", self )
-	umsg.End( );
+function meta:ClearInventory()
+	umsg.Start("clearinventory", self)
+	umsg.End()
 end
 
-function meta:RefreshInventory( )
-	self:ClearInventory( )
+function meta:RefreshInventory()
+	self:ClearInventory()
 	
-	for k, v in pairs( CAKE.GetCharField( self, "inventory" ) ) do
-		umsg.Start( "addinventory", self );
-			umsg.String( CAKE.ItemData[ v ].Name );
-			umsg.String( CAKE.ItemData[ v ].Class );
-			umsg.String( CAKE.ItemData[ v ].Description );
-			umsg.String( CAKE.ItemData[ v ].Model );
-		umsg.End( );
+	for k, v in pairs(CAKE.GetCharField(self, "inventory")) do
+		umsg.Start("addinventory", self)
+			umsg.String(CAKE.ItemData[v].Name)
+			umsg.String(CAKE.ItemData[v].Class)
+			umsg.String(CAKE.ItemData[v].Description)
+			umsg.String(CAKE.ItemData[v].Model)
+		umsg.End()
 	end
 end
 
-function meta:ClearBusiness( )
-	umsg.Start( "clearbusiness", self )
-	umsg.End( );
+function meta:ClearBusiness()
+	umsg.Start("clearbusiness", self)
+	umsg.End()
 end
 
-function meta:RefreshBusiness( )
-	self:ClearBusiness( )
+function meta:RefreshBusiness()
+	self:ClearBusiness()
 		
-	if(CAKE.Teams[self:Team()] == nil) then return; end -- Team not assigned
+	if CAKE.Teams[self:Team()] == nil then return end -- Team not assigned
 	
-	for k, v in pairs( CAKE.ItemData ) do
-	
-		if( v.Purchaseable and table.HasValue( CAKE.Teams[self:Team()]["item_groups"], v.ItemGroup ) ) then
-		
-			umsg.Start( "addbusiness", self );
-				umsg.String( v.Name );
-				umsg.String( v.Class );
-				umsg.String( v.Description );
-				umsg.String( v.Model );
-				umsg.String( v.ContentModel );
-				umsg.Long( v.Price );
-				umsg.Bool( v.ContentClass ~= nil );
-			umsg.End( );
-			
+	for k, v in pairs(CAKE.ItemData) do
+		if v.Purchaseable and table.HasValue(CAKE.Teams[self:Team()].item_groups, v.ItemGroup) then
+			umsg.Start("addbusiness", self)
+				umsg.String(v.Name)
+				umsg.String(v.Class)
+				umsg.String(v.Description)
+				umsg.String(v.Model)
+				umsg.String(v.ContentModel)
+				umsg.Long(v.Price)
+				umsg.Bool(v.ContentClass ~= nil)
+			umsg.End()
 		end
 	end
 end
@@ -226,42 +211,46 @@ function CAKE.FindPlayerBySID(sid)
 	end
 end
 
-function CAKE.ChangeMoney( ply, amount ) -- Modify someone's money amount.
+function CAKE.ChangeMoney(ply, amount) -- Modify someone's money amount.
 	-- NEVAR EVAR LET IT GO NEGATIVE.
-	if( ( tonumber(CAKE.GetCharField( ply, "money" )) + amount ) < 0 ) then return false end
+	local money = math.floor(tonumber(CAKE.GetCharField( ply, "money" ) or 0))
+
+	if money + amount < 0 then return false end
 	
-	CAKE.DayLog( "economy.txt", "Changing " .. ply:SteamID( ) .. "-" .. ply:GetNWString( "uid" ) .. " money by " .. tostring( amount ) );
-	
-	CAKE.SetCharField( ply, "money", tonumber(CAKE.GetCharField( ply, "money" )) + amount );
-	ply:SetNWString("money", CAKE.GetCharField( ply, "money" ));
-	return true;
+	CAKE.DayLog("economy.txt", "Changing " .. ply:SteamID() .. "-" .. ply:GetNWString("uid") .. " money by " .. tostring(amount))
+	CAKE.SetCharField(ply, "money", money + amount)
+
+	ply:SetNWString("money", money)
+
+	return true
 end
 
-function CAKE.ChangeBankMoney( ply, amount ) -- Modify someone's bank money amount.
-	-- NEVAR EVAR LET IT GO NEGATIVE.
-	if( ( tonumber(CAKE.GetCharField( ply, "bank" )) + amount ) < 0 ) then return false end
-
-	CAKE.DayLog( "economy.txt", TEXT.LogMoneyChange(ply:SteamID( ), ply:GetNWString( "uid" ), amount) );
-
-	CAKE.SetCharField( ply, "bank", tonumber(CAKE.GetCharField( ply, "bank" )) + amount );
-	return true;
-end
-
-function CAKE.SetMoney( ply, amount ) -- Set someone's money amount.
+function CAKE.ChangeBankMoney(ply, amount) -- Modify someone's bank money amount.
+	local bank = tonumber(CAKE.GetCharField(ply, "bank") or 0)
 
 	-- NEVAR EVAR LET IT GO NEGATIVE.
-	if amount < 0 then return false; end
-	
-	CAKE.DayLog( "economy.txt", TEXT.LogSetMoneyChange(ply:SteamID( ), ply:GetNWString( "uid" ), amount) );
-	
-	CAKE.SetCharField( ply, "money", amount );
-	ply:SetNWString("money", CAKE.GetCharField( ply, "money" ));
-	return true;
+	if bank + amount < 0 then return false end
+
+	CAKE.DayLog("economy.txt", TEXT.LogMoneyChange(ply:SteamID(), ply:GetNWString("uid"), amount))
+	CAKE.SetCharField(ply, "bank", bank + amount)
+
+	return true
 end
 
-function CAKE.ToxicPlayer( pl, mul ) -- TOXIFY
+function CAKE.SetMoney(ply, amount) -- Set someone's money amount.
+	-- NEVAR EVAR LET IT GO NEGATIVE.
+	if amount < 0 then return false end
+	
+	CAKE.DayLog("economy.txt", TEXT.LogSetMoneyChange(ply:SteamID(), ply:GetNWString("uid"), amount))
+	
+	CAKE.SetCharField(ply, "money", amount)
+	ply:SetNWString("money", CAKE.GetCharField(ply, "money"))
 
-	mul = mul / 10 * 2;
+	return true
+end
+
+function CAKE.ToxicPlayer(pl, mul) -- TOXIFY
+	mul = mul / 10 * 2
 
 	pl:ConCommand("pp_motionblur 1")
 	pl:ConCommand("pp_motionblur_addalpha " .. 0.05 * mul)
