@@ -10,7 +10,13 @@ at any one moment.
 philxyz 2015
 ================================================================================
 
+- Identify all commands and parameters
+	- Note them down
+	- Test them
+	- Decide which will disappear
 - Replace concmds with net.
+- Replace umsg with net.
+
 - Prop buddy system
 - SQL Backend (SQLite)
 - Ability to delete players
