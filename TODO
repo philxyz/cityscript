@@ -37,7 +37,7 @@ philxyz 2015
 		rp_takeammo <ent_index>
 		rp_useitem <ent_index>     (calls UseItem on an Item object (entity))
 		rp_pickup <ent_index>
-		rp_dropweapon
+		rp_dropweapon - Still has ammo issues. Come up with a more permanent solution now.
 		rp_rentdoor
 		rp_opendoor   (force open a door which your team is allowed to open)
 		rp_unlockdoor <ent_index>   (unlock a door you are renting)
