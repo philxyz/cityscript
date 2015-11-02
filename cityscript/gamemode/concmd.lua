@@ -360,7 +360,7 @@ function ccDropWeapon(ply, cmd, args)
 	
 	ply:StripWeapon(wep:GetClass())
 	
-	CAKE.CreateItem(ply, wep:GetClass(), ply:CalcDrop(), Angle(0, 0, 0))
+	CAKE.CreateItem(ply, wep:GetClass(), ply:CalcDrop(), Angle(0, 0, 0), true)
 end
 concommand.Add("rp_dropweapon", ccDropWeapon)
 
