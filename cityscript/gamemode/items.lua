@@ -9,7 +9,7 @@ function CAKE.LoadItem(schema, filename)
 end
 
 function CAKE.CreateItem(ply, class, pos, ang, fromBackpack)
-	if CAKE.ItemData[class] == nil then return; end
+	if CAKE.ItemData[class] == nil then return end
 	
 	local itemtable = CAKE.ItemData[class]
 
