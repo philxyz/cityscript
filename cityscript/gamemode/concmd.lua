@@ -421,8 +421,13 @@ function ccUseItem(ply, cmd, args)
 		end
 
 		if wepTable then
-			wepTable.Primary.DefaultClip = 0
-			wepTable.Secondary.DefaultClip = 0
+			if wepTable.Primary then
+				wepTable.Primary.DefaultClip = 0
+			end
+
+			if wepTable.Secondary then
+				wepTable.Secondary.DefaultClip = 0
+			end
 		end
 
 		item:UseItem(ply)
