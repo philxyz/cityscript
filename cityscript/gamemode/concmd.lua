@@ -357,10 +357,23 @@ function ccDropWeapon(ply, cmd, args)
 		CAKE.Response(ply, TEXT.WeaponNotDroppable)
 		return
 	end
-	
+
+	local clip1 = wep:Clip1() or 0
+	local clip2 = wep:Clip2() or 0
+
+	local wepclass = weapons.GetStored(wep:GetClass())
+
+	if clip1 > 0 then
+		ply:GiveAmmo(-clip1, wepclass.Primary.Ammo, true)
+	end
+
+	if clip2 > 0 then
+		ply:GiveAmmo(-clip2, wepclass.Secondary.Ammo, true)
+	end
+
 	ply:StripWeapon(wep:GetClass())
-	
-	CAKE.CreateItem(ply, wep:GetClass(), ply:CalcDrop(), Angle(0, 0, 0), true)
+
+	CAKE.CreateItem(ply, wep:GetClass(), ply:CalcDrop(), Angle(0, 0, 0), clip1, clip2)
 end
 concommand.Add("rp_dropweapon", ccDropWeapon)
 
@@ -372,8 +385,13 @@ function ccPickupItem(ply, cmd, args)
 		item:GetPos( ):Distance( ply:GetShootPos( ) ) < 100 then
 
 		if item:Pickup(ply) ~= false then
-			ply:GiveAmmo(item:GetNWInt("Clip1A"), game.GetAmmoName(item:GetNWInt("PAmmoType")))
-			ply:GiveAmmo(item:GetNWInt("Clip2A"), game.GetAmmoName(item:GetNWInt("SAmmoType")))
+			if item:GetNWInt("Clip1A") > 0 then
+				ply:GiveAmmo(item:GetNWInt("Clip1A"), game.GetAmmoName(item:GetNWInt("PAmmoType")))
+			end
+
+			if item:GetNWInt("Clip2A") > 0 then
+				ply:GiveAmmo(item:GetNWInt("Clip2A"), game.GetAmmoName(item:GetNWInt("SAmmoType")))
+			end
 
 			if item:GetClass() == "spawned_weapon" then
 				ply:GiveItem(item.class)
@@ -389,7 +407,25 @@ function ccUseItem(ply, cmd, args)
 	local item = ents.GetByIndex(tonumber(args[1]))
 	
 	if IsValid(item) and (not CAKE.IsDoor(item) and not item:IsVehicle() and not item:IsPlayer() and not item:IsNPC()) and item.UseItem and item:GetPos():Distance(ply:GetShootPos()) < 100 then
+
+		-- Picking up an item should not cause it to give out free ammo...
+		-- .. to get around this, we modify the weapon's SWEP table before
+		-- ply:Give("<class>") gets a chance to read it
+		local wepTable = weapons.GetStored(item.Class)
+		wepTable.Primary.DefaultClip = 0
+		wepTable.Secondary.DefaultClip = 0
+
 		item:UseItem(ply)
+
+		ply:SelectWeapon(item.Class)
+
+		-- If there was any ammo left in the magazine, set this up.
+		if (item:GetNWInt("Clip1A") or 0) > 0 then
+			ply:GetActiveWeapon():SetClip1(item:GetNWInt("Clip1A"))
+		end
+		if (item:GetNWInt("Clip2A") or 0) > 0 then
+			ply:GetActiveWeapon():SetClip(item:GetNWInt("Clip2A"))
+		end
 	end
 end
 concommand.Add("rp_useitem", ccUseItem)

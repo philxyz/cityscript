@@ -10,6 +10,15 @@ at any one moment.
 philxyz 2015
 ================================================================================
 
+- Ammo Issues
+	+ Make sure the primary and secondary clip are set to zero before giving any weapon
+	+ When creating weapon items in-game, set their initial ammo to zero (primary and secondary)
+	+ When dropping a weapon, if it has ammo in the clip, set that into the object and remove it from
+	  the player (of that ammo type)
+	+ When placing a weapon in the backpack, if it has ammo, take it from the clip and give it to the player
+	+ "Take Ammo" option shows for spawned weapons when there IS ammo in the weapon that can be taken.
+	- Storage box interactions
+
 - Identify all commands and parameters
 	- Note them down
 		rp_admin tooltrust <name> [1|0]

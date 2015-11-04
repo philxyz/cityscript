@@ -8,7 +8,7 @@ function CAKE.LoadItem(schema, filename)
 	CAKE.ItemData[ITEM.Class] = ITEM
 end
 
-function CAKE.CreateItem(ply, class, pos, ang, fromBackpack)
+function CAKE.CreateItem(ply, class, pos, ang, ammo1, ammo2)
 	if CAKE.ItemData[class] == nil then return end
 	
 	local itemtable = CAKE.ItemData[class]
@@ -38,12 +38,12 @@ function CAKE.CreateItem(ply, class, pos, ang, fromBackpack)
 
 	if wepTable ~= nil then
 		if wepTable.Primary ~= nil then
-			item:SetNWInt("Clip1A", (fromBackpack and 0) or wepTable.Primary.DefaultClip or 0)
+			item:SetNWInt("Clip1A", ammo1 or 0)
 			item:SetNWInt("PAmmoType", game.GetAmmoID(wepTable.Primary.Ammo or 0) or "")
 		end
 
 		if wepTable.Secondary ~= nil then
-			item:SetNWInt("Clip2A", (fromBackpack and 0) or wepTable.Secondary.DefaultClip or 0)
+			item:SetNWInt("Clip2A", ammo2 or 0)
 			item:SetNWInt("SAmmoType", game.GetAmmoID(wepTable.Secondary.Ammo or 0) or "")
 		end
 	end
@@ -84,13 +84,11 @@ concommand.Add("rp_createitem", ccCreateItem)
 function ccDropItem(ply, cmd, args)
 	local inv = CAKE.GetCharField(ply, "inventory")
 
-	print("Dropping item: " .. args[1])
-
 	for k, v in pairs(inv) do
 		-- If an item matches in the inventory
 		if v == args[1] then
 			-- Produce it.
-			CAKE.CreateItem(ply, args[1], ply:CalcDrop(), Angle(0, 0, 0), true)
+			CAKE.CreateItem(ply, args[1], ply:CalcDrop(), Angle(0, 0, 0))
 			ply:TakeItem(args[1])
 			break
 		end
