@@ -12,16 +12,15 @@ function ENT:Initialize()
 	if phys:IsValid() then phys:Wake() end
 	self.contents = {}
 	self:SetNWBool("storage_box", true)
-	self.dt.sparking = false
-	self.dt.damage = 100
-	self:SetNWString("Owner", "Shared")
+	self:SetSparking(false)
+	self:SetDamage(100)
 	self:SetNWString("Title", TEXT.UseTitleToLabel)
 	self.locked = false
 end
 
 function ENT:OnTakeDamage(dmg)
-	self.dt.damage = self.dt.damage - dmg:GetDamage()
-	if self.dt.damage <= 0 then
+	self:SetDamage(self:GetDamage() - dmg:GetDamage())
+	if self:GetDamage() <= 0 then
 		self:Destruct()
 		self:Remove()
 	end
@@ -35,11 +34,15 @@ function ENT:Destruct()
 	end
 end
 
-function ENT:AddItem(ply, itemClass)
+function ENT:AddItem(ply, itemClass, clip1, clip2)
 	if #self.contents < 16 then
 		for k, v in pairs(CAKE.ItemData) do
 			if v.Class == itemClass then
-				self.contents[#self.contents + 1] = itemClass
+				self.contents[#self.contents + 1] = {
+					itemClass = itemClass,
+					Clip1 = clip1 or 0,
+					Clip2 = clip2 or 0
+				}
 				CAKE.Response(ply, TEXT.AnnouncePlacedInBox(v.Name))
 				return true
 			end
@@ -52,15 +55,19 @@ function ENT:AddItem(ply, itemClass)
 end
 
 function ENT:RemoveItem(ply, item)
-	local ItemPos = self:GetPos() + Vector(0, 0, 25)
+	local ItemPos = self:GetPos() + Vector(0, 0, 45)
+
+	local idx
 
 	for i, j in ipairs(self.contents) do
-		if j and j == item then
-			CAKE.CreateItem(ply, item, Vector(ItemPos.x + 15, ItemPos.y, ItemPos.z + 15), Angle(0,0,0))
-			table.remove(self.contents, i)
-			return
+		if j and (tonumber(i) == tonumber(item)) then
+			CAKE.CreateItem(ply, j.itemClass, Vector(ItemPos.x + 15, ItemPos.y, ItemPos.z + 15), Angle(0,0,0), j.Clip1, j.Clip2)
+			idx = i
+			break
 		end
 	end
+
+	table.remove(self.contents, idx)
 end
 
 function ENT:SetTitle(title)
@@ -68,26 +75,26 @@ function ENT:SetTitle(title)
 end
 
 function ENT:SpawnItem(ply, cmd, args)
-	self:RemoveItem(ply, args[1])
-	self.dt.sparking = false
+	self:RemoveItem(ply, args[2])
+	self:SetSparking(false)
 	self.locked = false
 end
 
 concommand.Add("drrp_storage_box_spawn", function(ply, cmd, args)
 	s = Entity(tonumber(args[1]))
 
-	if s:GetPos():Distance(ply:GetPos()) > 150 then
+	if IsValid(s) and s:GetPos():Distance(ply:GetPos()) > 150 then
 		CAKE.Response(ply, TEXT.StandCloserToTheBox)
 		return
 	end
 
 	s.locked = true
-	s.dt.sparking = true
+	s:SetSparking(true)
 	timer.Simple(2, function() s:SpawnItem(ply, cmd, args) end)
 end)
 
 function ENT:Think()
-	if not self.dt.sparking then return end
+	if not self:GetSparking() then return end
 
 	local effectdata = EffectData()
 	effectdata:SetOrigin(self:GetPos())
@@ -103,7 +110,7 @@ function ENT:OpenMenu(ply)
 	umsg.End()
 
 	for i, j in ipairs(self.contents) do
-		local itemtable = CAKE.ItemData[j]
+		local itemtable = CAKE.ItemData[j.itemClass]
 		umsg.Start("_storage_box_icon", ply)
 			umsg.Short(self:EntIndex())
 			umsg.Short(i)
@@ -125,8 +132,19 @@ function ENT:UseItem(ply)
 	local entshere = ents.FindInSphere(self:GetPos(), 100)
 
 	for k, v in pairs(entshere) do
-		if v ~= self and v.Class and v.Class ~= "storage_box" and not v.VehicleClass then		
-			if self:AddItem(ply, v.Class) then
+		if v ~= self and v.Class and v.Class ~= "storage_box" and not v.VehicleClass then
+			local clip1 = nil
+			local clip2 = nil
+
+			if v:GetNWInt("Clip1A") then
+				clip1 = v:GetNWInt("Clip1A") or 0
+			end
+
+			if v:GetNWInt("Clip2A") then
+				clip2 = v:GetNWInt("Clip2A") or 0
+			end
+
+			if self:AddItem(ply, v.Class, clip1, clip2) then
 				v:Remove()
 			end
 			return
@@ -144,5 +162,5 @@ end
 function ENT:Drop()
 end
 
-function ENT:Touch( hitEnt )
+function ENT:Touch(hitEnt)
 end

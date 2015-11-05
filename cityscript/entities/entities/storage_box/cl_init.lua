@@ -48,7 +48,7 @@ usermessage.Hook("_storage_box_open", function(m)
 		si:SetModel(itemmodel)
 		si:SetToolTip(itemname)
 		si.DoClick = function(e)
-			RunConsoleCommand("drrp_storage_box_spawn", tostring(entIndex))
+			RunConsoleCommand("drrp_storage_box_spawn", tostring(entIndex), tostring(i))
 			frame:Close()
 		end
 

@@ -6,6 +6,6 @@ ENT.Spawnable = false
 ENT.AdminSpawnable = false
 
 function ENT:SetupDataTables()
-	self:DTVar("Int", 0, "damage")
-	self:DTVar("Bool", 0, "sparking")
+	self:NetworkVar("Int", 0, "Damage")
+	self:NetworkVar("Bool", 0, "Sparking")
 end

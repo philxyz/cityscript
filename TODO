@@ -9,10 +9,13 @@ at any one moment.
 
 philxyz 2015
 ================================================================================
+- Ammo
+	- Grenades and single items should come with a single use clip item
+	- Pay attention to the "Take Ammo" menu in this case
+	- Combine pistol and similar weps need accounting for
 
-- Ammo Issues
-	- Storage box interactions
-		- Maintain clip info for stored weapons
+- Storage box interactions
+	- Test Storage Box with a range of Items
 
 - Identify all commands and parameters
 	- Note them down

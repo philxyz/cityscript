@@ -411,7 +411,6 @@ function ccUseItem(ply, cmd, args)
 		-- Picking up an item should not cause it to give out free ammo...
 		-- .. to get around this, we modify the weapon's SWEP table before
 		-- ply:Give("<class>") gets a chance to read it
-		print("USE ITEM: " .. item.Class)
 		local wepTable = weapons.GetStored(item.Class)
 		if not wepTable then
 			wepTable = scripted_ents.GetStored(item.Class)
@@ -432,7 +431,9 @@ function ccUseItem(ply, cmd, args)
 
 		item:UseItem(ply)
 
-		ply:SelectWeapon(item.Class)
+		if item.Class then
+			ply:SelectWeapon(item.Class)
+		end
 
 		-- If there was any ammo left in the magazine, set this up.
 		if (item:GetNWInt("Clip1A") or 0) > 0 then
