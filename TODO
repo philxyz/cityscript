@@ -14,6 +14,8 @@ philxyz 2015
 	- Pay attention to the "Take Ammo" menu in this case
 	- Combine pistol and similar weps need accounting for
 
+- Duplicator - check that certain items aren't duplicable.
+
 - Storage box interactions
 	- Test Storage Box with a range of Items
 

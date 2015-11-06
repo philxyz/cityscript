@@ -419,7 +419,7 @@ function ccUseItem(ply, cmd, args)
 			end
 		end
 
-		if wepTable then
+		if wepTable and not item.IncludeAmmo then
 			if wepTable.Primary then
 				wepTable.Primary.DefaultClip = 0
 			end

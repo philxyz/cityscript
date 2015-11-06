@@ -1,10 +1,11 @@
-ITEM.Name = "Frag Grenade (M9K)";
-ITEM.Class = "bb_cssfrag_alt";
-ITEM.Description = "Take out a group of enemies.";
-ITEM.Model = "models/weapons/w_eq_fraggrenade_thrown.mdl";
-ITEM.Purchaseable = true;
-ITEM.Price = 250;
-ITEM.ItemGroup = 3;
+ITEM.Name = "Frag Grenade (M9K)"
+ITEM.Class = "bb_cssfrag_alt"
+ITEM.Description = "Take out a group of enemies."
+ITEM.Model = "models/weapons/w_eq_fraggrenade_thrown.mdl"
+ITEM.Purchaseable = true
+ITEM.Price = 250
+ITEM.ItemGroup = 3
+ITEM.IncludeAmmo = true
 
 function ITEM:Drop(ply)
 	
