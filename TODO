@@ -50,6 +50,7 @@ philxyz 2015
 		rp_acceptdeath          (completes the death timer)
 		rp_changename <name>
 		rp_ready
+		rp_equip
 		! versions of rp_ commands
 		rp_selectchar <uid>
 		rp_listvoices
