@@ -5,6 +5,7 @@ ITEM.Model = "models/weapons/w_px.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 788;
 ITEM.ItemGroup = 5;
+ITEM.IncludeAmmo = true
 
 function ITEM:Drop(ply)
 	

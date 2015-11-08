@@ -5,6 +5,7 @@ ITEM.Model = "models/weapons/w_fc2_machete.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 450;
 ITEM.ItemGroup = 5;
+ITEM.IncludeAmmo = true
 
 function ITEM:Drop(ply)
 	

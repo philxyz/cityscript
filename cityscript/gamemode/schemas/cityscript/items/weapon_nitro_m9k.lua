@@ -5,6 +5,7 @@ ITEM.Model = "models/weapons/w_nitro.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 2310;
 ITEM.ItemGroup = 5;
+ITEM.IncludeAmmo = true
 
 function ITEM:Drop(ply)
 	

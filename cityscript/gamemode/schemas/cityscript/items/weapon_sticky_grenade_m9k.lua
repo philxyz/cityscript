@@ -5,6 +5,7 @@ ITEM.Model = "models/weapons/w_sticky_grenade.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 355;
 ITEM.ItemGroup = 5;
+ITEM.IncludeAmmo = true
 
 function ITEM:Drop(ply)
 	

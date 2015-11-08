@@ -1,6 +1,6 @@
 ITEM.Name = "USP (M9K)";
 ITEM.Class = "bb_usp_alt";
-ITEM.Description = "Sub-Machine Gun";
+ITEM.Description = "Pistol";
 ITEM.Model = "models/weapons/3_pist_usp.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 200;

@@ -128,11 +128,10 @@ end
 function ENT:UseItem(ply)
 	if self.locked then return end
 
-	-- If there is nothing near the box
 	local entshere = ents.FindInSphere(self:GetPos(), 100)
 
-	for k, v in pairs(entshere) do
-		if v ~= self and v.Class and v.Class ~= "storage_box" and not v.VehicleClass then
+	for _, v in pairs(entshere) do
+		if v ~= self and v.Class and not v.VehicleClass and (not v.GetClass or (v.GetClass and v:GetClass() ~= "spawned_shipment")) then
 			local clip1 = nil
 			local clip2 = nil
 

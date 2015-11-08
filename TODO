@@ -11,8 +11,11 @@ philxyz 2015
 ================================================================================
 - Ammo
 	- Grenades and single items should come with a single use clip item
+		+ Grenades
+		- 
 	- Pay attention to the "Take Ammo" menu in this case
 	- Combine pistol and similar weps need accounting for
+	- M9K Flashbang
 
 - Duplicator - check that certain items aren't duplicable.
 

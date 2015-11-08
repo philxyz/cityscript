@@ -363,11 +363,11 @@ function ccDropWeapon(ply, cmd, args)
 
 	local wepclass = weapons.GetStored(wep:GetClass())
 
-	if clip1 > 0 then
+	if wepclass.Primary and (clip1 > 0) then
 		ply:GiveAmmo(-clip1, wepclass.Primary.Ammo, true)
 	end
 
-	if clip2 > 0 then
+	if wepclass.Secondary and (clip2 > 0) then
 		ply:GiveAmmo(-clip2, wepclass.Secondary.Ammo, true)
 	end
 
@@ -431,7 +431,7 @@ function ccUseItem(ply, cmd, args)
 
 		item:UseItem(ply)
 
-		if item.Class then
+		if ply:HasWeapon(item.Class) then
 			ply:SelectWeapon(item.Class)
 		end
 

@@ -5,6 +5,7 @@ ITEM.Model = "models/weapons/w_eq_smokegrenade_thrown.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 180;
 ITEM.ItemGroup = 3;
+ITEM.IncludeAmmo = true
 
 function ITEM:Drop(ply)
 	

@@ -5,6 +5,7 @@ ITEM.Model = "models/weapons/w_harpooner.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 850;
 ITEM.ItemGroup = 5;
+ITEM.IncludeAmmo = true
 
 function ITEM:Drop(ply)
 	

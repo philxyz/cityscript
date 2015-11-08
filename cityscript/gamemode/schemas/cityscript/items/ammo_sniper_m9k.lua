@@ -14,6 +14,6 @@ function ITEM:Pickup(ply)
 end
 
 function ITEM:UseItem(ply)
-	ply:GiveAmmo(64, "sniper")
+	ply:GiveAmmo(64, "SniperPenetratedRound")
 	self:Remove();
 end

@@ -5,6 +5,7 @@ ITEM.Model = "models/weapons/w_damascus_sword.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 750;
 ITEM.ItemGroup = 5;
+ITEM.IncludeAmmo = true
 
 function ITEM:Drop(ply)
 	

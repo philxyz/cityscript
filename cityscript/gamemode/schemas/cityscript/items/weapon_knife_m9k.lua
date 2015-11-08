@@ -5,6 +5,7 @@ ITEM.Model = "models/weapons/3_knife_t.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 50;
 ITEM.ItemGroup = 3;
+ITEM.IncludeAmmo = true
 
 function ITEM:Drop(ply)
 	

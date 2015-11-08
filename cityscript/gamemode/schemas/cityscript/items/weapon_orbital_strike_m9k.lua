@@ -5,6 +5,7 @@ ITEM.Model = "models/weapons/w_binos.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 57390;
 ITEM.ItemGroup = 5;
+ITEM.IncludeAmmo = true
 
 function ITEM:Drop(ply)
 	
