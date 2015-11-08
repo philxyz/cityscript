@@ -110,9 +110,7 @@ function ccEquip(ply, cmd, args)
                         	end
                 	end
 
-			local en = ents.Create(v)
-
-                	if wepTable and not en.IncludeAmmo then
+                	if wepTable and not wepTable.IncludeAmmo then
                         	if wepTable.Primary then
                                 	wepTable.Primary.DefaultClip = 0
                         	end
@@ -125,7 +123,6 @@ function ccEquip(ply, cmd, args)
 			ply:Give(v)
 			ply:TakeItem(v)
 
-			en:Remove()
 			break
 		end
 	end

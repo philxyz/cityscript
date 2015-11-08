@@ -771,7 +771,7 @@ function CreatePlayerMenu()
 		
 		spawnicon.DoClick = function (btn)
 			local ContextMenu = DermaMenu()
-				if not LocalPlayer():HasWeapon(v.Class) then
+				if weapons.GetStored(v.Class) ~= nil and not LocalPlayer():HasWeapon(v.Class) then
 					ContextMenu:AddOption("Equip", function() RunConsoleCommand("rp_equip", v.Class); DeleteMyself(); end)
 				end
 				ContextMenu:AddOption("Drop", function() RunConsoleCommand("rp_dropitem", v.Class); DeleteMyself(); end);
