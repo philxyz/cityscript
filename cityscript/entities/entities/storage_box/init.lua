@@ -131,7 +131,7 @@ function ENT:UseItem(ply)
 	local entshere = ents.FindInSphere(self:GetPos(), 100)
 
 	for _, v in pairs(entshere) do
-		if v ~= self and v.Class and not v.VehicleClass and (not v.GetClass or (v.GetClass and (v:GetClass() ~= "spawned_shipment" and v:GetClass() ~= "storage_box" and v:GetClass() ~= "atm" and v:GetClass() ~= "meteor")) then
+		if v ~= self and v.Class and not v.VehicleClass and (not v.GetClass or (v.GetClass and (v:GetClass() ~= "spawned_shipment" and v:GetClass() ~= "storage_box" and v:GetClass() ~= "atm" and v:GetClass() ~= "meteor"))) then
 			local clip1 = nil
 			local clip2 = nil
 
