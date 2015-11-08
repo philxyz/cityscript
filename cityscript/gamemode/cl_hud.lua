@@ -230,12 +230,14 @@ function DrawAmmoDisplay()
 		draw.RoundedBox(0, ScrW() - 101, ScrH() - 21 - barHeight, 6, barHeight, Color(255, 255, 255, 240))
 
 		-- debug only:
+		--[[
 		local primaryAmmoName = game.GetAmmoName(wep:GetPrimaryAmmoType()) or "None"
 		local secondaryAmmoName = game.GetAmmoName(wep:GetSecondaryAmmoType()) or "None"
 		local str = "Primary Ammo: " .. primaryAmmoName .. ", Secondary Ammo: " .. secondaryAmmoName
 		surface.SetFont("DefaultSmall")
 		local w, h = surface.GetTextSize(str)
 		draw.DrawText(str, "DefaultSmall", ScrW()/2.0 - w, ScrH() - 60, Color(255,255,255,255), TEXT_ALIGN_LEFT)
+		]]
 	end
 end
 

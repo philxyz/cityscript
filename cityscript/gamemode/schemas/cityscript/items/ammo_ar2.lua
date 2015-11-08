@@ -1,9 +1,9 @@
-ITEM.Name = "Buckshot Ammo (M9K)";
-ITEM.Class = "m9k_ammo_buckshot";
+ITEM.Name = "AR2 Ammo";
+ITEM.Class = "ammo_ar2";
 ITEM.Description = "Don't forget to reload!";
-ITEM.Model = "models/items/boxbuckshot.mdl";
+ITEM.Model = "models/items/boxmrounds.mdl";
 ITEM.Purchaseable = false;
-ITEM.Price = 80;
+ITEM.Price = 60;
 ITEM.ItemGroup = 3;
 
 function ITEM:Drop(ply)
@@ -14,6 +14,6 @@ function ITEM:Pickup(ply)
 end
 
 function ITEM:UseItem(ply)
-	ply:GiveAmmo(100, "buckshot")
+	ply:GiveAmmo(100, "ar2")
 	self:Remove();
 end

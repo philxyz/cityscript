@@ -42,10 +42,10 @@ function SCHEMA.SetUp()
 	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.TheLegionGangMember, Color(0, 0, 0, 255), "models/player/group03/", true, true, nil, "legion", { 7 }, { 7 }, { 7 }, { 1 }, 10, true, false, nil))
 	
 	-- Police
-	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.CityPolice, Color(0, 0, 200, 255), "models/police.mdl", true, false, {"weapon_stunstick", "weapon_pistol", "door_ram", "arrest_stick", "unarrest_stick"}, "cp", {1}, {1}, {1}, {1}, 50, true, true, true)) -- Civil Protection
+	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.CityPolice, Color(0, 0, 200, 255), "models/police.mdl", true, false, {"weapon_stunstick", "bb_usp_alt", "door_ram", "arrest_stick", "unarrest_stick"}, "cp", {1}, {1}, {1}, {1}, 50, true, true, true)) -- Civil Protection
 
 	-- Mayor
-	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.CityMayor, Color(150, 0, 0, 255), "models/breen.mdl", true, false, {"weapon_357"}, "ca", {1}, {1}, {1}, {1}, 200, false, false, true)) -- City Administrator
+	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.CityMayor, Color(150, 0, 0, 255), "models/breen.mdl", true, false, {"m9k_m29satan"}, "ca", {1}, {1}, {1}, {1}, 200, false, false, true)) -- City Administrator
 	
 	
 	-- Selectable models on character creation

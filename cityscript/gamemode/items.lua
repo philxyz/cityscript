@@ -97,6 +97,41 @@ function ccDropItem(ply, cmd, args)
 end
 concommand.Add("rp_dropitem", ccDropItem)
 
+function ccEquip(ply, cmd, args)
+	local inv = CAKE.GetCharField(ply, "inventory")
+
+	for _, v in pairs(inv) do
+		if v == args[1] then
+			local wepTable = weapons.GetStored(v)
+                	if not wepTable then
+                        	wepTable = scripted_ents.GetStored(v)
+                        	if wepTable then
+                                	wepTable = wepTable.t or scripted_ents.Get(v)
+                        	end
+                	end
+
+			local en = ents.Create(v)
+
+                	if wepTable and not en.IncludeAmmo then
+                        	if wepTable.Primary then
+                                	wepTable.Primary.DefaultClip = 0
+                        	end
+
+                        	if wepTable.Secondary then
+                                	wepTable.Secondary.DefaultClip = 0
+                        	end
+                	end
+
+			ply:Give(v)
+			ply:TakeItem(v)
+
+			en:Remove()
+			break
+		end
+	end
+end
+concommand.Add("rp_equip", ccEquip)
+
 function ccBuyItem(ply, cmd, args)
 	if CAKE.ItemData[args[1]] ~= nil then
 		if CAKE.Teams[ply:Team()].business then

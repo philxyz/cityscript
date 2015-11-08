@@ -3,9 +3,8 @@ ITEM.Class = "m9k_orbital_strike";
 ITEM.Description = "Star-Wars Program";
 ITEM.Model = "models/weapons/w_binos.mdl";
 ITEM.Purchaseable = true;
-ITEM.Price = 57390;
+ITEM.Price = 100;
 ITEM.ItemGroup = 5;
-ITEM.IncludeAmmo = true
 
 function ITEM:Drop(ply)
 	

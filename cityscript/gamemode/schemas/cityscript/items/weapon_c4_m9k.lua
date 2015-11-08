@@ -1,13 +1,13 @@
-ITEM.Name = "C4 (M9K)";
-ITEM.Class = "bb_planted_alt_c4";
-ITEM.Description = "Take the doors off!";
-ITEM.Model = "models/weapons/2_c4_planted.mdl";
-ITEM.Purchaseable = true;
-ITEM.Price = 60;
-ITEM.ItemGroup = 1;
+ITEM.Name = "C4 (M9K)"
+ITEM.Class = "bb_planted_alt_c4"
+ITEM.Description = "Take the doors off!"
+ITEM.Model = "models/weapons/2_c4_planted.mdl"
+ITEM.Purchaseable = true
+ITEM.Price = 600
+ITEM.ItemGroup = 5
+ITEM.IncludeAmmo = true
 
 function ITEM:Drop(ply)
-	
 end
 
 function ITEM:Pickup(ply)

@@ -1,6 +1,6 @@
-ITEM.Name = ".357 Ammo (M9K)";
-ITEM.Class = "weapon_357_ammo_m9k_shipment";
-ITEM.ContentClass = "m9k_ammo_357"
+ITEM.Name = ".357 Ammo";
+ITEM.Class = "weapon_357_ammo_shipment";
+ITEM.ContentClass = "ammo_357"
 ITEM.ContentCount = 10
 ITEM.ContentItemWeight = 0.16
 ITEM.Description = "10 pack";

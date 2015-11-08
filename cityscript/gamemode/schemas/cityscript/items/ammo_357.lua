@@ -1,9 +1,9 @@
-ITEM.Name = "SMG Ammo (M9K)";
-ITEM.Class = "m9k_ammo_smg";
+ITEM.Name = ".357 Ammo";
+ITEM.Class = "ammo_357";
 ITEM.Description = "Don't forget to reload!";
-ITEM.Model = "models/items/boxsrounds.mdl";
+ITEM.Model = "models/items/357ammo.mdl";
 ITEM.Purchaseable = true;
-ITEM.Price = 85;
+ITEM.Price = 55;
 ITEM.ItemGroup = 2;
 
 function ITEM:Drop(ply)
@@ -14,6 +14,6 @@ function ITEM:Pickup(ply)
 end
 
 function ITEM:UseItem(ply)
-	ply:GiveAmmo(150, "smg1")
+	ply:GiveAmmo(48, "357")
 	self:Remove();
 end

@@ -1,10 +1,10 @@
-ITEM.Name = "Sniper Ammo (M9K)"
-ITEM.Class = "weapon_sniper_rounds_ammo_m9k_shipment"
-ITEM.ContentClass = "m9k_ammo_sniper_rounds"
+ITEM.Name = "SMG Ammo"
+ITEM.Class = "weapon_smg_ammo_shipment"
+ITEM.ContentClass = "ammo_smg"
 ITEM.ContentCount = 10
 ITEM.ContentItemWeight = 0.32
 ITEM.Description = "10 pack"
 ITEM.Model = "models/items/item_item_crate.mdl"
 ITEM.Purchaseable = true
-ITEM.Price = 900
+ITEM.Price = 730
 ITEM.ItemGroup = 3

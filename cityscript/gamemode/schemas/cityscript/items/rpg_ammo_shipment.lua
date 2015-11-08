@@ -1,0 +1,10 @@
+ITEM.Name = "RPG Ammo"
+ITEM.Class = "rpg_ammo_shipment"
+ITEM.ContentClass = "ammo_rpg"
+ITEM.ContentCount = 10
+ITEM.ContentItemWeight = 0.85
+ITEM.Description = "10 pack"
+ITEM.Model = "models/items/item_item_crate.mdl"
+ITEM.Purchaseable = true
+ITEM.Price = 390
+ITEM.ItemGroup = 5

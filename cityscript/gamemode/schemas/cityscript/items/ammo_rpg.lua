@@ -1,10 +1,10 @@
-ITEM.Name = "Pistol Ammo"
-ITEM.Class = "ammo_pistol"
+ITEM.Name = "RPG Ammo"
+ITEM.Class = "ammo_rpg"
 ITEM.Description = "Don't forget to reload!"
-ITEM.Model = "models/items/boxbuckshot.mdl"
+ITEM.Model = "models/weapons/w_missile_closed.mdl"
 ITEM.Purchaseable = true
-ITEM.Price = 20
-ITEM.ItemGroup = 2
+ITEM.Price = 40
+ITEM.ItemGroup = 5
 
 function ITEM:Drop(ply)
 end
@@ -14,6 +14,6 @@ function ITEM:Pickup(ply)
 end
 
 function ITEM:UseItem(ply)
-	ply:GiveAmmo(60, "Pistol")
+	ply:GiveAmmo(1, "RPG_Round")
 	self:Remove()
 end

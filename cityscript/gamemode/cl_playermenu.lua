@@ -72,7 +72,7 @@ local function InitHiddenButton()
 			local ContextMenu = DermaMenu()
 				if CAKE.IsDoor(target) or target:IsVehicle() then
 					if not target:GetNWBool("notRentable") then
-						ContextMenu:AddOption(TEXT.RentUnrent, function() RunConsoleCommand("rp_purchasedoor", tostring(target:EntIndex())) end)
+						ContextMenu:AddOption(TEXT.RentUnrent, function() RunConsoleCommand("rp_rentdoor", tostring(target:EntIndex())) end)
 						ContextMenu:AddOption(TEXT.Lock, function() RunConsoleCommand("rp_lockdoor", tostring(target:EntIndex())) end)
 						ContextMenu:AddOption(TEXT.Unlock, function() RunConsoleCommand("rp_unlockdoor", tostring(target:EntIndex())) end)
 					end
@@ -771,6 +771,9 @@ function CreatePlayerMenu()
 		
 		spawnicon.DoClick = function (btn)
 			local ContextMenu = DermaMenu()
+				if not LocalPlayer():HasWeapon(v.Class) then
+					ContextMenu:AddOption("Equip", function() RunConsoleCommand("rp_equip", v.Class); DeleteMyself(); end)
+				end
 				ContextMenu:AddOption("Drop", function() RunConsoleCommand("rp_dropitem", v.Class); DeleteMyself(); end);
 			ContextMenu:Open()
 		end
