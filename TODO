@@ -9,11 +9,6 @@ at any one moment.
 
 philxyz 2015
 ================================================================================
-- Duplicator - check that certain items aren't duplicable.
-
-- Storage box interactions
-	- Test Storage Box with a range of Items
-
 - Identify all commands and parameters
 	- Note them down
 		rp_admin tooltrust <name> [1|0]
