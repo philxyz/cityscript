@@ -25,33 +25,33 @@ philxyz 2015
 		rp_admin kick <name> <reason>
 		rp_admin warn <name> <warningmessage>
 
-		rp_givemoney <ent_index> <amount>
-		rp_doorrenting <ent_index> [0|1] (particular door)
-		rp_buyitem CAKE.ItemData index
-		rp_dropitem "Inventory table value"
-		rp_createitem (second argument to CAKE.CreateItem)
-		rp_closedchat
-		rp_openedchat
+-		rp_givemoney <ent_index> <amount>
+-		rp_doorrenting <ent_index> [0|1] (particular door)
+-		rp_buyitem CAKE.ItemData index
+-		rp_dropitem "Inventory table value"
+-		rp_createitem (second argument to CAKE.CreateItem)
+-		rp_closedchat
+-		rp_openedchat
 		rp_setmoney <player_name> <positive_whole_amount>
-		rp_takeammo <ent_index>
-		rp_useitem <ent_index>     (calls UseItem on an Item object (entity))
-		rp_pickup <ent_index>
-		rp_dropweapon - Still has ammo issues. Come up with a more permanent solution now.
-		rp_rentdoor
-		rp_opendoor   (force open a door which your team is allowed to open)
-		rp_unlockdoor <ent_index>   (unlock a door you are renting)
-		rp_lockdoor <ent_index>    (lock a door you are renting)
+-		rp_takeammo <ent_index>
+-		rp_useitem <ent_index>     (calls UseItem on an Item object (entity))
+-		rp_pickup <ent_index>
+-		rp_dropweapon - Still has ammo issues. Come up with a more permanent solution now.
+-		rp_rentdoor
+-		rp_opendoor   (force open a door which your team is allowed to open)
+-		rp_unlockdoor <ent_index>   (unlock a door you are renting)
+-		rp_lockdoor <ent_index>    (lock a door you are renting)
 		rp_flag <team_name>
 		rp_acceptdeath          (completes the death timer)
-		rp_changename <name>
-		rp_ready
+-		rp_changename <name>
+-		rp_ready
 		rp_equip
-		! versions of rp_ commands
-		rp_selectchar <uid>
+-		! versions of rp_ commands
+-		rp_selectchar <uid>
 		rp_listvoices
 		rp_voice <voice_id> (index into CAKE.Voices)
 		rp_permaflag <flag> (sets this character to always be this flag on spawn)
-		drrp_storage_box_spawn <ent_index>
+-		drrp_storage_box_spawn <ent_index>
 		
 	- Test them
 	- Decide which will disappear
@@ -59,6 +59,9 @@ philxyz 2015
 
 	- Decide which ones will become "net"-ified.
 	- "net"-ify then
+
+- Fix the ATM respawning issues on server load.
+
 - Replace umsgs with net.
 
 - Prop buddy system
