@@ -113,7 +113,7 @@ function UPP.CanTool(ply, tr, tool)
 		local class = tr.Entity:GetClass()
 		if class == "prop_physics" then
 			-- Only prop creators can use toolgun on physics props
-			local creator = tr.Entity:GetNWEntity("creator")
+			local creator = tr.Entity:GetNWEntity("c_ent")
 			return IsValid(creator) and creator:UserID() == ply:UserID()
 		else
 			return false
