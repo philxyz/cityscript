@@ -431,8 +431,8 @@ function ccUseItem(ply, cmd, args)
 
 		item:UseItem(ply)
 
-		if ply:HasWeapon(item.Class) then
-			ply:SelectWeapon(item.Class)
+		if ply:HasWeapon(item.Class or item:GetClass()) then
+			ply:SelectWeapon(item.Class or item:GetClass())
 		end
 
 		-- If there was any ammo left in the magazine, set this up.
