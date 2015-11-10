@@ -20,6 +20,7 @@ DB = {}
 
 -- String Tables
 util.AddNetworkString("show_help")
+util.AddNetworkString("gm")
 
 -- Server Includes
 include("shared.lua") -- Shared Functions

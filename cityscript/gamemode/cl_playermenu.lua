@@ -109,7 +109,11 @@ local function InitHiddenButton()
 						Give:SetSize(150, 25)
 
 						Give.DoClick = function()
-							RunConsoleCommand("rp_givemoney", tostring(target:EntIndex()), tostring(Credits:GetValue()))
+							net.Start("gmn")
+							net.WriteInt(target:EntIndex(), 14)
+							net.WriteString(tostring(Credits:GetValue()))
+							net.SendToServer()
+
 							CreditPanel:Remove()
 							CreditPanel = nil
 						end

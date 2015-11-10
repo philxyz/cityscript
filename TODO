@@ -19,13 +19,12 @@ philxyz 2015
 		rp_admin extraprops <name> <amount>
 		rp_admin extraragdolls <name> <amount>
 		rp_admin listvars
-		rp_admin setvar <value> - doesn't work
+		rp_admin setvar <value>
 
 		rp_admin ban <name> <reason> <minutes>
 		rp_admin kick <name> <reason>
 		rp_admin warn <name> <warningmessage>
 
--		rp_givemoney <ent_index> <amount>
 -		rp_doorrenting <ent_index> [0|1] (particular door)
 -		rp_buyitem CAKE.ItemData index
 -		rp_dropitem "Inventory table value"

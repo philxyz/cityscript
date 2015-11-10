@@ -502,32 +502,33 @@ function ccSetMoney(ply, cmd, args)
 end
 concommand.Add("rp_setmoney", ccSetMoney)
 
-function ccGiveMoney(ply, cmd, args)
-	if not args[1] or not tonumber(args[1]) or not math.IsFinite(tonumber(args[1])) or not args[2] or not tonumber(args[2]) or not math.IsFinite(tonumber(args[2])) then
+net.Receive("gmn", function(len, ply)
+	local target = Entity(net.ReadInt(14))
+	local strAmount = net.ReadString()
+	if not IsValid(target) then
+		CAKE.Response(ply, TEXT.TargetNotFound)
+		return
+	end
+
+	if not tonumber(strAmount) or not math.IsFinite(tonumber(strAmount)) then
 		CAKE.Response(ply, TEXT.GiveMoneyUsedIncorrectly)
 		return
 	end
-	
-	if player.GetByID(tonumber(args[1])) ~= nil then
-		local target = player.GetByID(args[1])
-		
-		if tonumber(args[2]) > 0 then
-			if tonumber(CAKE.GetCharField(ply, "money")) >= tonumber(args[2]) then
-				CAKE.ChangeMoney(target, args[2])
-				CAKE.ChangeMoney(ply, 0 - args[2])
-				CAKE.Response(ply, TEXT.YouGaveX_Y_Tokens(target:Nick(), args[2]))
-				CAKE.Response(target, TEXT.X_GaveYouY_Tokens(ply:Nick(), args[2]))
-			else
-				CAKE.Response(ply, TEXT.NotEnoughTokens)
-			end
-		else
-			CAKE.Response(ply, TEXT.InvalidAmount)
-		end
-	else
-		CAKE.Response(ply, TEXT.TargetNotFound)
+
+	if tonumber(strAmount) <= 0 then
+		CAKE.Response(ply, TEXT.InvalidAmount)
+		return
 	end
-end
-concommand.Add("rp_givemoney", ccGiveMoney)
+
+	if tonumber(CAKE.GetCharField(ply, "money")) >= tonumber(strAmount) then
+		CAKE.ChangeMoney(target, tonumber(strAmount))
+		CAKE.ChangeMoney(ply, 0 - tonumber(strAmount))
+		CAKE.Response(ply, TEXT.YouGaveX_Y_Tokens(target:Nick(), strAmount))
+		CAKE.Response(target, TEXT.X_GaveYouY_Tokens(ply:Nick(), strAmount))
+	else
+		CAKE.Response(ply, TEXT.NotEnoughTokens)
+	end
+end)
 
 function ccOpenChat(ply, cmd, args)
 
