@@ -5,19 +5,19 @@ PLUGIN.Description = "Limit prop, ragdoll, vehicle, and effect limits on a playe
 SpawnTable = {}
 
 function CAKE.MaxProps(ply)
-	return tonumber(CAKE.ConVars.PropLimit) + tonumber(CAKE.GetPlayerField(ply, "extraprops"))
+	return tonumber(cvars.Number("sbox_maxprops")) + tonumber(CAKE.GetPlayerField(ply, "extraprops"))
 end
 
 function CAKE.MaxRagdolls(ply)
-	return tonumber(CAKE.ConVars.RagdollLimit) + tonumber(CAKE.GetPlayerField(ply, "extraragdolls"))
+	return tonumber(cvars.Number("sbox_maxragdolls")) + tonumber(CAKE.GetPlayerField(ply, "extraragdolls"))
 end
 
 function CAKE.MaxVehicles(ply)
-	return tonumber(CAKE.ConVars.VehicleLimit) + tonumber(CAKE.GetPlayerField(ply, "extravehicles"))
+	return tonumber(cvars.Number("sbox_maxvehicles")) + tonumber(CAKE.GetPlayerField(ply, "extravehicles"))
 end
 
 function CAKE.MaxEffects(ply)
-	return tonumber(CAKE.ConVars.EffectLimit) + tonumber(CAKE.GetPlayerField(ply, "extraeffects"))
+	return tonumber(cvars.Number("sbox_maxeffects")) + tonumber(CAKE.GetPlayerField(ply, "extraeffects"))
 end
 
 function CAKE.CreateSpawnTable(ply)
@@ -261,11 +261,6 @@ function PLUGIN.Init()
 	CAKE.ConVars.Default_Extraragdolls = 0
 	CAKE.ConVars.Default_Extravehicles = 0
 	CAKE.ConVars.Default_Extraeffects = 0
-	
-	CAKE.ConVars.PropLimit = 30
-	CAKE.ConVars.RagdollLimit = 0
-	CAKE.ConVars.VehicleLimit = 0
-	CAKE.ConVars.EffectLimit = 0
 	
 	CAKE.AddDataField(1, "extraprops", CAKE.ConVars.Default_Extraprops)
 	CAKE.AddDataField(1, "extraragdolls", CAKE.ConVars.Default_Extraragdolls)
