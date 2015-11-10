@@ -92,10 +92,9 @@ function Admin_Ban(ply, cmd, args)
 	end
 end
 
-function Admin_SetConVar(ply, cmd, args)
-
+function Admin_SetVar(ply, cmd, args)
 	if #args ~= 2 then
-		CAKE.Response(ply, TEXT.SetConVarInvalidArgumentCount)
+		CAKE.Response(ply, TEXT.SetVarInvalidArgumentCount)
 		return
 	end
 	
@@ -112,7 +111,7 @@ function Admin_SetConVar(ply, cmd, args)
 		end
 		
 		CAKE.Response(ply, TEXT.ReportAdminChangeMade(args[1], args[2]))
-		CAKE.CallHook("SetConVar", ply, args[1], args[2])
+		CAKE.CallHook("SetVar", ply, args[1], args[2])
 	else
 		CAKE.Response(ply, args[1] .. " is not a valid convar! Use rp_admin listvars")
 	end
@@ -174,7 +173,7 @@ function PLUGIN.Init()
 	CAKE.AdminCommand("warn", Admin_Warn, TEXT.WarnSomeone, true, true, false)
 	CAKE.AdminCommand("kick", Admin_Kick, TEXT.KickSomeone, true, true, false)
 	CAKE.AdminCommand("ban", Admin_Ban, TEXT.BanSomeone, true, true, false)
-	CAKE.AdminCommand("setconvar", Admin_SetConVar, TEXT.SetConVar, true, true, true)
+	CAKE.AdminCommand("setvar", Admin_SetVar, TEXT.SetVar, true, true, true)
 	CAKE.AdminCommand("listvars", Admin_ListVars, TEXT.ListConVars, true, true, true)
 	CAKE.AdminCommand("setflags", Admin_SetFlags, TEXT.SetFlags, true, true, false)
 	CAKE.AdminCommand("adddoor", Admin_AddDoor, TEXT.AddDoorToDoorGroup, true, true, true)

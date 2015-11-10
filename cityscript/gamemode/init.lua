@@ -91,7 +91,7 @@ function GM:Initialize() -- Initialize the gamemode
 	
 	CAKE.DayLog("script.txt", TEXT.GamemodeInit)
 	
-	-- game.ConsoleCommand( "exec cakevars.cfg\n" ) -- Put any configuration variables in cfg/cakevars.cfg, set it using rp_admin setconvar varname value
+	-- game.ConsoleCommand( "exec cakevars.cfg\n" ) -- Put any configuration variables in cfg/cakevars.cfg, set it using rp_admin setvar varname value
 	-- DEPRECATED
 
 	GAMEMODE.Name = "CityScript"
