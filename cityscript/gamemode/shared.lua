@@ -28,3 +28,14 @@ function CAKE.IsDoor(door)
 	
 	return false
 end
+
+-- Allow referring to entities across server config changes
+local mtbl = FindMetaTable("Entity")
+
+function mtbl:GetGlobalID()
+	return self:EntIndex() - game.MaxPlayers()
+end
+
+function ents.GetByGlobalID(globalId)
+	return ents.GetByIndex(globalId + game.MaxPlayers())
+end

@@ -71,8 +71,6 @@ resource.AddWorkshop("106565409")
 
 AntiCopy = {"atm", "storage_box", "sent_nuke_detpack", "sent_nuke_radiation", "item_prop", "token_bundle", "token_printer", "spawned_shipment", "toxic_lab", "toxic", "sent_nuke_part", "sent_nuke", "door_ram", "lockpick", "med_kit", "gmod_tool", "token_banknote"}
 
-DB.Init()
-
 CAKE.LoadSchema(CAKE.ConVars.Schema) -- Load the schema and plugins, this is NOT initializing.
 
 CAKE.Loaded = true -- Tell the server that we're loaded up
@@ -97,10 +95,10 @@ function GM:Initialize() -- Initialize the gamemode
 	-- DEPRECATED
 
 	GAMEMODE.Name = "CityScript"
-	
+
 	CAKE.InitTime()
 	CAKE.LoadDoors()
-	
+
 	timer.Create("timesave", 120, 0, CAKE.SaveTime)
 	timer.Create("sendtime", 1, 0, CAKE.SendTime)
 	
@@ -131,7 +129,6 @@ end
 
 -- Player Initial Spawn
 function GM:PlayerInitialSpawn(ply)
-
 	-- Call the hook before we start initializing the player
 	CAKE.CallHook("Player_Preload", ply)
 	
@@ -571,3 +568,7 @@ function PlayerSpawnedVehicle(ply, ent)
 	ent:SetNWEntity("c_ent", ply)
 end
 hook.Add("PlayerSpawnedVehicle", "SetVehicleCreatorInfo", PlayerSpawnedVehicle)
+
+hook.Add("InitPostEntity", "ipe_dbinit", function()
+	DB.Init()
+end)

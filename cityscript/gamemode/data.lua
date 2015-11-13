@@ -136,19 +136,19 @@ end
 function DB.StoreDoorRentability(ent)
 	local map = string.lower(game.GetMap())
 	local nonRentable = ent:GetNWBool("nonRentable")
-	local r = tonumber(sql.QueryValue("SELECT COUNT(*) FROM cityscript_disableddoors WHERE map = " .. sql.SQLStr(map) .. " AND idx = " .. ent:EntIndex() .. ";"))
+	local r = tonumber(sql.QueryValue("SELECT COUNT(*) FROM cityscript_disableddoors WHERE map = " .. sql.SQLStr(map) .. " AND idx = " .. ent:GetGlobalID() .. ";"))
 	if not r then return end
 
 	if r > 0 and not nonRentable then
-		sql.Query("DELETE FROM cityscript_disableddoors WHERE map = " .. sql.SQLStr(map) .. " AND idx = " .. ent:EntIndex() .. ";")
+		sql.Query("DELETE FROM cityscript_disableddoors WHERE map = " .. sql.SQLStr(map) .. " AND idx = " .. ent:GetGlobalID() .. ";")
 	elseif r == 0 and nonRentable then
-		sql.Query("INSERT INTO cityscript_disableddoors VALUES(" .. sql.SQLStr(map) .. ", " .. ent:EntIndex() .. ", " .. sql.SQLStr("Non-Rentable Door") .. ");")
+		sql.Query("INSERT INTO cityscript_disableddoors VALUES(" .. sql.SQLStr(map) .. ", " .. ent:GetGlobalID() .. ", " .. sql.SQLStr("Non-Rentable Door") .. ");")
 		ent:SetNWString("dTitle", "Non-Rentable Door")
 	end
 end
 
 function DB.StoreNonRentableDoorTitle(ent, text)
-	sql.Query("UPDATE cityscript_disableddoors SET title = " .. sql.SQLStr(text) .. " WHERE map = " .. sql.SQLStr(string.lower(game.GetMap())) .. " AND idx = " .. ent:EntIndex() .. ";")
+	sql.Query("UPDATE cityscript_disableddoors SET title = " .. sql.SQLStr(text) .. " WHERE map = " .. sql.SQLStr(string.lower(game.GetMap())) .. " AND idx = " .. ent:GetGlobalID() .. ";")
 	ent:SetNWString("dTitle", text)
 end
 
@@ -157,14 +157,13 @@ function DB.SetUpNonRentableDoors()
 	if not r then return end
 
 	for _, row in pairs(r) do
-		local e = ents.GetByIndex(tonumber(row.idx))
+		local e = ents.GetByGlobalID(tonumber(row.idx))
 		e:SetNWBool("nonRentable", true)
 		e:SetNWString("dTitle", row.title)
 	end
 end
 
 function DB.NewATM(ent)
-	print("inside newatm function!")
 	local pos = ent:GetPos()
 	local ang = ent:GetAngles()
 	sql.Query("INSERT INTO cityscript_atmpositions VALUES(NULL, " .. sql.SQLStr(string.lower(game.GetMap())) .. ", " .. pos.x .. ", " .. pos.y .. ", " .. pos.z .. ", " .. ang.p .. ", " .. ang.y .. ", " .. ang.r .. ");")
