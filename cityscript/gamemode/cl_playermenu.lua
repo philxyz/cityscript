@@ -78,10 +78,17 @@ local function InitHiddenButton()
 					end
 
 					if LocalPlayer():IsSuperAdmin() then
+						local sendfunc = function(enable)
+							net.Start("drtg")
+							net.WriteInt(target:EntIndex(), 16)
+							net.WriteBool(enable)
+							net.SendToServer()
+						end
+
 						if target:GetNWBool("nonRentable") then
-							ContextMenu:AddOption(TEXT.EnableRenting, function() RunConsoleCommand("rp_doorrenting", tostring(target:EntIndex()), "1") end)
+							ContextMenu:AddOption(TEXT.EnableRenting, function() sendfunc(true) end)
 						else
-							ContextMenu:AddOption(TEXT.DisableRenting, function() RunConsoleCommand("rp_doorrenting", tostring(target:EntIndex()), "0") end)
+							ContextMenu:AddOption(TEXT.DisableRenting, function() sendfunc(false) end)
 						end
 					end
 				elseif target:IsPlayer() then
@@ -110,7 +117,7 @@ local function InitHiddenButton()
 
 						Give.DoClick = function()
 							net.Start("gmn")
-							net.WriteInt(target:EntIndex(), 14)
+							net.WriteInt(target:EntIndex(), 16)
 							net.WriteString(tostring(Credits:GetValue()))
 							net.SendToServer()
 

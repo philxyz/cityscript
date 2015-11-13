@@ -140,7 +140,6 @@ TEXT.DoorRentCancelled = "Door Rental Cancelled"
 TEXT.DoorAlreadyRented = "This door is already rented by someone else!"
 TEXT.DoorRentingEnabled = "Door renting enabled for this door!"
 TEXT.DoorRentingDisabled = "Door renting disabled for this door!"
-TEXT.DoorRentCommandUsedIncorrectly = "Command used incorrectly - rp_doorrenting ent_index [0|1]"
 TEXT.WeaponNotDroppable = "This weapon cannot be dropped!"
 TEXT.GiveMoneyUsedIncorrectly = "GiveMoney message used incorrectly."
 TEXT.YouGaveX_Y_Tokens = function(name, amount) return "You gave " .. name .. " " .. amount .. " tokens!" end

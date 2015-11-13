@@ -321,34 +321,20 @@ function ccRentDoor(ply, cmd, args)
 end
 concommand.Add("rp_rentdoor", ccRentDoor)
 
-function ccDoorRenting(ply, cmd, args)
+net.Receive("drtg", function(len, ply)
+	local doorEnt = Entity(net.ReadInt(16))
+	local rentingEnabled = net.ReadBool()
+
 	if not ply:IsSuperAdmin() then
 		CAKE.Response(ply, TEXT.SuperAdminOnly)
 		return
 	end
 
-	if not args[1] or not tonumber(args[1]) or tonumber(args[1]) < 0 or not math.IsFinite(tonumber(args[1])) or
-		(not args[2] or not tonumber(args[2]) or not math.IsFinite(tonumber(args[2])) or (tonumber(args[2]) ~= 0 and tonumber(args[2]) ~= 1)) then
+	doorEnt:SetNWBool("nonRentable", not rentingEnabled)
+	DB.StoreDoorRentability(doorEnt)
 
-		CAKE.Response(ply, TEXT.DoorRentCommandUsedIncorrectly)
-		return
-	end
-
-	local door = ents.GetByIndex(tonumber(args[1]))
-	door:SetNWBool("nonRentable", not door:GetNWBool("nonRentable"))
-	local tx
-	if door:GetNWBool("nonRentable") then
-		tx = TEXT.DoorRentingDisabled
-	else
-		tx = TEXT.DoorRentingEnabled
-	end
-
-	CAKE.Response(ply, tx)
-
-	-- Save it for future map loads
-	DB.StoreDoorRentability(door)
-end
-concommand.Add("rp_doorrenting", ccDoorRenting)
+	CAKE.Response(ply, rentingEnabled and TEXT.DoorRentingEnabled or TEXT.DoorRentingDisabled)
+end)
 
 function ccDropWeapon(ply, cmd, args)
 	local wep = ply:GetActiveWeapon()
@@ -503,7 +489,7 @@ end
 concommand.Add("rp_setmoney", ccSetMoney)
 
 net.Receive("gmn", function(len, ply)
-	local target = Entity(net.ReadInt(14))
+	local target = Entity(net.ReadInt(16))
 	local strAmount = net.ReadString()
 	if not IsValid(target) then
 		CAKE.Response(ply, TEXT.TargetNotFound)

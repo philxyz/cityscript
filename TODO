@@ -25,7 +25,6 @@ philxyz 2015
 		rp_admin kick <name> <reason>
 		rp_admin warn <name> <warningmessage>
 
--		rp_doorrenting <ent_index> [0|1] (particular door)
 -		rp_buyitem CAKE.ItemData index
 -		rp_dropitem "Inventory table value"
 -		rp_createitem (second argument to CAKE.CreateItem)
