@@ -46,7 +46,8 @@ end
 
 function GM:Think()
 	if vgui and readysent == false then -- VGUI is initalized, tell the server we're ready for character creation.
-		LocalPlayer():ConCommand("rp_ready\n")
+		net.Start("Cp")
+		net.SendToServer()
 		readysent = true
 	end
 end

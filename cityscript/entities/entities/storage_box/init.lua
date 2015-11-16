@@ -54,13 +54,13 @@ function ENT:AddItem(ply, itemClass, clip1, clip2)
 	end
 end
 
-function ENT:RemoveItem(ply, item)
+function ENT:RemoveItem(ply, itemNumber)
 	local ItemPos = self:GetPos() + Vector(0, 0, 45)
 
 	local idx
 
 	for i, j in ipairs(self.contents) do
-		if j and (tonumber(i) == tonumber(item)) then
+		if j and (tonumber(i) == itemNumber) then
 			CAKE.CreateItem(ply, j.itemClass, Vector(ItemPos.x + 15, ItemPos.y, ItemPos.z + 15), Angle(0,0,0), j.Clip1, j.Clip2)
 			idx = i
 			break
@@ -74,14 +74,17 @@ function ENT:SetTitle(title)
 	self:SetNWString("Title", title)
 end
 
-function ENT:SpawnItem(ply, cmd, args)
-	self:RemoveItem(ply, args[2])
+function ENT:SpawnItem(ply, itemNumber)
+	self:RemoveItem(ply, itemNumber)
 	self:SetSparking(false)
 	self.locked = false
 end
 
-concommand.Add("drrp_storage_box_spawn", function(ply, cmd, args)
-	s = Entity(tonumber(args[1]))
+net.Receive("Cs", function(_, ply)
+	local entIndex = net.ReadInt(16)
+	local itemNumber = net.ReadInt(16)
+	
+	s = Entity(entIndex)
 
 	if IsValid(s) and s:GetPos():Distance(ply:GetPos()) > 150 then
 		CAKE.Response(ply, TEXT.StandCloserToTheBox)
@@ -90,7 +93,7 @@ concommand.Add("drrp_storage_box_spawn", function(ply, cmd, args)
 
 	s.locked = true
 	s:SetSparking(true)
-	timer.Simple(2, function() s:SpawnItem(ply, cmd, args) end)
+	timer.Simple(2, function() s:SpawnItem(ply, itemNumber) end)
 end)
 
 function ENT:Think()

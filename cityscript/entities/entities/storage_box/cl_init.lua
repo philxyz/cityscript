@@ -48,7 +48,11 @@ usermessage.Hook("_storage_box_open", function(m)
 		si:SetModel(itemmodel)
 		si:SetToolTip(itemname)
 		si.DoClick = function(e)
-			RunConsoleCommand("drrp_storage_box_spawn", tostring(entIndex), tostring(i))
+			-- Open storage box
+			net.Start("Cs")
+			net.WriteInt(entIndex, 16)
+			net.WriteInt(i, 16)
+			net.SendToServer()
 			frame:Close()
 		end
 

@@ -174,7 +174,11 @@ end
 function meta:RefreshInventory()
 	self:ClearInventory()
 	
-	for k, v in pairs(CAKE.GetCharField(self, "inventory")) do
+	local inv = CAKE.GetCharField(self, "inventory")
+
+	if type(inv) ~= "table" then return end
+
+	for k, v in pairs(inv) do
 		umsg.Start("addinventory", self)
 			umsg.String(CAKE.ItemData[v].Name)
 			umsg.String(CAKE.ItemData[v].Class)

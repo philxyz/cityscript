@@ -19,9 +19,25 @@ CAKE.Loaded = false
 DB = {}
 
 -- String Tables
-util.AddNetworkString("show_help")
-util.AddNetworkString("gm")
-util.AddNetworkString("drtg")
+util.AddNetworkString("Ca") -- Show help
+util.AddNetworkString("gm") -- Gm
+util.AddNetworkString("Cc") -- drtg
+util.AddNetworkString("Cd") -- Buy item
+util.AddNetworkString("Ce") -- Drop item (from inventory)
+util.AddNetworkString("Cf") -- Closed cChat
+util.AddNetworkString("Cg") -- Opened cChat
+util.AddNetworkString("Ch") -- Take ammo
+util.AddNetworkString("Ci") -- Use item
+util.AddNetworkString("Cj") -- Pick up item
+util.AddNetworkString("Ck") -- Rent door
+util.AddNetworkString("Cl") -- Open door
+util.AddNetworkString("Cm") -- Unlock door
+util.AddNetworkString("Cn") -- Lock door
+util.AddNetworkString("Co") -- Change name
+util.AddNetworkString("Cp") -- Character ready
+util.AddNetworkString("Cq") -- Equip inventory item
+util.AddNetworkString("Cr") -- Select character
+util.AddNetworkString("Cs") -- Open storage box
 
 -- Server Includes
 include("shared.lua") -- Shared Functions

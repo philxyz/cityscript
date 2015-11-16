@@ -95,13 +95,12 @@ function GM:CanPlayerSuicide(ply)
 end
 
 -- Change IC Name
-function ccChangeName(ply, cmd, args)
-	local name = args[1]
+net.Receive("Co", function(_, ply)
+	local name = net.ReadString()
 
 	CAKE.SetCharField(ply, "name", name)
 	ply:SetNWString("name", name)
-end
-concommand.Add("rp_changename", ccChangeName)
+end)
 
 -- Allows a player to skip the respawn timer.
 function ccAcceptDeath(ply, cmd, args)
@@ -218,8 +217,10 @@ function ccFlag(ply, cmd, args)
 end
 concommand.Add("rp_flag", ccFlag)
 
-function ccLockDoor(ply, cmd, args)
-	local entity = ents.GetByIndex(tonumber(args[1]))
+-- Lock door
+net.Receive("Cn", function(_, ply)
+	local entIndex = net.ReadInt(16)
+	local entity = ents.GetByIndex(entIndex)
 	
 	if CAKE.IsDoor(entity) then
 		if entity.owner == ply then
@@ -228,11 +229,12 @@ function ccLockDoor(ply, cmd, args)
 			CAKE.Response(ply, TEXT.NotYourDoor)
 		end
 	end
-end
-concommand.Add("rp_lockdoor", ccLockDoor)
+end)
 
-function ccUnLockDoor(ply, cmd, args)
-	local entity = ents.GetByIndex(tonumber(args[1]))
+-- Unlock door
+net.Receive("Cm", function(_, ply)
+	local entIndex = net.ReadInt(16)
+	local entity = ents.GetByIndex(entIndex)
 	
 	if CAKE.IsDoor(entity) then
 		if entity.owner == ply then
@@ -241,10 +243,10 @@ function ccUnLockDoor(ply, cmd, args)
 			CAKE.Response(ply, TEXT.NotYourDoor)
 		end
 	end
-end
-concommand.Add("rp_unlockdoor", ccUnLockDoor)
+end)
 
-function ccOpenDoor(ply, cmd, args)
+-- Open door
+net.Receive("Cl", function(_, ply)
 	local entity = ply:GetEyeTrace().Entity
 	
 	-- If we are looking at a door and are in range of it...
@@ -264,11 +266,12 @@ function ccOpenDoor(ply, cmd, args)
 			end
 		end
 	end
-end
-concommand.Add("rp_opendoor", ccOpenDoor)
+end)
 
-function ccRentDoor(ply, cmd, args)
-	local door = ents.GetByIndex(tonumber(args[1]))
+-- Rent door
+net.Receive("Ck", function(_, ply)
+	local entIndex = net.ReadInt(16)
+	local door = ents.GetByIndex(entIndex)
 
 	if door:GetNWBool("nonRentable") then
 		CAKE.Response(ply, TEXT.DoorNotRentable)
@@ -309,7 +312,7 @@ function ccRentDoor(ply, cmd, args)
 					end
 				end
 				
-				timer.Simple(900, function() Rental(ply, tonumber(args[1])) end)
+				timer.Simple(900, function() Rental(ply, entIndex) end)
 			end
 		elseif door.owner == ply then
 			door.owner = nil
@@ -318,10 +321,10 @@ function ccRentDoor(ply, cmd, args)
 			CAKE.Response(ply, TEXT.DoorAlreadyRented)
 		end
 	end
-end
-concommand.Add("rp_rentdoor", ccRentDoor)
+end)
 
-net.Receive("drtg", function(len, ply)
+-- Toggle door-rentability (per door)
+net.Receive("Cc", function(_, ply)
 	local doorEnt = Entity(net.ReadInt(16))
 	local rentingEnabled = net.ReadBool()
 
@@ -336,7 +339,7 @@ net.Receive("drtg", function(len, ply)
 	CAKE.Response(ply, rentingEnabled and TEXT.DoorRentingEnabled or TEXT.DoorRentingDisabled)
 end)
 
-function ccDropWeapon(ply, cmd, args)
+CAKE.ChatCommand(TEXT.DropWeaponCommand, function(ply, args)
 	local wep = ply:GetActiveWeapon()
 	
 	if CAKE.ItemData[wep:GetClass()] == nil then
@@ -360,15 +363,16 @@ function ccDropWeapon(ply, cmd, args)
 	ply:StripWeapon(wep:GetClass())
 
 	CAKE.CreateItem(ply, wep:GetClass(), ply:CalcDrop(), Angle(0, 0, 0), clip1, clip2)
-end
-concommand.Add("rp_dropweapon", ccDropWeapon)
+end)
 
-function ccPickupItem(ply, cmd, args)
-	local item = ents.GetByIndex(tonumber(args[1]))
+-- Pickup item
+net.Receive("Cj", function(_, ply)
+	local itemEntIdx = net.ReadInt(16)
+	local item = ents.GetByIndex(itemEntIdx)
 	
 	if IsValid(item) and
 		(not CAKE.IsDoor(item) and not item:IsVehicle() and not item:IsPlayer() and not item:IsNPC()) and
-		item:GetPos( ):Distance( ply:GetShootPos( ) ) < 100 then
+		item:GetPos():Distance(ply:GetShootPos()) < 100 then
 
 		if item:Pickup(ply) ~= false then
 			if item:GetNWInt("Clip1A") > 0 then
@@ -386,11 +390,12 @@ function ccPickupItem(ply, cmd, args)
 			end
 		end
 	end
-end
-concommand.Add("rp_pickup", ccPickupItem)
+end)
 
-function ccUseItem(ply, cmd, args)
-	local item = ents.GetByIndex(tonumber(args[1]))
+-- Use item
+net.Receive("Ci", function(_, ply)
+	local itemEntIdx = net.ReadInt(16)
+	local item = ents.GetByIndex(itemEntIdx)
 	
 	if IsValid(item) and (not CAKE.IsDoor(item) and not item:IsVehicle() and not item:IsPlayer() and not item:IsNPC()) and item.UseItem and item:GetPos():Distance(ply:GetShootPos()) < 100 then
 
@@ -429,11 +434,12 @@ function ccUseItem(ply, cmd, args)
 			ply:GetActiveWeapon():SetClip(item:GetNWInt("Clip2A"))
 		end
 	end
-end
-concommand.Add("rp_useitem", ccUseItem)
+end)
 
-function ccTakeAmmo(ply, cmd, args)
-	local item = ents.GetByIndex(tonumber(args[1]))
+-- Take ammo from a weapon in world.
+net.Receive("Ch", function(_, ply)
+	local itemEntIdx = net.ReadInt(16)
+	local item = ents.GetByIndex(itemEntIdx)
 
 	if IsValid(item) and (not CAKE.IsDoor(item) and not item:IsVehicle() and not item:IsPlayer() and not item:IsNPC()) and item.UseItem and item:GetPos():Distance(ply:GetShootPos()) < 100 then
 
@@ -451,8 +457,7 @@ function ccTakeAmmo(ply, cmd, args)
 		ply:GiveAmmo(item:GetNWInt("Clip2A"), tostring(game.GetAmmoName(item:GetNWInt("SAmmoType") or 0) or ""))
 		item:SetNWInt("Clip2A", 0)
 	end
-end
-concommand.Add("rp_takeammo", ccTakeAmmo)
+end)
 
 function ccSetMoney(ply, cmd, args)
 	if not args[1] or not tonumber(args[2]) or not math.IsFinite(tonumber(args[2])) or not ply:IsSuperAdmin() then
@@ -488,7 +493,7 @@ function ccSetMoney(ply, cmd, args)
 end
 concommand.Add("rp_setmoney", ccSetMoney)
 
-net.Receive("gmn", function(len, ply)
+net.Receive("gmn", function(_, ply)
 	local target = Entity(net.ReadInt(16))
 	local strAmount = net.ReadString()
 	if not IsValid(target) then
@@ -516,19 +521,17 @@ net.Receive("gmn", function(len, ply)
 	end
 end)
 
-function ccOpenChat(ply, cmd, args)
-
+-- Opened chat.
+net.Receive("Cg", function(_, ply)
 	ply:SetNWInt("chatopen", 1)
-	
-end
-concommand.Add("rp_openedchat", ccOpenChat)
+end)
 
-function ccCloseChat(ply, cmd, args)
+-- Closed chat.
+net.Receive("Cf", function(_, ply)
 	ply:SetNWInt("chatopen", 0)
-end
-concommand.Add("rp_closedchat", ccCloseChat)
+end)
 
-net.Receive("show_help", function(len, ply)
+net.Receive("Ca", function(_, ply)
 	if IsValid(ply) and ply:IsPlayer() then
 		local whetherToShow = 0
 

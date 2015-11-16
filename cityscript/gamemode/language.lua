@@ -32,6 +32,7 @@ TEXT.AddZombieCommand = "/addzombie"
 TEXT.DropZombiesCommand = "/dropzombies"
 TEXT.MaxZombiesCommand = "/maxzombies"
 TEXT.ShowZombieCommand = "/showzombie"
+TEXT.DropWeaponCommand = "/dropweapon"
 TEXT.ChooseATeamBeforeCreatingSpawns = "Please choose a team before creating or destroying spawn positions..."
 TEXT.RemovedAllSpawns = function(teamID) return "All custom spawn positions for team: " .. tostring(teamID) .. " removed! Use " .. TEXT.AddSpawnCommand .. " to create new ones." end
 TEXT.Amount = "amount"

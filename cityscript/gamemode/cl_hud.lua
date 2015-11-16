@@ -154,7 +154,7 @@ function ShowHelpPopup()
 	check:SetValue(false)
 	check:SizeToContents()
 	check.OnChange = function(me, status)
-		net.Start("show_help")
+		net.Start("Ca")
 		net.WriteBool(not status)
 		net.SendToServer()
 	end;

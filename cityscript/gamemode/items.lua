@@ -81,27 +81,29 @@ function ccCreateItem(ply, cmd, args)
 end
 concommand.Add("rp_createitem", ccCreateItem)
 
-function ccDropItem(ply, cmd, args)
+-- Drop inventory item
+net.Receive("Ce", function(len, ply)
+	local item = net.ReadString()
 	local inv = CAKE.GetCharField(ply, "inventory")
 
 	for k, v in pairs(inv) do
 		-- If an item matches in the inventory
-		if v == args[1] then
+		if v == item then
 			-- Produce it.
-			CAKE.CreateItem(ply, args[1], ply:CalcDrop(), Angle(0, 0, 0))
-			ply:TakeItem(args[1])
+			CAKE.CreateItem(ply, item, ply:CalcDrop(), Angle(0, 0, 0))
+			ply:TakeItem(item)
 			break
 		end
 	end
-	
-end
-concommand.Add("rp_dropitem", ccDropItem)
+end)
 
-function ccEquip(ply, cmd, args)
+-- Equip inventory item
+net.Receive("Cq", function(_, ply)
+	local classname = net.ReadString()
 	local inv = CAKE.GetCharField(ply, "inventory")
 
 	for _, v in pairs(inv) do
-		if v == args[1] then
+		if v == classname then
 			local wepTable = weapons.GetStored(v)
                 	if not wepTable then
                         	wepTable = scripted_ents.GetStored(v)
@@ -126,16 +128,17 @@ function ccEquip(ply, cmd, args)
 			break
 		end
 	end
-end
-concommand.Add("rp_equip", ccEquip)
+end)
 
-function ccBuyItem(ply, cmd, args)
-	if CAKE.ItemData[args[1]] ~= nil then
+-- Buy Item (as named by class)
+net.Receive("Cd", function(len, ply)
+	local item = net.ReadString()
+	if CAKE.ItemData[item] ~= nil then
 		if CAKE.Teams[ply:Team()].business then
-			if table.HasValue(CAKE.Teams[ply:Team()].item_groups, CAKE.ItemData[args[1]].ItemGroup) then
-				if CAKE.ItemData[args[1]].Purchaseable and tonumber(CAKE.GetCharField(ply, "money")) >= CAKE.ItemData[args[1]].Price then
-					CAKE.ChangeMoney(ply, 0 - CAKE.ItemData[args[1]].Price)
-					CAKE.CreateItem(ply, args[1], ply:CalcDrop(), Angle(0, 0, 0))
+			if table.HasValue(CAKE.Teams[ply:Team()].item_groups, CAKE.ItemData[item].ItemGroup) then
+				if CAKE.ItemData[item].Purchaseable and tonumber(CAKE.GetCharField(ply, "money")) >= CAKE.ItemData[item].Price then
+					CAKE.ChangeMoney(ply, 0 - CAKE.ItemData[item].Price)
+					CAKE.CreateItem(ply, item, ply:CalcDrop(), Angle(0, 0, 0))
 				else
 					CAKE.Response(ply, "You do not have enough money to purchase this item!")
 				end
@@ -146,5 +149,4 @@ function ccBuyItem(ply, cmd, args)
 			CAKE.Response(ply, "You do not have access to Business!")
 		end
 	end
-end
-concommand.Add("rp_buyitem", ccBuyItem)
+end)

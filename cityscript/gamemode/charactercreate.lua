@@ -82,11 +82,11 @@ net.Receive("ncFinishCreate", function(len, client)
 	end
 end)
 
-function ccSelectChar(ply, cmd, args)
-	local uid = tonumber(args[1])
+net.Receive("Cr", function(_, ply)
+	local uid = net.ReadInt(16)
 	local SteamID = CAKE.FormatSteamID(ply:SteamID())
 
-	if CAKE.PlayerData[SteamID]["characters"][uid] != nil then
+	if CAKE.PlayerData[SteamID].characters[uid] != nil then
 		ply:SetNWString("uid", uid)
 		CAKE.ResendCharData(ply)
 		ply:SetDTInt(0, 1)
@@ -101,10 +101,9 @@ function ccSelectChar(ply, cmd, args)
 	else
 		return
 	end
-end
-concommand.Add("rp_selectchar", ccSelectChar)
+end)
 
-function ccReady(ply, cmd, args)
+net.Receive("Cp", function(_, ply)
 	if ply.Ready == false then
 		ply.Ready = true
 	
@@ -148,5 +147,4 @@ function ccReady(ply, cmd, args)
 		
 		CAKE.CallHook("PlayerReady", ply)
 	end
-end
-concommand.Add("rp_ready", ccReady)
+end)

@@ -72,14 +72,14 @@ local function InitHiddenButton()
 			local ContextMenu = DermaMenu()
 				if CAKE.IsDoor(target) or target:IsVehicle() then
 					if not target:GetNWBool("notRentable") then
-						ContextMenu:AddOption(TEXT.RentUnrent, function() RunConsoleCommand("rp_rentdoor", tostring(target:EntIndex())) end)
-						ContextMenu:AddOption(TEXT.Lock, function() RunConsoleCommand("rp_lockdoor", tostring(target:EntIndex())) end)
-						ContextMenu:AddOption(TEXT.Unlock, function() RunConsoleCommand("rp_unlockdoor", tostring(target:EntIndex())) end)
+						ContextMenu:AddOption(TEXT.RentUnrent, function() net.Start("Ck"); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end)
+						ContextMenu:AddOption(TEXT.Lock, function() net.Start("Cn"); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end)
+						ContextMenu:AddOption(TEXT.Unlock, function() net.Start("Cm"); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end)
 					end
 
 					if LocalPlayer():IsSuperAdmin() then
 						local sendfunc = function(enable)
-							net.Start("drtg")
+							net.Start("Cc")
 							net.WriteInt(target:EntIndex(), 16)
 							net.WriteBool(enable)
 							net.SendToServer()
@@ -137,14 +137,14 @@ local function InitHiddenButton()
 				else
 					-- If the weapon is already being held, you can't pick it up - but you can take its default ammo if there is some.
 					if (target:GetClass() == "spawned_weapon" and not LocalPlayer():HasWeapon(target.class)) or not LocalPlayer():HasWeapon(target:GetNWString("Class")) then
-						ContextMenu:AddOption(TEXT.UseItem, function() RunConsoleCommand("rp_useitem",  tostring(target:EntIndex())) end)
+						ContextMenu:AddOption(TEXT.UseItem, function() net.Start("Ci"); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end)
 					end
 
 					if (target:GetNWInt("Clip1A") or 0) > 0 or (target:GetNWInt("Clip2A") or 0) > 0 then
-						ContextMenu:AddOption(TEXT.TakeAmmo, function() RunConsoleCommand("rp_takeammo", tostring(target:EntIndex())) end)
+						ContextMenu:AddOption(TEXT.TakeAmmo, function() net.Start("Ch"); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end)
 					end
 
-					ContextMenu:AddOption(TEXT.PlaceInBackpack, function() RunConsoleCommand("rp_pickup", tostring(target:EntIndex())) end)
+					ContextMenu:AddOption(TEXT.PlaceInBackpack, function() net.Start("Cj"); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end)
 				end
 			ContextMenu:SetPos(ScrW()/2, ScrH()/2)
 			ContextMenu:Open()
@@ -610,7 +610,9 @@ function CreatePlayerMenu()
 		net.WriteString(ChosenModel)
 		net.SendToServer()
 
-		RunConsoleCommand("rp_changename", firstname:GetValue() .. " " .. lastname:GetValue())
+		net.Start("Co")
+		net.WriteString(firstname:GetValue() .. " " .. lastname:GetValue())
+		net.SendToServer()
 
 		LocalPlayer().MyModel = ""
 
@@ -658,8 +660,11 @@ function CreatePlayerMenu()
 		end
 		
 		function mdlPanel:OnMousePressed()
-			print("selected character " .. tostring(n))
-			RunConsoleCommand("rp_selectchar", tostring(n))
+			-- Select Character
+			net.Start("Cr")
+			net.WriteInt(n, 16)
+			net.SendToServer()
+
 			LocalPlayer().MyModel = ""
 			PlayerMenu:Remove()
 			PlayerMenu = nil
@@ -783,9 +788,9 @@ function CreatePlayerMenu()
 		spawnicon.DoClick = function (btn)
 			local ContextMenu = DermaMenu()
 				if weapons.GetStored(v.Class) ~= nil and not LocalPlayer():HasWeapon(v.Class) then
-					ContextMenu:AddOption("Equip", function() RunConsoleCommand("rp_equip", v.Class); DeleteMyself(); end)
+					ContextMenu:AddOption("Equip", function() net.Start("Cq"); net.WriteString(v.Class); net.SendToServer(); DeleteMyself() end)
 				end
-				ContextMenu:AddOption("Drop", function() RunConsoleCommand("rp_dropitem", v.Class); DeleteMyself(); end);
+				ContextMenu:AddOption("Drop", function() net.Start("Ce"); net.WriteString(v.Class); net.SendToServer(); DeleteMyself(); end);
 			ContextMenu:Open()
 		end
 
@@ -838,7 +843,7 @@ function CreatePlayerMenu()
 				spawnicon.DoClick = function (btn)
 					local ContextMenu = DermaMenu()
 						if tonumber(LocalPlayer():GetNWString("money")) >= v.Price then
-							ContextMenu:AddOption(TEXT.Purchase, function() RunConsoleCommand("rp_buyitem", v.Class); end)
+							ContextMenu:AddOption(TEXT.Purchase, function() net.Start("Cd"); net.WriteString(v.Class); net.SendToServer() end)
 						else
 							ContextMenu:AddOption(TEXT.NotEnoughTokens)
 						end

@@ -21,7 +21,9 @@ function GM:PlayerBindPress(ply, bind, pressed)
 		local trent = LocalPlayer():GetEyeTrace().Entity
 		
 		if trent ~= nil and IsValid(trent) and CAKE.IsDoor(trent) then
-			LocalPlayer():ConCommand("rp_opendoor")
+			-- Open door
+			net.Start("Cl")
+			net.SendToServer()
 		end
 	end
 end
@@ -39,9 +41,11 @@ function GM:ScoreboardHide()
 end
 
 function GM:StartChat()
-	LocalPlayer():ConCommand("rp_openedchat")
+	net.Start("Cg")
+	net.SendToServer()
 end
 
 function GM:FinishChat()
-	RunConsoleCommand("rp_closedchat")
+	net.Start("Cd")
+	net.SendToServer()
 end
