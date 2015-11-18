@@ -38,6 +38,9 @@ util.AddNetworkString("Cp") -- Character ready
 util.AddNetworkString("Cq") -- Equip inventory item
 util.AddNetworkString("Cr") -- Select character
 util.AddNetworkString("Cs") -- Open storage box
+util.AddNetworkString("Ct") -- Setup team
+util.AddNetworkString("Cu") -- Add business
+util.AddNetworkString("Cv") -- Clear business table
 
 -- Server Includes
 include("shared.lua") -- Shared Functions

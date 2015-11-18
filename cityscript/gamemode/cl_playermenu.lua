@@ -31,25 +31,25 @@ end
 usermessage.Hook("clearinventory", ClearItems)
 
 BusinessTable = {}
+net.Receive("Cu", function(_, ply)
+	local count = net.ReadInt(32)
+	for i=1, count do
+		local itemdata = {}
+		itemdata.Name = net.ReadString()
+		itemdata.Class = net.ReadString()
+		itemdata.Description = net.ReadString()
+		itemdata.Model = net.ReadString()
+		itemdata.ContentModel = net.ReadString()
+		itemdata.Price = net.ReadInt(32)
+		itemdata.IsShipment = net.ReadBool()
 
-function AddBusinessItem(data)
-	local itemdata = {}
-	itemdata.Name = data:ReadString()
-	itemdata.Class = data:ReadString()
-	itemdata.Description = data:ReadString()
-	itemdata.Model = data:ReadString()
-	itemdata.ContentModel = data:ReadString()
-	itemdata.Price = data:ReadLong()
-	itemdata.IsShipment = data:ReadBool()
-	
-	table.insert(BusinessTable, itemdata)
-end
-usermessage.Hook("addbusiness", AddBusinessItem)
+		table.insert(BusinessTable, itemdata)
+	end
+end)
 
-function ClearBusinessItems()
+net.Receive("Cv", function(_, ply)
 	BusinessTable = {}
-end
-usermessage.Hook("clearbusiness", ClearBusinessItems)
+end)
 
 local function InitHiddenButton()
 	HiddenButton = vgui.Create("DButton")
@@ -816,6 +816,7 @@ function CreatePlayerMenu()
 		Inventory:AddItem(spawnicon)
 	end
 	
+	print("CREATING BUSINESS TAB")
 	Business = vgui.Create("DPanelList")
 	Business:SetPadding(20)
 	Business:SetSpacing(20)

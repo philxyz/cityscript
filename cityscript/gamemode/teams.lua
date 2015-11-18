@@ -18,25 +18,28 @@ function CAKE.AddTeam(team)
 end
 
 function CAKE.InitTeams()
-	for k, v in pairs(CAKE.Teams) do
-		team.SetUp(k, v.name, v.color)
-		
-		-- Send the team to client
-		for k2, ply in pairs(player.GetAll()) do
-			umsg.Start("setupteam", ply)
-				umsg.Long(k)
-				umsg.String(v.name)
-				umsg.Long(v.color.r)
-				umsg.Long(v.color.g)
-				umsg.Long(v.color.b)
-				umsg.Long(v.color.a)
-				umsg.Bool(v.public)
-				umsg.Long(v.salary)
-				umsg.String(v.flag_key)
-				umsg.Bool(v.business)
+	local nteams = #CAKE.Teams
 
-				CAKE.CallHook("SendTeamData", ply, v)
-			umsg.End()
+	for _, ply in pairs(player.GetAll()) do
+		net.Start("Ct")
+		net.WriteInt(nteams, 32)
+		for k, v in pairs(CAKE.Teams) do
+			net.WriteInt(k, 32)
+			net.WriteString(v.name)
+			net.WriteInt(v.color.r, 16)
+			net.WriteInt(v.color.g, 16)
+			net.WriteInt(v.color.b, 16)
+			net.WriteInt(v.color.a, 16)
+			net.WriteBool(v.public)
+			net.WriteInt(v.salary, 32) -- Limits the salary to 2 billion or something but whatever...
+			net.WriteString(v.flag_key)
+			net.WriteBool(v.business)
+		end
+
+		net.Send(ply)
+
+		for k, v in pairs(CAKE.Teams) do
+			CAKE.CallHook("SendTeamData", ply, v)
 		end
 	end
 end

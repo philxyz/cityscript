@@ -9,23 +9,25 @@
 
 TeamTable = {}
 
-function SetUpTeam(data)
-	local newteam = {}
-	newteam.id = data:ReadLong()
-	newteam.name = data:ReadString()
-	newteam.r = data:ReadLong()
-	newteam.g = data:ReadLong()
-	newteam.b = data:ReadLong()
-	newteam.a = data:ReadLong()
-	newteam.public = data:ReadBool()
-	newteam.salary = data:ReadLong()
-	newteam.flagkey = data:ReadString()
-	newteam.business = data:ReadBool()
+net.Receive("Ct", function(len, ply)
+	local count = net.ReadInt(32)
+	for i=1, count do
+		local newteam = {}
+		newteam.id = net.ReadInt(32)
+		newteam.name = net.ReadString()
+		newteam.r = net.ReadInt(16)
+		newteam.g = net.ReadInt(16)
+		newteam.b = net.ReadInt(16)
+		newteam.a = net.ReadInt(16)
+		newteam.public = net.ReadBool()
+		newteam.salary = net.ReadInt(32)
+		newteam.flagkey = net.ReadString()
+		newteam.business = net.ReadBool()
 	
-	team.SetUp(newteam.id, newteam.name, Color(newteam.r,newteam.g,newteam.b,newteam.a))
-	TeamTable[newteam.id] = newteam
-end
-usermessage.Hook("setupteam", SetUpTeam)
+		team.SetUp(newteam.id, newteam.name, Color(newteam.r, newteam.g, newteam.b, newteam.a))
+		TeamTable[newteam.id] = newteam
+	end
+end)
 
 ChosenModel = ""
 ValidCakeModels = {}

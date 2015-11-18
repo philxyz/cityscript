@@ -189,28 +189,38 @@ function meta:RefreshInventory()
 end
 
 function meta:ClearBusiness()
-	umsg.Start("clearbusiness", self)
-	umsg.End()
+	net.Start("Cv")
+	net.Send(self)
 end
 
 function meta:RefreshBusiness()
 	self:ClearBusiness()
 		
 	if CAKE.Teams[self:Team()] == nil then return end -- Team not assigned
-	
+
+	local amt = 0
 	for k, v in pairs(CAKE.ItemData) do
 		if v.Purchaseable and table.HasValue(CAKE.Teams[self:Team()].item_groups, v.ItemGroup) then
-			umsg.Start("addbusiness", self)
-				umsg.String(v.Name)
-				umsg.String(v.Class)
-				umsg.String(v.Description)
-				umsg.String(v.Model)
-				umsg.String(v.ContentModel)
-				umsg.Long(v.Price)
-				umsg.Bool(v.ContentClass ~= nil)
-			umsg.End()
+			amt = amt + 1
 		end
 	end
+
+	print("About to send " .. tostring(amt) .. " items")
+	
+	net.Start("Cu")
+	net.WriteInt(amt, 32)
+	for k, v in pairs(CAKE.ItemData) do
+		if v.Purchaseable and table.HasValue(CAKE.Teams[self:Team()].item_groups, v.ItemGroup) then
+			net.WriteString(v.Name)
+			net.WriteString(v.Class)
+			net.WriteString(v.Description or "")
+			net.WriteString(v.Model)
+			net.WriteString(v.ContentModel or "")
+			net.WriteInt(v.Price, 32)
+			net.WriteBool(v.ContentClass ~= nil)
+		end
+	end
+	net.Send(self)
 end
 
 function CAKE.FindPlayerBySID(sid)
