@@ -42,8 +42,6 @@ philxyz 2015
 
 - Fix the ATM respawning issues on server load.
 
-- Replace umsgs with net.
-
 - Prop buddy system
 - Move data to SQL Backend (SQLite)
 - Implement the ability to delete characters

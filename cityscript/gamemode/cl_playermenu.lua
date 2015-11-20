@@ -14,21 +14,22 @@ surface.CreateFont( "ItemFontCash", {
 
 InventoryTable = {}
 
-function AddItem(data)
-	local itemdata = {}
-	itemdata.Name = data:ReadString()
-	itemdata.Class = data:ReadString()
-	itemdata.Description = data:ReadString()
-	itemdata.Model = data:ReadString()
-	
-	table.insert(InventoryTable, itemdata)
-end
-usermessage.Hook("addinventory", AddItem)
+net.Receive("Cw", function(_, ply)
+	local nItems = net.ReadInt(32)
+	for i=1, nItems do
+		local itemdata = {}
+		itemdata.Name = net.ReadString()
+		itemdata.Class = net.ReadString()
+		itemdata.Description = net.ReadString()
+		itemdata.Model = net.ReadString()
 
-function ClearItems()
+		table.insert(InventoryTable, itemdata)
+	end
+end)
+
+net.Receive("Cx", function(_, ply)
 	InventoryTable = {}
-end
-usermessage.Hook("clearinventory", ClearItems)
+end)
 
 BusinessTable = {}
 net.Receive("Cu", function(_, ply)
@@ -1001,4 +1002,4 @@ function CreatePlayerMenu()
 		PropertySheet:AddSheet( "Admin", Admin, "icon16/application_view_detail.png", false, false, TEXT.AdminCommandsMenu)
 	end
 end
-usermessage.Hook("playermenu", CreatePlayerMenu)
+net.Receive("C1", function(_, ply) CreatePlayerMenu() end)

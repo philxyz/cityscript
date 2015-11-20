@@ -41,6 +41,16 @@ util.AddNetworkString("Cs") -- Open storage box
 util.AddNetworkString("Ct") -- Setup team
 util.AddNetworkString("Cu") -- Add business
 util.AddNetworkString("Cv") -- Clear business table
+util.AddNetworkString("Cw") -- Add inventory item
+util.AddNetworkString("Cx") -- Clear inventory
+util.AddNetworkString("Cy") -- Add model
+util.AddNetworkString("Cz") -- Send character details
+util.AddNetworkString("C1") -- Player menu
+util.AddNetworkString("C2") -- Player menu, HUD menu, with optional help popup
+util.AddNetworkString("C3") -- Storage box open
+util.AddNetworkString("C4") -- Storage box icons
+util.AddNetworkString("C5") -- Storage box reset
+util.AddNetworkString("C6") -- ATM 'use' menu
 
 -- Server Includes
 include("shared.lua") -- Shared Functions
@@ -152,11 +162,14 @@ function GM:PlayerInitialSpawn(ply)
 	CAKE.CallHook("Player_Preload", ply)
 	
 	-- Send them valid models
+
+	local nValidCakeModels = #CAKE.ValidModels
+	net.Start("Cy")
+	net.WriteInt(nValidCakeModels, 32)
 	for k, v in pairs(CAKE.ValidModels) do
-		umsg.Start("addmodel", ply)
-			umsg.String(v)
-		umsg.End()
+		net.WriteString(v)
 	end
+	net.Send(ply)
 	
 	-- Set some default variables
 	ply.LastHax = os.time()-20

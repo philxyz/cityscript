@@ -32,16 +32,17 @@ function GM:ShowHelp(ply)
 		PlyCharTable = CAKE.PlayerData[steam].characters
 	end
 
+	net.Start("Cz")
+	net.WriteInt(#PlyCharTable, 32)
 	for k, v in pairs(PlyCharTable) do
-		umsg.Start("ReceiveChar", ply)
-			umsg.Long(k)
-			umsg.String(v.name)
-			umsg.String(v.model)
-		umsg.End()
+		net.WriteInt(k, 32)
+		net.WriteString(v.name)
+		net.WriteString(v.model)
 	end
+	net.Send(ply)
 
-	umsg.Start("playermenu", ply)
-	umsg.End()
+	net.Start("C1")
+	net.Send(ply)
 end
 
 -- NO SENT FOR YOU.

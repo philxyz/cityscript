@@ -4,24 +4,30 @@ function ENT:Draw()
 	self:DrawModel()
 end
 
-usermessage.Hook("_storage_box_reset", function(m)
-	local entIndex = m:ReadShort()
+net.Receive("C5", function(_, ply)
+	local entIndex = net.ReadInt(16)
 	Entity(entIndex).contents = {}
 end)
 
-usermessage.Hook("_storage_box_icon", function(m)
-	local entIndex = m:ReadShort()
-	local i = m:ReadShort()
-	local itemClass = m:ReadString()
-	local itemName = m:ReadString()
-	local itemModel = m:ReadString()
+net.Receive("C4", function(_, ply)
+	local nEntries = net.ReadInt(16)
 
-	local e = Entity(entIndex)
-	if not e.contents then e.contents = {} end
-	e.contents[i] = {itemClass, itemName, itemModel}
+	for j=1, nEntries do
+		local entIndex = net.ReadInt(16)
+		local i = net.ReadInt(16)
+		local itemClass = net.ReadString()
+		local itemName = net.ReadString()
+		local itemModel = net.ReadString()
+
+		local e = Entity(entIndex)
+
+		if not e.contents then e.contents = {} end
+
+		e.contents[i] = {itemClass, itemName, itemModel}
+	end
 end)
 
-usermessage.Hook("_storage_box_open", function(m)
+net.Receive("C3", function(_, ply)
 	-- Create a derma frame with space for 16 tiles
 	local frame = vgui.Create("DFrame")
 	frame:SetSize(281, 304)
@@ -31,7 +37,7 @@ usermessage.Hook("_storage_box_open", function(m)
 	local x, y = 5, 28
 
 	-- For each item, create a spawn icon
-	local entIndex = m:ReadShort()
+	local entIndex = net.ReadInt(16)
 	local en = Entity(entIndex)
 	if not en.contents then en.contents = {} end
 	local size = #en.contents

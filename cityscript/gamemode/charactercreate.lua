@@ -129,21 +129,22 @@ net.Receive("Cp", function(_, ply)
 		high = high + 1
 		ply:SetNWString("uid", tostring(high))
 		
+		net.Start("Cz")
+		net.WriteInt(#PlyCharTable, 32)
 		for k, v in pairs(PlyCharTable) do -- Send them all their characters for selection
-			umsg.Start("ReceiveChar", ply)
-				umsg.Long(tonumber(k))
-				umsg.String(v.name)
-				umsg.String(v.model)
-			umsg.End()
+			net.WriteInt(tonumber(k), 32)
+			net.WriteString(v.name)
+			net.WriteString(v.model)
 		end
+		net.Send(ply)
 		
 		ply:SetDTInt(0, 1)
 		
 		local showHelp = CAKE.GetPlayerField(ply, "showhelppopup") == 1
 
-		umsg.Start("_cC", ply)
-			umsg.Bool(showHelp)
-		umsg.End()
+		net.Start("C2")
+		net.WriteBool(showHelp)
+		net.Send(ply)
 		
 		CAKE.CallHook("PlayerReady", ply)
 	end

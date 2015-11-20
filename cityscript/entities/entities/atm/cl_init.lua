@@ -4,7 +4,7 @@ function ENT:Draw()
 	self:DrawModel()
 end
 
-usermessage.Hook("_atm_use_menu", function(msg)
+net.Receive("C6", function(_, ply)
 	local ContextMenu = DermaMenu()
 	ContextMenu:SetPos(ScrW()/2, ScrH()/2)
 	ContextMenu:AddOption(TEXT.ShowBalance, function()

@@ -108,23 +108,26 @@ function ENT:Think()
 end
 
 function ENT:OpenMenu(ply)
-	umsg.Start("_storage_box_reset", ply)
-		umsg.Short(self:EntIndex())
-	umsg.End()
+	net.Start("C5")
+	net.WriteInt(self:EntIndex(), 16)
+	net.Send(ply)
 
+	net.Start("C4")
+	net.WriteInt(#self.contents, 16)
 	for i, j in ipairs(self.contents) do
 		local itemtable = CAKE.ItemData[j.itemClass]
-		umsg.Start("_storage_box_icon", ply)
-			umsg.Short(self:EntIndex())
-			umsg.Short(i)
-			umsg.String(j)
-			umsg.String(itemtable.Name)
-			umsg.String(itemtable.Model)
-		umsg.End()
+		net.WriteInt(self:EntIndex(), 16)
+		net.WriteInt(i, 16)
+		net.WriteString(j)
+		net.WriteString(itemtable.Name)
+		net.WriteString(itemtable.Model)
 	end
-	umsg.Start("_storage_box_open", ply)
-		umsg.Short(self:EntIndex())
-	umsg.End()
+	net.Send(ply)
+
+	net.Start("C3")
+	net.WriteInt(self:EntIndex(), 16)
+	net.Send(ply)
+
 	CAKE.Response(ply, TEXT.OpeningTheBox)
 end
 

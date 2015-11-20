@@ -26,8 +26,8 @@ function ENT:OnTakeDamage(dmg)
 end
 
 function ENT:UseItem(ply)
-	umsg.Start("_atm_use_menu", ply)
-	umsg.End()
+	net.Start("C6")
+	net.Send(ply)
 end
 
 function ENT:Pickup(ply)

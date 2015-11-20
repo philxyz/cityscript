@@ -167,8 +167,8 @@ function meta:TakeItem(class)
 end
 
 function meta:ClearInventory()
-	umsg.Start("clearinventory", self)
-	umsg.End()
+	net.Start("Cx")
+	net.Send(self)
 end
 
 function meta:RefreshInventory()
@@ -178,14 +178,16 @@ function meta:RefreshInventory()
 
 	if type(inv) ~= "table" then return end
 
+	net.Start("Cw")
+	local invCount = #inv
+	net.WriteInt(invCount, 32)
 	for k, v in pairs(inv) do
-		umsg.Start("addinventory", self)
-			umsg.String(CAKE.ItemData[v].Name)
-			umsg.String(CAKE.ItemData[v].Class)
-			umsg.String(CAKE.ItemData[v].Description)
-			umsg.String(CAKE.ItemData[v].Model)
-		umsg.End()
+		net.WriteString(CAKE.ItemData[v].Name)
+		net.WriteString(CAKE.ItemData[v].Class)
+		net.WriteString(CAKE.ItemData[v].Description)
+		net.WriteString(CAKE.ItemData[v].Model)
 	end
+	net.Send(self)
 end
 
 function meta:ClearBusiness()

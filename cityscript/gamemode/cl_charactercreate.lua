@@ -32,10 +32,13 @@ end)
 ChosenModel = ""
 ValidCakeModels = {}
 
-function AddModel(data)
-	table.insert(ValidCakeModels, data:ReadString())
-end
-usermessage.Hook("addmodel", AddModel)
+net.Receive("Cy", function(_, ply)
+	local n = net.ReadInt(32)
+
+	for i=1, n do
+		table.insert(ValidCakeModels, net.ReadString())
+	end
+end)
 
 function SetChosenModel(mdl)
 	if table.HasValue(ValidCakeModels, mdl) then
@@ -47,16 +50,17 @@ end
 
 ExistingChars = {}
 
-function ReceiveChar(data)
-	local n = data:ReadLong()
-	ExistingChars[n] = {}
-	ExistingChars[n].name = data:ReadString()
-	ExistingChars[n].model = data:ReadString()
-	
-end
-usermessage.Hook("ReceiveChar", ReceiveChar)
+net.Receive("Cz", function(_, ply)
+	local numChars = net.ReadInt(32)
+	for i=1, numChars do
+		local n = net.ReadInt(32)
+		ExistingChars[n] = {}
+		ExistingChars[n].name = net.ReadString()
+		ExistingChars[n].model = net.ReadString()
+	end
+end)
 
-local function CharacterCreatePanel(msg)
+net.Receive("C2", function(_, ply)
 	CreatePlayerMenu()
 	PlayerMenu:ShowCloseButton(false)
 	PropertySheet:SetActiveTab(PropertySheet.Items[2].Tab)
@@ -65,8 +69,7 @@ local function CharacterCreatePanel(msg)
 	InitHUDMenu()
 
 	-- If we should show the help info screen, do so.
-	if msg:ReadBool() then
+	if net.ReadBool() then
 		ShowHelpPopup()
 	end
-end
-usermessage.Hook("_cC", CharacterCreatePanel)
+end)
