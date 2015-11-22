@@ -125,7 +125,7 @@ function Admin_ListVars(ply, cmd, args)
 	end
 end
 
-function Admin_SetFlags(ply, cmd, args)
+function Admin_SetRoles(ply, cmd, args)
 	local target = CAKE.FindPlayer(args[1])
 	
 	if IsValid(target) and target:IsPlayer() then
@@ -137,10 +137,10 @@ function Admin_SetFlags(ply, cmd, args)
 	
 	table.remove(args, 1) -- Get rid of the name
 	
-	CAKE.SetCharField(target, "flags", args) -- KLOL!
+	CAKE.SetCharField(target, "roles", args) -- KLOL!
 	
-	CAKE.Response(ply, TEXT.SetFlagsResponse(target:Name(), table.concat(args, " ")))
-	CAKE.Response(target, TEXT.SetFlagsResponse2(ply:Name(), table.concat(args, " ")))
+	CAKE.Response(ply, TEXT.SetRolesResponse(target:Name(), table.concat(args, " ")))
+	CAKE.Response(target, TEXT.SetRolesResponse2(ply:Name(), table.concat(args, " ")))
 end
 
 function Admin_Help(ply, cmd, args)
@@ -175,6 +175,6 @@ function PLUGIN.Init()
 	CAKE.AdminCommand("ban", Admin_Ban, TEXT.BanSomeone, true, true, false)
 	CAKE.AdminCommand("setvar", Admin_SetVar, TEXT.SetVar, true, true, true)
 	CAKE.AdminCommand("listvars", Admin_ListVars, TEXT.ListConVars, true, true, true)
-	CAKE.AdminCommand("setflags", Admin_SetFlags, TEXT.SetFlags, true, true, false)
+	CAKE.AdminCommand("setroles", Admin_SetRoles, TEXT.SetRoles, true, true, false)
 	CAKE.AdminCommand("adddoor", Admin_AddDoor, TEXT.AddDoorToDoorGroup, true, true, true)
 end

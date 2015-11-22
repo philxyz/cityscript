@@ -19,7 +19,7 @@ function CombineDeath(ply)
 	timer.Simple(3, EmitThatShit)
 end
 
-function CAKE.CityScriptTeam(name, color, model_path, default_model, partial_model, weapons, flag_key, door_groups, radio_groups, sound_groups, item_groups, salary, public, business, broadcast, iscombine)
+function CAKE.CityScriptTeam(name, color, model_path, default_model, partial_model, weapons, role_key, door_groups, radio_groups, sound_groups, item_groups, salary, public, business, broadcast, iscombine)
 	local team = CAKE.TeamObject()
 	
 	team.name = name or "Citizen"
@@ -28,7 +28,7 @@ function CAKE.CityScriptTeam(name, color, model_path, default_model, partial_mod
 	team.default_model = default_model or false
 	team.partial_model = partial_model or false
 	team.weapons = weapons or {}
-	team.flag_key = flag_key or "citizen"
+	team.role_key = role_key or "citizen"
 	team.door_groups = door_groups or {}
 	team.radio_groups = radio_groups or {}
 	team.sound_groups = sound_groups or {1}
@@ -40,7 +40,7 @@ function CAKE.CityScriptTeam(name, color, model_path, default_model, partial_mod
 	team.iscombine = iscombine or false
 	
 	if team.iscombine == true then
-		CAKE.AddTeamHook("PlayerDeath", team.flag_key .. "_combinedeath", CombineDeath, team.flag_key)
+		CAKE.AddTeamHook("PlayerDeath", team.role_key .. "_combinedeath", CombineDeath, team.role_key)
 	end
 	
 	return team

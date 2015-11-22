@@ -47,7 +47,7 @@ concommand.Add("rp_voice", ccVoice)
 
 function ccListVoice(ply, cmd, args)
 	CAKE.Response(ply, TEXT.ListOfVoicesHeader)
-	CAKE.Response(ply, TEXT.NoteFlagSpecific)
+	CAKE.Response(ply, TEXT.NoteRoleSpecific)
 	
 	for _, voice in pairs(CAKE.Voices) do
 		if table.HasValue(CAKE.Teams[ply:Team()]["sound_groups"], voice.soundgroup) then

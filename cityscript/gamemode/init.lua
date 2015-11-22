@@ -51,6 +51,7 @@ util.AddNetworkString("C3") -- Storage box open
 util.AddNetworkString("C4") -- Storage box icons
 util.AddNetworkString("C5") -- Storage box reset
 util.AddNetworkString("C6") -- ATM 'use' menu
+util.AddNetworkString("C7") -- Change Role
 
 -- Server Includes
 include("shared.lua") -- Shared Functions
@@ -268,9 +269,9 @@ function GM:PlayerSpawn(ply)
 		ply:SetViewEntity(ply)
 	end
 	
-	if ply.FlagChangeHealth then
-		ply:SetHealth(ply.FlagChangeHealth)
-		ply.FlagChangeHealth = nil
+	if ply.RoleChangeHealth then
+		ply:SetHealth(ply.RoleChangeHealth)
+		ply.RoleChangeHealth = nil
 	end
 
 	-- Reset all the variables

@@ -28,14 +28,15 @@ philxyz 2015
 		rp_createitem (second argument to CAKE.CreateItem)
 		rp_setmoney <player_name> <positive_whole_amount>
 
-		rp_flag <team_name>
-
+-> Make voices work from chat
 		rp_listvoices
 		rp_voice <voice_id> (index into CAKE.Voices)
 
+-> Make permaflag a visible option
 		rp_permaflag <flag> (sets this character to always be this flag on spawn)
 		
 
+- Fix money calculation / display bugs
 - Prop buddy system
 - Move data to SQL Backend (SQLite)
 - Impose a limit of 5 characters

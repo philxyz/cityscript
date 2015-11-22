@@ -80,7 +80,7 @@ function daylight:init()
 	-- build the light information table.
 	self:buildLightTable()
 	
-	-- flag as ready.
+	-- role as ready.
 	self.ready = true
 end
 

@@ -8,13 +8,13 @@
 -------------------------------
 
 function GM:PlayerSpawnSWEP(ply, class)
-	CAKE.CallTeamHook("PlayerSpawnSWEP", ply, class) -- Perhaps allow certain flags to use sweps, eh?
+	CAKE.CallTeamHook("PlayerSpawnSWEP", ply, class) -- Perhaps allow certain roles to use sweps, eh?
 	
 	return ply:IsSuperAdmin()
 end
 
 function GM:PlayerGiveSWEP(ply)
-	CAKE.CallTeamHook("PlayerGiveSWEP", ply, class) -- Perhaps allow certain flags to use sweps, eh?
+	CAKE.CallTeamHook("PlayerGiveSWEP", ply, class) -- Perhaps allow certain roles to use sweps, eh?
 
 	return ply:IsSuperAdmin()
 end
@@ -49,7 +49,7 @@ end
 function GM:PlayerSpawnSENT(ply, class)
 	if ply:GetTable().Arrested then return false end
 
-	CAKE.CallTeamHook("PlayerSpawnSWEP", ply, class) -- Perhaps allow certain flags to use sents, eh?
+	CAKE.CallTeamHook("PlayerSpawnSWEP", ply, class) -- Perhaps allow certain roles to use sents, eh?
 	
 	return ply:IsSuperAdmin()
 end
@@ -103,15 +103,16 @@ net.Receive("Co", function(_, ply)
 	ply:SetNWString("name", name)
 end)
 
-function ccFlag(ply, cmd, args)
-	local FlagTo = {}
+net.Receive("C7", function(_, ply)
+	local newrole = net.ReadString()
+	local RoleTo = {}
 	
-	-- Find a Team with a matching flag
-	-- if there is one, set that to FlagTo
+	-- Find a Team with a matching role
+	-- if there is one, set that to RoleTo
 	for k, v in pairs(CAKE.Teams) do
-		if v.flag_key == args[1] then
-			FlagTo = v -- Team Details
-			FlagTo.n = k -- Index into CAKE.Teams at which this Team exists
+		if v.role_key == newrole then
+			RoleTo = v -- Team Details
+			RoleTo.n = k -- Index into CAKE.Teams at which this Team exists
 			break
 		end
 	end
@@ -138,40 +139,40 @@ function ccFlag(ply, cmd, args)
 		return false
 	end
 	
-	if FlagTo.name == TEXT.CityMayor or
-		FlagTo.name == TEXT.CityPolice or
-		FlagTo.name == TEXT.BloodBrothersGangLeader or
-		FlagTo.name == TEXT.LaFamigliaVontoriniGangLeader or
-		FlagTo.name == TEXT.TheLegionGangLeader then
+	if RoleTo.name == TEXT.CityMayor or
+		RoleTo.name == TEXT.CityPolice or
+		RoleTo.name == TEXT.BloodBrothersGangLeader or
+		RoleTo.name == TEXT.LaFamigliaVontoriniGangLeader or
+		RoleTo.name == TEXT.TheLegionGangLeader then
 		-- Max is 1
 		for k, v in pairs(player.GetAll()) do
-			if team.GetName(v:Team()) == FlagTo.name then
+			if team.GetName(v:Team()) == RoleTo.name then
 				CAKE.Response(ply, TEXT.MaxIsOne)
 				return
 			end
 		end
-	elseif FlagTo.name == TEXT.CityPolice then
-		if CheckLimit(FlagTo.name, CAKE.ConVars.PolicePcnt) then return; end
-	elseif FlagTo.name == TEXT.GroceryStoreOwner then
-		if CheckLimit(FlagTo.name, CAKE.ConVars.GroceryStoreOwnerPcnt) then return; end
-	elseif FlagTo.name == TEXT.GunStoreOwner then
-		if CheckLimit(FlagTo.name, CAKE.ConVars.GunStoreOwnerPcnt) then return; end
-	elseif FlagTo.name == TEXT.CarDealershipOwner then
-		if CheckLimit(FlagTo.name, CAKE.ConVars.CarDealershipOwnerPcnt) then return; end
-	elseif FlagTo.name == TEXT.BlackMarketDealer then
-		if CheckLimit(FlagTo.name, CAKE.ConVars.BlackMarketDealerPcnt) then return; end
-	elseif FlagTo.name == TEXT.MedicalSpecialist then
-		if CheckLimit(FlagTo.name, CAKE.ConVars.MedicalSpecialistPcnt) then return; end
-	elseif FlagTo.name == TEXT.BloodBrothersGangMember then
-		if CheckLimit(FlagTo.name, CAKE.ConVars.BloodBrothersGangPcnt) then return; end
-	elseif FlagTo.name == TEXT.LaFamigliaVontoriniGangMember then
-		if CheckLimit(FlagTo.name, CAKE.ConVars.VontoriniGangPcnt) then return; end
-	elseif FlagTo.name == TEXT.TheLegionGangMember then
-		if CheckLimit(FlagTo.name, CAKE.ConVars.LegionGangPcnt) then return; end
-	elseif FlagTo.name == TEXT.Citizen then
+	elseif RoleTo.name == TEXT.CityPolice then
+		if CheckLimit(RoleTo.name, CAKE.ConVars.PolicePcnt) then return; end
+	elseif RoleTo.name == TEXT.GroceryStoreOwner then
+		if CheckLimit(RoleTo.name, CAKE.ConVars.GroceryStoreOwnerPcnt) then return; end
+	elseif RoleTo.name == TEXT.GunStoreOwner then
+		if CheckLimit(RoleTo.name, CAKE.ConVars.GunStoreOwnerPcnt) then return; end
+	elseif RoleTo.name == TEXT.CarDealershipOwner then
+		if CheckLimit(RoleTo.name, CAKE.ConVars.CarDealershipOwnerPcnt) then return; end
+	elseif RoleTo.name == TEXT.BlackMarketDealer then
+		if CheckLimit(RoleTo.name, CAKE.ConVars.BlackMarketDealerPcnt) then return; end
+	elseif RoleTo.name == TEXT.MedicalSpecialist then
+		if CheckLimit(RoleTo.name, CAKE.ConVars.MedicalSpecialistPcnt) then return; end
+	elseif RoleTo.name == TEXT.BloodBrothersGangMember then
+		if CheckLimit(RoleTo.name, CAKE.ConVars.BloodBrothersGangPcnt) then return; end
+	elseif RoleTo.name == TEXT.LaFamigliaVontoriniGangMember then
+		if CheckLimit(RoleTo.name, CAKE.ConVars.VontoriniGangPcnt) then return; end
+	elseif RoleTo.name == TEXT.TheLegionGangMember then
+		if CheckLimit(RoleTo.name, CAKE.ConVars.LegionGangPcnt) then return; end
+	elseif RoleTo.name == TEXT.Citizen then
 		-- It's always OK.
 	else
-		CAKE.Response(ply, TEXT.IncorrectFlag)
+		CAKE.Response(ply, TEXT.IncorrectRole)
 		return
 	end
 
@@ -186,7 +187,7 @@ function ccFlag(ply, cmd, args)
 	end
 
 	-- If the player is allowed to become a member of this team (or the team is a public one)
-	if (CAKE.GetCharField(ply, "flags") ~= nil and table.HasValue(CAKE.GetCharField(ply, "flags"), args[1])) or FlagTo.public then
+	if (CAKE.GetCharField(ply, "roles") ~= nil and table.HasValue(CAKE.GetCharField(ply, "roles"), newrole)) or RoleTo.public then
 		local inv = CAKE.GetCharField(ply, "inventory")
 
 		-- If the player has items in their inventory, clear them out.
@@ -199,18 +200,17 @@ function ccFlag(ply, cmd, args)
 		end
 
 		-- Set the player's team
-		ply:SetTeam(FlagTo.n)
+		ply:SetTeam(RoleTo.n)
 
 		-- Reload their business tab
 		ply:RefreshBusiness()
-		ply.FlagChangeHealth = ply:Health()
+		ply.RoleChangeHealth = ply:Health()
 		ply:Spawn()
 		return
 	else
-		CAKE.Response(ply, TEXT.YouNotHaveThisFlag)
+		CAKE.Response(ply, TEXT.YouNotHaveThisRole)
 	end		
-end
-concommand.Add("rp_flag", ccFlag)
+end)
 
 -- Lock door
 net.Receive("Cn", function(_, ply)

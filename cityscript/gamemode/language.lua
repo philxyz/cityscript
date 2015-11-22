@@ -116,13 +116,13 @@ TEXT.FirstNameLastNameError = "You must enter a first and last name!"
 TEXT.SelectCharacter = "Select Character"
 TEXT.CharacterName = "Character Name"
 TEXT.CharacterMenu = "Character Menu"
-TEXT.FlagName = "Flag Name"
+TEXT.RoleName = "Role Name"
 TEXT.Salary = "Salary"
 TEXT.BusinessAccess = "Business Access"
-TEXT.PublicFlag = "Public Flag?"
-TEXT.FlagKey = "Flag Key"
+TEXT.PublicRole = "Public Role?"
+TEXT.RoleKey = "Role Key"
 TEXT.CharSwitchOrNew = "Switch to another character or create a new one."
-TEXT.CommonCommandsOrFlag = "Execute some common commands or set your flag."
+TEXT.CommonCommandsOrRole = "Execute some common commands or set your role."
 TEXT.ViewYourInventory = "View your inventory."
 TEXT.PurchaseItems = "Purchase Items."
 TEXT.ViewScoreboard = "View the scoreboard."
@@ -131,11 +131,11 @@ TEXT.AdminCommandsMenu = "A few admin commands..."
 TEXT.AddedClientsideLuaFilePath = function(path) return "Added clientside lua file '" .. path .. "'" end
 TEXT.SuicideIsDisabled = "Suicide is disabled!"
 TEXT.LongTitle = "Title is too long! Max 32 characters"
-TEXT.IncorrectFlag = "Incorrect Flag!"
+TEXT.IncorrectRole = "Incorrect Role!"
 TEXT.NoJobChangeWhileDeadInJail = "Can not change your job while dead in jail."
 TEXT.NoJobChangeWhileAliveInJail = "You are in Jail. Get a new job when you have been released."
 TEXT.NewRoleBackpackEmptied = "New role selected, backpack emptied!"
-TEXT.YouNotHaveThisFlag = "You do not have this flag!"
+TEXT.YouNotHaveThisRole = "You do not have this role!"
 TEXT.NotYourDoor = "This is not your door!"
 TEXT.DoorNotRentable = "This is not a rentable door!"
 TEXT.DoorRented = "Door Rented!"
@@ -235,15 +235,15 @@ TEXT.ReportAdminChangeMade = function(arg1, arg2) return arg1 .. " set to " .. a
 TEXT.InvalidConvar = function(convar) return convar .. " is not a valid convar! Use rp_admin listvars" end
 TEXT.ListVarsHeader = "---List of Cakescript + CityScript ConVars---"
 TEXT.ListAdminCmdsHeader = "---List of Cakescript + CityScript Admin Commands---"
-TEXT.SetFlagsResponse = function(targetName, flags) return targetName .. "'s flags were set to \"" .. flags .. "\"" end
-TEXT.SetFlagsResponse2 = function(adminName, flags) return "Your flags were set to \"" .. flags .. "\" by " .. adminName end
+TEXT.SetRolesResponse = function(targetName, roles) return targetName .. "'s roles were set to \"" .. roles .. "\"" end
+TEXT.SetRolesResponse2 = function(adminName, roles) return "Your roles were set to \"" .. roles .. "\" by " .. adminName end
 TEXT.ListAllAdminCommands = "List of all admin commands"
 TEXT.WarnSomeone = "Warn someone on the server"
 TEXT.KickSomeone = "Kick someone from the server"
 TEXT.BanSomeone = "Ban someone from the server"
 TEXT.SetVar = "Set a Convar"
 TEXT.ListConVars = "List Convars"
-TEXT.SetFlags = "Set a player's flags"
+TEXT.SetRoles = "Set a player's roles"
 TEXT.AddDoorToDoorGroup = "Add a door to a doorgroup"
 TEXT.WaitPlease = function(time) return "Please wait " .. time .. " seconds before using OOC chat again!" end
 TEXT.BROADCAST = "BROADCAST"
@@ -272,7 +272,7 @@ TEXT.ChangeAnExtraRagdollsLimit = "Change someone's extra ragdolls limit"
 TEXT.ChangeAnExtraVehiclesLimit = "Change someone's extra vehicles limit"
 TEXT.ChangeAnExtraEffectsLimit = "Change someone's extra effects limit"
 TEXT.IncorrectNumberOfArguments = "Incorrect number of arguments!"
-TEXT.PermaFlagSetTo = "Permaflag set to"
+TEXT.PermaRoleSetTo = "Permarole set to"
 TEXT.ToolTrustInvalidArguments = "Invalid number of arguments! ( rp_admin tooltrust \"name\" 1/0 )"
 TEXT.ToolTrustGivenBy = function(adminName) return "You have been given tooltrust by " .. adminName end
 TEXT.ToolTrustGivenAnnounce = function(targetName) return targetName .. " has been given tooltrust" end
@@ -296,7 +296,7 @@ TEXT.PropTrustRevokedAnnounce = function(targetName) return "proptrust has been 
 TEXT.ChangeATrust = function(kind) return "Change someone's " .. kind .. "trust" end -- e.g: proptrust where kind = "prop"
 TEXT.SoundDoesNotExist = "This sound does not exist. Use rp_listvoices"
 TEXT.ListOfVoicesHeader = "---List of CakeScript + CityScript Voices---"
-TEXT.NoteFlagSpecific = "Please note that these are flag-specific"
+TEXT.NoteRoleSpecific = "Please note that these are role-specific"
 TEXT.FireShock = function(amount) return "Holy smokes! We just lost " .. tostring(amount) .. " Tokens to fire!" end
 TEXT.MeteorStormApproaching = "WARNING: Meteor Storm Approaching!"
 TEXT.MeteorStormPassing = "PHEW: Meteor Storm Passing!"
@@ -400,18 +400,18 @@ TEXT.HelpLong = {
 	"To interact with players, items or doors, hold TAB then right-click whatever you want to interact with.",
 	"You can purchase doors, give players money, pick up items, and other things from this menu.",
 	"",
-	"Press F1 to access this menu (do'h; you've found it now, anyway!)",
-	"Create a character when you join by using the left hand side of the 'Character Create' tab",
+	"Press F1 to re-access this menu.",
+	"Create a character when you join by using the left hand side of the 'Character Create' tab.",
 	"Once created, your character will appear on the right hand column in the list of your characters.",
-	"Double-click a character in the list, then click on the picture of that character to start",
+	"Double-click a character in the list to start.",
 	"",
-	"You will earn tokens over time based upon your selected flag (role). These roles are listed in the \"Roles\" tab.",
+	"You will earn tokens over time based upon your selected role. These roles are listed in the \"Roles\" tab.",
 	"Start a business, make some money, have fun!",
 	"Each character has a Business tab under the F1 menu with a selection",
 	"of items that they can buy for resale.",
 	"",
 	"SOME USEFUL COMMANDS",
-	TEXT.GiveCommand .. " when looking at a player to give money",
+	TEXT.GiveCommand .. " when looking at a player to give money. Alternatively, Tab-Right-Click the player.",
 	TEXT.DropTokensCommand .. " <" .. TEXT.Amount .. "> to drop some money",
 	TEXT.TitleCommand .. " <title> (when looking at a door) rented by you",
 	TEXT.TitleCommand .. " <title> (when looking at a storage box)",
@@ -440,6 +440,30 @@ TEXT.HelpLong = {
 	TEXT.DisableMeteorStormCommand .. " - Disable Meteor Storm. (admin / superadmin)",
 	TEXT.AddJailPosCommand .. " - Clear all jail positions and make ONE here. (admin / superadmin)",
 	TEXT.AddExtraJailPosCommand .. " - Add an extra jail position. (admin / superadmin)",
+	"rp_permarole <role> - Set this role as your default job role on spawn.",
+	"",
+	"",
+	"ADMIN COMMANDS",
+	"rp_admin tooltrust <player_name> [1|0]          Give or Revoke Toolgun",
+	"rp_admin phystrust <player_name> [1|0]          Give or Revoke Physgun",
+	"rp_admin proptrust <player_name> [1|0]          Give or Revoke Prop-Spawning capability",
+	"",
+	"rp_admin extraeffects <name> <amount>           Allow a player to have <amount> extra effects",
+	"rp_admin extravehicles <name> <amount>          Allow a player to have <amount> extra vehicles",
+	"rp_admin extraprops <name> <amount>             Allow a player to have <amount> extra props",
+	"rp_admin extraragdolls <name> <amount>          Allow a player to have <amount> extra ragdolls",
+	"",
+	"rp_admin listvars                               List of admin-editable settings",
+	"rp_admin setvar <value>                         Change a setting as per the list above",
+	"",
+	"rp_admin ban <name> <reason> <minutes>          Ban a player for the number of minutes specified",
+	"rp_admin kick <name> <reason>                   Kick a player",
+	"rp_admin warn <name> <warningmessage>           Warn a player",
+	"",
+	"rp_createitem <item_class_name>                 Spawn an item of a particular class",
+	"rp_setmoney <player name> <amount>              Set a player's money",
+        "",
+
 	"",
 	"",
 	"REQUIRED WORKSHOP ADDONS FOR 100% FUNCTIONALITY:",

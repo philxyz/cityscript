@@ -17,5 +17,5 @@ CAKE.AddDataField(2, "name", "Set Your Name") -- Let's hope this never gets used
 CAKE.AddDataField(2, "model", "models/player/group01/male_07.mdl")
 CAKE.AddDataField(2, "money", CAKE.ConVars.Default_Money) -- How much money do players start out with.
 CAKE.AddDataField(2, "bank", CAKE.ConVars.Default_Bank) -- How much bank money do players start out with.
-CAKE.AddDataField(2, "flags", CAKE.ConVars.Default_Flags) -- What flags do they start with.
+CAKE.AddDataField(2, "roles", CAKE.ConVars.Default_Roles) -- What roles do they start with.
 CAKE.AddDataField(2, "inventory", CAKE.ConVars.Default_Inventory) -- What inventory do they start with

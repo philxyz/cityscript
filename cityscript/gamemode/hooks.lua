@@ -19,7 +19,7 @@ function CAKE.CallTeamHook(hook_name, ply, arg1, arg2, arg3, arg4, arg5, arg6, a
 	
 	-- Look through the Hooks table for any hooks that should be called
 	for _, hook in pairs(CAKE.TeamHooks) do
-		if hook.hook_name == hook_name and team.flag_key == hook.flag_key then
+		if hook.hook_name == hook_name and team.role_key == hook.role_key then
 			local unique = hook.unique_name or ""
 			local func = hook.callback or function() end
 			
@@ -36,16 +36,16 @@ function CAKE.CallTeamHook(hook_name, ply, arg1, arg2, arg3, arg4, arg5, arg6, a
 	return 1
 end
 
-function CAKE.AddTeamHook(hook_name, unique_name, callback, flagkey)
+function CAKE.AddTeamHook(hook_name, unique_name, callback, rolekey)
 	local hook = {}
 	hook.hook_name = hook_name
 	hook.unique_name = unique_name
 	hook.callback = callback
-	hook.flag_key = flagkey
+	hook.role_key = rolekey
 	
 	table.insert(CAKE.TeamHooks, hook)
 	
-	CAKE.DayLog("script.txt", TEXT.AddingTeamHook .. ": " .. unique_name .. " ( " .. hook_name .. " | " .. flagkey .. " )")
+	CAKE.DayLog("script.txt", TEXT.AddingTeamHook .. ": " .. unique_name .. " ( " .. hook_name .. " | " .. rolekey .. " )")
 end
 
 -- This is to be called within CAKE functions

@@ -32,7 +32,7 @@ function CAKE.InitTeams()
 			net.WriteInt(v.color.a, 16)
 			net.WriteBool(v.public)
 			net.WriteInt(v.salary, 32) -- Limits the salary to 2 billion or something but whatever...
-			net.WriteString(v.flag_key)
+			net.WriteString(v.role_key)
 			net.WriteBool(v.business)
 		end
 
@@ -59,15 +59,15 @@ function CAKE.TeamObject()
 	-- Weapons Configuration
 	team.weapons = {}
 	
-	-- Flag Configuration
-	team.flag_key = "" -- What is used with rp_flag
+	-- Role Configuration
+	team.role_key = "" -- Which role
 	team.door_groups = {} -- What groups of doors can the team open
 	team.radio_groups = {} -- What radios can the team talk on
 	team.sound_groups = {} -- What voices can the team use
 	team.item_groups = {} -- What items can the team purchase
 	
 	-- Salaries
-	team.salary = 0 -- How many tokens does this flag earn every paycheck?
+	team.salary = 0 -- How many tokens does this role earn every paycheck?
 
 	team.public = true
 	team.business = false

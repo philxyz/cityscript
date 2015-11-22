@@ -724,17 +724,19 @@ function CreatePlayerMenu()
 	CityCommands:EnableHorizontal(true)
 	CityCommands:EnableVerticalScrollbar(true)
 	
-	local CityFlags = vgui.Create("DListView")
-	CityFlags:SetSize(550, 446)
-	CityFlags:SetMultiSelect(false)
-	CityFlags:AddColumn(TEXT.FlagName)
-	CityFlags:AddColumn(TEXT.Salary)
-	CityFlags:AddColumn(TEXT.BusinessAccess)
-	CityFlags:AddColumn(TEXT.PublicFlag)
-	CityFlags:AddColumn(TEXT.FlagKey)
+	local CityRoles = vgui.Create("DListView")
+	CityRoles:SetSize(550, 446)
+	CityRoles:SetMultiSelect(false)
+	CityRoles:AddColumn(TEXT.RoleName)
+	CityRoles:AddColumn(TEXT.Salary)
+	CityRoles:AddColumn(TEXT.BusinessAccess)
+	CityRoles:AddColumn(TEXT.PublicRole)
+	CityRoles:AddColumn(TEXT.RoleKey)
 	
-	function CityFlags:DoDoubleClick(LineID, Line)
-		RunConsoleCommand("rp_flag", TeamTable[LineID].flagkey)
+	function CityRoles:DoDoubleClick(LineID, Line)
+		net.Start("C7")
+		net.WriteString(TeamTable[LineID].rolekey)
+		net.SendToServer()
 		PlayerMenu:Remove()
 		PlayerMenu = nil
 	end
@@ -754,10 +756,10 @@ function CreatePlayerMenu()
 			yesno2 = TEXT.No
 		end
 		
-		CityFlags:AddLine(v.name, tostring(v.salary), yesno2, yesno, v.flagkey)
+		CityRoles:AddLine(v.name, tostring(v.salary), yesno2, yesno, v.rolekey)
 	end
 	
-	CityCommands:AddItem(CityFlags)
+	CityCommands:AddItem(CityRoles)
 	
 	Inventory = vgui.Create("DPanelList")
 	Inventory:SetPadding(20)
@@ -966,8 +968,8 @@ function CreatePlayerMenu()
 		local buttonsCommands = {}
 		buttonsCommands["Spawn a New ATM"] = TEXT.NewATMCommand
 		buttonsCommands["Freeze an ATM (look at it first)"] = TEXT.FreezeATMCommand
-		buttonsCommands["Add spawn position for current flag"] = TEXT.AddSpawnCommand
-		buttonsCommands["Remove all custom spawn positions for current flag"] = TEXT.RemoveSpawnsCommand
+		buttonsCommands["Add spawn position for current role"] = TEXT.AddSpawnCommand
+		buttonsCommands["Remove all custom spawn positions for current role"] = TEXT.RemoveSpawnsCommand
 		buttonsCommands["Enable Zombies"] = TEXT.EnableZombiesCommand
 		buttonsCommands["Disable Zombies"] = TEXT.DisableZombiesCommand
 		buttonsCommands["Add zombie spawn position here"] = TEXT.AddZombieCommand
@@ -992,7 +994,7 @@ function CreatePlayerMenu()
 	
 	PropertySheet:AddSheet( TEXT.PlayerMenu, PlayerInfo, "icon16/user.png", false, false, TEXT.GeneralInfo)
 	PropertySheet:AddSheet( TEXT.CharacterMenu, CharPanel, "icon16/group.png", false, false, TEXT.CharSwitchOrNew)
-	PropertySheet:AddSheet( TEXT.Roles, CityCommands, "icon16/wrench.png", false, false, TEXT.CommonCommandsOrFlag)
+	PropertySheet:AddSheet( TEXT.Roles, CityCommands, "icon16/wrench.png", false, false, TEXT.CommonCommandsOrRole)
 	PropertySheet:AddSheet( TEXT.Backpack, Inventory, "icon16/box.png", false, false, TEXT.ViewYourInventory)
 	PropertySheet:AddSheet( TEXT.Business, Business, "icon16/box.png", false, false, TEXT.PurchaseItems)
 	PropertySheet:AddSheet( TEXT.Scoreboard, Scoreboard, "icon16/application_view_detail.png", false, false, TEXT.ViewScoreboard)

@@ -21,7 +21,7 @@ net.Receive("Ct", function(len, ply)
 		newteam.a = net.ReadInt(16)
 		newteam.public = net.ReadBool()
 		newteam.salary = net.ReadInt(32)
-		newteam.flagkey = net.ReadString()
+		newteam.rolekey = net.ReadString()
 		newteam.business = net.ReadBool()
 	
 		team.SetUp(newteam.id, newteam.name, Color(newteam.r, newteam.g, newteam.b, newteam.a))

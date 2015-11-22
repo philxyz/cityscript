@@ -4,7 +4,7 @@ SCHEMA.Description = "City Roleplay"
 SCHEMA.Base = "global"
 
 function SCHEMA.SetUp()
-	-- name, color, model_path, default_model, partial_model, weapons, flag_key, door_groups, radio_groups, sound_groups, item_groups, salary, public, business, broadcast
+	-- name, color, model_path, default_model, partial_model, weapons, role_key, door_groups, radio_groups, sound_groups, item_groups, salary, public, business, broadcast
 	
 	-- Item Groups
 	-- Groceries: 2
