@@ -38,7 +38,14 @@ hook.Add("GravGunPunt", "UPP.GravGunPunt", UPP.GravGunPunt)
 function UPP.PhysgunPickup(ply, ent)
 	local class = ent:GetClass():lower()
 
-	if ply:IsAdmin() then return true end
+	if ply:IsAdmin() then
+		-- Specific to CityScript:
+		if ent:GetClass() == "atm" then
+			return ent:GetMoveType() == MOVETYPE_VPHYSICS
+		end
+
+		return true
+	end
 
 	-- If you're not an admin, you can't pick players up
 	if class == "player" then return false end
