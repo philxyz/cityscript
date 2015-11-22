@@ -36,7 +36,6 @@ philxyz 2015
 		rp_permaflag <flag> (sets this character to always be this flag on spawn)
 		
 
-- Make the ATM more user friendly
 - Prop buddy system
 - Move data to SQL Backend (SQLite)
 - Impose a limit of 5 characters
