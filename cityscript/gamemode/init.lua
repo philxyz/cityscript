@@ -436,6 +436,8 @@ function GM:PlayerDeath(ply, weapon, killer)
 	end
 
 	ply:GetTable().DeathPos = ply:GetPos()
+
+	ply.awaitingmedic = true
 	
 	CAKE.DeathMode(ply)
 	CAKE.CallHook("PlayerDeath", ply)
@@ -443,20 +445,26 @@ function GM:PlayerDeath(ply, weapon, killer)
 end
 
 function GM:PlayerDeathThink(ply)
-	ply.nextsecond = ply.nextsecond or CurTime()
-	ply.deathtime = ply.deathtime or 30
+	-- Initialize these first-time-round
+	ply.nextsecond = ply.nextsecond or (CurTime() + 1)
+	ply.deathtime = ply.deathtime or 0
+
+	if not ply.awaitingmedic then return true end
 	
+	-- if a second has passed
 	if CurTime() > ply.nextsecond then
-		if ply.deathtime < 10 then
+		if ply.deathtime < 55 then
 			ply.deathtime = ply.deathtime + 1
 			ply.nextsecond = CurTime() + 1
-			ply:SetNWInt("deathmoderemaining", 30 - ply.deathtime)
+			ply:SetNWInt("deathmoderemaining", 55 - ply.deathtime)
 		else
 			ply.deathtime = nil
 			ply.nextsecond = nil
-			ply:Spawn()
-			ply:SetNWInt("deathmode", 0)
 			ply:SetNWInt("deathmoderemaining", 0)
+			ply.awaitingmedic = false
+			ply:SetHealth(100)
+			ply:Spawn()
+			return true
 		end
 	end
 end
@@ -586,6 +594,17 @@ function GM:OnNPCKilled(victim, ent, weapon)
 			CAKE.ChangeBankMoney(ent, CAKE.ConVars.NPC_Kill_Pay)
 			CAKE.Response(ent, TEXT.BankedTokensForNPCKill(tostring(CAKE.ConVars.NPC_Kill_Pay)))
 		end
+	end
+end
+
+function GM:KeyPress(ply, key)
+	if key == IN_ATTACK and ply.awaitingmedic then
+		ply.awaitingmedic = false
+		ply.deathtime = nil
+       		ply.nextsecond = nil
+       		ply:SetNWInt("deathmoderemaining", 0)
+       		ply:SetHealth(100)
+       		ply:Spawn()
 	end
 end
 

@@ -103,12 +103,6 @@ net.Receive("Co", function(_, ply)
 	ply:SetNWString("name", name)
 end)
 
--- Allows a player to skip the respawn timer.
-function ccAcceptDeath(ply, cmd, args)
-	ply.deathtime = 120
-end
-concommand.Add("rp_acceptdeath", ccAcceptDeath)
-
 function ccFlag(ply, cmd, args)
 	local FlagTo = {}
 	

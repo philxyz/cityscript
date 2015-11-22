@@ -817,7 +817,6 @@ function CreatePlayerMenu()
 		Inventory:AddItem(spawnicon)
 	end
 	
-	print("CREATING BUSINESS TAB")
 	Business = vgui.Create("DPanelList")
 	Business:SetPadding(20)
 	Business:SetSpacing(20)

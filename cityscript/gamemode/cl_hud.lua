@@ -241,6 +241,17 @@ function DrawAmmoDisplay()
 	end
 end
 
+function DrawRevivalTimer()
+	local dmr = LocalPlayer():GetNWInt("deathmoderemaining")
+	if dmr > 0 then
+		local text = TEXT.TimeUntilDeath(tostring(dmr or "-"))
+		draw.DrawText(text, "PlAmmoFont1", (ScrW() / 2)+2, 102, Color(0, 0, 0, 0), TEXT_ALIGN_CENTER)
+		draw.DrawText(text, "PlAmmoFont1", ScrW() / 2, 100, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+		draw.DrawText(TEXT.AcceptFate, "PlAmmoFont2", (ScrW() / 2)+2, 172, Color(0, 0, 0, 0), TEXT_ALIGN_CENTER)
+		draw.DrawText(TEXT.AcceptFate, "PlAmmoFont2", ScrW() / 2, 170, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+	end
+end
+
 function GM:HUDPaint()
 	local tr = LocalPlayer():GetEyeTrace()
 	local superAdmin = LocalPlayer():IsSuperAdmin()
@@ -269,5 +280,6 @@ function GM:HUDPaint()
 	DrawTargetInfo()
 	DrawInfoPanel()
 	DrawAmmoDisplay()
+	DrawRevivalTimer()
 	UPP.DrawUI()
 end

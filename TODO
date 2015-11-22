@@ -30,33 +30,26 @@ philxyz 2015
 
 		rp_flag <team_name>
 
-+ make visual	rp_acceptdeath          (completes the death timer)
-
--		! versions of rp_ commands
-
 		rp_listvoices
 		rp_voice <voice_id> (index into CAKE.Voices)
 
 		rp_permaflag <flag> (sets this character to always be this flag on spawn)
 		
 
-- Fix the ATM respawning issues on server load.
-
+- Fix the ATM saving and loading positions
+- Make the ATM more user friendly
 - Prop buddy system
 - Move data to SQL Backend (SQLite)
+- Impose a limit of 5 characters
 - Implement the ability to delete characters
 - Roleplaying Vehicles Addon (or find another)
 	- [LW]
 	- SGM Cars
 	- TDM Cars
 	- SCars Slim, SCars Basic, and SCars Extra
-
 - Fix character selection.
 		- Make it so that any "non-special-class" player can be chosen when creating a new character.
 		- When a player changes to another team, change the model as appropriate but keep the old one
 		  in case they change that team back again
 		- Make character selection more obvious
-
 - Update help menu to represent current state
-
-- Replace ATM model and test angles

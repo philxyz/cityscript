@@ -19,6 +19,50 @@ end
 
 DecayingRagdolls = {}
 
+DecayModelProgression = {
+	"models/humans/charple01.mdl",
+	"models/humans/charple02.mdl",
+	"models/humans/charple04.mdl",
+	"models/humans/charple03.mdl",
+	"models/gibs/fast_zombie_torso.mdl"
+}
+
+CorpseDecayTimer = CurTime()
+function DecayCorpses()
+	local ct = CurTime()
+	if ct >= CorpseDecayTimer + 1 then
+		local numdolls = #DecayingRagdolls
+		for i=numdolls, 1, -1 do
+			if (ct - DecayingRagdolls[i].CreatedAt) >= 60 then
+				if DecayingRagdolls[i].RotStage == 5 then
+					DecayingRagdolls[i]:Remove()
+					table.remove(DecayingRagdolls, i)
+				else
+					local oldPos = DecayingRagdolls[i]:GetPos()
+					local oldAngles = DecayingRagdolls[i]:GetAngles()
+					local ply = DecayingRagdolls[i].ply
+					local stage = DecayingRagdolls[i].RotStage
+					DecayingRagdolls[i]:Remove()
+
+					DecayingRagdolls[i] = ents.Create("prop_ragdoll")
+					DecayingRagdolls[i].CreatedAt = CurTime()
+					DecayingRagdolls[i].RotStage = stage + 1
+					DecayingRagdolls[i]:SetModel(DecayModelProgression[DecayingRagdolls[i].RotStage])
+					DecayingRagdolls[i]:SetPos(oldPos)
+					DecayingRagdolls[i]:SetAngles(oldAngles)
+					DecayingRagdolls[i].isdeathdoll = true
+					DecayingRagdolls[i].ply = ply
+					DecayingRagdolls[i]:Spawn()
+					if IsValid(ply) then
+						ply.deathrag = DecayingRagdolls[i]
+					end
+				end
+			end
+		end
+	end
+end
+hook.Add("Think", "DecayCorpses", DecayCorpses)
+
 function CAKE.DeathMode(ply)
 	if ply == nil then return false end
 
@@ -26,6 +70,8 @@ function CAKE.DeathMode(ply)
 	local mdl = ply:GetModel()
 	
 	local rag = ents.Create("prop_ragdoll")
+	rag.CreatedAt = CurTime()
+	rag.RotStage = 0
 	rag:SetModel(mdl)
 	rag:SetPos(ply:GetPos())
 	rag:SetAngles(ply:GetAngles())
@@ -34,7 +80,6 @@ function CAKE.DeathMode(ply)
 	rag:Spawn()
 	
 	ply:SetViewEntity(rag)
-	
 	ply.deathrag = rag
 	
 	local n = #DecayingRagdolls + 1
@@ -44,7 +89,7 @@ function CAKE.DeathMode(ply)
 	
 	ply.deathtime = 0
 	ply.nextsecond = CurTime() + 1
-	ply:PrintMessage(HUD_PRINTCENTER, "UNFORTUNATELY, YOU ARE DYING. SHOUT FOR A MEDIC!")
+	ply:PrintMessage(HUD_PRINTCENTER, TEXT.BadInjury)
 end
 
 local meta = FindMetaTable("Player")
