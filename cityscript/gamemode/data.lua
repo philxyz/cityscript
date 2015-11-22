@@ -190,15 +190,16 @@ function DB.InstallATMs()
 	-- For each ATM in the database for this map, install them
 	for _, row in pairs(r) do
 		if not row.x then
-			print("IT WAS NOT A ROWSET, BUT RATHER CONTAINS:")
 			for a, b in pairs(r) do
 				print("key: " .. a .. " = value: " .. b)
 			end
+
 			return
 		end
+
 		local atm = ents.Create("atm")
 		atm:SetPos(Vector(row.x, row.y, row.z))
-		atm:SetAngles(Angle(row.a, row.b, row.c))
+		atm:SetAngles(Angle(tonumber(row.a), tonumber(row.b), tonumber(row.c)))
 		atm:SetNWString("Owner", "World")
 		atm:Spawn()
 		atm:GoToSleep()
