@@ -11,21 +11,28 @@ include("cl_upp.lua")
 
 LocalPlayer().MyModel = "" -- Has to be blank for the initial value, so it will create a spawnicon in the first place.
 
-surface.CreateFont( "PlInfoFont", {
+surface.CreateFont("ATMFont", {
+	font = "ChatFont",
+	size = 48,
+	weight = 120,
+	antialias = true
+})
+
+surface.CreateFont("PlInfoFont", {
 	font = "ChatFont",
 	size = 22,
 	weight = 100,
 	antialias = true
 })
 
-surface.CreateFont( "PlAmmoFont1", {
+surface.CreateFont("PlAmmoFont1", {
 	font = "ChatFont",
 	size = 72,
 	weight = 120,
 	antialias = true
 })
 
-surface.CreateFont( "PlAmmoFont2", {
+surface.CreateFont("PlAmmoFont2", {
         font = "ChatFont",
         size = 36,
         weight = 120,
@@ -63,8 +70,8 @@ function DrawTargetInfo()
 		end
 
 		if tr.Entity:GetNWBool("ATM") then
-			draw.DrawText( TEXT.ATMText .. "\n\n" .. TEXT.ATMBalanceCommand .. "\n" .. TEXT.ATMWithdrawCommand .. " <" .. TEXT.Amount .. ">" .. "\n" .. TEXT.ATMDepositCommand .. " <" .. TEXT.Amount .. ">\n" .. TEXT.ATMTransferCommand .. " <" .. TEXT.Amount .. ">\\[" .. TEXT.NameOrUserID .. "]", "ChatFont", screenpos.x + 2, screenpos.y + 22, Color( 0, 255, 0, 255 ), 1)
-			draw.DrawText( TEXT.ATMText .. "\n\n" .. TEXT.ATMBalanceCommand .. "\n" .. TEXT.ATMWithdrawCommand .. " <" .. TEXT.Amount .. ">" .. "\n" .. TEXT.ATMDepositCommand .. " <" .. TEXT.Amount .. ">\n" .. TEXT.ATMTransferCommand .. " <" .. TEXT.Amount .. ">\\[" .. TEXT.NameOrUserID .. "]", "ChatFont", screenpos.x, screenpos.y + 20, Color( 255, 255, 255, 255 ), 1)
+			draw.DrawText( TEXT.ATMText, "ATMFont", screenpos.x + 2, screenpos.y + 22, Color( 0, 255, 0, 255 ), 1)
+			draw.DrawText( TEXT.ATMText, "ATMFont", screenpos.x, screenpos.y + 20, Color( 255, 255, 255, 255 ), 1)
 		end
 	end
 end

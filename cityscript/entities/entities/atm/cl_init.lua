@@ -5,8 +5,14 @@ function ENT:Draw()
 end
 
 net.Receive("C6", function(_, ply)
+	local et = LocalPlayer():GetEyeTrace().Entity
 	local ContextMenu = DermaMenu()
 	ContextMenu:SetPos(ScrW()/2, ScrH()/2)
+	if LocalPlayer():IsSuperAdmin() and IsValid(et) and et:GetMoveType() == MOVETYPE_VPHYSICS then
+		ContextMenu:AddOption(TEXT.AdminFreezeATM, function()
+			RunConsoleCommand("say", TEXT.FreezeATMCommand)
+		end)
+	end
 	ContextMenu:AddOption(TEXT.ShowBalance, function()
 		RunConsoleCommand("say", TEXT.ATMBalanceCommand)
 	end)
@@ -49,5 +55,10 @@ net.Receive("C6", function(_, ply)
 			end
 		)
 	end)
+	if LocalPlayer():IsSuperAdmin() then
+		ContextMenu:AddOption(TEXT.AdminRemoveATM, function()
+			RunConsoleCommand("say", TEXT.RemoveATMCommand)
+		end)
+	end
 	ContextMenu:Open()
 end)
