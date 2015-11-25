@@ -280,14 +280,14 @@ function CAKE.ChangeMoney(ply, amount) -- Modify someone's money amount.
 	if ply == nil then return false end
 
 	-- NEVAR EVAR LET IT GO NEGATIVE.
-	local money = math.floor(tonumber(CAKE.GetCharField( ply, "money" ) or 0))
+	local money = math.floor(tonumber(CAKE.GetCharField(ply, "money") or 0))
 
 	if money + amount < 0 then return false end
 	
 	CAKE.DayLog("economy.txt", "Changing " .. ply:SteamID() .. "-" .. ply:GetNWString("uid") .. " money by " .. tostring(amount))
 	CAKE.SetCharField(ply, "money", money + amount)
 
-	ply:SetNWString("money", money)
+	ply:SetNWString("money", money + amount)
 
 	return true
 end
