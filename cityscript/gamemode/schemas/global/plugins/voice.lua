@@ -4,8 +4,8 @@ PLUGIN.Description = "Enables players to say things" -- The description or purpo
 
 CAKE.Voices = {} -- I hear voices D:>
 
-function ccVoice(ply, cmd, args) -- People near you will hear the voice
-	local id = args[1]
+net.Receive("C8", function(_, ply)
+	local id = net.ReadString()
 	
 	if CAKE.Voices[id] == nil then
 		CAKE.Response(ply, TEXT.SoundDoesNotExist)
@@ -42,8 +42,7 @@ function ccVoice(ply, cmd, args) -- People near you will hear the voice
 		ply:EmitSound(path)
 		ply:ConCommand("say " .. voice.line .. "\n")
 	end
-end
-concommand.Add("rp_voice", ccVoice)
+end)
 
 function ccListVoice(ply, cmd, args)
 	CAKE.Response(ply, TEXT.ListOfVoicesHeader)

@@ -20,6 +20,7 @@ philxyz 2015
 		rp_admin extraragdolls <name> <amount>
 		rp_admin listvars
 		rp_admin setvar <value>
+	-	rp_admin quiet <user> [1|0] - stop a player using voices
 
 		rp_admin ban <name> <reason> <minutes>
 		rp_admin kick <name> <reason>
@@ -27,10 +28,6 @@ philxyz 2015
 
 		rp_createitem (second argument to CAKE.CreateItem)
 		rp_setmoney <player_name> <positive_whole_amount>
-
--> Make voices work from chat
-		rp_listvoices
-		rp_voice <voice_id> (index into CAKE.Voices)
 
 -> Make permaflag a visible option
 		rp_permaflag <flag> (sets this character to always be this flag on spawn)

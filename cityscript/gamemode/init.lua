@@ -52,6 +52,7 @@ util.AddNetworkString("C4") -- Storage box icons
 util.AddNetworkString("C5") -- Storage box reset
 util.AddNetworkString("C6") -- ATM 'use' menu
 util.AddNetworkString("C7") -- Change Role
+util.AddNetworkString("C8") -- Voice Trigger
 
 -- Server Includes
 include("shared.lua") -- Shared Functions

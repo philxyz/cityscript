@@ -26,23 +26,23 @@ function SCHEMA.SetUp()
 
 	-- Citizens
 	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.Citizen)) -- Citizen
-	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.GroceryStoreOwner, nil, nil, nil, nil, nil, "grocery", nil, nil, nil, { 2 }, 0, true, true, nil)) -- Grocery Store Owner
-	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.GunStoreOwner, nil, nil, nil, nil, nil, "gun", nil, nil, nil, { 3 }, 0, true, true, nil))
-	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.CarDealershipOwner, nil, nil, nil, nil, nil, "car", nil, nil, nil, { 4 }, 0, true, true, nil))
-	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.BlackMarketDealer, nil, nil, nil, nil, nil, "bm", nil, nil, nil, { 5 }, 0, true, true, false))
-	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.MedicalSpecialist, nil, nil, nil, nil, nil, "doctor", { 2 }, { 2 }, nil, { 7 }, 0, true, true, nil)) -- Doctor
+	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.GroceryStoreOwner, nil, nil, nil, nil, nil, "grocery", nil, nil, { 1 }, { 2 }, 0, true, true, nil)) -- Grocery Store Owner
+	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.GunStoreOwner, nil, nil, nil, nil, nil, "gun", nil, nil, { 1 }, { 3 }, 0, true, true, nil))
+	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.CarDealershipOwner, nil, nil, nil, nil, nil, "car", nil, nil, { 1 }, { 4 }, 0, true, true, nil))
+	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.BlackMarketDealer, nil, nil, nil, nil, nil, "bm", nil, nil, { 1 }, { 5 }, 0, true, true, false))
+	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.MedicalSpecialist, nil, nil, nil, nil, nil, "doctor", { 2 }, { 2 }, { 1 }, { 7 }, 0, true, true, nil)) -- Doctor
 
-	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.BloodBrothersGangLeader, Color(255, 0, 0, 255), "models/player/group03/", true, true, nil, "bloodldr", { 3 }, { 3 }, { 3 }, { 1 }, 10, true, false, nil))
-	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.BloodBrothersGangMember, Color(248, 0, 0, 255), "models/player/group03/", true, true, nil, "blood", { 3 }, { 3 }, { 3 }, { 1 }, 10, true, false, nil))
+	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.BloodBrothersGangLeader, Color(255, 0, 0, 255), "models/player/group03/", true, true, nil, "bloodldr", { 3 }, { 3 }, { 1 }, { 1 }, 10, true, false, nil))
+	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.BloodBrothersGangMember, Color(248, 0, 0, 255), "models/player/group03/", true, true, nil, "blood", { 3 }, { 3 }, { 1 }, { 1 }, 10, true, false, nil))
 
-	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.LaFamigliaVontoriniGangLeader, Color(0, 0, 10, 255), "models/player/group03/", true, true, nil, "vontldr", { 4 }, { 4 }, { 4 }, { 1 }, 10, true, false, nil))
-	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.LaFamigliaVontoriniGangMember, Color(0, 0, 0, 255), "models/player/group03/", true, true, nil, "vont", { 4 }, { 4 }, { 4 }, { 1 }, 10, true, false, nil))
+	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.LaFamigliaVontoriniGangLeader, Color(0, 0, 10, 255), "models/player/group03/", true, true, nil, "vontldr", { 4 }, { 4 }, { 1 }, { 1 }, 10, true, false, nil))
+	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.LaFamigliaVontoriniGangMember, Color(0, 0, 0, 255), "models/player/group03/", true, true, nil, "vont", { 4 }, { 4 }, { 1 }, { 1 }, 10, true, false, nil))
 
-	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.TheLegionGangLeader, Color(0, 0, 10, 255), "models/player/group03/", true, true, nil, "legionldr", { 7 }, { 7 }, { 7 }, { 1 }, 10, true, false, nil))
-	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.TheLegionGangMember, Color(0, 0, 0, 255), "models/player/group03/", true, true, nil, "legion", { 7 }, { 7 }, { 7 }, { 1 }, 10, true, false, nil))
+	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.TheLegionGangLeader, Color(0, 0, 10, 255), "models/player/group03/", true, true, nil, "legionldr", { 7 }, { 7 }, { 1 }, { 1 }, 10, true, false, nil))
+	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.TheLegionGangMember, Color(0, 0, 0, 255), "models/player/group03/", true, true, nil, "legion", { 7 }, { 7 }, { 1 }, { 1 }, 10, true, false, nil))
 	
 	-- Police
-	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.CityPolice, Color(0, 0, 200, 255), "models/police.mdl", true, false, {"weapon_stunstick", "bb_usp_alt", "door_ram", "arrest_stick", "unarrest_stick"}, "cp", {1}, {1}, {1}, {1}, 50, true, true, true)) -- Civil Protection
+	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.CityPolice, Color(0, 0, 200, 255), "models/police.mdl", true, false, {"weapon_stunstick", "bb_usp_alt", "door_ram", "arrest_stick", "unarrest_stick"}, "cp", {1}, {1}, {1, 2}, {1}, 50, true, true, true)) -- Civil Protection
 
 	-- Mayor
 	CAKE.AddTeam(CAKE.CityScriptTeam(TEXT.CityMayor, Color(150, 0, 0, 255), "models/breen.mdl", true, false, {"m9k_m29satan"}, "ca", {1}, {1}, {1}, {1}, 200, false, false, true)) -- City Administrator
