@@ -344,3 +344,20 @@ function CAKE.UnToxicPlayer(pl)
 	pl:ConCommand("pp_motionblur 0")
 	pl:ConCommand("pp_dof 0")
 end
+
+function CAKE.AllowSounds(ply, allow)
+	local s64 = ply:SteamID64()
+	if s64 ~= nil then
+		if not allow then
+			table.insert(CAKE.QuietPlayers, s64)
+		else
+			for i=#CAKE.QuietPlayers, 1 do
+				if CAKE.QuietPlayers[i] == s64 then
+					CAKE.QuietPlayers[i] = nil
+					break
+				end
+			end
+		end
+		DB.AllowSounds(s64, allow)
+	end
+end

@@ -8,6 +8,7 @@ function DB.Init()
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_teamspawns('id' INTEGER NOT NULL, 'map' TEXT NOT NULL, 'team' INTEGER NOT NULL, 'x' NUMERIC NOT NULL, 'y' NUMERIC NOT NULL, 'z' NUMERIC NOT NULL, PRIMARY KEY('id'));")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_atmpositions('id' INTEGER NOT NULL, 'map' TEXT NOT NULL, 'x' NUMERIC NOT NULL, 'y' NUMERIC NOT NULL, 'z' NUMERIC NOT NULL, 'a' NUMERIC NOT NULL, 'b' NUMERIC NOT NULL, 'c' NUMERIC NOT NULL, PRIMARY KEY('id'));")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_zombiespawns('map' TEXT NOT NULL, 'x' NUMERIC NOT NULL, 'y' NUMERIC NOT NULL, 'z' NUMERIC NOT NULL);")
+		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_soundabusers('steam64id' TEXT NOT NULL);")
 	sql.Commit()
 
 	DB.CreateJailPos()
@@ -231,6 +232,25 @@ end
 function DB.DropZombies()
 	zombieSpawns = {}
 	sql.Query("DELETE FROM cityscript_zombiespawns WHERE map = " .. sql.SQLStr(string.lower(game.GetMap())) .. ";")
+end
+
+function DB.FetchQuietPlayers()
+	local r = sql.Query("SELECT steam64id FROM cityscript_soundabusers;")
+	if not r then return end
+	for _, id in pairs(r) do
+		table.insert(CAKE.QuietPlayers, id.steam64id)
+	end
+end
+
+function DB.AllowSounds(s64, allow)
+	if allow then
+		sql.Query("DELETE FROM cityscript_soundabusers WHERE steam64id = " .. sql.SQLStr(s64) .. ";")
+	else
+		local r = sql.Query("SELECT 1 FROM cityscript_soundabusers WHERE steam64id = " .. sql.SQLStr(s64) .. ";")
+		if not r then
+			sql.Query("INSERT INTO cityscript_soundabusers(steam64id) VALUES(" .. sql.SQLStr(s64) .. ");")
+		end
+	end
 end
 
 local function IsEmpty(vector)

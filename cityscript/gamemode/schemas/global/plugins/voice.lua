@@ -6,6 +6,14 @@ CAKE.Voices = {} -- I hear voices D:>
 
 net.Receive("C8", function(_, ply)
 	local id = net.ReadString()
+
+	for _, v in ipairs(CAKE.QuietPlayers) do
+		print("ID " .. v)
+		if v == ply:SteamID64() then
+			CAKE.Response(ply, TEXT.SoundsNotAllowed)
+			return
+		end
+	end
 	
 	if CAKE.Voices[id] == nil then
 		CAKE.Response(ply, TEXT.SoundDoesNotExist)

@@ -20,7 +20,7 @@ philxyz 2015
 		rp_admin extraragdolls <name> <amount>
 		rp_admin listvars
 		rp_admin setvar <value>
-	-	rp_admin quiet <user> [1|0] - stop a player using voices
+		rp_admin quiet <user> [1|0] - stop a player using voices
 
 		rp_admin ban <name> <reason> <minutes>
 		rp_admin kick <name> <reason>

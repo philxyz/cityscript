@@ -15,6 +15,7 @@ GM.Name = "CityScript"
 CAKE = {}
 CAKE.Running = false
 CAKE.Loaded = false
+CAKE.QuietPlayers = {}
 
 DB = {}
 
@@ -129,6 +130,7 @@ function GM:Initialize() -- Initialize the gamemode
 
 	CAKE.InitTime()
 	CAKE.LoadDoors()
+	DB.FetchQuietPlayers()
 
 	timer.Create("timesave", 120, 0, CAKE.SaveTime)
 	timer.Create("sendtime", 1, 0, CAKE.SendTime)

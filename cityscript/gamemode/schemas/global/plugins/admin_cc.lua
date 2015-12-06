@@ -92,6 +92,20 @@ function Admin_Ban(ply, cmd, args)
 	end
 end
 
+function Admin_Quiet(ply, cmd, args)
+	if #args ~= 2 or (args[2] != "1" and args[2] ~= "0") then
+		CAKE.Response(ply, TEXT.QuietCommandUsageError)
+		return
+	end
+
+	local target = CAKE.FindPlayer(args[1])
+	local canSpeak = args[2] ~= "1"
+
+	if IsValid(target) and target:IsPlayer() then
+		CAKE.AllowSounds(target, canSpeak)
+	end
+end
+
 function Admin_SetVar(ply, cmd, args)
 	if #args ~= 2 then
 		CAKE.Response(ply, TEXT.SetVarInvalidArgumentCount)
@@ -173,8 +187,9 @@ function PLUGIN.Init()
 	CAKE.AdminCommand("warn", Admin_Warn, TEXT.WarnSomeone, true, true, false)
 	CAKE.AdminCommand("kick", Admin_Kick, TEXT.KickSomeone, true, true, false)
 	CAKE.AdminCommand("ban", Admin_Ban, TEXT.BanSomeone, true, true, false)
-	CAKE.AdminCommand("setvar", Admin_SetVar, TEXT.SetVar, true, true, true)
 	CAKE.AdminCommand("listvars", Admin_ListVars, TEXT.ListConVars, true, true, true)
+	CAKE.AdminCommand("setvar", Admin_SetVar, TEXT.SetVar, true, true, true)
+	CAKE.AdminCommand("quiet", Admin_Quiet, TEXT.Quiet, true, true, false)
 	CAKE.AdminCommand("setroles", Admin_SetRoles, TEXT.SetRoles, true, true, false)
 	CAKE.AdminCommand("adddoor", Admin_AddDoor, TEXT.AddDoorToDoorGroup, true, true, true)
 end
