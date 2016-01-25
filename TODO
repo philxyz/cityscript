@@ -33,7 +33,24 @@ philxyz 2015
 		rp_permaflag <flag> (sets this character to always be this flag on spawn)
 		
 
-- Prop buddy system
+- Prop Protection
+	- Prop Protection
+	Admin Tools
+		- | Clean up disconnected players' props after [n] minutes.
+		- | Remove props (All, specific players)
+		- | Remove entities (All, specific players)
+		- | Prop Restrictions
+			[ ] Only the items listed are allowed
+			[ ] None of the items listed are allowed
+	My Props
+		- | Delete all - sure?
+	Trusted Players
+
+- Spam protection
+	- No spawn within 150ms and 900ms of last spawn.
+	- 
+
+
 - Move data to SQL Backend (SQLite)
 - Impose a limit of 5 characters
 - Implement the ability to delete characters
