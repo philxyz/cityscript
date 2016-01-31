@@ -128,3 +128,8 @@ function UPP.CanTool(ply, tr, tool)
 	end
 end
 hook.Add("CanTool", "UPP.CanTool", UPP.CanTool)
+
+function UPP.CanDrive(ply, ent)
+	return false
+end
+hook.Add("CanDrive", "UPP.CanDrive", UPP.CanDrive)
