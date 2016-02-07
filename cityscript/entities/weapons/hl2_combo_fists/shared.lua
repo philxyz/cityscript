@@ -238,7 +238,7 @@ function SWEP:SecondaryAttack()
 				trace.Entity:TakeDamage(math.random(15, 30) + extradamage, self.Owner, self.Owner) -- Do more damage
 			end
 			self.Weapon:SendWeaponAnim( ACT_VM_SECONDARYATTACK ) -- Display a different animation
-			timer.Simple(0.07, function() self.Owner:ViewPunch(Angle(-20, 15, 0)) end)
+			timer.Simple(0.07, function() if self and self.Owner then self.Owner:ViewPunch(Angle(-20, 15, 0)) end end)
 			self.Weapon:EmitSound(self.ComboHit[math.random(#self.ComboHit)]) -- Emit a Combo sound
 			self:SetNWInt("Left", 0)
 			self:SetNWInt("Right", 0)
