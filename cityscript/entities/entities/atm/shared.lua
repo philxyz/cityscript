@@ -4,3 +4,4 @@ ENT.PrintName = TEXT.ATM
 ENT.Author = "philxyz"
 ENT.Spawnable = false
 ENT.AdminSpawnable = false
+ENT.NoRemoveOnCleanup = true

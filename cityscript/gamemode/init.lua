@@ -612,12 +612,6 @@ function GM:KeyPress(ply, key)
 	end
 end
 
-function PlayerSpawnedProp(ply, model, ent)
-	ent:SetNWString("creator", ply:Name())
-	ent:SetNWEntity("c_ent", ply)
-end
-hook.Add("PlayerSpawnedProp", "SetPropCreatorInfo", PlayerSpawnedProp)
-
 function PlayerSpawnedVehicle(ply, ent)
 	ent:SetNWString("creator", ply:Name())
 	ent:SetNWEntity("c_ent", ply)

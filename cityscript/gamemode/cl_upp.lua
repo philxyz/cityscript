@@ -31,6 +31,7 @@ end)
 
 hook.Add("AddToolMenuCategories", "UPP.AddToolCategory", function()
 	spawnmenu.AddToolCategory("upp", "uppCategory", "#upp.prop_protection")
+
 	spawnmenu.AddToolMenuOption("upp", "uppCategory", "uppAdminTools", "#upp.admin_tools", "", "", function(panel)
 		if not panel then return end
 
@@ -54,6 +55,20 @@ hook.Add("AddToolMenuCategories", "UPP.AddToolCategory", function()
 		end
 		panel:AddItem(cleanupSlider)
 
+		-- What to do when we receive a response to the bit that comes
+		-- after this.
+		net.Receive("upp.csv", function(len, sender)
+			local newVal = net.ReadInt(7)
+			print("Setting slider value to: " .. tostring(newVal))
+			cleanupSlider.LastVal = newVal
+			cleanupSlider:SetValue(newVal)
+		end)
+
+		-- Request the slider's value from the server. Response is handled
+		-- in the above code.
+		net.Start("upp.csr") -- Cleanup Slider Ready (for its value)
+		net.SendToServer()
+
 		local b = vgui.Create("DButton")
 		b:SetText("#upp.remove_props")
 		b.DoClick = function()
@@ -74,7 +89,6 @@ hook.Add("AddToolMenuCategories", "UPP.AddToolCategory", function()
 			end
 			bm:Open()
 		end
-		panel:AddItem(b)
 
 		local c = vgui.Create("DButton")
 		c:SetText("#upp.remove_ents")
@@ -87,7 +101,7 @@ hook.Add("AddToolMenuCategories", "UPP.AddToolCategory", function()
 			end):SetIcon("icon16/group_delete.png")
 			local usm = cm:AddSubMenu("#upp.for_player")
 			for _, v in pairs(players) do
-				usm:AddOption(v:SteamID() .. " " .. v:Name(), function()
+				usm:AddOption(v:Name() .. " - " .. v:SteamID(), function()
 					net.Start("upp.de")
 					net.WriteEntity(v)
 					net.SendToServer()
@@ -95,7 +109,15 @@ hook.Add("AddToolMenuCategories", "UPP.AddToolCategory", function()
 			end
 			cm:Open()
 		end
-		panel:AddItem(c)
+
+		local divider = vgui.Create("DHorizontalDivider")
+		divider:Dock(FILL)
+		divider:SetLeft(b)
+		divider:SetRight(c)
+		divider:SetDividerWidth(6)
+		divider:SetDragging(false)
+
+		panel:AddItem(divider)
 	end)
 	spawnmenu.AddToolMenuOption("upp", "uppCategory", "uppMyProps", "#upp.my_props", "", "", function(panel)
 		
@@ -114,5 +136,17 @@ net.Receive("upp.notify", function(len, sender)
 		GAMEMODE:AddNotify("#upp.ent_cleanup", NOTIFY_CLEANUP, 3)
 	elseif which == UPP.Messages.AllEntsCleanedUp then
 		GAMEMODE:AddNotify("#upp.ent_cleanup_all", NOTIFY_CLEANUP, 3)
+	elseif which == UPP.Messages.PropDisallowed then
+		GAMEMODE:AddNotify("#upp.prop_disallowed", NOTIFY_ERROR, 3)
+	elseif which == UPP.Messages.NoSENTsAllowed then
+		GAMEMODE:AddNotify("#upp.sents_disallowed", NOTIFY_ERROR, 3)
+	elseif which == UPP.Messages.NoRagdollsAllowed then
+		GAMEMODE:AddNotify("#upp.ragdolls_disallowed", NOTIFY_ERROR, 3)
+	elseif which == UPP.Messages.NoEffectsAllowed then
+		GAMEMODE:AddNotify("#upp.effects_disallowed", NOTIFY_ERROR, 3)
+	elseif which == UPP.Messages.NoSWEPsAllowed then
+		GAMEMODE:AddNotify("#upp.sweps_disallowed", NOTIFY_ERROR, 3)
+	elseif which == UPP.Messages.NoNPCsAllowed then
+		GAMEMODE:AddNotify("#upp.npcs_disallowed", NOTIFY_ERROR, 3)
 	end
 end)

@@ -104,6 +104,7 @@ local PlantBomb = function(EntTable)
 	bomb:SetNWInt("DetTime",EntTable.DetTime)
 	bomb:SetPos(hitpos)
 	bomb:SetOwner(EntTable.Owner)
+	bomb:SetNWEntity("c_ent", EntTable.Owner)
 	bomb:Spawn()
 
 end

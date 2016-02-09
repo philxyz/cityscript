@@ -3,6 +3,41 @@
 
 include("shared_upp.lua")
 
+UPP.GamemodeName = "CityScript" -- Change this if you're using UPP in a different gamemode. It keeps UPP's DB-backed settings separated per gamemode.
+
+function UPP.Initialize()
+	-- Create the database for UPP settings, if it doesn't already exist
+
+	UPP.PropTimeout = 5 -- Minutes
+
+	sql.Begin()
+	sql.Query("CREATE TABLE IF NOT EXISTS UPP_Settings('gamemode' TEXT NOT NULL, 'prop_timeout_mins' INTEGER NOT NULL, PRIMARY KEY('gamemode'));")
+	sql.Query("CREATE TABLE IF NOT EXISTS UPP_TrustedPlayers('gamemode' TEXT NOT NULL, 'PlayerSteamID64' INTEGER NOT NULL, 'TrustedPlayerSteamID64' INTEGER NOT NULL, PRIMARY KEY('gamemode', 'PlayerSteamID64'));")
+	sql.Commit()
+
+	local pto = sql.Query("SELECT prop_timeout_mins FROM UPP_Settings WHERE gamemode = " .. sql.SQLStr(UPP.GamemodeName) .. ";")
+
+	local err = sql.LastError()
+	if err ~= nil then	
+		print("SQL ERROR: " .. err)
+	else
+		if pto == nil then
+			-- If there is no record of how long the props should exist after a player disconnects, create one with the default value.
+			sql.Query("INSERT INTO UPP_Settings(gamemode, prop_timeout_mins) VALUES(" .. sql.SQLStr(UPP.GamemodeName) .. ", " .. tostring(UPP.PropTimeout) .. ");")
+		else
+			UPP.PropTimeout = tonumber(pto[1].prop_timeout_mins)
+		end
+	end
+end
+
+function UPP.UpdatePropTimeout(newValue)
+	sql.Query("UPDATE UPP_Settings SET prop_timeout_mins = " .. tostring(newValue) .. " WHERE gamemode = " .. sql.SQLStr(UPP.GamemodeName) .. ";")
+	if sql.LastError() == nil then
+		UPP.PropTimeout = newValue
+	end
+end
+
+-- Set the identifying info on items created by the player.
 function UPP.PlayerSpawnedProp(ply, model, ent)
         ent:SetNWString("creator", ply:Name())
         ent:SetNWEntity("c_ent", ply)
@@ -10,11 +45,163 @@ function UPP.PlayerSpawnedProp(ply, model, ent)
 end
 hook.Add("PlayerSpawnedProp", "UPP.PlayerSpawnedProp", UPP.PlayerSpawnedProp)
 
+function UPP.PlayerSpawnedSENT(ply, ent)
+	ent:SetNWString("creator", ply:Name())
+	ent:SetNWEntity("c_ent", ply)
+	ent:SetNWFloat("born", CurTime())
+end
+hook.Add("PlayerSpawnedSENT", "UPP.PlayerSpawnedSENT", UPP.PlayerSpawnedSENT)
+
+function UPP.PlayerSpawnedRagdoll(ply, model, ent)
+	ent:SetNWString("creator", ply:Name())
+	ent:SetNWEntity("c_ent", ply)
+	ent:SetNWFloat("born", CurTime())
+end
+hook.Add("PlayerSpawnedRagdoll", "UPP.PlayerSpawnedRagdoll", UPP.PlayerSpawnedRagdoll)
+
+function UPP.PlayerSpawnedNPC(ply, ent)
+	ent:SetNWString("creator", ply:Name())
+	ent:SetNWEntity("c_ent", ply)
+	ent:SetNWFloat("born", CurTime())
+end
+hook.Add("PlayerSpawnedNPC", "UPP.PlayerSpawnedNPC", UPP.PlayerSpawnedNPC)
+
 function UPP.PlayerSpawnedVehicle(ply, ent)
-        ent:SetNWString("creator", ply:Name())
-        ent:SetNWEntity("c_ent", ply)
+	ent:SetNWString("creator", ply:Name())
+	ent:SetNWEntity("c_ent", ply)
+	ent:SetNWFloat("born", CurTime())
 end
 hook.Add("PlayerSpawnedVehicle", "UPP.PlayerSpawnedVehicle", UPP.PlayerSpawnedVehicle)
+
+
+-- Permission to spawn things
+function UPP.PlayerSpawnObject(ply, model, skin)
+	-- Depending on allow list or deny list, allow or deny the object.
+
+	-- UPP.NotifyPlayers(UPP.Messages.PropDisallowed, ply)
+end
+hook.Add("PlayerSpawnObject", "UPP.PlayerSpawnObject", UPP.PlayerSpawnObject)
+
+function UPP.PlayerSpawnSENT(ply, ent)
+	if not ply:IsSuperAdmin() then
+		UPP.NotifyPlayers(UPP.Messages.NoSENTsAllowed, ply)
+		return false
+	end
+end
+hook.Add("PlayerSpawnSENT", "UPP.PlayerSpawnSENT", UPP.PlayerSpawnSENT)
+
+function UPP.PlayerSpawnRagdoll(ply, ent)
+	if not ply:IsSuperAdmin() then
+		UPP.NotifyPlayers(UPP.Messages.NoRagdollsAllowed, ply)
+		return false
+	end
+end
+hook.Add("PlayerSpawnRagdoll", "UPP.PlayerSpawnRagdoll", UPP.PlayerSpawnRagdoll)
+
+function UPP.PlayerSpawnEffect(ply, ent)
+	if not ply:IsSuperAdmin() then
+		UPP.NotifyPlayers(UPP.Messages.NoEffectsAllowed, ply)
+		return false
+	end
+end
+hook.Add("PlayerSpawnEffect", "UPP.PlayerSpawnEffect", UPP.PlayerSpawnEffect)
+
+function UPP.PlayerSpawnSWEP(ply, ent)
+	if not ply:IsSuperAdmin() then
+		UPP.NotifyPlayers(UPP.Messages.NoSWEPsAllowed, ply)
+		return false
+	end
+end
+hook.Add("PlayerSpawnSWEP", "UPP.PlayerSpawnSWEP", UPP.PlayerSpawnSWEP)
+
+function UPP.PlayerSpawnNPC(ply, ent)
+	if not ply:IsSuperAdmin() then
+		UPP.NotifyPlayers(UPP.Messages.NoNPCsAllowed, ply)
+		return false
+	end
+end
+hook.Add("PlayerSpawnNPC", "UPP.PlayerSpawnNPC", UPP.PlayerSpawnNPC)
+
+function UPP.PlayerSpawnVehicle(ply, ent)
+	if not ply:IsSuperAdmin() then
+		UPP.NotifyPlayers(UPP.Messages.NoVehiclesAllowed, ply)
+		return false
+	end
+end
+hook.Add("PlayerSpawnVehicle", "UPP.PlayerSpawnVehicle", UPP.PlayerSpawnVehicle)
+
+
+-- Props awaiting cleanup
+UPP.OrphanedProps = {}
+
+function UPP.PlayerDisconnected(ply)
+	-- Find all the player's props and queue them for deletion
+
+	local sid64 = ply:SteamID64()
+
+	if UPP.PropTimeout == 0 then
+		-- Delete props now.
+		for _, p in pairs(ents.GetAll()) do
+			if p:GetNWEntity("c_ent") == ply and
+				(
+					UPP.IsANormalProp(p) or
+					p:IsRagdoll() or
+					p:IsVehicle() or
+					p:IsNPC() or
+					(UPP.IsConsideredASENT(p) and not p.NoRemoveOnCleanup)
+				) then	
+					p:Remove()
+			end
+                end
+		print("UPP: Props deleted for player with SteamID64: " .. sid64)
+	else
+		-- Delete props later (unless a reconnect cancels the process)
+		UPP.OrphanedProps[sid64] = {}
+		for _, p in pairs(ents.GetAll()) do
+			if p:GetNWEntity("c_ent") == ply and
+				(
+					UPP.IsANormalProp(p) or
+					p:IsRagdoll() or
+					p:IsVehicle() or
+					p:IsNPC() or
+					(UPP.IsConsideredASENT(p) and not p.NoRemoveOnCleanup)
+				) then
+					table.insert(UPP.OrphanedProps[sid64], p)
+			end
+		end
+		-- Start a timer which, if the player is not present when it is up, will delete the props discovered above.
+		timer.Create("dct" .. sid64, UPP.PropTimeout * 60, 1, function()
+			for _, v in pairs(UPP.OrphanedProps[sid64]) do
+				if IsValid(v) then
+					v:Remove()
+				end
+			end
+			print("UPP: Props deleted for player with SteamID64: " .. sid64)
+			timer.Remove("dct" .. sid64)
+		end)
+	end
+end
+hook.Add("PlayerDisconnected", "UPP.PlayerDisconnected", UPP.PlayerDisconnected)
+
+function UPP.PlayerInitialSpawn(ply)
+	local sid64 = ply:SteamID64()
+
+	-- If there is a prop disconnect timer for this player, cancel it.
+	if timer.Exists("dct" .. sid64) then
+		timer.Remove("dct" .. sid64)
+
+		-- Reassign props from the last session to the reconnected player
+		for _, v in pairs(UPP.OrphanedProps[sid64]) do
+			v:SetNWString("creator", ply:Name())
+			v:SetNWEntity("c_ent", ply)
+		end
+
+		-- Remove props from the deletion queue.
+		UPP.OrphanedProps[sid64] = nil
+		print("UPP: Props were not deleted for player: " .. sid64 .. ".")
+	end
+end
+hook.Add("PlayerInitialSpawn", "UPP.PlayerInitialSpawn", UPP.PlayerInitialSpawn)
 
 function UPP.GravGunPunt(ply, ent)
 	--[[
@@ -53,6 +240,8 @@ function UPP.PhysgunPickup(ply, ent)
 
 	-- You can only interact with prop_physics with the physgun
 	if class ~= "prop_physics" then return false end
+
+	-- Note that ragdolls are not permitted to be picked up
 
 	local phys = ent:GetPhysicsObject()
 	if IsValid(phys) then
@@ -162,26 +351,30 @@ function UPP.IsANormalProp(ent)
 	if IsValid(ent) then
 		local class = ent:GetClass()
 
-		return class == "prop_physics" or class == "prop_ragdoll"
+		return class == "prop_physics"
 	else
 		return false
 	end
 end
 
--- Whether this is an entity (this changes depending on the gamemode that UPP is used with).
--- If you want to integrate UPP with your gamemode, update this to reflect the entities you have there.
-function UPP.IsConsideredAnEntity(ent)
-	local class = ent:GetClass()
-	return class == "spawned_shipment" or class == "token_bundle" or class == "toxic" or
-		class == "item_prop" or class == "sent_nuke_part" or class == "storage_box" or
-		class == "token_printer"
+-- Whether this is a SENT
+function UPP.IsConsideredASENT(ent)
+	return ent.Initialize ~= nil
 end
+
+util.AddNetworkString("upp.csr")
+util.AddNetworkString("upp.csv")
+net.Receive("upp.csr", function(length, sender)
+	net.Start("upp.csv")
+	net.WriteInt(UPP.PropTimeout, 7)
+	net.Send(sender)
+end)
 
 util.AddNetworkString("upp.cln_mins")
 net.Receive("upp.cln_mins", function(len, sender)
 	local mins = net.ReadInt(7)
 	if sender:IsAdmin() then
-		print("Value changed to: " .. tostring(mins))
+		UPP.UpdatePropTimeout(mins)
 	end
 end)
 
@@ -192,7 +385,7 @@ net.Receive("upp.dp", function(len, sender)
 
 	if sender:IsAdmin() then
 		for _, p in pairs(ents.GetAll()) do
-			if p:GetNWEntity("c_ent") == who and UPP.IsANormalProp(p) then
+			if p:GetNWEntity("c_ent") == who and (UPP.IsANormalProp(p) or p:IsRagdoll() or p:IsVehicle() or p:IsNPC()) then
 				p:Remove()
 			end
 		end
@@ -205,7 +398,7 @@ util.AddNetworkString("upp.dap")
 net.Receive("upp.dap", function(len, sender)
 	if sender:IsAdmin() then
 		for _, p in pairs(ents.GetAll()) do
-			if UPP.IsANormalProp(p) then
+			if UPP.IsANormalProp(p) or p:IsRagdoll() or p:IsVehicle() or p:IsNPC() then
 				p:Remove()
 			end
 		end
@@ -220,7 +413,7 @@ net.Receive("upp.de", function(len, sender)
 
 	if sender:IsAdmin() then
 		for _, p in pairs(ents.GetAll()) do
-			if p:GetNWEntity("c_ent") == who and UPP.IsConsideredAnEntity(p) then
+			if p:GetNWEntity("c_ent") == who and UPP.IsConsideredASENT(p) and not p.NoRemoveOnCleanup then
 				p:Remove()
 			end
 		end
@@ -233,10 +426,12 @@ util.AddNetworkString("upp.dae")
 net.Receive("upp.dae", function(len, sender)
 	if sender:IsAdmin() then
 		for _, p in pairs(ents.GetAll()) do
-			if UPP.IsConsideredAnEntity(p) then
+			if UPP.IsConsideredASENT(p) and not p.NoRemoveOnCleanup then
 				p:Remove()
 			end
 		end
 		UPP.NotifyPlayers(UPP.Messages.AllEntsCleanedUp)
 	end
 end)
+
+UPP.Initialize()

@@ -33,7 +33,10 @@ function DecayCorpses()
 	if ct >= CorpseDecayTimer + 1 then
 		local numdolls = #DecayingRagdolls
 		for i=numdolls, 1, -1 do
-			if (ct - DecayingRagdolls[i].CreatedAt) >= 60 then
+			-- If this ragdoll has already been removed then don't do anything with it
+			if not IsValid(DecayingRagdolls[i]) then
+				table.remove(DecayingRagdolls, i)
+			elseif (ct - DecayingRagdolls[i].CreatedAt) >= 60 then
 				if DecayingRagdolls[i].RotStage == 5 then
 					DecayingRagdolls[i]:Remove()
 					table.remove(DecayingRagdolls, i)
@@ -46,6 +49,7 @@ function DecayCorpses()
 
 					DecayingRagdolls[i] = ents.Create("prop_ragdoll")
 					DecayingRagdolls[i].CreatedAt = CurTime()
+					DecayingRagdolls[i]:SetNWEntity("c_ent", ply)
 					DecayingRagdolls[i].RotStage = stage + 1
 					DecayingRagdolls[i]:SetModel(DecayModelProgression[DecayingRagdolls[i].RotStage])
 					DecayingRagdolls[i]:SetPos(oldPos)
@@ -71,6 +75,7 @@ function CAKE.DeathMode(ply)
 	
 	local rag = ents.Create("prop_ragdoll")
 	rag.CreatedAt = CurTime()
+	rag:SetNWEntity("c_ent", ply)
 	rag.RotStage = 0
 	rag:SetModel(mdl)
 	rag:SetPos(ply:GetPos())

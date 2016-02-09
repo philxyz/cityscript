@@ -80,6 +80,8 @@ function ENT:CreateMoneybag()
 	moneybag:SetPos(Vector(MoneyPos.x + 15, MoneyPos.y, MoneyPos.z + 15))
 	moneybag:Spawn()
 	moneybag:Setamount(250)
+	-- Note: Spawned money doesn't have an owner so we don't set one.
+	-- Money sents are removed when admin removes all SENTs
 
 	self.dt.sparking = false
 	timer.Simple(math.random(40, 350), function() self:PrintMore() end) -- Print more cash in 40 to 350 seconds

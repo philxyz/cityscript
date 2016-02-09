@@ -9,6 +9,7 @@ local GoBoom = function(ent, fragments)
 
 	local nuke = ents.Create("sent_nuke")
 	nuke:SetPos( ent:GetPos() )
+	nuke:SetNWEntity("c_ent", ent)
 	nuke:SetOwner(ent)
 	nuke:Spawn()
 	nuke:Activate()
