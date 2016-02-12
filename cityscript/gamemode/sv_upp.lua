@@ -37,11 +37,40 @@ function UPP.UpdatePropTimeout(newValue)
 	end
 end
 
+UPP.LastItemSpawned = {}
+
+function UPP.SpamCheck(ply)
+	local uid = ply:UserID()
+
+	if UPP.LastItemSpawned[uid] == nil then
+		-- An item was spawned, log when it happened
+		UPP.LastItemSpawned[uid] = {}
+		UPP.LastItemSpawned[uid].When = CurTime()
+		UPP.LastItemSpawned[uid].Count = 0 -- How many items were spawned within too-short an interval.
+	else
+		local now = CurTime()
+		local diff = now - UPP.LastItemSpawned[uid].When
+		if diff >= 0.15 and diff < 0.85 then
+			if UPP.LastItemSpawned[uid].Count >= 3 then
+				ply:Kick("Prop spam.")
+			else
+				UPP.LastItemSpawned[uid].Count = UPP.LastItemSpawned[uid].Count + 1
+			end
+		else
+			UPP.LastItemSpawned[uid].Count = 0
+		end
+
+		UPP.LastItemSpawned[uid].When = CurTime()
+	end
+end
+
 -- Set the identifying info on items created by the player.
 function UPP.PlayerSpawnedProp(ply, model, ent)
         ent:SetNWString("creator", ply:Name())
         ent:SetNWEntity("c_ent", ply)
 	ent:SetNWFloat("born", CurTime())
+
+	UPP.SpamCheck(ply)
 end
 hook.Add("PlayerSpawnedProp", "UPP.PlayerSpawnedProp", UPP.PlayerSpawnedProp)
 
