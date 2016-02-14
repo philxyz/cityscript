@@ -30,6 +30,22 @@ function UPP.Initialize()
 	end
 end
 
+-- Property restriction
+function UPP.BlockProperties(ply, property, ent)
+	print(property)
+	if not ply:IsAdmin() then
+		if property == "remover" or
+			property == "persist" or
+			property == "keepupright" or
+			property == "ignite" or
+			property == "extinguish" or
+			property == "drive" or
+			property == "gravity" or
+			property == "collision" then return false end
+	end
+end
+hook.Add("CanProperty", "UPP.BlockProperties", UPP.BlockProperties)
+
 function UPP.UpdatePropTimeout(newValue)
 	sql.Query("UPDATE UPP_Settings SET prop_timeout_mins = " .. tostring(newValue) .. " WHERE gamemode = " .. sql.SQLStr(UPP.GamemodeName) .. ";")
 	if sql.LastError() == nil then
