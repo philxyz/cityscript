@@ -18,7 +18,7 @@ function UPP.Initialize()
 	local pto = sql.Query("SELECT prop_timeout_mins FROM UPP_Settings WHERE gamemode = " .. sql.SQLStr(UPP.GamemodeName) .. ";")
 
 	local err = sql.LastError()
-	if err ~= nil then	
+	if err ~= nil then
 		print("SQL ERROR: " .. err)
 	else
 		if pto == nil then
@@ -193,7 +193,7 @@ function UPP.PlayerDisconnected(ply)
 					p:IsVehicle() or
 					p:IsNPC() or
 					(UPP.IsConsideredASENT(p) and not p.NoRemoveOnCleanup)
-				) then	
+				) then
 					p:Remove()
 			end
                 end
@@ -420,6 +420,17 @@ net.Receive("upp.cln_mins", function(len, sender)
 	if sender:IsAdmin() then
 		UPP.UpdatePropTimeout(mins)
 	end
+end)
+
+-- Remove my props
+util.AddNetworkString("upp.rmp")
+net.Receive("upp.rmp", function(len, sender)
+	for _, p in pairs(ents.GetAll()) do
+		if p:GetNWEntity("c_ent") == sender and (UPP.IsANormalProp(p) or p:IsRagdoll() or p:IsVehicle() or p:IsNPC()) then
+			p:Remove()
+		end
+	end
+	UPP.NotifyPlayers(UPP.Messages.YourPropsCleanedUpByYou, sender)
 end)
 
 -- Delete Props (for specific player)

@@ -3,14 +3,15 @@
 UPP = {}
 UPP.Messages = {
 	YourPropsCleanedUp = 1,
-	AllPropsCleanedUp = 2,
-	YourEntsCleanedUp = 3,
-	AllEntsCleanedUp = 4,
-	PropDisallowed = 5,
-	NoSENTsAllowed = 6,
-	NoRagdollsAllowed = 7,
-	NoEffectsAllowed = 8,
-	NoSWEPsAllowed = 9,
-	NoNPCsAllowed = 10,
-	NoVehiclesAllowed = 11
+	YourPropsCleanedUpByYou = 2,
+	AllPropsCleanedUp = 3,
+	YourEntsCleanedUp = 4,
+	AllEntsCleanedUp = 5,
+	PropDisallowed = 6,
+	NoSENTsAllowed = 7,
+	NoRagdollsAllowed = 8,
+	NoEffectsAllowed = 9,
+	NoSWEPsAllowed = 10,
+	NoNPCsAllowed = 11,
+	NoVehiclesAllowed = 12
 }

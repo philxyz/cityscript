@@ -120,7 +120,18 @@ hook.Add("AddToolMenuCategories", "UPP.AddToolCategory", function()
 		panel:AddItem(divider)
 	end)
 	spawnmenu.AddToolMenuOption("upp", "uppCategory", "uppMyProps", "#upp.my_props", "", "", function(panel)
-		
+		if not panel then return end
+
+		panel:ClearControls()
+
+		local clearProps = vgui.Create("DButton")
+		clearProps:SetText("#upp.remove_my_props")
+		clearProps.DoClick = function()
+			net.Start("upp.rmp")
+			net.SendToServer()
+		end
+
+		panel:AddItem(clearProps)
 	end)
 	spawnmenu.AddToolMenuOption("upp", "uppCategory", "uppTrustedPlayers", "#upp.trusted_players", "", "", function() end)
 end)
@@ -130,6 +141,8 @@ net.Receive("upp.notify", function(len, sender)
 
 	if which == UPP.Messages.YourPropsCleanedUp then
 		GAMEMODE:AddNotify("#upp.prop_cleanup", NOTIFY_CLEANUP, 3)
+	elseif which == UPP.Messages.YourPropsCleanedUpByYou then
+		GAMEMODE:AddNotify("#upp.prop_cleanup_you", NOTIFY_CLEANUP, 3)
 	elseif which == UPP.Messages.AllPropsCleanedUp then
 		GAMEMODE:AddNotify("#upp.prop_cleanup_all", NOTIFY_CLEANUP, 3)
 	elseif which == UPP.Messages.YourEntsCleanedUp then
