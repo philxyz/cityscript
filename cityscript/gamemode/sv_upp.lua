@@ -32,7 +32,6 @@ end
 
 -- Property restriction
 function UPP.BlockProperties(ply, property, ent)
-	print(property)
 	if not ply:IsAdmin() then
 		if property == "remover" or
 			property == "persist" or
