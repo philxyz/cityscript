@@ -12,7 +12,7 @@ function UPP.Initialize()
 
 	sql.Begin()
 	sql.Query("CREATE TABLE IF NOT EXISTS UPP_Settings('gamemode' TEXT NOT NULL, 'prop_timeout_mins' INTEGER NOT NULL, PRIMARY KEY('gamemode'));")
-	sql.Query("CREATE TABLE IF NOT EXISTS UPP_TrustedPlayers('gamemode' TEXT NOT NULL, 'PlayerSteamID64' INTEGER NOT NULL, 'TrustedPlayerSteamID64' INTEGER NOT NULL, PRIMARY KEY('gamemode', 'PlayerSteamID64'));")
+	sql.Query("CREATE TABLE IF NOT EXISTS UPP_TrustedPlayers('gamemode' TEXT NOT NULL, 'PlayerSteamID64' INTEGER NOT NULL, 'TrustedPlayerSteamID64' INTEGER NOT NULL, 'TrustedPlayerOriginalName' TEXT NOT NULL, PRIMARY KEY('gamemode', 'PlayerSteamID64', 'TrustedPlayerSteamID64'));")
 	sql.Commit()
 
 	local pto = sql.Query("SELECT prop_timeout_mins FROM UPP_Settings WHERE gamemode = " .. sql.SQLStr(UPP.GamemodeName) .. ";")
@@ -330,7 +330,6 @@ end
 hook.Add("PlayerUse", "UPP.PlayerUse", UPP.PlayerUse)
 
 function UPP.OnPhysgunReload(physgun, ply)
-	print("OnPhysgunReloaded called")
 	if ply:IsAdmin() then return true end
 
 	local tr = ply:GetEyeTrace()
@@ -413,6 +412,57 @@ net.Receive("upp.csr", function(length, sender)
 	net.WriteInt(UPP.PropTimeout, 7)
 	net.Send(sender)
 end)
+
+util.AddNetworkString("upp.atp")
+function UPP.SendTrustedPlayerToClient(steamID64, originalName, client)
+	net.Start("upp.atp")
+	net.WriteString(steamID64)
+	net.WriteString(originalName)
+	net.Send(client)
+end
+
+util.AddNetworkString("upp.tpr")
+util.AddNetworkString("upp.tprr") -- Response
+net.Receive("upp.tpr", function(len, sender)
+	-- Get the list of trusted players for the sender mentioned
+	local pto = sql.Query("SELECT TrustedPlayerSteamID64, TrustedPlayerOriginalName FROM UPP_TrustedPlayers WHERE gamemode = " .. sql.SQLStr(UPP.GamemodeName) .. " AND PlayerSteamID64 = " .. sql.SQLStr(sender:SteamID64()) .. ";")
+
+	local err = sql.LastError()
+	if err ~= nil then
+		print("SQL ERROR in upp.tpr net hook: " .. err)
+	else
+		if pto ~= nil then
+			for _, row in pairs(pto) do
+				UPP.SendTrustedPlayerToClient(row.TrustedPlayerSteamID64, row.TrustedPlayerOriginalName, sender)
+			end
+		end
+	end
+end)
+
+util.AddNetworkString("upp.ntp") -- New trusted player
+net.Receive("upp.ntp", function(len, sender)
+	local who = net.ReadEntity()
+	local steamID64 = who:SteamID64()
+	local originalName = who:Name()
+
+	local check = sql.Query("SELECT 1 FROM UPP_TrustedPlayers WHERE TrustedPlayerSteamID64 = " .. sql.SQLStr(steamID64) .. " AND PlayerSteamID64 = " .. sql.SQLStr(sender:SteamID64()) .. " AND gamemode = " .. sql.SQLStr(UPP.GamemodeName) .. ";")
+	local err = sql.LastError()
+	if err ~= nil then
+		print("SQL ERROR in upp.ntp net hook: " .. err)
+	else
+		if check == nil then
+			sql.Query("INSERT INTO UPP_TrustedPlayers(TrustedPlayerSteamID64, TrustedPlayerOriginalName, PlayerSteamID64, gamemode) VALUES(" .. sql.SQLStr(steamID64) .. ", " .. sql.SQLStr(originalName) .. ", " .. sql.SQLStr(sender:SteamID64()) .. ", " .. sql.SQLStr(UPP.GamemodeName) .. ");")
+			err = sql.LastError()
+			if err ~= nil then
+				print("SQL ERROR in upp.ntp net hook: " .. err)
+			else
+				-- Update the player's UI.
+				UPP.SendTrustedPlayerToClient(steamID64, originalName, sender)
+			end
+		end
+	end
+end)
+
 
 util.AddNetworkString("upp.cln_mins")
 net.Receive("upp.cln_mins", function(len, sender)

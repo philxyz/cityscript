@@ -59,7 +59,6 @@ hook.Add("AddToolMenuCategories", "UPP.AddToolCategory", function()
 		-- after this.
 		net.Receive("upp.csv", function(len, sender)
 			local newVal = net.ReadInt(7)
-			print("Setting slider value to: " .. tostring(newVal))
 			cleanupSlider.LastVal = newVal
 			cleanupSlider:SetValue(newVal)
 		end)
@@ -119,6 +118,7 @@ hook.Add("AddToolMenuCategories", "UPP.AddToolCategory", function()
 
 		panel:AddItem(divider)
 	end)
+
 	spawnmenu.AddToolMenuOption("upp", "uppCategory", "uppMyProps", "#upp.my_props", "", "", function(panel)
 		if not panel then return end
 
@@ -133,7 +133,60 @@ hook.Add("AddToolMenuCategories", "UPP.AddToolCategory", function()
 
 		panel:AddItem(clearProps)
 	end)
-	spawnmenu.AddToolMenuOption("upp", "uppCategory", "uppTrustedPlayers", "#upp.trusted_players", "", "", function() end)
+
+	spawnmenu.AddToolMenuOption("upp", "uppCategory", "uppTrustedPlayers", "#upp.trusted_players", "", "", function(panel)
+		if not panel then return end
+
+		panel:ClearControls()
+
+		if UPP.TrustedPlayersPanel == nil then
+			UPP.TrustedPlayersPanel = vgui.Create("DListView")
+			UPP.TrustedPlayersPanel:SetMultiSelect(false)
+			UPP.TrustedPlayersPanel:AddColumn("#upp.name_now")
+			UPP.TrustedPlayersPanel:AddColumn("#upp.name_when_added")
+			UPP.TrustedPlayersPanel:AddColumn("#upp.s64id")
+			UPP.TrustedPlayersPanel:SetHeight(400)
+
+			panel:AddItem(UPP.TrustedPlayersPanel)
+
+			-- Ready to receive the list of trusted players.
+			net.Start("upp.tpr")
+			net.SendToServer()
+
+			local addBtn = vgui.Create("DButton")
+			addBtn:SetText("#upp.add_trusted")
+			addBtn.DoClick = function()
+				-- Get a list of players.
+				local players = player.GetAll()
+				local bm = vgui.Create("DMenu")
+				for _, v in pairs(players) do
+					bm:AddOption(v:Name(), function()
+						net.Start("upp.ntp")
+						net.WriteEntity(v)
+						net.SendToServer()
+					end):SetIcon("icon16/user_add.png")
+				end
+				bm:Open()
+			end
+			panel:AddItem(addBtn)
+
+		end
+	end)
+end)
+
+-- Add trusted player
+net.Receive("upp.atp", function(len, sender)
+	local steamID64 = net.ReadString()
+	local originalName = net.ReadString() -- What the player was called when you added them.
+
+	if UPP.TrustedPlayersPanel ~= nil then
+		steamworks.RequestPlayerInfo(steamID64)
+		timer.Simple(2,
+			function()
+				local name = steamworks.GetPlayerName(steamID64)
+				UPP.TrustedPlayersPanel:AddLine(name, originalName, steamID64)
+			end)
+	end
 end)
 
 net.Receive("upp.notify", function(len, sender)
