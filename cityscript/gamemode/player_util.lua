@@ -257,8 +257,6 @@ function meta:RefreshBusiness()
 		end
 	end
 
-	print("About to send " .. tostring(amt) .. " items")
-	
 	net.Start("Cu")
 	net.WriteInt(amt, 32)
 	for k, v in pairs(CAKE.ItemData) do
