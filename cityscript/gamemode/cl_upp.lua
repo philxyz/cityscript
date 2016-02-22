@@ -139,6 +139,9 @@ hook.Add("AddToolMenuCategories", "UPP.AddToolCategory", function()
 
 		panel:ClearControls()
 
+		local removeBtn = vgui.Create("DButton")
+		removeBtn:SetVisible(false)
+
 		if UPP.TrustedPlayersPanel == nil then
 			UPP.TrustedPlayersPanel = vgui.Create("DListView")
 			UPP.TrustedPlayersPanel:SetMultiSelect(false)
@@ -146,6 +149,10 @@ hook.Add("AddToolMenuCategories", "UPP.AddToolCategory", function()
 			UPP.TrustedPlayersPanel:AddColumn("#upp.name_when_added")
 			UPP.TrustedPlayersPanel:AddColumn("#upp.s64id")
 			UPP.TrustedPlayersPanel:SetHeight(400)
+			UPP.TrustedPlayersPanel.OnRowSelected = function(me, idx, row)
+				UPP.RemoveTrustedSteamID64 = row.steamID64
+				removeBtn:SetVisible(true)
+			end
 
 			panel:AddItem(UPP.TrustedPlayersPanel)
 
@@ -160,16 +167,35 @@ hook.Add("AddToolMenuCategories", "UPP.AddToolCategory", function()
 				local players = player.GetAll()
 				local bm = vgui.Create("DMenu")
 				for _, v in pairs(players) do
-					bm:AddOption(v:Name(), function()
-						net.Start("upp.ntp")
-						net.WriteEntity(v)
-						net.SendToServer()
-					end):SetIcon("icon16/user_add.png")
+					if v ~= LocalPlayer() then
+						bm:AddOption(v:Name(), function()
+							net.Start("upp.ntp")
+							net.WriteEntity(v)
+							net.SendToServer()
+						end):SetIcon("icon16/user_add.png")
+					end
 				end
 				bm:Open()
 			end
-			panel:AddItem(addBtn)
 
+			removeBtn:SetText("#upp.remove_selected")
+			removeBtn.DoClick = function()
+				if UPP.RemoveTrustedSteamID64 ~= nil then
+					net.Start("upp.rtp")
+					net.WriteString(UPP.RemoveTrustedSteamID64)
+					net.SendToServer()
+					removeBtn:SetVisible(false)
+				end
+			end
+
+			local divider = vgui.Create("DHorizontalDivider")
+			divider:Dock(FILL)
+			divider:SetLeft(addBtn)
+			divider:SetRight(removeBtn)
+			divider:SetDividerWidth(6)
+			divider:SetDragging(false)
+
+			panel:AddItem(divider)
 		end
 	end)
 end)
@@ -180,12 +206,37 @@ net.Receive("upp.atp", function(len, sender)
 	local originalName = net.ReadString() -- What the player was called when you added them.
 
 	if UPP.TrustedPlayersPanel ~= nil then
-		steamworks.RequestPlayerInfo(steamID64)
-		timer.Simple(2,
-			function()
+		local lines = UPP.TrustedPlayersPanel:GetLines()
+
+		local found = false
+		for _, line in pairs(lines) do
+			if line:GetValue(3) == steamID64 then
+				found = true
+				break
+			end
+		end
+
+		if not found then
+			steamworks.RequestPlayerInfo(steamID64)
+			timer.Simple(2, function()
 				local name = steamworks.GetPlayerName(steamID64)
-				UPP.TrustedPlayersPanel:AddLine(name, originalName, steamID64)
+				local line = UPP.TrustedPlayersPanel:AddLine(name, originalName, steamID64)
+				line.steamID64 = steamID64
 			end)
+		end
+	end
+end)
+
+-- Remove trusted player from client
+net.Receive("upp.rtc", function(len, sender)
+	local steamID64 = net.ReadString()
+	local lines = UPP.TrustedPlayersPanel:GetLines()
+
+	for n, l in ipairs(lines) do
+		if l:GetValue(3) == steamID64 then
+			UPP.TrustedPlayersPanel:RemoveLine(n)
+			break
+		end
 	end
 end)
 
@@ -214,5 +265,7 @@ net.Receive("upp.notify", function(len, sender)
 		GAMEMODE:AddNotify("#upp.sweps_disallowed", NOTIFY_ERROR, 3)
 	elseif which == UPP.Messages.NoNPCsAllowed then
 		GAMEMODE:AddNotify("#upp.npcs_disallowed", NOTIFY_ERROR, 3)
+	elseif which == UPP.Messages.PlayerAlreadyTrusted then
+		GAMEMODE:AddNotify("#upp.player_already_trusted", NOTIFY_ERROR, 3)
 	end
 end)

@@ -30,6 +30,24 @@ function UPP.Initialize()
 	end
 end
 
+-- Active players that can touch your stuff.
+UPP.TrustedPlayersCache = {}
+
+function UPP.PlayerTrustsPlayer(player, trustee)
+	for id, tbl in pairs(UPP.TrustedPlayersCache) do
+		if id == player:UserID() then
+			for i, p in ipairs(tbl) do
+				if p == trustee then
+					return true
+				end
+			end
+			break
+		end
+	end
+
+	return false
+end
+
 -- Property restriction
 function UPP.BlockProperties(ply, property, ent)
 	if not ply:IsAdmin() then
@@ -174,7 +192,6 @@ function UPP.PlayerSpawnVehicle(ply, ent)
 end
 hook.Add("PlayerSpawnVehicle", "UPP.PlayerSpawnVehicle", UPP.PlayerSpawnVehicle)
 
-
 -- Props awaiting cleanup
 UPP.OrphanedProps = {}
 
@@ -224,6 +241,18 @@ function UPP.PlayerDisconnected(ply)
 			timer.Remove("dct" .. sid64)
 		end)
 	end
+
+	-- Remove entry from the trusted-players cache.
+	UPP.TrustedPlayersCache[ply:UserID()] = nil
+
+	-- Remove yourself from any other players' trusted player caches
+	for uid, plylist in pairs(UPP.TrustedPlayersCache) do
+		for i = #plylist, 1, -1 do
+			if plylist[i] == ply then
+				table.remove(plylist, i)
+			end
+		end
+	end
 end
 hook.Add("PlayerDisconnected", "UPP.PlayerDisconnected", UPP.PlayerDisconnected)
 
@@ -243,6 +272,55 @@ function UPP.PlayerInitialSpawn(ply)
 		-- Remove props from the deletion queue.
 		UPP.OrphanedProps[sid64] = nil
 		print("UPP: Props were not deleted for player: " .. sid64 .. ".")
+	end
+
+
+	local uid = ply:UserID()
+	-- Add an entry to the trusted players cache for the newly joined player
+	UPP.TrustedPlayersCache[uid] = {}
+
+	-- Update the trusted player cache.
+
+	-- Cache all the players that are trusted by the joined player.
+	local pto = sql.Query("SELECT TrustedPlayerSteamID64, TrustedPlayerOriginalName FROM UPP_TrustedPlayers WHERE gamemode = " .. sql.SQLStr(UPP.GamemodeName) .. " AND PlayerSteamID64 = " .. sql.SQLStr(ply:SteamID64()) .. ";")
+
+	local err = sql.LastError()
+	if err ~= nil then
+		print("SQL ERROR in PlayerInitialSpawn finding trusted players: " .. err)
+	else
+		if pto ~= nil then
+			for _, row in pairs(pto) do
+				local person = player.GetBySteamID64(row.TrustedPlayerSteamID64)
+
+				-- If this player is playing right now
+				-- then add them to the cache of players trusted by the joined player
+				if IsValid(person) then
+					person.OriginalName = row.TrustedPlayerOriginalName
+					table.insert(UPP.TrustedPlayersCache[uid], person)
+				end
+			end
+		end
+	end
+
+	-- If the joined player is trusted by any of the other active players, the joined
+	-- player should be added to the trusted player cache tables of those players.
+	local res = sql.Query("SELECT PlayerSteamID64, TrustedPlayerOriginalName FROM UPP_TrustedPlayers WHERE gamemode = " .. sql.SQLStr(UPP.GamemodeName) .. " AND TrustedPlayerSteamID64 = " .. sql.SQLStr(sid64) .. ";")
+	local err2 = sql.LastError()
+	if err2 ~= nil then
+		print("SQL ERROR in PlayerInitialSpawn finding who player is trusted by " .. ply:Name())
+	else
+		if res ~= nil then
+			for _, row in pairs(res) do
+				local person = player.GetBySteamID64(row.PlayerSteamID64)
+				if IsValid(person) and not person == ply then
+					ply.OriginalName = row.TrustedPlayerOriginalName
+					table.insert(UPP.TrustedPlayersCache[person:UserID()], ply)
+
+					-- Update the player's UI.
+					UPP.SendTrustedPlayerToClient(sid64, ply.OriginalName, player)
+				end
+			end
+		end
 	end
 end
 hook.Add("PlayerInitialSpawn", "UPP.PlayerInitialSpawn", UPP.PlayerInitialSpawn)
@@ -292,10 +370,10 @@ function UPP.PhysgunPickup(ply, ent)
 		if not phys:IsMotionEnabled() then
 			local creator = ent:GetNWEntity("c_ent")
 			if IsValid(creator) and creator:IsPlayer() then
-				if creator:UserID() == ply:UserID() then
+				if (creator:UserID() == ply:UserID()) or UPP.PlayerTrustsPlayer(creator, ply) then
 					return true
 				else
-					-- Non-owners can't touch a prop for the first 3 seconds of its life
+					-- Non-owners and non-trusted players can't touch a prop for the first 3 seconds of its life
 					if ent:GetNWFloat("born") == 0 or CurTime() < ent:GetNWFloat("born") + 3 then
 						return false
 					else
@@ -338,7 +416,7 @@ function UPP.OnPhysgunReload(physgun, ply)
 		local creator = tr.Entity:GetNWEntity("creator")
 		local last_freezer = tr.Entity:GetNWEntity("lf_by")
 		if IsValid(creator) and creator:IsPlayer() then
-			return (creator:UserID() == ply:UserID()) or (IsValid(last_freezer) and last_freezer:UserID() == ply:UserID())
+			return (creator:UserID() == ply:UserID()) or UPP.PlayerTrustsPlayer(creator, ply) or (IsValid(last_freezer) and last_freezer:UserID() == ply:UserID())
 		end
 	end
 
@@ -356,7 +434,7 @@ function UPP.CanTool(ply, tr, tool)
 		if class == "prop_physics" then
 			-- Only prop creators can use toolgun on physics props
 			local creator = tr.Entity:GetNWEntity("c_ent")
-			return IsValid(creator) and creator:UserID() == ply:UserID()
+			return IsValid(creator) and ((creator:UserID() == ply:UserID()) or UPP.PlayerTrustsPlayer(creator, ply))
 		else
 			return false
 		end
@@ -421,25 +499,30 @@ function UPP.SendTrustedPlayerToClient(steamID64, originalName, client)
 	net.Send(client)
 end
 
+util.AddNetworkString("upp.rtc")
+function UPP.RemoveTrustedPlayerFromClient(steamID64, client)
+	net.Start("upp.rtc")
+	net.WriteString(steamID64)
+	net.Send(client)
+end
+
 util.AddNetworkString("upp.tpr")
 util.AddNetworkString("upp.tprr") -- Response
 net.Receive("upp.tpr", function(len, sender)
-	-- Get the list of trusted players for the sender mentioned
-	local pto = sql.Query("SELECT TrustedPlayerSteamID64, TrustedPlayerOriginalName FROM UPP_TrustedPlayers WHERE gamemode = " .. sql.SQLStr(UPP.GamemodeName) .. " AND PlayerSteamID64 = " .. sql.SQLStr(sender:SteamID64()) .. ";")
+	local myUid = sender:UserID()
 
-	local err = sql.LastError()
-	if err ~= nil then
-		print("SQL ERROR in upp.tpr net hook: " .. err)
-	else
-		if pto ~= nil then
-			for _, row in pairs(pto) do
-				UPP.SendTrustedPlayerToClient(row.TrustedPlayerSteamID64, row.TrustedPlayerOriginalName, sender)
+	for uid, playerlist in pairs(UPP.TrustedPlayersCache) do
+		if uid == myUid then
+			for _, ply in ipairs(playerlist) do
+				UPP.SendTrustedPlayerToClient(ply:SteamID64(), ply.OriginalName, sender)
 			end
 		end
+		break
 	end
 end)
 
-util.AddNetworkString("upp.ntp") -- New trusted player
+-- New trusted player
+util.AddNetworkString("upp.ntp")
 net.Receive("upp.ntp", function(len, sender)
 	local who = net.ReadEntity()
 	local steamID64 = who:SteamID64()
@@ -459,10 +542,33 @@ net.Receive("upp.ntp", function(len, sender)
 				-- Update the player's UI.
 				UPP.SendTrustedPlayerToClient(steamID64, originalName, sender)
 			end
+		else
+			UPP.NotifyPlayers(UPP.Messages.PlayerAlreadyTrusted, sender)
 		end
 	end
 end)
 
+-- Remove trusted player
+util.AddNetworkString("upp.rtp")
+net.Receive("upp.rtp", function(len, sender)
+	local steamID64 = net.ReadString()
+	sql.Query("DELETE FROM UPP_TrustedPlayers WHERE gamemode = " .. sql.SQLStr(UPP.GamemodeName) .. " AND TrustedPlayerSteamID64 = " .. sql.SQLStr(steamID64) .. " AND PlayerSteamID64 = " .. sql.SQLStr(sender:SteamID64()) .. ";")
+	local err = sql.LastError()
+	if err ~= nil then
+		print("SQL ERROR in upp.rtp: " .. err)
+	else
+		-- Remove cache entry for trusted player
+		local plys = UPP.TrustedPlayersCache[sender:UserID()]
+		for i = #plys, 1, -1 do
+			if plys[i]:SteamID64() == steamID64 then
+				table.remove(plys, i)
+				break
+			end
+		end
+
+		UPP.RemoveTrustedPlayerFromClient(steamID64, sender)
+	end
+end)
 
 util.AddNetworkString("upp.cln_mins")
 net.Receive("upp.cln_mins", function(len, sender)

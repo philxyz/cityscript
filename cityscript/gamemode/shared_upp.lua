@@ -13,5 +13,6 @@ UPP.Messages = {
 	NoEffectsAllowed = 9,
 	NoSWEPsAllowed = 10,
 	NoNPCsAllowed = 11,
-	NoVehiclesAllowed = 12
+	NoVehiclesAllowed = 12,
+	PlayerAlreadyTrusted = 13
 }

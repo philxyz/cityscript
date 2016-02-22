@@ -39,8 +39,6 @@ philxyz 2015
 			[ ] Only the items listed are allowed
 			[ ] None of the items listed are allowed
 
-	- Trusted Players
-
 - Add a filter for searching for entities
 
 - Move data to SQL Backend (SQLite)
