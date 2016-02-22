@@ -8,8 +8,8 @@
 -------------------------------
 
 function GM:PlayerSpawnSWEP(ply, class)
-	CAKE.CallTeamHook("PlayerSpawnSWEP", ply, class) -- Perhaps allow certain roles to use sweps, eh?
-	
+	CAKE.CallTeamHook("PlayerSpawnSWEP", ply, class) -- Perhaps allow certain roles to spawn with sweps, eh?
+
 	return ply:IsSuperAdmin()
 end
 
@@ -50,7 +50,7 @@ function GM:PlayerSpawnSENT(ply, class)
 	if ply:GetTable().Arrested then return false end
 
 	CAKE.CallTeamHook("PlayerSpawnSWEP", ply, class) -- Perhaps allow certain roles to use sents, eh?
-	
+
 	return ply:IsSuperAdmin()
 end
 
@@ -91,7 +91,7 @@ function GM:CanPlayerSuicide(ply)
 		ply:ChatPrint(TEXT.SuicideIsDisabled)
 		return false
 	end
-	
+
 	return true
 end
 
@@ -106,7 +106,7 @@ end)
 net.Receive("C7", function(_, ply)
 	local newrole = net.ReadString()
 	local RoleTo = {}
-	
+
 	-- Find a Team with a matching role
 	-- if there is one, set that to RoleTo
 	for k, v in pairs(CAKE.Teams) do
@@ -138,7 +138,7 @@ net.Receive("C7", function(_, ply)
 
 		return false
 	end
-	
+
 	if RoleTo.name == TEXT.CityMayor or
 		RoleTo.name == TEXT.CityPolice or
 		RoleTo.name == TEXT.BloodBrothersGangLeader or
@@ -186,37 +186,33 @@ net.Receive("C7", function(_, ply)
 		end
 	end
 
-	-- If the player is allowed to become a member of this team (or the team is a public one)
-	if (CAKE.GetCharField(ply, "roles") ~= nil and table.HasValue(CAKE.GetCharField(ply, "roles"), newrole)) or RoleTo.public then
-		local inv = CAKE.GetCharField(ply, "inventory")
+	local inv = CAKE.GetCharField(ply, "inventory")
 
-		-- If the player has items in their inventory, clear them out.
-		if #inv > 0 then
-			for k, v in pairs(inv) do
-				ply:TakeItem(v)
-			end
-
-			CAKE.Response(ply, TEXT.NewRoleBackpackEmptied)
+	-- If the player has items in their inventory, clear them out.
+	if #inv > 0 then
+		for k, v in pairs(inv) do
+			ply:TakeItem(v)
 		end
 
-		-- Set the player's team
-		ply:SetTeam(RoleTo.n)
+		CAKE.Response(ply, TEXT.NewRoleBackpackEmptied)
+	end
 
-		-- Reload their business tab
-		ply:RefreshBusiness()
-		ply.RoleChangeHealth = ply:Health()
-		ply:Spawn()
-		return
-	else
-		CAKE.Response(ply, TEXT.YouNotHaveThisRole)
-	end		
+	-- Set the player's team
+	ply:SetTeam(RoleTo.n)
+
+	-- Reload their business tab
+	ply:RefreshBusiness()
+	ply.RoleChangeHealth = ply:Health()
+	ply:Spawn()
+
+	return
 end)
 
 -- Lock door
 net.Receive("Cn", function(_, ply)
 	local entIndex = net.ReadInt(16)
 	local entity = ents.GetByIndex(entIndex)
-	
+
 	if CAKE.IsDoor(entity) then
 		if entity.owner == ply then
 			entity:Fire("lock", "", 0)
@@ -230,7 +226,7 @@ end)
 net.Receive("Cm", function(_, ply)
 	local entIndex = net.ReadInt(16)
 	local entity = ents.GetByIndex(entIndex)
-	
+
 	if CAKE.IsDoor(entity) then
 		if entity.owner == ply then
 			entity:Fire("unlock", "", 0)
@@ -243,11 +239,11 @@ end)
 -- Open door
 net.Receive("Cl", function(_, ply)
 	local entity = ply:GetEyeTrace().Entity
-	
+
 	-- If we are looking at a door and are in range of it...
 	if IsValid(entity) and CAKE.IsDoor(entity) and ply:GetPos():Distance(entity:GetPos()) < 200 then
 		local pos = entity:GetPos()
-		
+
 		for k, v in pairs(CAKE.Doors) do
 			-- If the position of one of the doors in CAKE.Doors matches the position of this door
 			if tonumber(v.x) == math.ceil(tonumber(pos.x)) and tonumber(v.y) == math.ceil(tonumber(pos.y)) and tonumber(v.z) == math.ceil(tonumber(pos.z)) then
@@ -272,16 +268,16 @@ net.Receive("Ck", function(_, ply)
 		CAKE.Response(ply, TEXT.DoorNotRentable)
 		return
 	end
-	
+
 	local pos = door:GetPos()
-	
+
 	for k, v in pairs(CAKE.Doors) do
 		if tonumber(v.x) == math.ceil(tonumber(pos.x)) and tonumber(v.y) == math.ceil(tonumber(pos.y)) and tonumber(v.z) == math.ceil(tonumber(pos.z)) then
 			CAKE.Response(ply, TEXT.DoorNotRentable)
 			return
 		end
 	end
-	
+
 	if CAKE.IsDoor(door) then
 		if door.owner == nil then
 			if tonumber(CAKE.GetCharField(ply, "money")) >= 50 then
@@ -289,10 +285,10 @@ net.Receive("Ck", function(_, ply)
 				CAKE.ChangeMoney(ply, -50)
 				door.owner = ply
 				CAKE.Response(ply, TEXT.DoorRented)
-				
+
 				local function Rental(ply, doornum)
 					local door = ents.GetByIndex(tonumber(doornum))
-					
+
 					if door.owner == ply then
 						if tonumber(CAKE.GetCharField(ply, "money")) >= 50 then
 							CAKE.ChangeMoney(ply, 0 - 50)
@@ -306,7 +302,7 @@ net.Receive("Ck", function(_, ply)
 						end
 					end
 				end
-				
+
 				timer.Simple(900, function() Rental(ply, entIndex) end)
 			end
 		elseif door.owner == ply then
@@ -336,7 +332,7 @@ end)
 
 CAKE.ChatCommand(TEXT.DropWeaponCommand, function(ply, args)
 	local wep = ply:GetActiveWeapon()
-	
+
 	if CAKE.ItemData[wep:GetClass()] == nil then
 		CAKE.Response(ply, TEXT.WeaponNotDroppable)
 		return
@@ -364,7 +360,7 @@ end)
 net.Receive("Cj", function(_, ply)
 	local itemEntIdx = net.ReadInt(16)
 	local item = ents.GetByIndex(itemEntIdx)
-	
+
 	if IsValid(item) and
 		(not CAKE.IsDoor(item) and not item:IsVehicle() and not item:IsPlayer() and not item:IsNPC()) and
 		item:GetPos():Distance(ply:GetShootPos()) < 100 then
@@ -391,7 +387,7 @@ end)
 net.Receive("Ci", function(_, ply)
 	local itemEntIdx = net.ReadInt(16)
 	local item = ents.GetByIndex(itemEntIdx)
-	
+
 	if IsValid(item) and (not CAKE.IsDoor(item) and not item:IsVehicle() and not item:IsPlayer() and not item:IsNPC()) and item.UseItem and item:GetPos():Distance(ply:GetShootPos()) < 100 then
 
 		-- Picking up an item should not cause it to give out free ammo...
