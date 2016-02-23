@@ -11,6 +11,11 @@ function Admin_AddDoor(ply, cmd, args)
 
 	if table.getn(args) < 1 then ply:PrintMessage(3, TEXT.SpecifyADoorGroup); return; end
 
+	if not tonumber(args[1]) then
+		print("Door group must be a number")
+		return
+	end
+
 	local pos = trent:GetPos()
 	local Door = {}
 
@@ -24,7 +29,7 @@ function Admin_AddDoor(ply, cmd, args)
 	CAKE.Response(ply, TEXT.DoorAdded)
 
 	local keys = util.TableToKeyValues(CAKE.Doors)
-	file.Write("CakeScript/MapData/" .. game.GetMap() .. ".txt", keys)
+	file.Write("cakescript/mapdata/" .. string.tolower(game.GetMap()) .. ".txt", keys)
 end
 
 -- rp_admin quiet "name" [1|0]

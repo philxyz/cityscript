@@ -114,15 +114,15 @@ function GM:Initialize() -- Initialize the gamemode
 	-- My reasoning for this certain order is due to the fact that plugins are meant to modify the gamemode sometimes.
 	-- Plugins need to be initialized before gamemode and schema so it can modify the way that the plugins and schema actually work.
 	-- AKA, hooks.
-	
+
 	CAKE.DayLog("script.txt", TEXT.PluginsInit)
 	CAKE.InitPlugins()
-	
+
 	CAKE.DayLog("script.txt", TEXT.SchemasInit)
 	CAKE.InitSchemas()
-	
+
 	CAKE.DayLog("script.txt", TEXT.GamemodeInit)
-	
+
 	-- game.ConsoleCommand( "exec cakevars.cfg\n" ) -- Put any configuration variables in cfg/cakevars.cfg, set it using rp_admin setvar varname value
 	-- DEPRECATED
 
@@ -134,7 +134,7 @@ function GM:Initialize() -- Initialize the gamemode
 
 	timer.Create("timesave", 120, 0, CAKE.SaveTime)
 	timer.Create("sendtime", 1, 0, CAKE.SendTime)
-	
+
 	-- SALAARIIEEESS?!?!?!?!?!?! :O
 	timer.Create("givemoney", CAKE.ConVars.SalaryInterval * 60, 0, function()
 		if CAKE.ConVars.SalaryEnabled == "1" then
@@ -146,17 +146,17 @@ function GM:Initialize() -- Initialize the gamemode
 					else
 						CAKE.Response(ply, TEXT.PayDayMissedBecauseArrested)
 					end
-					
+
 				end
-				
-			end 
-			
+
+			end
+
 		end
 
 	end)
-	
+
 	CAKE.CallHook("GamemodeInitialize")
-	
+
 	CAKE.Running = true
 end
 
@@ -164,7 +164,7 @@ end
 function GM:PlayerInitialSpawn(ply)
 	-- Call the hook before we start initializing the player
 	CAKE.CallHook("Player_Preload", ply)
-	
+
 	-- Send them valid models
 
 	local nValidCakeModels = #CAKE.ValidModels
@@ -174,7 +174,7 @@ function GM:PlayerInitialSpawn(ply)
 		net.WriteString(v)
 	end
 	net.Send(ply)
-	
+
 	-- Set some default variables
 	ply.LastHax = os.time()-20
 	ply.Ready = false
@@ -186,20 +186,20 @@ function GM:PlayerInitialSpawn(ply)
 
 	sessionid = sessionid + 1
 	ply.SID = sessionid
-	
+
 	-- Check if they are admins
 	if table.HasValue(SuperAdmins, ply:SteamID()) then ply:SetUserGroup("superadmin"); end
 	if table.HasValue(Admins, ply:SteamID()) then ply:SetUserGroup("admin"); end
-	
+
 	-- Send them all the teams
 	CAKE.InitTeams(ply)
-	
+
 	-- Load their data, or create a new datafile for them.
 	CAKE.LoadPlayerDataFile(ply)
 
 	-- Call the hook after we have finished initializing the player
 	CAKE.CallHook("Player_Postload", ply)
-	
+
 	self.BaseClass:PlayerInitialSpawn(ply)
 end
 
@@ -238,9 +238,9 @@ function GM:PlayerLoadout(ply)
 	CAKE.CallHook("PlayerLoadout", ply)
 
 	if ply:GetNWInt("charactercreate") ~= 1 then
-	
+
 		-- if(ply:IsAdmin() or ply:IsSuperAdmin()) then ply:Give("gmod_tool"); end
-		
+
 		if CAKE.Teams[ply:Team()] ~= nil then
 			for k, v in pairs(CAKE.Teams[ply:Team()].weapons) do
 				ply:Give(v)
@@ -249,7 +249,7 @@ function GM:PlayerLoadout(ply)
 
 		ply:Give("hands")
 		ply:Give("hl2_combo_fists")
-		
+
 		ply:SelectWeapon("hands")
 	end
 end
@@ -260,18 +260,18 @@ function GM:PlayerSpawn(ply)
 	end
 
 	ply:SetupHands()
-	
+
 	ply:StripWeapons()
 
 	self.BaseClass:PlayerSpawn(ply)
-	
+
 	GAMEMODE:SetPlayerSpeed(ply, CAKE.ConVars.WalkSpeed, CAKE.ConVars.RunSpeed)
-	
+
 	if ply:GetNWInt("deathmode") == 1 then
 		ply:SetNWInt("deathmode", 0)
 		ply:SetViewEntity(ply)
 	end
-	
+
 	if ply.RoleChangeHealth then
 		ply:SetHealth(ply.RoleChangeHealth)
 		ply.RoleChangeHealth = nil
@@ -291,7 +291,7 @@ function GM:PlayerSpawn(ply)
 		print("Placing player in at spawn #" .. tostring(selected))
 		ply:SetPos(CustomSpawnPos[selected])
 	end
-	
+
 	CAKE.CallHook("PlayerSpawn", ply)
 	CAKE.CallTeamHook("PlayerSpawn", ply) -- Change player speeds perhaps?
 end
@@ -318,7 +318,7 @@ function GM:PlayerSetModel(ply)
 		ply:SetModel("models/kleiner.mdl")
 		CAKE.CallHook("PlayerSetModel", ply, m)
 	end
-	
+
 	CAKE.CallTeamHook("PlayerSetModel", ply, m); -- Hrm. Looks like the teamhook will take priority over the regular hook.. PREPARE FOR HELLFIRE (puts on helmet)
 end
 
@@ -442,7 +442,7 @@ function GM:PlayerDeath(ply, weapon, killer)
 	ply:GetTable().DeathPos = ply:GetPos()
 
 	ply.awaitingmedic = true
-	
+
 	CAKE.DeathMode(ply)
 	CAKE.CallHook("PlayerDeath", ply)
 	CAKE.CallTeamHook("PlayerDeath", ply)
@@ -454,7 +454,7 @@ function GM:PlayerDeathThink(ply)
 	ply.deathtime = ply.deathtime or 0
 
 	if not ply.awaitingmedic then return true end
-	
+
 	-- if a second has passed
 	if CurTime() > ply.nextsecond then
 		if ply.deathtime < 55 then
@@ -476,7 +476,7 @@ end
 --function GM:DoPlayerDeath(ply, attacker, dmginfo)
 
 	-- We don't want kills, deaths, nor ragdolls being made. Kthx. -- O RLY? (philxyz)
-	
+
 --end
 
 function GM:PlayerUse(ply, entity)
