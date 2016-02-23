@@ -269,3 +269,78 @@ net.Receive("upp.notify", function(len, sender)
 		GAMEMODE:AddNotify("#upp.player_already_trusted", NOTIFY_ERROR, 3)
 	end
 end)
+
+-- Replace the Spawnlists tab of the Q menu with one that has UPP features.
+--[[
+local UPPSpawnlists = {}
+
+AccessorFunc(UPPSpawnlists, "m_pSelectedPanel", "SelectedPanel")
+function UPPSpawnlists:Init()
+	self:SetPaintBackground(false)
+
+	self.CategoryTable = {}
+
+	self.ContentNavBar = vgui.Create("ContentSidebar", self)
+	self.ContentNavBar:Dock(LEFT)
+	self.ContentNavBar:SetSize(190, 10)
+	self.ContentNavBar:DockMargin(0, 0, 4, 0)
+
+	self.HorizontalDivider = vgui.Create("DHorizontalDivider", self)
+	self.HorizontalDivider:Dock(FILL)
+	self.HorizontalDivider:SetLeftWidth(175)
+	self.HorizontalDivider:SetLeftMin(175)
+	self.HorizontalDivider:SetRightMin(450)
+
+	self.HorizontalDivider:SetLeft(self.ContentNavBar)
+end
+vgui.Register("UPPSpawnmenuContentPanel", UPPSpawnlists, "SpawnmenuContentPanel")
+]]
+hook.Add("PopulateContent2", "PropsToShow", function(pnlContent, tree, node)
+	-- If the player is a superadmin, allow real-time prop restriction.
+	local function AddRecursive(pnl, folder, path, wildcard)
+		local files, folders = file.Find(folder .. "*", path)
+
+		for k, v in pairs(files) do
+			if not string.EndsWith(v, ".mdl") then continue end
+
+			local cp = spawnmenu.GetContentType("model")
+			if cp then
+				cp(pnl, { model = folder .. v})
+			end
+		end
+
+		for k, v in pairs(folders) do
+			AddRecursive(pnl, folder .. v .. "/", path, wildcard)
+		end
+	end
+
+	local ViewPanel = vgui.Create("ContentContainer", pnlContent)
+	ViewPanel:SetVisible(false)
+
+	local MyNode = node:AddNode("#spawnmenu.category.addons", "icon16/folder_database.png")
+
+	for _, addon in SortedPairsByMemberValue(engine.GetAddons(), "title") do
+		if not addon.downloaded or not addon.mounted or addon.models <= 0 then continue end
+
+		local models = MyNode:AddNode(addon.title .. " (" .. addon.models .. ")", "icon16/bricks.png")
+		models.DoClick = function()
+			ViewPanel:Clear(true)
+			AddRecursive(ViewPanel, "models/", addon.title, "*.mdl")
+			pnlContent:SwitchPanel(ViewPanel)
+		end
+	end
+end)
+
+spawnmenu.AddCreationTab("#spawnmenu.content_tab2", function()
+	--local ctrl = vgui.Create("UPPSpawnmenuContentPanel")
+	local ctrl = vgui.Create("SpawnmenuContentPanel")
+	ctrl.OldSpawnlists = ctrl.ContentNavBar.Tree:AddNode("#spawnmenu.category.browse", "icon16/cog.png")
+
+	ctrl:EnableModify()
+	hook.Call("PopulatePropMenu", GAMEMODE)
+	ctrl:CallPopulateHook("PopulateContent2")
+	ctrl.OldSpawnlists:MoveToFront()
+	ctrl.OldSpawnlists:SetExpanded(true)
+
+	return ctrl
+end, "icon16/application_view_tile.png", -10, nil)
