@@ -270,50 +270,91 @@ net.Receive("upp.notify", function(len, sender)
 	end
 end)
 
--- Replace the Spawnlists tab of the Q menu with one that has UPP features.
---[[
-local UPPSpawnlists = {}
+-- Replace the Spawnlists tab of the Q menu with one that has UPP-specific features:
+local AddBrowseContentForGameProps2 = function(ViewPanel, node, name, path, pathid, pnlContent)
+	local models = node:AddFolder(name, path .. "models", pathid, false)
+	models:SetIcon(icon)
+	models.BrowseContentType = "models"
+	models.BrowseExtension = "*.mdl"
+	models.ContentType = "model"
+	models.ViewPanel = ViewPanel
+	models.OnNodeSelected = function(slf, node)
+		if ViewPanel and ViewPanel.CurrentNode and ViewPanel.CurrentNode == node then return end
 
-AccessorFunc(UPPSpawnlists, "m_pSelectedPanel", "SelectedPanel")
-function UPPSpawnlists:Init()
-	self:SetPaintBackground(false)
+		ViewPanel:Clear(true)
+		ViewPanel.CurrentNode = node
 
-	self.CategoryTable = {}
+		local Path = node:GetFolder()
+		local SearchString = Path .. "/*.mdl"
 
-	self.ContentNavBar = vgui.Create("ContentSidebar", self)
-	self.ContentNavBar:Dock(LEFT)
-	self.ContentNavBar:SetSize(190, 10)
-	self.ContentNavBar:DockMargin(0, 0, 4, 0)
-
-	self.HorizontalDivider = vgui.Create("DHorizontalDivider", self)
-	self.HorizontalDivider:Dock(FILL)
-	self.HorizontalDivider:SetLeftWidth(175)
-	self.HorizontalDivider:SetLeftMin(175)
-	self.HorizontalDivider:SetRightMin(450)
-
-	self.HorizontalDivider:SetLeft(self.ContentNavBar)
-end
-vgui.Register("UPPSpawnmenuContentPanel", UPPSpawnlists, "SpawnmenuContentPanel")
-]]
-hook.Add("PopulateContent2", "PropsToShow", function(pnlContent, tree, node)
-	-- If the player is a superadmin, allow real-time prop restriction.
-	local function AddRecursive(pnl, folder, path, wildcard)
-		local files, folders = file.Find(folder .. "*", path)
-
-		for k, v in pairs(files) do
-			if not string.EndsWith(v, ".mdl") then continue end
-
+		local Models = file.Find(SearchString, node:GetPathID())
+		for k, v in pairs(Models) do
 			local cp = spawnmenu.GetContentType("model")
 			if cp then
-				cp(pnl, { model = folder .. v})
+				local icn = cp(ViewPanel, { model = Path .. "/" .. v })
+				icn.OpenMenu = function(slf)
+					local menu = DermaMenu()
+					menu:AddOption("Who's laughing now?", function() end)
+					menu:Open()
+				end
 			end
 		end
 
-		for k, v in pairs(folders) do
-			AddRecursive(pnl, folder .. v .. "/", path, wildcard)
+		pnlContent:SwitchPanel(ViewPanel)
+		ViewPanel.CurrentNode = node
+	end
+end
+
+hook.Add("PopulateContent2", "GameProps2", function(pnlContent, tree, node)
+	local MyNode = node:AddNode("#spawnmenu.category.games", "icon16/folder_database.png")
+
+	local ViewPanel = vgui.Create("ContentContainer", pnlContent)
+	ViewPanel:SetVisible(false)
+
+	local games = engine.GetGames()
+	table.insert(games, {
+		title = "All",
+		folder = "GAME",
+		icon = "all",
+		mounted = true
+	})
+	table.insert(games, {
+		title = "Garry's Mod",
+		folder = "garrysmod",
+		mounted = true
+	})
+
+	for _, game in SortedPairsByMemberValue(games, "title") do
+		if not game.mounted then continue end
+
+		AddBrowseContentForGameProps2(ViewPanel, MyNode, game.title, "games/16/" .. (game.icon or game.folder) .. ".png", "", game.folder, pnlContent)
+	end
+end)
+
+local function AddRecursiveAddonProps2(pnl, folder, path, wildcard)
+	local files, folders = file.Find(folder .. "*", path)
+
+	for k, v in pairs(files) do
+		if not string.EndsWith(v, ".mdl") then continue end
+
+		local cp = spawnmenu.GetContentType("model")
+		if cp then
+			local icn = cp(pnl, { model = folder .. v})
+			icn.OpenMenu = function(slf)
+				local menu = DermaMenu()
+				menu:AddOption("Who's laughing now?", function() end)
+				menu:Open()
+			end
 		end
 	end
 
+	for k, v in pairs(folders) do
+		AddRecursiveAddonProps2(pnl, folder .. v .. "/", path, wildcard)
+	end
+end
+
+hook.Add("PopulateContent2", "AddonProps2", function(pnlContent, tree, node)
+	-- If the player is a superadmin, allow real-time prop restriction.
 	local ViewPanel = vgui.Create("ContentContainer", pnlContent)
 	ViewPanel:SetVisible(false)
 
@@ -325,9 +366,88 @@ hook.Add("PopulateContent2", "PropsToShow", function(pnlContent, tree, node)
 		local models = MyNode:AddNode(addon.title .. " (" .. addon.models .. ")", "icon16/bricks.png")
 		models.DoClick = function()
 			ViewPanel:Clear(true)
-			AddRecursive(ViewPanel, "models/", addon.title, "*.mdl")
+			AddRecursiveAddonProps2(ViewPanel, "models/", addon.title, "*.mdl")
 			pnlContent:SwitchPanel(ViewPanel)
 		end
+	end
+end)
+
+hook.Add("PopulateContent2", "AddSearchContent2", function(pnlContent, tree, node)
+	ContentPanel = pnlContent
+end)
+
+local SetupCustomNode = function(node, pnlContent, needsapp)
+	if needsapp and needsapp ~= "" then
+		node:SetVisible(IsMounted(needsapp))
+		node.NeedsApp = needsapp
+	end
+
+	node.OnModified = function()
+		hook.Run("SpawnlistContentChanged")
+	end
+
+	node.SetupCopy = function(self, copy)
+		SetupCustomNode(copy, pnlContent)
+		self:DoPopulate()
+
+		copy.PropPanel = self.PropPanel:Copy()
+		copy.PropPanel:SetVisible(false)
+
+		copy.DoPopulate = function() end
+	end
+
+	node.DoRightClick = function(self)
+		local menu = DermaMenu()
+		menu:AddOption("Edit", function() self:InternalDoClick(); hook.Run("OpenToolbox") end)
+		menu:AddOption("New Category", function() node:Remove(); hook.Run("SpawnlistContentChanged") end)
+		menu:AddOption("Delete", function() node:Remove(); hook.Run("SpawnlistContentChanged") end)
+
+		menu:Open()
+	end
+
+	node.DoPopulate = function(self)
+		if not self.PropPanel then
+			self.PropPanel = vgui.Create("ContentContainer", pnlContent)
+			self.PropPanel:SetVisible(false)
+			self.PropPanel:SetTriggerSpawnlistChange(true)
+		end
+	end
+
+	node.DoClick = function(self)
+		self:DoPopulate()
+		pnlContent:SwitchPanel(self.PropPanel)
+	end
+end
+
+local AddCustomizableNode = function(pnlContent, name, icon, parent, needsapp)
+	local node = parent:AddNode(name, icon)
+	SetupCustomNode(node, pnlContent, needsapp)
+
+	return node
+end
+
+hook.Add("PopulateContent2", "AddCustomContent2", function(pnlContent, tree, node)
+	local node = AddCustomizableNode(pnlContent, "#spawnmenu.category.your_spawnlists", "", tree)
+	node:SetDraggableName("CustomContent")
+	node.DoRightClick = function(self)
+		local menu = DermaMenu()
+		menu:AddOption("New Category", function() AddCustomizableNode(pnlContent, "New Category", "", node); node:SetExpanded(true); hook.Run("SpawnlistContentChanged") end)
+		menu:Open()
+	end
+	node.OnModified = function()
+		hook.Run("SpawnlistContentChanged")
+	end
+
+	AddPropsOfParent(pnlContent, node, 0)
+
+	node:SetExpanded(true)
+	node:MoveToBack()
+
+	CustomizableSpawnlistNode = node
+
+	local FirstNode = node:GetChildNode(0)
+	if IsValid(FirstNode) then
+		FirstNode:InternalDoClick()
 	end
 end)
 
