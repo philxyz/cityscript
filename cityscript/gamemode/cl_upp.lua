@@ -270,197 +270,93 @@ net.Receive("upp.notify", function(len, sender)
 	end
 end)
 
--- Replace the Spawnlists tab of the Q menu with one that has UPP-specific features:
-local AddBrowseContentForGameProps2 = function(ViewPanel, node, name, path, pathid, pnlContent)
-	local models = node:AddFolder(name, path .. "models", pathid, false)
-	models:SetIcon(icon)
-	models.BrowseContentType = "models"
-	models.BrowseExtension = "*.mdl"
-	models.ContentType = "model"
-	models.ViewPanel = ViewPanel
-	models.OnNodeSelected = function(slf, node)
-		if ViewPanel and ViewPanel.CurrentNode and ViewPanel.CurrentNode == node then return end
+spawnmenu.AddContentType("model", function(container, obj)
+	local icon = vgui.Create("SpawnIcon", container)
 
-		ViewPanel:Clear(true)
-		ViewPanel.CurrentNode = node
-
-		local Path = node:GetFolder()
-		local SearchString = Path .. "/*.mdl"
-
-		local Models = file.Find(SearchString, node:GetPathID())
-		for k, v in pairs(Models) do
-			local cp = spawnmenu.GetContentType("model")
-			if cp then
-				local icn = cp(ViewPanel, { model = Path .. "/" .. v })
-				icn.OpenMenu = function(slf)
-					local menu = DermaMenu()
-					menu:AddOption("Who's laughing now?", function() end)
-					menu:Open()
-				end
-			end
-		end
-
-		pnlContent:SwitchPanel(ViewPanel)
-		ViewPanel.CurrentNode = node
-	end
-end
-
-hook.Add("PopulateContent2", "GameProps2", function(pnlContent, tree, node)
-	local MyNode = node:AddNode("#spawnmenu.category.games", "icon16/folder_database.png")
-
-	local ViewPanel = vgui.Create("ContentContainer", pnlContent)
-	ViewPanel:SetVisible(false)
-
-	local games = engine.GetGames()
-	table.insert(games, {
-		title = "All",
-		folder = "GAME",
-		icon = "all",
-		mounted = true
-	})
-	table.insert(games, {
-		title = "Garry's Mod",
-		folder = "garrysmod",
-		mounted = true
-	})
-
-	for _, game in SortedPairsByMemberValue(games, "title") do
-		if not game.mounted then continue end
-
-		AddBrowseContentForGameProps2(ViewPanel, MyNode, game.title, "games/16/" .. (game.icon or game.folder) .. ".png", "", game.folder, pnlContent)
-	end
-end)
-
-local function AddRecursiveAddonProps2(pnl, folder, path, wildcard)
-	local files, folders = file.Find(folder .. "*", path)
-
-	for k, v in pairs(files) do
-		if not string.EndsWith(v, ".mdl") then continue end
-
-		local cp = spawnmenu.GetContentType("model")
-		if cp then
-			local icn = cp(pnl, { model = folder .. v})
-			icn.OpenMenu = function(slf)
-				local menu = DermaMenu()
-				menu:AddOption("Who's laughing now?", function() end)
-				menu:Open()
-			end
-		end
+	if obj.body then
+		obj.body = string.Trim(tostring(obj.body), "B")
 	end
 
-	for k, v in pairs(folders) do
-		AddRecursiveAddonProps2(pnl, folder .. v .. "/", path, wildcard)
-	end
-end
-
-hook.Add("PopulateContent2", "AddonProps2", function(pnlContent, tree, node)
-	-- If the player is a superadmin, allow real-time prop restriction.
-	local ViewPanel = vgui.Create("ContentContainer", pnlContent)
-	ViewPanel:SetVisible(false)
-
-	local MyNode = node:AddNode("#spawnmenu.category.addons", "icon16/folder_database.png")
-
-	for _, addon in SortedPairsByMemberValue(engine.GetAddons(), "title") do
-		if not addon.downloaded or not addon.mounted or addon.models <= 0 then continue end
-
-		local models = MyNode:AddNode(addon.title .. " (" .. addon.models .. ")", "icon16/bricks.png")
-		models.DoClick = function()
-			ViewPanel:Clear(true)
-			AddRecursiveAddonProps2(ViewPanel, "models/", addon.title, "*.mdl")
-			pnlContent:SwitchPanel(ViewPanel)
-		end
-	end
-end)
-
-hook.Add("PopulateContent2", "AddSearchContent2", function(pnlContent, tree, node)
-	ContentPanel = pnlContent
-end)
-
-local SetupCustomNode = function(node, pnlContent, needsapp)
-	if needsapp and needsapp ~= "" then
-		node:SetVisible(IsMounted(needsapp))
-		node.NeedsApp = needsapp
+	if obj.wide then
+		icon:SetWide(obj.wide)
 	end
 
-	node.OnModified = function()
-		hook.Run("SpawnlistContentChanged")
+	if obj.tall then
+		icon:SetTall(obj.tall)
 	end
 
-	node.SetupCopy = function(self, copy)
-		SetupCustomNode(copy, pnlContent)
-		self:DoPopulate()
+	icon:InvalidateLayout(true)
 
-		copy.PropPanel = self.PropPanel:Copy()
-		copy.PropPanel:SetVisible(false)
+	icon:SetModel(obj.model, obj.skin or 0, obj.body)
 
-		copy.DoPopulate = function() end
+	icon:SetTooltip(string.Replace(string.GetFileFromFilename(obj.model), ".mdl", ""))
+
+	icon.DoClick = function(icon)
+		surface.PlaySound("ui/buttonclickrelease.wav")
+		RunConsoleCommand("gm_spawn", icon:GetModelName(), icon:GetSkinID() or 0, icon:GetBodyGroup() or "")
 	end
 
-	node.DoRightClick = function(self)
+	icon.OpenMenu = function(icon)
 		local menu = DermaMenu()
-		menu:AddOption("Edit", function() self:InternalDoClick(); hook.Run("OpenToolbox") end)
-		menu:AddOption("New Category", function() node:Remove(); hook.Run("SpawnlistContentChanged") end)
-		menu:AddOption("Delete", function() node:Remove(); hook.Run("SpawnlistContentChanged") end)
+		menu:AddOption("Copy to Clipboard", function() SetClipboardText(string.gsub(obj.model, "\\", "/")) end)
+		menu:AddOption("Spawn using Toolgun", function()
+			RunConsoleCommand("gmod_tool", "creator")
+			RunConsoleCommand("creator_type", "4")
+			RunConsoleCommand("creator_name", obj.model)
+		end)
 
+		local submenu = menu:AddSubMenu("Re-Render", function() icon:RebuildSpawnIcon() end)
+		submenu:AddOption("This Icon", function() icon:RebuildSpawnIcon() end)
+		submenu:AddOption("All Icons", function() container:RebuildAll() end)
+
+		menu:AddOption("Edit Icon", function()
+			local editor = vgui.Create("IconEditor")
+			editor:SetIcon(icon)
+			editor:Refresh()
+			editor:MakePopup()
+			editor:Center()
+		end)
+
+		local ChangeIconSize = function(w, h)
+			icon:SetSize(w, h)
+			icon:InvalidateLayout(true)
+			container:OnModified()
+			container:Layout()
+			icon:SetModel(obj.model, obj.skin or 0, obj.body)
+		end
+
+		local submenu2 = menu:AddSubMenu("Resize", function() end)
+		submenu2:AddOption("64 x 64 (default)", function() ChangeIconSize(64, 64) end)
+		submenu2:AddOption("64 x 128", function() ChangeIconSize(64, 128) end)
+		submenu2:AddOption("64 x 256", function() ChangeIconSize(64, 256) end)
+		submenu2:AddOption("64 x 512", function() ChangeIconSize(64, 512) end)
+		submenu2:AddSpacer()
+		submenu2:AddOption("128 x 64", function() ChangeIconSize(128, 64) end)
+		submenu2:AddOption("128 x 128", function() ChangeIconSize(128, 128) end)
+		submenu2:AddOption("128 x 256", function() ChangeIconSize(128, 256) end)
+		submenu2:AddOption("128 x 512", function() ChangeIconSize(128, 512) end)
+		submenu2:AddSpacer()
+		submenu2:AddOption("256 x 64", function() ChangeIconSize(256, 64) end)
+		submenu2:AddOption("256 x 128", function() ChangeIconSize(256, 128) end)
+		submenu2:AddOption("256 x 256", function() ChangeIconSize(256, 256) end)
+		submenu2:AddOption("256 x 512", function() ChangeIconSize(256, 512) end)
+		submenu2:AddSpacer()
+		submenu2:AddOption("512 x 64", function() ChangeIconSize(512, 64) end)
+		submenu2:AddOption("512 x 128", function() ChangeIconSize(512, 128) end)
+		submenu2:AddOption("512 x 256", function() ChangeIconSize(512, 256) end)
+		submenu2:AddOption("512 x 512", function() ChangeIconSize(512, 512) end)
+		submenu2:AddSpacer()
+
+		menu:AddSpacer()
+		menu:AddOption("Delete", function() icon:Remove() hook.Run("SpawnlistContentChanged") end)
 		menu:Open()
 	end
 
-	node.DoPopulate = function(self)
-		if not self.PropPanel then
-			self.PropPanel = vgui.Create("ContentContainer", pnlContent)
-			self.PropPanel:SetVisible(false)
-			self.PropPanel:SetTriggerSpawnlistChange(true)
-		end
+	icon:InvalidateLayout(true)
+
+	if IsValid(container) then
+		container:Add(icon)
 	end
 
-	node.DoClick = function(self)
-		self:DoPopulate()
-		pnlContent:SwitchPanel(self.PropPanel)
-	end
-end
-
-local AddCustomizableNode = function(pnlContent, name, icon, parent, needsapp)
-	local node = parent:AddNode(name, icon)
-	SetupCustomNode(node, pnlContent, needsapp)
-
-	return node
-end
-
-hook.Add("PopulateContent2", "AddCustomContent2", function(pnlContent, tree, node)
-	local node = AddCustomizableNode(pnlContent, "#spawnmenu.category.your_spawnlists", "", tree)
-	node:SetDraggableName("CustomContent")
-	node.DoRightClick = function(self)
-		local menu = DermaMenu()
-		menu:AddOption("New Category", function() AddCustomizableNode(pnlContent, "New Category", "", node); node:SetExpanded(true); hook.Run("SpawnlistContentChanged") end)
-		menu:Open()
-	end
-	node.OnModified = function()
-		hook.Run("SpawnlistContentChanged")
-	end
-
-	AddPropsOfParent(pnlContent, node, 0)
-
-	node:SetExpanded(true)
-	node:MoveToBack()
-
-	CustomizableSpawnlistNode = node
-
-	local FirstNode = node:GetChildNode(0)
-	if IsValid(FirstNode) then
-		FirstNode:InternalDoClick()
-	end
+	return icon
 end)
-
-spawnmenu.AddCreationTab("#spawnmenu.content_tab2", function()
-	--local ctrl = vgui.Create("UPPSpawnmenuContentPanel")
-	local ctrl = vgui.Create("SpawnmenuContentPanel")
-	ctrl.OldSpawnlists = ctrl.ContentNavBar.Tree:AddNode("#spawnmenu.category.browse", "icon16/cog.png")
-
-	ctrl:EnableModify()
-	hook.Call("PopulatePropMenu", GAMEMODE)
-	ctrl:CallPopulateHook("PopulateContent2")
-	ctrl.OldSpawnlists:MoveToFront()
-	ctrl.OldSpawnlists:SetExpanded(true)
-
-	return ctrl
-end, "icon16/application_view_tile.png", -10, nil)
