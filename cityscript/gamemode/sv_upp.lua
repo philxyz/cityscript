@@ -2,8 +2,11 @@
 -- Server-side code
 
 include("shared_upp.lua")
+include("upp_initial_allow_list.lua") -- Include the initial allow list.
 
 UPP.GamemodeName = "CityScript" -- Change this if you're using UPP in a different gamemode. It keeps UPP's DB-backed settings separated per gamemode.
+
+UPP.Allowed_Models = {} -- A list of the models that are allowed to be spawned.
 
 function UPP.Initialize()
 	-- Create the database for UPP settings, if it doesn't already exist
@@ -13,6 +16,7 @@ function UPP.Initialize()
 	sql.Begin()
 	sql.Query("CREATE TABLE IF NOT EXISTS UPP_Settings('gamemode' TEXT NOT NULL, 'prop_timeout_mins' INTEGER NOT NULL, PRIMARY KEY('gamemode'));")
 	sql.Query("CREATE TABLE IF NOT EXISTS UPP_TrustedPlayers('gamemode' TEXT NOT NULL, 'PlayerSteamID64' INTEGER NOT NULL, 'TrustedPlayerSteamID64' INTEGER NOT NULL, 'TrustedPlayerOriginalName' TEXT NOT NULL, PRIMARY KEY('gamemode', 'PlayerSteamID64', 'TrustedPlayerSteamID64'));")
+	sql.Query("CREATE TABLE IF NOT EXISTS UPP_AllowedModels('gamemode' TEXT NOT NULL, 'model' TEXT NOT NULL);")
 	sql.Commit()
 
 	local pto = sql.Query("SELECT prop_timeout_mins FROM UPP_Settings WHERE gamemode = " .. sql.SQLStr(UPP.GamemodeName) .. ";")
@@ -26,6 +30,23 @@ function UPP.Initialize()
 			sql.Query("INSERT INTO UPP_Settings(gamemode, prop_timeout_mins) VALUES(" .. sql.SQLStr(UPP.GamemodeName) .. ", " .. tostring(UPP.PropTimeout) .. ");")
 		else
 			UPP.PropTimeout = tonumber(pto[1].prop_timeout_mins)
+		end
+
+		local modelsList = sql.Query("SELECT model FROM UPP_AllowedModels WHERE gamemode = " .. sql.SQLStr(UPP.GamemodeName) .. ";")
+
+		err = sql.LastError()
+
+		if err == nil then
+			if modelsList == nil then
+				-- Add all the initial items.
+				sql.Begin()
+				for _, model in ipairs(UPP.Initial_Allow_List) do
+					sql.Query("INSERT INTO UPP_AllowedModels(gamemode, model) VALUES(" .. sql.SQLStr(UPP.GamemodeName) .. ", " .. sql.SQLStr(model) .. ");")
+				end
+				sql.Commit()
+			end
+		else
+			print("SQL ERROR: " .. err)
 		end
 	end
 end

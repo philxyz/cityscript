@@ -270,7 +270,16 @@ net.Receive("upp.notify", function(len, sender)
 	end
 end)
 
+function UPP.ModelIsAllowed(modelName)
+
+end
+
 spawnmenu.AddContentType("model", function(container, obj)
+
+	local isAllowed = UPP.ModelIsAllowed(obj.model)
+
+	if not LocalPlayer():IsAdmin() and not isAllowed then return end
+
 	local icon = vgui.Create("SpawnIcon", container)
 
 	if obj.body then
@@ -347,7 +356,19 @@ spawnmenu.AddContentType("model", function(container, obj)
 		submenu2:AddOption("512 x 512", function() ChangeIconSize(512, 512) end)
 		submenu2:AddSpacer()
 
-		menu:AddSpacer()
+		if LocalPlayer():IsAdmin() then
+			if isAllowed then
+				menu:AddOption("Disallow this", function()
+					print(obj.model)
+				end)
+			else
+				menu:AddOption("Allow this", function()
+					print(obj.model)
+				end)
+			end
+			menu:AddSpacer()
+		end
+
 		menu:AddOption("Delete", function() icon:Remove() hook.Run("SpawnlistContentChanged") end)
 		menu:Open()
 	end
