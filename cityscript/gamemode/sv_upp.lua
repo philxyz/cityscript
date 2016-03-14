@@ -2,11 +2,13 @@
 -- Server-side code
 
 include("shared_upp.lua")
-include("upp_initial_allow_list.lua") -- Include the initial allow list.
+include("upp_default_allow_list.lua") -- Include the default allow list.
+AddCSLuaFile("upp_default_allow_list.lua")
 
 UPP.GamemodeName = "CityScript" -- Change this if you're using UPP in a different gamemode. It keeps UPP's DB-backed settings separated per gamemode.
 
-UPP.Allowed_Models = {} -- A list of the models that are allowed to be spawned.
+UPP.Added_Models = {} -- A list of models that have been added compared with the default allow list.
+UPP.Removed_Models = {} -- A list of models that have been removed from the default allow list.
 
 function UPP.Initialize()
 	-- Create the database for UPP settings, if it doesn't already exist
@@ -16,7 +18,7 @@ function UPP.Initialize()
 	sql.Begin()
 	sql.Query("CREATE TABLE IF NOT EXISTS UPP_Settings('gamemode' TEXT NOT NULL, 'prop_timeout_mins' INTEGER NOT NULL, PRIMARY KEY('gamemode'));")
 	sql.Query("CREATE TABLE IF NOT EXISTS UPP_TrustedPlayers('gamemode' TEXT NOT NULL, 'PlayerSteamID64' INTEGER NOT NULL, 'TrustedPlayerSteamID64' INTEGER NOT NULL, 'TrustedPlayerOriginalName' TEXT NOT NULL, PRIMARY KEY('gamemode', 'PlayerSteamID64', 'TrustedPlayerSteamID64'));")
-	sql.Query("CREATE TABLE IF NOT EXISTS UPP_AllowedModels('gamemode' TEXT NOT NULL, 'model' TEXT NOT NULL);")
+	sql.Query("CREATE TABLE IF NOT EXISTS UPP_AllowedModelListDifferences('gamemode' TEXT NOT NULL, 'model' TEXT NOT NULL, 'permitted' INTEGER NOT NULL);")
 	sql.Commit()
 
 	local pto = sql.Query("SELECT prop_timeout_mins FROM UPP_Settings WHERE gamemode = " .. sql.SQLStr(UPP.GamemodeName) .. ";")
@@ -32,21 +34,25 @@ function UPP.Initialize()
 			UPP.PropTimeout = tonumber(pto[1].prop_timeout_mins)
 		end
 
-		local modelsList = sql.Query("SELECT model FROM UPP_AllowedModels WHERE gamemode = " .. sql.SQLStr(UPP.GamemodeName) .. ";")
+		local modelAllowListDiffs = sql.Query("SELECT model, permitted FROM UPP_AllowedModelListDifferences WHERE gamemode = " .. sql.SQLStr(UPP.GamemodeName) .. ";")
 
 		err = sql.LastError()
 
-		if err == nil then
-			if modelsList == nil then
-				-- Add all the initial items.
-				sql.Begin()
-				for _, model in ipairs(UPP.Initial_Allow_List) do
-					sql.Query("INSERT INTO UPP_AllowedModels(gamemode, model) VALUES(" .. sql.SQLStr(UPP.GamemodeName) .. ", " .. sql.SQLStr(model) .. ");")
-				end
-				sql.Commit()
-			end
-		else
+		if err ~= nil then
 			print("SQL ERROR: " .. err)
+		else
+			-- Reload the cache.
+			if modelAllowListDiffs ~= nil then
+				for _, row in ipairs(modelAllowListDiffs) do
+					if row.permitted == "0" then
+						-- Remove anything that is no longer allowed compared with the default
+						UPP.Removed_Models[row.model] = true -- For sending to the client
+					elseif row.permitted == "1" then
+						-- Add anything that should be allowed compared with the default
+						UPP.Added_Models[row.model] = true
+					end
+				end
+			end
 		end
 	end
 end
@@ -156,12 +162,30 @@ function UPP.PlayerSpawnedVehicle(ply, ent)
 end
 hook.Add("PlayerSpawnedVehicle", "UPP.PlayerSpawnedVehicle", UPP.PlayerSpawnedVehicle)
 
-
 -- Permission to spawn things
-function UPP.PlayerSpawnObject(ply, model, skin)
-	-- Depending on allow list or deny list, allow or deny the object.
+function UPP.PlayerSpawnObject(ply, mdl, skin)
+	local model = mdl:lower()
 
-	-- UPP.NotifyPlayers(UPP.Messages.PropDisallowed, ply)
+	-- Explicitly disallowed models take priority
+	if UPP.Removed_Models[model] then
+		UPP.NotifyPlayers(UPP.Messages.PropDisallowed, ply)
+		return false
+	end
+
+	-- Then, any allowed models
+	if UPP.Added_Models[model] then
+		return true
+	end
+
+	for _, v in ipairs(UPP.Default_Allowed_Model_List) do
+		if v == model then
+			return true
+		end
+	end
+
+	-- Otherwise, no.
+	UPP.NotifyPlayers(UPP.Messages.PropDisallowed, ply)
+	return false
 end
 hook.Add("PlayerSpawnObject", "UPP.PlayerSpawnObject", UPP.PlayerSpawnObject)
 
@@ -234,7 +258,7 @@ function UPP.PlayerDisconnected(ply)
 				) then
 					p:Remove()
 			end
-                end
+		end
 		print("UPP: Props deleted for player with SteamID64: " .. sid64)
 	else
 		-- Delete props later (unless a reconnect cancels the process)
@@ -276,6 +300,9 @@ function UPP.PlayerDisconnected(ply)
 	end
 end
 hook.Add("PlayerDisconnected", "UPP.PlayerDisconnected", UPP.PlayerDisconnected)
+
+util.AddNetworkString("upp.amdl")
+util.AddNetworkString("upp.rmdl")
 
 function UPP.PlayerInitialSpawn(ply)
 	local sid64 = ply:SteamID64()
@@ -342,6 +369,20 @@ function UPP.PlayerInitialSpawn(ply)
 				end
 			end
 		end
+	end
+
+	-- The list of allowed props may differ from the included file.
+	-- Send those here.
+	for model, _ in pairs(UPP.Added_Models) do
+		net.Start("upp.amdl")
+		net.WriteString(model)
+		net.Send(ply)
+	end
+
+	for model, _ in pairs(UPP.Removed_Models) do
+		net.Start("upp.rmdl")
+		net.WriteString(model)
+		net.Send(ply)
 	end
 end
 hook.Add("PlayerInitialSpawn", "UPP.PlayerInitialSpawn", UPP.PlayerInitialSpawn)
@@ -588,6 +629,92 @@ net.Receive("upp.rtp", function(len, sender)
 		end
 
 		UPP.RemoveTrustedPlayerFromClient(steamID64, sender)
+	end
+end)
+
+function UPP.AllowModel(mdl)
+	local model = mdl:lower()
+
+	-- Model in default list?
+	local allowedByDefault = false
+
+	for _, v in ipairs(UPP.Default_Allowed_Model_List) do
+		if v == model then
+			allowedByDefault = true
+			break
+		end
+	end
+
+	if allowedByDefault then
+		-- If the model is in the set of blocked items, remove it.
+		UPP.Removed_Models[model] = nil
+		sql.Query("DELETE FROM UPP_AllowedModelListDifferences WHERE gamemode = " .. sql.SQLStr(UPP.GamemodeName) .. " AND model = " .. sql.SQLStr(model) .. " AND permitted = 0;")
+		local err = sql.LastError()
+		if err ~= nil then
+			print("SQL ERROR in UPP.AllowModel (deleting blocked model exception): " .. err)
+		end
+	else
+		-- Since the model isn't allowed by default, allow it explicitly.
+		local already = UPP.Added_Models[model] ~= nil
+		if not already then
+			UPP.Added_Models[model] = true
+			sql.Query("INSERT INTO UPP_AllowedModelListDifferences(gamemode, model, permitted) VALUES(" .. sql.SQLStr(UPP.GamemodeName) .. ", " .. sql.SQLStr(model) .. ", 1);")
+			local err = sql.LastError()
+			if err ~= nil then
+				print("SQL ERROR in UPP.AllowModel (saving allowed model exception): " .. err)
+			end
+		end
+	end
+end
+
+util.AddNetworkString("upp.aths")
+net.Receive("upp.aths", function(len, sender)
+	local model = net.ReadString()
+	if sender:IsAdmin() then
+		UPP.AllowModel(model)
+	end
+end)
+
+function UPP.BlockModel(mdl)
+	local model = mdl:lower()
+
+	-- Model in default list?
+	local allowedByDefault = false
+
+	for _, v in ipairs(UPP.Default_Allowed_Model_List) do
+		if v == model then
+			allowedByDefault = true
+			break
+		end
+	end
+
+	if allowedByDefault then
+		-- Since the model is allowed by default, block it explicitly.
+		local already = UPP.Removed_Models[model] ~= nil
+		if not already then
+			UPP.Removed_Models[model] = true
+			sql.Query("INSERT INTO UPP_AllowedModelListDifferences(gamemode, model, permitted) VALUES(" .. sql.SQLStr(UPP.GamemodeName) .. ", " .. sql.SQLStr(model) .. ", 0);")
+			local err = sql.LastError()
+			if err ~= nil then
+				print("SQL ERROR in UPP.AllowModel (saving blocked model exception): " .. err)
+			end
+		end
+	else
+		-- If the model is not already allowed by default, make sure it hasn't been explicitly allowed.
+		UPP.Added_Models[model] = nil
+		sql.Query("DELETE FROM UPP_AllowedModelListDifferences WHERE gamemode = " .. sql.SQLStr(UPP.GamemodeName) .. " AND model = " .. sql.SQLStr(model) .. " AND permitted = 1;")
+		local err = sql.LastError()
+		if err ~= nil then
+			print("SQL ERROR in UPP.AllowModel (deleting allowed model exception): " .. err)
+		end
+	end
+end
+
+util.AddNetworkString("upp.dths")
+net.Receive("upp.dths", function(len, sender)
+	local model = net.ReadString()
+	if sender:IsAdmin() then
+		UPP.BlockModel(model)
 	end
 end)
 

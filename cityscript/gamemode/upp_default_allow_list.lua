@@ -1,7 +1,7 @@
 -- Unobtrusive prop protection by philxyz
 -- Items which may be spawned. These are only active initially.
 
-UPP.Initial_Allow_List = {
+UPP.Default_Allowed_Model_List = {
 	"models/props_borealis/mooring_cleat01.mdl",
 	"models/props_borealis/door_wheel001a.mdl",
 	"models/props_borealis/borealis_door001a.mdl",

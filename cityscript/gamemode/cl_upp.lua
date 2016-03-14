@@ -3,6 +3,25 @@
 
 include("shared_upp.lua")
 include("language_english_upp.lua") -- Language strings are defined here.
+include("upp_default_allow_list.lua") -- Include the default allow list.
+
+UPP.Allowed_Models = {} -- All models that may be spawned.
+
+for _, model in ipairs(UPP.Default_Allowed_Model_List) do
+	UPP.Allowed_Models[model] = true
+end
+
+-- Overrides for which models show in spawn menu.
+net.Receive("upp.amdl", function(len)
+	local model = net.ReadString()
+	UPP.Allowed_Models[model] = true
+end)
+
+net.Receive("upp.rmdl", function(len)
+	local model = net.ReadString()
+	UPP.Allowed_Models[model] = nil
+end)
+-- End of overrides.
 
 function UPP.DrawUI()
 	local ply = LocalPlayer()
@@ -245,38 +264,47 @@ net.Receive("upp.notify", function(len, sender)
 
 	if which == UPP.Messages.YourPropsCleanedUp then
 		GAMEMODE:AddNotify("#upp.prop_cleanup", NOTIFY_CLEANUP, 3)
+		surface.PlaySound("ambient/energy/zap1.wav")
 	elseif which == UPP.Messages.YourPropsCleanedUpByYou then
 		GAMEMODE:AddNotify("#upp.prop_cleanup_you", NOTIFY_CLEANUP, 3)
+		surface.PlaySound("ambient/energy/zap1.wav")
 	elseif which == UPP.Messages.AllPropsCleanedUp then
 		GAMEMODE:AddNotify("#upp.prop_cleanup_all", NOTIFY_CLEANUP, 3)
+		surface.PlaySound("ambient/energy/zap1.wav")
 	elseif which == UPP.Messages.YourEntsCleanedUp then
 		GAMEMODE:AddNotify("#upp.ent_cleanup", NOTIFY_CLEANUP, 3)
+		surface.PlaySound("ambient/energy/zap1.wav")
 	elseif which == UPP.Messages.AllEntsCleanedUp then
 		GAMEMODE:AddNotify("#upp.ent_cleanup_all", NOTIFY_CLEANUP, 3)
+		surface.PlaySound("ambient/energy/zap1.wav")
 	elseif which == UPP.Messages.PropDisallowed then
 		GAMEMODE:AddNotify("#upp.prop_disallowed", NOTIFY_ERROR, 3)
+		surface.PlaySound("vo/Citadel/br_no.wav")
 	elseif which == UPP.Messages.NoSENTsAllowed then
 		GAMEMODE:AddNotify("#upp.sents_disallowed", NOTIFY_ERROR, 3)
+		surface.PlaySound("vo/Citadel/br_no.wav")
 	elseif which == UPP.Messages.NoRagdollsAllowed then
 		GAMEMODE:AddNotify("#upp.ragdolls_disallowed", NOTIFY_ERROR, 3)
+		surface.PlaySound("vo/Citadel/br_no.wav")
 	elseif which == UPP.Messages.NoEffectsAllowed then
 		GAMEMODE:AddNotify("#upp.effects_disallowed", NOTIFY_ERROR, 3)
+		surface.PlaySound("vo/Citadel/br_no.wav")
 	elseif which == UPP.Messages.NoSWEPsAllowed then
 		GAMEMODE:AddNotify("#upp.sweps_disallowed", NOTIFY_ERROR, 3)
+		surface.PlaySound("vo/Citadel/br_no.wav")
 	elseif which == UPP.Messages.NoNPCsAllowed then
 		GAMEMODE:AddNotify("#upp.npcs_disallowed", NOTIFY_ERROR, 3)
+		surface.PlaySound("vo/Citadel/br_no.wav")
 	elseif which == UPP.Messages.PlayerAlreadyTrusted then
 		GAMEMODE:AddNotify("#upp.player_already_trusted", NOTIFY_ERROR, 3)
+		surface.PlaySound("vo/Citadel/br_no.wav")
 	end
 end)
 
-function UPP.ModelIsAllowed(modelName)
-
-end
-
 spawnmenu.AddContentType("model", function(container, obj)
+	local mdl = obj.model:lower()
 
-	local isAllowed = UPP.ModelIsAllowed(obj.model)
+	local isAllowed = UPP.Allowed_Models[mdl] == true
 
 	if not LocalPlayer():IsAdmin() and not isAllowed then return end
 
@@ -357,15 +385,22 @@ spawnmenu.AddContentType("model", function(container, obj)
 		submenu2:AddSpacer()
 
 		if LocalPlayer():IsAdmin() then
-			if isAllowed then
-				menu:AddOption("Disallow this", function()
-					print(obj.model)
-				end)
-			else
-				menu:AddOption("Allow this", function()
-					print(obj.model)
-				end)
-			end
+			menu:AddSpacer()
+
+			menu:AddOption("#upp.allowthese", function()
+				UPP.Allowed_Models[mdl] = true
+				net.Start("upp.aths")
+				net.WriteString(mdl)
+				net.SendToServer()
+			end)
+
+			menu:AddOption("#upp.disallowthese", function()
+				UPP.Allowed_Models[mdl] = nil
+				net.Start("upp.dths")
+				net.WriteString(mdl)
+				net.SendToServer()
+			end)
+
 			menu:AddSpacer()
 		end
 
