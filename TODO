@@ -36,9 +36,11 @@ philxyz 2015
 
 - Add a filter for searching for entities
 
+- Replace DPanelList with DListLayout+DScrollPanel
+
 - Move data to SQL Backend (SQLite)
-- Impose a limit of 5 characters
-- Implement the ability to delete characters
+- Impose a limit of 4 player characters
+- Implement the ability to delete player characters
 
 - Roleplaying Vehicles Addon (or find another)
 	- [LW]

@@ -66,10 +66,10 @@ local function InitHiddenButton()
 		tracedata.endpos = LocalPlayer():GetShootPos() + (Vect * 100)
 		tracedata.filter = LocalPlayer()
 		local trace = util.TraceLine(tracedata)
-		
+
 		if trace.HitNonWorld then
 			local target = trace.Entity
-			
+
 			local ContextMenu = DermaMenu()
 				if CAKE.IsDoor(target) or target:IsVehicle() then
 					if not target:GetNWBool("notRentable") then
@@ -102,7 +102,7 @@ local function InitHiddenButton()
 						CreditPanel:SetDraggable(true)
 						CreditPanel:ShowCloseButton(true)
 						CreditPanel:MakePopup()
-						
+
 						local Credits = vgui.Create("DNumSlider", CreditPanel)
 						Credits:SetPos(25, 50)
 						Credits:SetWide(150)
@@ -110,7 +110,7 @@ local function InitHiddenButton()
 						Credits:SetMin(0)
 						Credits:SetMax(tonumber(LocalPlayer():GetNWString("money")))
 						Credits:SetDecimals(0)
-						
+
 						local Give = vgui.Create("DButton", CreditPanel)
 						Give:SetText("Give")
 						Give:SetPos(25, 125)
@@ -126,7 +126,7 @@ local function InitHiddenButton()
 							CreditPanel = nil
 						end
 					end
-					
+
 					ContextMenu:AddOption(TEXT.GiveTokens, PopupCredits)
 
 					if LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() then
@@ -211,7 +211,7 @@ function CreateModelWindow()
 		mdlPanel:SetFOV(70)
 	end
 	FarButton:SetPos(10, 80)
-	
+
 	local OkButton = vgui.Create("DButton", ModelWindow)
 	OkButton:SetText(TEXT.OK)
 
@@ -229,16 +229,16 @@ function CreateModelWindow()
 	end
 
 	local i = 1
-	
+
 	local LastMdl = vgui.Create("DButton", ModelWindow)
 	LastMdl:SetText("Prev")
 	LastMdl.DoClick = function()
 		i = i - 1
-		
+
 		if i == 0 then
 			i = #ValidCakeModels
 		end
-		
+
 		mdlPanel:SetModel(ValidCakeModels[i])
 	end
 
@@ -252,11 +252,11 @@ function CreateModelWindow()
 		if i > #ValidCakeModels then
 			i = 1
 		end
-		
+
 		mdlPanel:SetModel(ValidCakeModels[i])
 	end
 	NextMdl:SetPos(245, 165)
-	
+
 	ModelWindow:SetSize(320, 330)
 	ModelWindow:Center()
 	ModelWindow:MakePopup()
@@ -274,17 +274,17 @@ function InitHUDMenu()
 	HUDMenu:SetDraggable(false)
 	HUDMenu:ShowCloseButton(false)
 	HUDMenu:SetAnimationEnabled(true)
-	
+
 	local label = vgui.Create("DLabel", HUDMenu)
 	label:SetWide(0)
 	label:SetPos(8, 25)
 	label:SetText(TEXT.Name .. ": " .. LocalPlayer():Nick())
-	
+
 	local label4 = vgui.Create("DLabel", HUDMenu)
 	label4:SetWide(0)
 	label4:SetPos(8, 55)
 	label4:SetText(TEXT.Association .. ": " .. team.GetName(LocalPlayer():Team()))
-	
+
 	local spawnicon = vgui.Create("SpawnIcon", HUDMenu)
 	spawnicon:SetSize(128, 128)
 	spawnicon:SetModel(LocalPlayer():GetModel())
@@ -294,13 +294,13 @@ function InitHUDMenu()
 	spawnicon:SetAnimationEnabled(true)
 
 	local lastmodel = LocalPlayer():GetModel()
-	
+
 	local FadeSize = 130
 	local NeedsUpdate = false
-	
+
 	function UpdateGUIData()
 		label:SetText(TEXT.Name .. ": " .. LocalPlayer():Nick())
-		
+
 		label4:SetText(TEXT.Association .. ": " .. team.GetName(LocalPlayer():Team()))
 
 		if lastmodel ~= LocalPlayer():GetModel() then
@@ -309,15 +309,15 @@ function InitHUDMenu()
 		end
 		spawnicon:SetToolTip(TEXT.PlayerImage)
 	end
-	
+
 	spawnicon.PaintOver = function()
 		spawnicon:SetPos(FadeSize - 129, 21)
 		HUDMenu:SetSize(FadeSize, 150)
 		HUDMenu:SetPos(ScrW() - FadeSize - 5, 5)
-		
+
 		label:SetWide(FadeSize - 128)
 		label4:SetWide(FadeSize - 128)
-		
+
 		if spawnicon:IsHovered() then
 			if FadeSize < 400 then
 				FadeSize = FadeSize + 5
@@ -332,7 +332,7 @@ function InitHUDMenu()
 				label4:SetVisible(false)
 			end
 		end
-		
+
 		UpdateGUIData()
 	end
 end
@@ -434,7 +434,7 @@ function CreatePlayerMenu()
 		PlayerMenu:Remove()
 		PlayerMenu = nil
 	end
-	
+
 	PlayerMenu = vgui.Create("DFrame")
 	PlayerMenu:SetPos(ScrW() / 2 - 320, ScrH() / 2 - 240)
 	PlayerMenu:SetSize(640, 480)
@@ -443,7 +443,7 @@ function CreatePlayerMenu()
 	PlayerMenu:SetDraggable(true)
 	PlayerMenu:ShowCloseButton(true)
 	PlayerMenu:MakePopup()
-	
+
 	PropertySheet = vgui.Create("DPropertySheet")
 	PropertySheet:SetParent(PlayerMenu)
 	PropertySheet:SetPos(2, 30)
@@ -454,32 +454,32 @@ function CreatePlayerMenu()
 		surface.SetDrawColor(40, 40, 40, 255)
 		surface.DrawRect(0, 0, PropertySheet:GetWide(), PropertySheet:GetTall())
 	end
-	
+
 	local PlayerInfo = vgui.Create("DPanelList")
 	PlayerInfo:SetPadding(20)
 	PlayerInfo:SetSpacing(20)
 	PlayerInfo:EnableHorizontal(false)
-	
+
 	local icdata = vgui.Create("DForm")
 	icdata:SetPadding(4)
 	icdata:SetName(LocalPlayer():Nick() or "")
-	
+
 	local FullData = vgui.Create("DPanelList")
 	FullData:SetSize(0, 84)
 	FullData:SetPadding(10)
-	
+
 	local DataList = vgui.Create("DIconLayout")
 	DataList:SetSize(0, 64)
 	DataList:SetSpaceY(0)
 	DataList:SetSpaceX(0)
-	
+
 	local spawnicon = vgui.Create("SpawnIcon")
 	spawnicon:SetModel(LocalPlayer():GetModel())
 	spawnicon:SetSize(64, 64)
 	DataList:Add(spawnicon):SetSize(64, 64)
-	
+
 	local DataList2 = vgui.Create("DPanelList")
-	
+
 	local label3 = vgui.Create("DLabel")
 	label3:SetText(TEXT.Association .. ": " .. team.GetName(LocalPlayer():Team()))
 	DataList2:AddItem(label3)
@@ -489,27 +489,27 @@ function CreatePlayerMenu()
 	Divider:SetRight(DataList2)
 	Divider:SetLeftWidth(64)
 	Divider:SetHeight(64)
-	
+
 	DataList:Add(spawnicon)
 	DataList:Add(DataList2)
 	DataList:Add(Divider)
 
 	FullData:AddItem(DataList)
-	
+
 	icdata:AddItem(FullData)
-	
+
 	local vitals = vgui.Create("DForm")
 	vitals:SetPadding(4)
 	vitals:SetName(TEXT.VitalSigns)
-	
+
 	local VitalData = vgui.Create("DPanelList")
 	VitalData:SetAutoSize(true)
 	VitalData:SetPadding(10)
 	vitals:AddItem(VitalData)
-	
+
 	local healthstatus = ""
 	local hp = LocalPlayer():Health()
-	
+
 	if(!LocalPlayer():Alive()) then healthstatus = TEXT.Dead
 	elseif(hp > 95) then healthstatus = TEXT.Healthy
 	elseif(hp > 50 and hp < 95) then healthstatus = TEXT.OK
@@ -517,24 +517,24 @@ function CreatePlayerMenu()
 	elseif(hp > 1 and hp < 30) then
 		healthstatus = TEXT.DeathImminent
 	end
-	
+
 	local health = vgui.Create("DLabel")
 	health:SetText("Vitals: " .. healthstatus)
 	VitalData:AddItem(health)
-	
+
 	PlayerInfo:AddItem(icdata)
 	PlayerInfo:AddItem(vitals)
-	
+
 	CharPanel = vgui.Create("DPanelList")
 	CharPanel:SetPadding(20)
 	CharPanel:SetSpacing(20)
 	CharPanel:EnableHorizontal(false)
-	
+
 	local newcharform = vgui.Create("DForm")
 	newcharform:SetPadding(4)
 	newcharform:SetName(TEXT.NewCharacter)
 	newcharform:SetAutoSize(true)
-	
+
 	local CharMenu = vgui.Create("DPanelList")
 	newcharform:AddItem(CharMenu)
 	CharMenu:SetSize(316, 386)
@@ -542,7 +542,7 @@ function CreatePlayerMenu()
 	CharMenu:SetSpacing(20)
 	CharMenu:EnableVerticalScrollbar()
 	CharMenu:EnableHorizontal(false)
-	
+
 	local label = vgui.Create("DLabel")
 	CharMenu:AddItem(label)
 	label:SetSize(400, 25)
@@ -598,12 +598,12 @@ function CreatePlayerMenu()
 			LocalPlayer():PrintMessage(3, TEXT.FirstNameLastNameError)
 			return
 		end
-		
+
 		if not table.HasValue(ValidCakeModels, ChosenModel) then
 			LocalPlayer():PrintMessage(3, ChosenModel .. " " .. TEXT.XisNotAValidModel)
 			return
 		end
-		
+
 		net.Start("ncStartCreate")
 		net.SendToServer()
 
@@ -619,7 +619,7 @@ function CreatePlayerMenu()
 
 		net.Start("ncFinishCreate")
 		net.SendToServer()
-		
+
 		PlayerMenu:Remove()
 		PlayerMenu = nil
 	end
@@ -631,7 +631,7 @@ function CreatePlayerMenu()
 	selectcharform:SetSize(316, 386)
 
 	local charlist = vgui.Create("DPanelList")
-	
+
 	charlist:SetSize(316, 386)
 	charlist:SetPadding(10)
 	charlist:SetSpacing(20)
@@ -659,7 +659,7 @@ function CreatePlayerMenu()
 			surface.SetTextPos((280 - surface.GetTextSize(ExistingChars[n]['name'])) / 2, 260)
 			surface.DrawText(ExistingChars[n]['name'])
 		end
-		
+
 		function mdlPanel:OnMousePressed()
 			-- Select Character
 			net.Start("Cr")
@@ -674,19 +674,19 @@ function CreatePlayerMenu()
 		function mdlPanel:LayoutEntity(Entity)
 			self:RunAnimation()
 		end
-		
+
 		function InitAnim()
 			if IsValid(mdlPanel.Entity) then
 				local iSeq = mdlPanel.Entity:LookupSequence("idle_all_angry")
 				mdlPanel.Entity:ResetSequence(iSeq)
 			end
 		end
-		
+
 		InitAnim()
 
 		charlist:AddItem(mdlPanel)
 	end
-	
+
 	local chars = vgui.Create("DListView")
 	chars:SetSize(250, 100)
 	chars:SetMultiSelect(false)
@@ -701,11 +701,11 @@ function CreatePlayerMenu()
 	function chars:DoDoubleClick(LineID, Line)
 		mdlPanel:OnMousePressed()
 	end
-	
+
 	for k, v in pairs(ExistingChars) do
 		chars:AddLine(v.name)
 	end
-	
+
 	selectcharform:AddItem(chars)
 	selectcharform:AddItem(charlist)
 
@@ -717,13 +717,13 @@ function CreatePlayerMenu()
 	CharPanel:AddItem(newcharform)
 	CharPanel:AddItem(selectcharform)
 	CharPanel:AddItem(divider)
-	
+
 	CityCommands = vgui.Create("DPanelList")
 	CityCommands:SetPadding(20)
 	CityCommands:SetSpacing(20)
 	CityCommands:EnableHorizontal(true)
 	CityCommands:EnableVerticalScrollbar(true)
-	
+
 	local CityRoles = vgui.Create("DListView")
 	CityRoles:SetSize(550, 446)
 	CityRoles:SetMultiSelect(false)
@@ -732,7 +732,7 @@ function CreatePlayerMenu()
 	CityRoles:AddColumn(TEXT.BusinessAccess)
 	CityRoles:AddColumn(TEXT.PublicRole)
 	CityRoles:AddColumn(TEXT.RoleKey)
-	
+
 	function CityRoles:DoDoubleClick(LineID, Line)
 		net.Start("C7")
 		net.WriteString(TeamTable[LineID].rolekey)
@@ -740,7 +740,7 @@ function CreatePlayerMenu()
 		PlayerMenu:Remove()
 		PlayerMenu = nil
 	end
-	
+
 	for k, v in pairs(TeamTable) do
 		local yesno = ""
 		if v.public then
@@ -748,25 +748,25 @@ function CreatePlayerMenu()
 		elseif not v.public then
 			yesno = TEXT.No
 		end
-		
+
 		local yesno2 = ""
 		if v.business then
 			yesno2 = TEXT.Yes
 		elseif not v.business then
 			yesno2 = TEXT.No
 		end
-		
+
 		CityRoles:AddLine(v.name, tostring(v.salary), yesno2, yesno, v.rolekey)
 	end
-	
+
 	CityCommands:AddItem(CityRoles)
-	
+
 	Inventory = vgui.Create("DPanelList")
 	Inventory:SetPadding(20)
 	Inventory:SetSpacing(20)
 	Inventory:EnableHorizontal(true)
 	Inventory:EnableVerticalScrollbar(true)
-	
+
 	for k, v in pairs(InventoryTable) do
 		local spawnicon = vgui.Create("SpawnIcon")
 		spawnicon:SetSize(128, 128)
@@ -783,11 +783,11 @@ function CreatePlayerMenu()
 			})
 			spawnicon:PerformLayout()
 		end
-		
+
 		local function DeleteMyself()
 			spawnicon:Remove()
 		end
-		
+
 		spawnicon.DoClick = function (btn)
 			local ContextMenu = DermaMenu()
 				if weapons.GetStored(v.Class) ~= nil and not LocalPlayer():HasWeapon(v.Class) then
@@ -801,29 +801,54 @@ function CreatePlayerMenu()
 			surface.SetDrawColor(Color(76, 76, 77, 255))
 			surface.DrawRect(0, 0, 128, 128)
 		end
-		
+
 		spawnicon.PaintOver = function()
 			surface.SetTextColor(Color(255, 255, 255, 255))
 			surface.SetFont("DefaultSmall")
 			surface.SetTextPos(64 - surface.GetTextSize(v.Name) / 2, 5)
 			surface.DrawText(v.Name)
 		end
-		
+
 		spawnicon.PaintOverHovered = function()
 			surface.SetTextColor(Color(255, 255, 255, 255))
 			surface.SetFont("DefaultSmall")
 			surface.SetTextPos(64 - surface.GetTextSize(v.Name) / 2, 5)
 			surface.DrawText(v.Name .. " test")
 		end
-		
+
 		Inventory:AddItem(spawnicon)
 	end
-	
-	Business = vgui.Create("DPanelList")
-	Business:SetPadding(20)
-	Business:SetSpacing(20)
-	Business:EnableHorizontal(true)
-	Business:EnableVerticalScrollbar(true)
+
+	Business = vgui.Create("DPanel")
+	Business:SetSize(636, 448)
+	Business:SetVerticalScrollbarEnabled(true)
+	Business.Paint = function(me, w, h)
+		surface.SetDrawColor(100, 100, 100, 255)
+		surface.DrawRect(0, 0, w, h)
+	end
+
+	local magImg = vgui.Create("DImage", Business)
+	magImg:SetPos(5, 8)
+	magImg:SetSize(16, 16)
+	magImg:SetImage("icon16/magnifier.png")
+
+	local bTe = vgui.Create("DTextEntry", Business)
+	bTe:SetPos(26, 4)
+	bTe:SetSize(588, 24)
+
+	local busScroll = vgui.Create("DScrollPanel", Business)
+	busScroll:SetPos(0, 32)
+	busScroll:SetSize(620, 380)
+	busScroll.Paint = function(me, w, h)
+		surface.SetDrawColor(35, 35, 35, 255)
+		surface.DrawRect(0, 0, w, h)
+	end
+
+	local iconLayout = vgui.Create("DIconLayout", busScroll)
+	iconLayout:SetSize(620, 380)
+	iconLayout:SetSpaceX(16)
+	iconLayout:SetSpaceY(16)
+	iconLayout:SetBorder(12)
 
 	if TeamTable[LocalPlayer():Team()] ~= nil then
 		if TeamTable[LocalPlayer():Team()].business then
@@ -842,7 +867,7 @@ function CreatePlayerMenu()
 					itemView:SetAnimSpeed(8)
 					itemView:SetToolTip(v.Description)
 				end
-				
+
 				spawnicon.DoClick = function (btn)
 					local ContextMenu = DermaMenu()
 						if tonumber(LocalPlayer():GetNWString("money")) >= v.Price then
@@ -861,7 +886,7 @@ function CreatePlayerMenu()
 					surface.SetDrawColor(Color(76, 76, 77, 255))
 					surface.DrawRect(0, 0, 128, 128)
 				end
-				
+
 				spawnicon.PaintOver = function(self)
 					surface.SetTextColor(Color(255, 255, 255, 255))
 					surface.SetFont("ItemFont")
@@ -878,21 +903,21 @@ function CreatePlayerMenu()
 					surface.DrawText(toShow)
 				end
 
-				Business:AddItem(spawnicon)
+				iconLayout:Add(spawnicon)
 			end
 		elseif not TeamTable[LocalPlayer():Team()].business then
 			local label = vgui.Create("DLabel")
 			label:SetText(TEXT.NoAccessToBusinessTab)
 			label:SetWide(400)
-			
-			Business:AddItem(label)
+
+			iconLayout:Add(label)
 		end
 	end
-	
+
 	Scoreboard = vgui.Create("DListLayout")
 
 	-- Let's draw the SCOREBOARD.
-	
+
 	for k, v in pairs(player.GetAll()) do
 		local FullData = vgui.Create("DPanelList")
 		FullData:SetSize(0, 84)
@@ -918,11 +943,11 @@ function CreatePlayerMenu()
 		DataList:Add(spawnicon)
 
 		local DataList2 = vgui.Create("DPanelList")
-		
+
 		local label = vgui.Create("DLabel")
 		label:SetText( TEXT.OOCName .. ": " .. v:Name())
 		DataList2:AddItem(label)
-		
+
 		local label3 = vgui.Create("DLabel")
 		label3:SetText(TEXT.Association .. ": " .. team.GetName(v:Team()))
 		DataList2:AddItem(label3)
@@ -946,14 +971,14 @@ function CreatePlayerMenu()
 	Help:SetPadding(20)
 	Help:EnableHorizontal(false)
 	Help:EnableVerticalScrollbar(true)
-	
+
 	local function AddHelpLine(text)
 		local label = vgui.Create("DLabel")
 		label:SetText(text)
 		label:SizeToContents()
 		Help:AddItem(label)
 	end
-	
+
 	for k, v in pairs(TEXT.HelpLong) do
 		AddHelpLine(v)
 	end
@@ -991,16 +1016,16 @@ function CreatePlayerMenu()
 			posY = posY + 30
 		end
 	end
-	
+
 	PropertySheet:AddSheet( TEXT.PlayerMenu, PlayerInfo, "icon16/user.png", false, false, TEXT.GeneralInfo)
 	PropertySheet:AddSheet( TEXT.CharacterMenu, CharPanel, "icon16/group.png", false, false, TEXT.CharSwitchOrNew)
 	PropertySheet:AddSheet( TEXT.Roles, CityCommands, "icon16/wrench.png", false, false, TEXT.CommonCommandsOrRole)
-	PropertySheet:AddSheet( TEXT.Backpack, Inventory, "icon16/box.png", false, false, TEXT.ViewYourInventory)
-	PropertySheet:AddSheet( TEXT.Business, Business, "icon16/box.png", false, false, TEXT.PurchaseItems)
+	PropertySheet:AddSheet( TEXT.Backpack, Inventory, "icon16/house_go.png", false, false, TEXT.ViewYourInventory)
+	PropertySheet:AddSheet( TEXT.Business, Business, "icon16/briefcase.png", false, false, TEXT.PurchaseItems)
 	PropertySheet:AddSheet( TEXT.Scoreboard, Scoreboard, "icon16/application_view_detail.png", false, false, TEXT.ViewScoreboard)
 	PropertySheet:AddSheet( TEXT.Help, Help, "icon16/magnifier.png", false, false, TEXT.HelpTextMenu)
 	if LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() then
-		PropertySheet:AddSheet( "Admin", Admin, "icon16/application_view_detail.png", false, false, TEXT.AdminCommandsMenu)
+		PropertySheet:AddSheet( "Admin", Admin, "icon16/eye.png", false, false, TEXT.AdminCommandsMenu)
 	end
 end
 net.Receive("C1", function(_, ply) CreatePlayerMenu() end)
