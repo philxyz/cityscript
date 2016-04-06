@@ -832,9 +832,14 @@ function CreatePlayerMenu()
 	magImg:SetSize(16, 16)
 	magImg:SetImage("icon16/magnifier.png")
 
+	local FilterIcons
 	local bTe = vgui.Create("DTextEntry", Business)
 	bTe:SetPos(26, 4)
 	bTe:SetSize(588, 24)
+	bTe.OnValueChange = function(me, newValue)
+		FilterIcons(newValue)
+	end
+	bTe:SetUpdateOnType(true)
 
 	local busScroll = vgui.Create("DScrollPanel", Business)
 	busScroll:SetPos(0, 32)
@@ -850,6 +855,46 @@ function CreatePlayerMenu()
 	iconLayout:SetSpaceY(16)
 	iconLayout:SetBorder(12)
 
+	local iconOptions = {}
+
+	FilterIcons = function(filterText)
+		-- Return an iterator function
+		local words = string.gmatch(filterText, "%S+")
+
+		local wordList = {}
+
+		-- Fill the wordList table with each typed word (as lower case).
+		for word in words do
+			table.insert(wordList, word:lower())
+		end
+
+		-- Decide whether or not to display the icon.
+		for _, iOpt in ipairs(iconOptions) do
+			iOpt:SetVisible(false)
+			iOpt:SetParent(nil)
+
+			if #wordList == 0 then
+				-- When the search box is empty, show the icon.
+				iOpt:SetVisible(true)
+				iOpt:SetParent(iconLayout)
+			else
+				local show = false
+				for _, word in ipairs(wordList) do
+					-- If the word supplied matches any of the item names or descriptions, show the icon.
+					if iOpt.ToolTipText:find(word) ~= nil or iOpt.ItemName:find(word) ~= nil then
+						iOpt:SetVisible(true)
+						iOpt:SetParent(iconLayout)
+						break
+					end
+				end
+			end
+		end
+
+		iconLayout:InvalidateLayout()
+	end
+
+	-- Populate the list of icon options (which the above filter selects
+	-- when populating the list according to the search criteria).
 	if TeamTable[LocalPlayer():Team()] ~= nil then
 		if TeamTable[LocalPlayer():Team()].business then
 			for k, v in pairs(BusinessTable) do
@@ -857,6 +902,8 @@ function CreatePlayerMenu()
 				spawnicon:SetSize(128, 128)
 				spawnicon:SetModel(v.Model)
 				spawnicon:SetToolTip(v.Description)
+				spawnicon.ItemName = v.Name:lower()
+				spawnicon.ToolTipText = v.Description:lower()
 				local itemView
 				if v.IsShipment then
 					itemView = vgui.Create("DModelPanel", spawnicon)
@@ -903,7 +950,11 @@ function CreatePlayerMenu()
 					surface.DrawText(toShow)
 				end
 
+				spawnicon:SetParent(iconLayout)
+
 				iconLayout:Add(spawnicon)
+				table.insert(iconOptions, spawnicon)
+
 			end
 		elseif not TeamTable[LocalPlayer():Team()].business then
 			local label = vgui.Create("DLabel")
