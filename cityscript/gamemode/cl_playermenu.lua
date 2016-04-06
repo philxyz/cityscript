@@ -455,18 +455,15 @@ function CreatePlayerMenu()
 		surface.DrawRect(0, 0, PropertySheet:GetWide(), PropertySheet:GetTall())
 	end
 
-	local PlayerInfo = vgui.Create("DPanelList")
-	PlayerInfo:SetPadding(20)
-	PlayerInfo:SetSpacing(20)
-	PlayerInfo:EnableHorizontal(false)
+	local PlayerInfo = vgui.Create("DListLayout")
+	--PlayerInfo:SetSize(636, 448)
+	--PlayerInfo:SetLayoutDir(TOP)
+	--PlayerInfo:SetBorder(20)
+	--PlayerInfo:SetSpaceX(20)
+	--PlayerInfo:SetSpaceY(20)
 
-	local icdata = vgui.Create("DForm")
-	icdata:SetPadding(4)
-	icdata:SetName(LocalPlayer():Nick() or "")
-
-	local FullData = vgui.Create("DPanelList")
+	local FullData = vgui.Create("DListLayout")
 	FullData:SetSize(0, 84)
-	FullData:SetPadding(10)
 
 	local DataList = vgui.Create("DIconLayout")
 	DataList:SetSize(0, 64)
@@ -478,11 +475,11 @@ function CreatePlayerMenu()
 	spawnicon:SetSize(64, 64)
 	DataList:Add(spawnicon):SetSize(64, 64)
 
-	local DataList2 = vgui.Create("DPanelList")
+	local DataList2 = vgui.Create("DListLayout")
 
 	local label3 = vgui.Create("DLabel")
 	label3:SetText(TEXT.Association .. ": " .. team.GetName(LocalPlayer():Team()))
-	DataList2:AddItem(label3)
+	DataList2:Add(label3)
 
 	local Divider = vgui.Create("DHorizontalDivider")
 	Divider:SetLeft(spawnicon)
@@ -494,17 +491,20 @@ function CreatePlayerMenu()
 	DataList:Add(DataList2)
 	DataList:Add(Divider)
 
-	FullData:AddItem(DataList)
+	FullData:Add(DataList)
 
+	local icdata = vgui.Create("DForm")
+	icdata:SetPadding(4)
+	icdata:SetName(LocalPlayer():Nick() or "")
 	icdata:AddItem(FullData)
 
 	local vitals = vgui.Create("DForm")
 	vitals:SetPadding(4)
 	vitals:SetName(TEXT.VitalSigns)
 
-	local VitalData = vgui.Create("DPanelList")
-	VitalData:SetAutoSize(true)
-	VitalData:SetPadding(10)
+	local VitalData = vgui.Create("DIconLayout")
+	VitalData:SetSpaceX(10)
+	VitalData:SetSpaceY(10)
 	vitals:AddItem(VitalData)
 
 	local healthstatus = ""
@@ -520,10 +520,11 @@ function CreatePlayerMenu()
 
 	local health = vgui.Create("DLabel")
 	health:SetText("Vitals: " .. healthstatus)
-	VitalData:AddItem(health)
+	health:SizeToContents()
+	VitalData:Add(health)
 
-	PlayerInfo:AddItem(icdata)
-	PlayerInfo:AddItem(vitals)
+	PlayerInfo:Add(icdata)
+	PlayerInfo:Add(vitals)
 
 	CharPanel = vgui.Create("DPanelList")
 	CharPanel:SetPadding(20)
@@ -970,9 +971,9 @@ function CreatePlayerMenu()
 	-- Let's draw the SCOREBOARD.
 
 	for k, v in pairs(player.GetAll()) do
-		local FullData = vgui.Create("DPanelList")
+		local FullData = vgui.Create("DListLayout")
 		FullData:SetSize(0, 84)
-		FullData:SetPadding(10)
+		--FullData:SetPadding(10)
 
 		local DataList = vgui.Create("DIconLayout")
 		DataList:SetSize(0, 64)
@@ -993,15 +994,15 @@ function CreatePlayerMenu()
 		end
 		DataList:Add(spawnicon)
 
-		local DataList2 = vgui.Create("DPanelList")
+		local DataList2 = vgui.Create("DListLayout")
 
 		local label = vgui.Create("DLabel")
 		label:SetText( TEXT.OOCName .. ": " .. v:Name())
-		DataList2:AddItem(label)
+		DataList2:Add(label)
 
 		local label3 = vgui.Create("DLabel")
 		label3:SetText(TEXT.Association .. ": " .. team.GetName(v:Team()))
-		DataList2:AddItem(label3)
+		DataList2:Add(label3)
 
 		local Divider = vgui.Create("DHorizontalDivider")
 		Divider:SetLeft(spawnicon)
@@ -1013,21 +1014,21 @@ function CreatePlayerMenu()
 		DataList:Add(DataList2)
 		DataList:Add(Divider)
 
-		FullData:AddItem(DataList)
+		FullData:Add(DataList)
 
 		Scoreboard:Add(FullData)
 	end
 
-	local Help = vgui.Create("DPanelList")
-	Help:SetPadding(20)
-	Help:EnableHorizontal(false)
-	Help:EnableVerticalScrollbar(true)
+	local Help = vgui.Create("DIconLayout")
+	--Help:SetPadding(20)
+	--Help:EnableHorizontal(false)
+	Help:SetVerticalScrollbarEnabled(true)
 
 	local function AddHelpLine(text)
 		local label = vgui.Create("DLabel")
 		label:SetText(text)
 		label:SizeToContents()
-		Help:AddItem(label)
+		Help:Add(label)
 	end
 
 	for k, v in pairs(TEXT.HelpLong) do
