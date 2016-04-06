@@ -34,8 +34,6 @@ philxyz 2015
 		rp_createitem (second argument to CAKE.CreateItem)
 		rp_setmoney <player_name> <positive_whole_amount>
 
-- Replace DPanelList with DListLayout+DScrollPanel
-
 - Move data to SQL Backend (SQLite)
 - Impose a limit of 4 player characters
 - Implement the ability to delete player characters
