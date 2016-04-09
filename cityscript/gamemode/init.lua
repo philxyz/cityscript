@@ -113,9 +113,6 @@ function GM:Initialize() -- Initialize the gamemode
 	-- My reasoning for this certain order is due to the fact that plugins are meant to modify the gamemode sometimes.
 	-- Plugins need to be initialized before gamemode and schema so it can modify the way that the plugins and schema actually work.
 	-- AKA, hooks.
-
-	DB.Init()
-
 	DB.LogEvent("script", TEXT.PluginsInit)
 	CAKE.InitPlugins()
 
