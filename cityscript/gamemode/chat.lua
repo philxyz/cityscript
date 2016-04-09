@@ -38,13 +38,13 @@ function CAKE.SimpleChatCommand(prefix, range, form)
 	-- Also, the range is a multiplier based upon the ConVar "TalkRange".
 	--
 	-- Genius, 'miryt?
-	
+
 	local cc = {}
 	cc.simple = true
 	cc.cmd = cmd
 	cc.range = range
 	cc.form = form
-	
+
 	CAKE.ChatCommands[prefix] = cc
 end
 
@@ -53,7 +53,7 @@ function CAKE.ChatCommand(prefix, callback)
 	cc.simple = false
 	cc.cmd = prefix
 	cc.callback = callback
-	
+
 	CAKE.ChatCommands[prefix] = cc
 end
 
@@ -67,64 +67,64 @@ function GM:PlayerSay(ply, text, toall)
 		end
 	end
 
-	CAKE.DayLog("chat.txt", ply:SteamID() .. ": " .. text) -- we be spyins.
+	DB.LogEvent("chat", ply:SteamID() .. ": " .. text) -- we be spyins.
 	CAKE.CallHook("PlayerSay", ply, text, toall)
-	
+
 	if string.sub(text, 1, 1) == "!" then -- All rp_ commands can be executed with !
 		ply:ConCommand("rp_" .. string.sub( text, 2, string.len(text) ))
 		return ""
 	end
-	
+
 	for prefix, cc in pairs(CAKE.ChatCommands) do
 		local cmd = prefix
 		local cmdlen = string.len(cmd)
 		local cmdtxt = string.sub(text, 0, cmdlen)
-		
+
 		cmdtxt = string.lower(cmdtxt)
 		cmd = string.lower(cmd)
-		
-		if cmdtxt == cmd and (string.sub(text, cmdlen + 1, cmdlen + 1) == " " or string.len(text) == cmdlen) then -- This allows for multiple commands to start with the same thing 
+
+		if cmdtxt == cmd and (string.sub(text, cmdlen + 1, cmdlen + 1) == " " or string.len(text) == cmdlen) then -- This allows for multiple commands to start with the same thing
 			local args = string.sub(text, cmdlen + 2)
-			
+
 			if args == nil then
 				args = ""
 			end
-			
+
 			if not cc.simple then
 				return cc.callback(ply, args)
 			end
-			
+
 			local range = CAKE.ConVars["TalkRange"] * cc.range
-			
+
 			local s = cc.form
 			local s = string.gsub(s, "$1", ply:Nick()) -- IC Name
 			local s = string.gsub(s, "$2", ply:Name()) -- OOC Name
 			local s = string.gsub(s, "$3", args) -- Text
-			
+
 			for _, pl in pairs(player.GetAll()) do
 				if pl:EyePos():Distance(ply:EyePos()) <= range then
 					CAKE.Response(pl, s)
 				end
 			end
-			
+
 			return ""
 		end
 	end
-	
+
 	if string.sub(text, 1, 1) == "/" then
 		CAKE.Response(ply, TEXT.CommandInvalid)
 		return ""
 	else
 		-- Hurr, IC Chat..
-		
+
 		local range = CAKE.ConVars["TalkRange"]
-		
+
 		for _, pl in pairs(player.GetAll()) do
 			if pl:EyePos():Distance(ply:EyePos()) <= range then
 				CAKE.Response(pl, ply:Nick() .. ": " .. text)
 			end
 		end
-		
+
 		return ""
 	end
 end

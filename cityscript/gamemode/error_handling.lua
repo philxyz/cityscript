@@ -9,12 +9,12 @@
 
 function ErrorHandler(func, args, ret, errcode)
 	CAKE.CallHook("ErrorHandler", func, args, ret, errcode)
-	
+
 	local s = func .. "() " .. TEXT.Failed .. ": " .. func .. "(" .. table.concat(args, ",") .. ") " .. TEXT.FailedWithError .. " " .. errcode .. ": " .. (ErrorCodes[errcode] or TEXT.InvalidErrorCode)
-	
-	CAKE.DayLog("errors.txt", s)
+
+	DB.LogEvent("errors", s)
 	print(s)
-	
+
 	return ret
 end
 

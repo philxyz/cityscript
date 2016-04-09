@@ -11,7 +11,7 @@
 function AddResource(res_type, path)
 	if string.lower(res_type) == "lua" then
 		AddCSLuaFile(path)
-		CAKE.DayLog("script.txt", TEXT.AddedClientsideLuaFilePath(path))
+		DB.LogEvent("script", TEXT.AddedClientsideLuaFilePath(path))
 	end
 end
 

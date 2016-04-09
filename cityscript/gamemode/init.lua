@@ -55,16 +55,15 @@ util.AddNetworkString("C6") -- ATM 'use' menu
 util.AddNetworkString("C7") -- Change Role
 util.AddNetworkString("C8") -- Voice Trigger
 
--- Server Includes
+-- Server Includes#
 include("shared.lua") -- Shared Functions
 include("sv_upp.lua") -- Unobtrusive Prop Protection
-include("log.lua") -- Logging functions
+include("data.lua") -- SQLite functionality (police-related bits from DarkRP - uses DarkRP jail positions)
 include("error_handling.lua") -- Error handling functions
 include("util.lua") -- Functions
 include("hooks.lua") -- CakeScript Hook System
 include("configuration.lua") -- Configuration data
 include("player_data.lua") -- Player data functions
-include("data.lua") -- SQLite functionality (police-related bits from DarkRP - uses DarkRP jail positions)
 include("player_shared.lua") -- Shared player functions
 include("player_util.lua") -- Player functions
 include("admin.lua") -- Admin functions
@@ -115,13 +114,15 @@ function GM:Initialize() -- Initialize the gamemode
 	-- Plugins need to be initialized before gamemode and schema so it can modify the way that the plugins and schema actually work.
 	-- AKA, hooks.
 
-	CAKE.DayLog("script.txt", TEXT.PluginsInit)
+	DB.Init()
+
+	DB.LogEvent("script", TEXT.PluginsInit)
 	CAKE.InitPlugins()
 
-	CAKE.DayLog("script.txt", TEXT.SchemasInit)
+	DB.LogEvent("script", TEXT.SchemasInit)
 	CAKE.InitSchemas()
 
-	CAKE.DayLog("script.txt", TEXT.GamemodeInit)
+	DB.LogEvent("script", TEXT.GamemodeInit)
 
 	-- game.ConsoleCommand( "exec cakevars.cfg\n" ) -- Put any configuration variables in cfg/cakevars.cfg, set it using rp_admin setvar varname value
 	-- DEPRECATED
@@ -617,7 +618,3 @@ function PlayerSpawnedVehicle(ply, ent)
 	ent:SetNWEntity("c_ent", ply)
 end
 hook.Add("PlayerSpawnedVehicle", "SetVehicleCreatorInfo", PlayerSpawnedVehicle)
-
-hook.Add("InitPostEntity", "ipe_dbinit", function()
-	DB.Init()
-end)

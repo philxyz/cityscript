@@ -70,9 +70,9 @@ hook.Add("Think", "DecayCorpses", DecayCorpses)
 function CAKE.DeathMode(ply)
 	if ply == nil then return false end
 
-	CAKE.DayLog("script.txt", TEXT.DeathMode .. " " .. ply:SteamID())
+	DB.LogEvent("script", TEXT.DeathMode .. " " .. ply:SteamID())
 	local mdl = ply:GetModel()
-	
+
 	local rag = ents.Create("prop_ragdoll")
 	rag.CreatedAt = CurTime()
 	rag:SetNWEntity("c_ent", ply)
@@ -83,15 +83,15 @@ function CAKE.DeathMode(ply)
 	rag.isdeathdoll = true
 	rag.ply = ply
 	rag:Spawn()
-	
+
 	ply:SetViewEntity(rag)
 	ply.deathrag = rag
-	
+
 	local n = #DecayingRagdolls + 1
 	DecayingRagdolls[n] = ply.deathrag
-	
+
 	ply:SetNWInt("deathmode", 1)
-	
+
 	ply.deathtime = 0
 	ply.nextsecond = CurTime() + 1
 	ply:PrintMessage(HUD_PRINTCENTER, TEXT.BadInjury)
@@ -192,7 +192,7 @@ function meta:CompleteSentence()
 end
 
 function meta:GiveItem(class)
-	CAKE.DayLog("economy.txt", TEXT.AddingItemToInventory(class, CAKE.FormatCharString(self)))
+	DB.LogEvent("economy", TEXT.AddingItemToInventory(class, CAKE.FormatCharString(self)))
 
 	local inv = CAKE.GetCharField(self, "inventory")
 	table.insert(inv, class)
@@ -203,14 +203,14 @@ end
 
 function meta:TakeItem(class)
 	local inv = CAKE.GetCharField(self, "inventory")
-	
+
 	for k, v in pairs(inv) do
 		if v == class then
 			inv[k] = nil
 			PrintTable(inv)
 			CAKE.SetCharField(self, "inventory", inv)
 			self:RefreshInventory()
-			CAKE.DayLog("economy.txt", TEXT.RemovingItemFromInventory(class, CAKE.FormatCharString(self)))
+			DB.LogEvent("economy", TEXT.RemovingItemFromInventory(class, CAKE.FormatCharString(self)))
 			return
 		end
 	end
@@ -223,7 +223,7 @@ end
 
 function meta:RefreshInventory()
 	self:ClearInventory()
-	
+
 	local inv = CAKE.GetCharField(self, "inventory")
 
 	if type(inv) ~= "table" then return end
@@ -247,7 +247,7 @@ end
 
 function meta:RefreshBusiness()
 	self:ClearBusiness()
-		
+
 	if CAKE.Teams[self:Team()] == nil then return end -- Team not assigned
 
 	local amt = 0
@@ -286,8 +286,8 @@ function CAKE.ChangeMoney(ply, amount) -- Modify someone's money amount.
 	local money = math.floor(tonumber(CAKE.GetCharField(ply, "money") or 0))
 
 	if money + amount < 0 then return false end
-	
-	CAKE.DayLog("economy.txt", "Changing " .. ply:SteamID() .. "-" .. ply:GetNWString("uid") .. " money by " .. tostring(amount))
+
+	DB.LogEvent("economy", "Changing " .. ply:SteamID() .. "-" .. ply:GetNWString("uid") .. " money by " .. tostring(amount))
 	CAKE.SetCharField(ply, "money", money + amount)
 
 	ply:SetNWString("money", money + amount)
@@ -303,7 +303,7 @@ function CAKE.ChangeBankMoney(ply, amount) -- Modify someone's bank money amount
 	-- NEVAR EVAR LET IT GO NEGATIVE.
 	if bank + amount < 0 then return false end
 
-	CAKE.DayLog("economy.txt", TEXT.LogMoneyChange(ply:SteamID(), ply:GetNWString("uid"), amount))
+	DB.LogEvent("economy", TEXT.LogMoneyChange(ply:SteamID(), ply:GetNWString("uid"), amount))
 	CAKE.SetCharField(ply, "bank", bank + amount)
 
 	return true
@@ -314,9 +314,9 @@ function CAKE.SetMoney(ply, amount) -- Set someone's money amount.
 
 	-- NEVAR EVAR LET IT GO NEGATIVE.
 	if amount < 0 then return false end
-	
-	CAKE.DayLog("economy.txt", TEXT.LogSetMoneyChange(ply:SteamID(), ply:GetNWString("uid"), amount))
-	
+
+	DB.LogEvent("economy", TEXT.LogSetMoneyChange(ply:SteamID(), ply:GetNWString("uid"), amount))
+
 	CAKE.SetCharField(ply, "money", amount)
 	ply:SetNWString("money", CAKE.GetCharField(ply, "money"))
 

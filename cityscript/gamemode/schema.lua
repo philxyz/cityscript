@@ -12,29 +12,29 @@ CAKE.Schemas = {}
 function CAKE.LoadSchema(schema)
 
 	local path = "schemas/" .. schema .. ".lua"
-	
+
 	SCHEMA = {}
-	
+
 	include(path)
-	
-	CAKE.DayLog("script.txt", TEXT.LoadingSchema(SCHEMA.Name, SCHEMA.Author, SCHEMA.Description))
-	
+
+	DB.LogEvent("script", TEXT.LoadingSchema(SCHEMA.Name, SCHEMA.Author, SCHEMA.Description))
+
 	table.insert(CAKE.Schemas, SCHEMA)
-	
+
 	-- Load the plugins
 	local list = file.Find("cityscript/gamemode/schemas/" .. schema .. "/plugins/*.lua", "lsv")
-	
+
 	for k, v in pairs(list) do
 		CAKE.LoadPlugin(schema, v)
 	end
-	
+
 	-- Load the items
 	local list = file.Find("cityscript/gamemode/schemas/" .. schema .. "/items/*.lua", "lsv")
-	
+
 	for k, v in pairs(list) do
 		CAKE.LoadItem(schema, v)
 	end
-	
+
 	if SCHEMA.Base ~= nil then
 		CAKE.LoadSchema(SCHEMA.Base)
 	end

@@ -12,15 +12,15 @@ CAKE.Plugins = {}
 
 function CAKE.LoadPlugin(schema, filename)
 	CAKE.CallHook("LoadPlugin", schema, filename)
-	
+
 	local path = "schemas/" .. schema .. "/plugins/" .. filename
-	
+
 	PLUGIN = {}
-	
+
 	include(path)
-	
-	CAKE.DayLog("script.txt", TEXT.LoadingPluginBy(PLUGIN.Name, PLUGIN.Author, PLUGIN.Description))
-	
+
+	DB.LogEvent("script", TEXT.LoadingPluginBy(PLUGIN.Name, PLUGIN.Author, PLUGIN.Description))
+
 	table.insert(CAKE.Plugins, PLUGIN)
 end
 
@@ -35,8 +35,8 @@ end
 function CAKE.InitPlugins()
 	for _, PLUGIN in pairs(CAKE.Plugins) do
 		CAKE.CallHook("InitPlugin", _, PLUGIN)
-		CAKE.DayLog("script.txt", TEXT.InitializingPlugin .. ": " .. PLUGIN.Name)
-		
+		DB.LogEvent("script", TEXT.InitializingPlugin .. ": " .. PLUGIN.Name)
+
 		if PLUGIN.Init then
 			PLUGIN.Init()
 		end

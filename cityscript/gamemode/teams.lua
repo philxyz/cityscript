@@ -11,10 +11,10 @@ CAKE.Teams = {}
 
 function CAKE.AddTeam(team)
 	local n = #CAKE.Teams + 1
-	
+
 	CAKE.CallHook("AddTeam", team)
 	CAKE.Teams[n] = team
-	CAKE.DayLog("script.txt", TEXT.AddedTeam .. " " .. team.name)
+	DB.LogEvent("script", TEXT.AddedTeam .. " " .. team.name)
 end
 
 function CAKE.InitTeams()
@@ -46,34 +46,34 @@ end
 
 function CAKE.TeamObject()
 	local team = {}
-	
+
 	-- Basic team configuration
 	team.name = ""
 	team.color = Color(0, 0, 0, 255)
-	
+
 	-- Model configuration
 	team.model_path = ""
 	team.default_model = false -- Does the team have a model to use
 	team.partial_model = false -- Is the regular citizen model's suffix added onto the end of our modelpath ( Ex. male_07.mdl )
-	
+
 	-- Weapons Configuration
 	team.weapons = {}
-	
+
 	-- Role Configuration
 	team.role_key = "" -- Which role
 	team.door_groups = {} -- What groups of doors can the team open
 	team.radio_groups = {} -- What radios can the team talk on
 	team.sound_groups = {} -- What voices can the team use
 	team.item_groups = {} -- What items can the team purchase
-	
+
 	-- Salaries
 	team.salary = 0 -- How many tokens does this role earn every paycheck?
 
 	team.public = true
 	team.business = false
 	team.broadcast = false
-	
+
 	CAKE.CallHook("CreateTeamObject", team) -- Hooray, plugins get to throw in their own variables! :3
-	
+
 	return team
 end

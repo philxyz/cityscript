@@ -9,10 +9,19 @@ function DB.Init()
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_atmpositions('id' INTEGER NOT NULL, 'map' TEXT NOT NULL, 'x' NUMERIC NOT NULL, 'y' NUMERIC NOT NULL, 'z' NUMERIC NOT NULL, 'a' NUMERIC NOT NULL, 'b' NUMERIC NOT NULL, 'c' NUMERIC NOT NULL, PRIMARY KEY('id'));")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_zombiespawns('map' TEXT NOT NULL, 'x' NUMERIC NOT NULL, 'y' NUMERIC NOT NULL, 'z' NUMERIC NOT NULL);")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_soundabusers('steam64id' TEXT NOT NULL);")
+		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_log('when' DATETIME DEFAULT CURRENT_TIMESTAMP, 'section' TEXT NOT NULL, 'message' TEXT NOT NULL);")
 	sql.Commit()
 
 	DB.CreateJailPos()
 	DB.SetUpNonRentableDoors()
+end
+
+function DB.LogEvent(section, text)
+	sql.Query("INSERT INTO cityscript_log('section', 'message') VALUES(" .. sql.SQLStr(section) .. ", " .. sql.SQLStr(text) .. ");")
+	local err = sql.LastError()
+	if err ~= nil then
+		print("SQL ERROR in DB.LogEvent: " .. err)
+	end
 end
 
 function DB.CreateJailPos()
@@ -82,7 +91,7 @@ function DB.StoreJailStatus(ply, time)
 	-- Is there an existing outstanding jail sentence for this player?
 	local r = tonumber(sql.QueryValue("SELECT time FROM cityscript_wiseguys WHERE steam = " .. sql.SQLStr(steamID) .. ";"))
 
-	
+
 	if not r and time ~= 0 then
 		-- If there is no jail record for this player and we're not trying to clear an existing one
 		sql.Query("INSERT INTO cityscript_wiseguys VALUES(" .. sql.SQLStr(steamID) .. ", " .. time .. ");")
@@ -121,13 +130,13 @@ end
 function DB.RetrieveTeamSpawnPos(ply)
 	local map = string.lower(game.GetMap())
 	local t = ply:Team()
-	
+
 	-- this should return a map name.
 	local r = sql.Query("SELECT * FROM cityscript_teamspawns WHERE team = " .. t .. " AND map = ".. sql.SQLStr(map)..";")
 	if not r or #r < 1 then return nil end
 
 	local returnal = {}
-	
+
 	for k,v in pairs(r) do
 		table.insert(returnal, Vector(v.x, v.y, v.z))
 	end
@@ -255,13 +264,13 @@ end
 
 local function IsEmpty(vector)
 	local point = util.PointContents(vector)
-	local a = point ~= CONTENTS_SOLID 
-	and point ~= CONTENTS_MOVEABLE 
-	and point ~= CONTENTS_LADDER 
-	and point ~= CONTENTS_PLAYERCLIP 
+	local a = point ~= CONTENTS_SOLID
+	and point ~= CONTENTS_MOVEABLE
+	and point ~= CONTENTS_LADDER
+	and point ~= CONTENTS_PLAYERCLIP
 	and point ~= CONTENTS_MONSTERCLIP
 	local b = true
-	
+
 	for k,v in pairs(ents.FindInSphere(vector, 35)) do
 		if v:IsNPC() or v:IsPlayer() or v:GetClass() == "prop_physics" then
 			b = false
@@ -274,7 +283,7 @@ function DB.RetrieveRandomZombieSpawnPos()
 	local map = string.lower(game.GetMap())
 	local r = false
 	local c = tonumber(sql.QueryValue("SELECT COUNT(*) FROM cityscript_zombiespawns WHERE map = " .. sql.SQLStr(map) .. ";"))
-    
+
 	if c and c >= 1 then
 		r = sql.QueryRow("SELECT * FROM cityscript_zombiespawns WHERE map = " .. sql.SQLStr(map) .. ";", math.random(1, c))
         if not IsEmpty(Vector(r.x, r.y, r.z)) then
@@ -285,7 +294,7 @@ function DB.RetrieveRandomZombieSpawnPos()
 					return Vector(r.x, r.y, r.z) + Vector(i, 0, 0)
 				end
 			end
-			
+
 			if not found then
 				for i = 40, 200, 10 do
 					if IsEmpty(Vector(r.x, r.y, r.z) + Vector(0, i, 0)) then
@@ -294,7 +303,7 @@ function DB.RetrieveRandomZombieSpawnPos()
 					end
 				end
 			end
-			
+
 			if not found then
 				for i = 40, 200, 10 do
 					if IsEmpty(Vector(r.x, r.y, r.z) + Vector(-i, 0, 0)) then
@@ -303,7 +312,7 @@ function DB.RetrieveRandomZombieSpawnPos()
 					end
 				end
 			end
-			
+
 			if not found then
 				for i = 40, 200, 10 do
 					if IsEmpty(Vector(r.x, r.y, r.z) + Vector(0, -i, 0)) then
@@ -316,5 +325,7 @@ function DB.RetrieveRandomZombieSpawnPos()
 			return Vector(r.x, r.y, r.z)
 		end
 	end
-	return Vector(r.x, r.y, r.z) + Vector(0, 0, 70)        
+	return Vector(r.x, r.y, r.z) + Vector(0, 0, 70)
 end
+
+DB.Init()
