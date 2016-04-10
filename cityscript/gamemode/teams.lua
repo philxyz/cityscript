@@ -61,10 +61,10 @@ function CAKE.TeamObject()
 
 	-- Role Configuration
 	team.role_key = "" -- Which role
-	team.door_groups = {} -- What groups of doors can the team open
-	team.radio_groups = {} -- What radios can the team talk on
-	team.sound_groups = {} -- What voices can the team use
-	team.item_groups = {} -- What items can the team purchase
+	team.can_access_restricted_areas = false -- Whether or not members of this team can lock and unlock doors to restricted areas.
+	team.radio_groups = {} -- What radios can the team talk on.
+	team.sound_groups = {} -- What voices can the team use.
+	team.item_groups = {} -- What items can the team purchase.
 
 	-- Salaries
 	team.salary = 0 -- How many tokens does this role earn every paycheck?

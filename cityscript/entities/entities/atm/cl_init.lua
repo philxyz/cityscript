@@ -11,11 +11,11 @@ net.Receive("C6", function(_, ply)
 	if LocalPlayer():IsSuperAdmin() and IsValid(et) and et:GetMoveType() == MOVETYPE_VPHYSICS then
 		ContextMenu:AddOption(TEXT.AdminFreezeATM, function()
 			RunConsoleCommand("say", TEXT.FreezeATMCommand)
-		end)
+		end):SetIcon("icon16/control_pause.png")
 	end
 	ContextMenu:AddOption(TEXT.ShowBalance, function()
 		RunConsoleCommand("say", TEXT.ATMBalanceCommand)
-	end)
+	end):SetIcon("icon16/application_view_detail.png")
 	ContextMenu:AddOption(TEXT.WithdrawTokens, function()
 		-- Obtain the amount to withdraw
 		Derma_StringRequest(TEXT.MakeAWithdrawal,
@@ -26,7 +26,7 @@ net.Receive("C6", function(_, ply)
 				RunConsoleCommand("say", TEXT.ATMWithdrawCommand .. " " .. amount)
 			end
 		)
-	end)
+	end):SetIcon("icon16/arrow_right.png")
 	ContextMenu:AddOption(TEXT.DepositTokens, function()
 		-- Obtain the amount to deposit
 		Derma_StringRequest(TEXT.MakeADeposit,
@@ -37,7 +37,7 @@ net.Receive("C6", function(_, ply)
 				RunConsoleCommand("say", TEXT.ATMDepositCommand .. " " .. amount)
 			end
 		)
-	end)
+	end):SetIcon("icon16/arrow_left.png")
 	ContextMenu:AddOption(TEXT.TransferTokens, function()
 		-- Obtain the amount to transfer
 		Derma_StringRequest(TEXT.MakeATransfer,
@@ -54,11 +54,11 @@ net.Receive("C6", function(_, ply)
 				)
 			end
 		)
-	end)
+	end):SetIcon("icon16/arrow_switch.png")
 	if LocalPlayer():IsSuperAdmin() then
 		ContextMenu:AddOption(TEXT.AdminRemoveATM, function()
 			RunConsoleCommand("say", TEXT.RemoveATMCommand)
-		end)
+		end):SetIcon("icon16/cross.png")
 	end
 	ContextMenu:Open()
 end)

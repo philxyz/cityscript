@@ -72,24 +72,58 @@ local function InitHiddenButton()
 
 			local ContextMenu = DermaMenu()
 				if CAKE.IsDoor(target) or target:IsVehicle() then
-					if not target:GetNWBool("notRentable") then
-						ContextMenu:AddOption(TEXT.RentUnrent, function() net.Start("Ck"); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end)
-						ContextMenu:AddOption(TEXT.Lock, function() net.Start("Cn"); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end)
-						ContextMenu:AddOption(TEXT.Unlock, function() net.Start("Cm"); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end)
+					if not target:GetNWBool("nonRentable") then
+
+						if not target:GetNWBool("pmOnly") then
+							if target:GetNWInt("rby") == LocalPlayer():EntIndex() then
+								ContextMenu:AddOption(TEXT.UnrentDoor, function() net.Start("Ck"); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end):SetIcon("icon16/house.png")
+								ContextMenu:AddSpacer()
+							else
+								if target:GetNWInt("rby") == nil or target:GetNWInt("rby") == 0 then
+									ContextMenu:AddOption(TEXT.RentDoor, function() net.Start("Ck"); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end):SetIcon("icon16/house.png")
+									ContextMenu:AddSpacer()
+								end
+							end
+						end
+
+						ContextMenu:AddOption(TEXT.LockDoor, function() net.Start("Cn"); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end):SetIcon("icon16/lock.png")
+						ContextMenu:AddOption(TEXT.UnlockDoor, function() net.Start("Cm"); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end):SetIcon("icon16/lock_open.png")
 					end
 
 					if LocalPlayer():IsSuperAdmin() then
-						local sendfunc = function(enable)
+
+						ContextMenu:AddSpacer()
+
+						local sendfunc = function(enable, mode)
 							net.Start("Cc")
 							net.WriteInt(target:EntIndex(), 16)
+							net.WriteInt(mode, 8)
 							net.WriteBool(enable)
 							net.SendToServer()
 						end
 
-						if target:GetNWBool("nonRentable") then
-							ContextMenu:AddOption(TEXT.EnableRenting, function() sendfunc(true) end)
-						else
-							ContextMenu:AddOption(TEXT.DisableRenting, function() sendfunc(false) end)
+						if not target:GetNWBool("pmOnly") then
+							if target:GetNWBool("nonRentable") then
+								if target:GetNWInt("rby") == nil or target:GetNWInt("rby") == 0 then
+									ContextMenu:AddOption(TEXT.EnableRenting, function() sendfunc(true, 0) end):SetIcon("icon16/tick.png")
+								end
+							else
+								if target:GetNWInt("rby") == nil or target:GetNWInt("rby") == 0 then
+									ContextMenu:AddOption(TEXT.DisableRenting, function() sendfunc(false, 0) end):SetIcon("icon16/cross.png")
+								end
+							end
+						end
+
+						if not target:GetNWBool("nonRentable") then
+							if not target:GetNWBool("pmOnly") then
+								if target:GetNWInt("rby") == nil or target:GetNWInt("rby") == 0 then
+									ContextMenu:AddOption(TEXT.RestrictDoor, function() sendfunc(true, 1) end):SetIcon("icon16/key_delete.png")
+								end
+							else
+								if target:GetNWInt("rby") == nil or target:GetNWInt("rby") == 0 then
+									ContextMenu:AddOption(TEXT.RemoveRestrictionFromDoor, function() sendfunc(false, 1) end):SetIcon("icon16/key_go.png")
+								end
+							end
 						end
 					end
 				elseif target:IsPlayer() then
@@ -792,9 +826,9 @@ function CreatePlayerMenu()
 		spawnicon.DoClick = function (btn)
 			local ContextMenu = DermaMenu()
 				if weapons.GetStored(v.Class) ~= nil and not LocalPlayer():HasWeapon(v.Class) then
-					ContextMenu:AddOption("Equip", function() net.Start("Cq"); net.WriteString(v.Class); net.SendToServer(); DeleteMyself() end)
+					ContextMenu:AddOption("Equip", function() net.Start("Cq"); net.WriteString(v.Class); net.SendToServer(); DeleteMyself() end):SetIcon("icon16/bullet_add.png")
 				end
-				ContextMenu:AddOption("Drop", function() net.Start("Ce"); net.WriteString(v.Class); net.SendToServer(); DeleteMyself(); end);
+				ContextMenu:AddOption("Drop", function() net.Start("Ce"); net.WriteString(v.Class); net.SendToServer(); DeleteMyself(); end):SetIcon("icon16/briefcase.png");
 			ContextMenu:Open()
 		end
 
@@ -919,9 +953,9 @@ function CreatePlayerMenu()
 				spawnicon.DoClick = function (btn)
 					local ContextMenu = DermaMenu()
 						if tonumber(LocalPlayer():GetNWString("money")) >= v.Price then
-							ContextMenu:AddOption(TEXT.Purchase, function() net.Start("Cd"); net.WriteString(v.Class); net.SendToServer() end)
+							ContextMenu:AddOption(TEXT.Purchase, function() net.Start("Cd"); net.WriteString(v.Class); net.SendToServer() end):SetIcon("icon16/coins.png")
 						else
-							ContextMenu:AddOption(TEXT.NotEnoughTokens)
+							ContextMenu:AddOption(TEXT.NotEnoughTokens):SetIcon("icon16/coins_delete.png")
 						end
 					ContextMenu:Open()
 				end
@@ -986,9 +1020,9 @@ function CreatePlayerMenu()
 		spawnicon.DoClick = function()
 			if LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() then
 				local AdminFunctions = DermaMenu()
-				AdminFunctions:AddOption(TEXT.Warn, function() WarnPlayer(v) end)
-				AdminFunctions:AddOption(TEXT.Kick, function() KickPlayer(v) end)
-				AdminFunctions:AddOption(TEXT.Ban, function() BanPlayer(v) end)
+				AdminFunctions:AddOption(TEXT.Warn, function() WarnPlayer(v) end):SetIcon("icon16/error.png")
+				AdminFunctions:AddOption(TEXT.Kick, function() KickPlayer(v) end):SetIcon("icon16/error_go.png")
+				AdminFunctions:AddOption(TEXT.Ban, function() BanPlayer(v) end):SetIcon("icon16/error_delete.png")
 				AdminFunctions:Open()
 			end
 		end

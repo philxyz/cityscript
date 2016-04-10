@@ -5,15 +5,13 @@ function DB.Init()
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_jailpositions('map' TEXT NOT NULL, 'x' NUMERIC NOT NULL, 'y' NUMERIC NOT NULL, 'z' NUMERIC NOT NULL, 'lastused' NUMERIC NOT NULL, PRIMARY KEY('map', 'x', 'y', 'z'));")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_wiseguys('steam' TEXT NOT NULL, 'time' NUMERIC NOT NULL, PRIMARY KEY('steam'));")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_disableddoors('map' TEXT NOT NULL, 'idx' INTEGER NOT NULL, 'title' TEXT NOT NULL, PRIMARY KEY('map', 'idx'));")
+		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_restricteddoors('map' TEXT NOT NULL, 'idx' INTEGER NOT NULL, 'title' TEXT NOT NULL, PRIMARY KEY('map', 'idx'));")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_teamspawns('id' INTEGER NOT NULL, 'map' TEXT NOT NULL, 'team' INTEGER NOT NULL, 'x' NUMERIC NOT NULL, 'y' NUMERIC NOT NULL, 'z' NUMERIC NOT NULL, PRIMARY KEY('id'));")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_atmpositions('id' INTEGER NOT NULL, 'map' TEXT NOT NULL, 'x' NUMERIC NOT NULL, 'y' NUMERIC NOT NULL, 'z' NUMERIC NOT NULL, 'a' NUMERIC NOT NULL, 'b' NUMERIC NOT NULL, 'c' NUMERIC NOT NULL, PRIMARY KEY('id'));")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_zombiespawns('map' TEXT NOT NULL, 'x' NUMERIC NOT NULL, 'y' NUMERIC NOT NULL, 'z' NUMERIC NOT NULL);")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_soundabusers('steam64id' TEXT NOT NULL);")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_log('when' DATETIME DEFAULT CURRENT_TIMESTAMP, 'section' TEXT NOT NULL, 'message' TEXT NOT NULL);")
 	sql.Commit()
-
-	DB.CreateJailPos()
-	DB.SetUpNonRentableDoors()
 end
 
 function DB.LogEvent(section, text)
@@ -146,19 +144,42 @@ end
 function DB.StoreDoorRentability(ent)
 	local map = string.lower(game.GetMap())
 	local nonRentable = ent:GetNWBool("nonRentable")
-	local r = tonumber(sql.QueryValue("SELECT COUNT(*) FROM cityscript_disableddoors WHERE map = " .. sql.SQLStr(map) .. " AND idx = " .. ent:GetGlobalID() .. ";"))
+	local r = tonumber(sql.QueryValue("SELECT COUNT(1) FROM cityscript_disableddoors WHERE map = " .. sql.SQLStr(map) .. " AND idx = " .. ent:GetGlobalID() .. ";"))
 	if not r then return end
 
 	if r > 0 and not nonRentable then
 		sql.Query("DELETE FROM cityscript_disableddoors WHERE map = " .. sql.SQLStr(map) .. " AND idx = " .. ent:GetGlobalID() .. ";")
+		ent:SetNWString("dTitle", "")
 	elseif r == 0 and nonRentable then
-		sql.Query("INSERT INTO cityscript_disableddoors VALUES(" .. sql.SQLStr(map) .. ", " .. ent:GetGlobalID() .. ", " .. sql.SQLStr("Non-Rentable Door") .. ");")
-		ent:SetNWString("dTitle", "Non-Rentable Door")
+		sql.Query("INSERT INTO cityscript_disableddoors VALUES(" .. sql.SQLStr(map) .. ", " .. ent:GetGlobalID() .. ", " .. sql.SQLStr(TEXT.NonRentableDoor) .. ");")
+		ent:SetNWString("dTitle", TEXT.NonRentableDoor)
+	end
+end
+
+function DB.StoreDoorRestriction(ent)
+	local map = string.lower(game.GetMap())
+	local pmOnly = ent:GetNWBool("pmOnly")
+	local r = tonumber(sql.QueryValue("SELECT COUNT(1) FROM cityscript_restricteddoors WHERE map = " .. sql.SQLStr(map) .. " AND idx = " .. ent:GetGlobalID() .. ";"))
+	if not r then return end
+
+	if r > 0 and not pmOnly then
+		sql.Query("DELETE FROM cityscript_restricteddoors WHERE map = " .. sql.SQLStr(map) .. " AND idx = " .. ent:GetGlobalID() .. ";")
+		ent:SetNWString("dTitle", "")
+	elseif r == 0 and pmOnly then
+		sql.Query("INSERT INTO cityscript_restricteddoors VALUES(" .. sql.SQLStr(map) .. ", " .. ent:GetGlobalID() .. ", " .. sql.SQLStr(TEXT.RestrictedArea) .. ");")
+		ent:SetNWString("dTitle", TEXT.RestrictedArea)
 	end
 end
 
 function DB.StoreNonRentableDoorTitle(ent, text)
+	text = text .. "\n" .. TEXT.NonRentableDoor
 	sql.Query("UPDATE cityscript_disableddoors SET title = " .. sql.SQLStr(text) .. " WHERE map = " .. sql.SQLStr(string.lower(game.GetMap())) .. " AND idx = " .. ent:GetGlobalID() .. ";")
+	ent:SetNWString("dTitle", text)
+end
+
+function DB.StoreRestrictedDoorTitle(ent, text)
+	text = text .. "\n" .. TEXT.RestrictedArea
+	sql.Query("UPDATE cityscript_restricteddoors SET title = " .. sql.SQLStr(text) .. " WHERE map = " .. sql.SQLStr(string.lower(game.GetMap())) .. " AND idx = " .. ent:GetGlobalID() .. ";")
 	ent:SetNWString("dTitle", text)
 end
 
@@ -169,6 +190,18 @@ function DB.SetUpNonRentableDoors()
 	for _, row in pairs(r) do
 		local e = ents.GetByGlobalID(tonumber(row.idx))
 		e:SetNWBool("nonRentable", true)
+		e:SetNWString("dTitle", row.title)
+	end
+end
+
+function DB.SetUpRestrictedAreaDoors()
+	local r = sql.Query("SELECT idx, title FROM cityscript_restricteddoors WHERE map = " .. sql.SQLStr(string.lower(game.GetMap())) .. ";")
+	if not r then return end
+
+	for _, row in pairs(r) do
+		local e = ents.GetByGlobalID(tonumber(row.idx))
+		print("SETTING DOOR TITLE TO " .. row.title)
+		e:SetNWBool("pmOnly", true)
 		e:SetNWString("dTitle", row.title)
 	end
 end

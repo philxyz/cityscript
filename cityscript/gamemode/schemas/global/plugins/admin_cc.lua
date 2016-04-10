@@ -2,36 +2,6 @@ PLUGIN.Name = "Admin Commands" -- What is the plugin name
 PLUGIN.Author = "LuaBanana" -- Author of the plugin
 PLUGIN.Description = "A set of default admin commands" -- The description or purpose of the plugin
 
-function Admin_AddDoor(ply, cmd, args)
-
-	local tr = ply:GetEyeTrace()
-	local trent = tr.Entity
-
-	if not CAKE.IsDoor(trent) then ply:PrintMessage(3, TEXT.MustBeLookingAtDoor); return; end
-
-	if table.getn(args) < 1 then ply:PrintMessage(3, TEXT.SpecifyADoorGroup); return; end
-
-	if not tonumber(args[1]) then
-		print("Door group must be a number")
-		return
-	end
-
-	local pos = trent:GetPos()
-	local Door = {}
-
-	Door.x = math.ceil(pos.x)
-	Door.y = math.ceil(pos.y)
-	Door.z = math.ceil(pos.z)
-	Door.group = args[1]
-
-	table.insert(CAKE.Doors, Door)
-
-	CAKE.Response(ply, TEXT.DoorAdded)
-
-	local keys = util.TableToKeyValues(CAKE.Doors)
-	file.Write("cakescript/mapdata/" .. string.tolower(game.GetMap()) .. ".txt", keys)
-end
-
 -- rp_admin quiet "name" [1|0]
 function Admin_Quiet(ply, cmd, args)
 	if #args ~= 2 or (args[2] != "1" and args[2] ~= "0") then

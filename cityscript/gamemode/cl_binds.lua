@@ -16,16 +16,17 @@ function GM:PlayerBindPress(ply, bind, pressed)
 			return true
 		end
 	end
-	
+	--[[
 	if bind == "+use" then
 		local trent = LocalPlayer():GetEyeTrace().Entity
-		
+
 		if trent ~= nil and IsValid(trent) and CAKE.IsDoor(trent) then
 			-- Open door
 			net.Start("Cl")
 			net.SendToServer()
 		end
 	end
+	]]
 end
 
 function GM:ScoreboardShow()

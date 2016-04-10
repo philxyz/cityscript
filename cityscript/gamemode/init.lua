@@ -68,7 +68,7 @@ include("player_shared.lua") -- Shared player functions
 include("player_util.lua") -- Player functions
 include("admin.lua") -- Admin functions
 include("chat.lua") -- Chat Commands
-include("daynight.lua") -- Day/Night and Cloc
+include("daynight.lua") -- Day/Night and Clock
 include("concmd.lua") -- Concommands
 include("charactercreate.lua") -- Character Creation functions
 include("items.lua") -- Items system
@@ -76,7 +76,6 @@ include("schema.lua") -- Schema system
 include("plugins.lua") -- Plugin system
 include("teams.lua") -- Teams system
 include("client_resources.lua") -- Sends files to the client
-include("doors.lua") -- Doors
 
 -- Required Workshop Addons
 -- CSS Realistic Weapons (originally by Worshipper, fixed for GM13 by "S o h")
@@ -127,7 +126,6 @@ function GM:Initialize() -- Initialize the gamemode
 	GAMEMODE.Name = "CityScript"
 
 	CAKE.InitTime()
-	CAKE.LoadDoors()
 	DB.FetchQuietPlayers()
 
 	timer.Create("timesave", 120, 0, CAKE.SaveTime)
@@ -320,6 +318,12 @@ function GM:PlayerSetModel(ply)
 	CAKE.CallTeamHook("PlayerSetModel", ply, m); -- Hrm. Looks like the teamhook will take priority over the regular hook.. PREPARE FOR HELLFIRE (puts on helmet)
 end
 
+hook.Add("InitPostEntity", "DBEntityStuff", function()
+	DB.CreateJailPos()
+	DB.SetUpNonRentableDoors()
+	DB.SetUpRestrictedAreaDoors()
+end)
+
 function SpewMoney(amount, pos)
 	if amount <= 0 then return end
 
@@ -476,19 +480,6 @@ end
 	-- We don't want kills, deaths, nor ragdolls being made. Kthx. -- O RLY? (philxyz)
 
 --end
-
-function GM:PlayerUse(ply, entity)
-	if CAKE.IsDoor(entity) then
-		local doorgroups = CAKE.GetDoorGroup(entity)
-		for k, v in pairs(doorgroups) do
-			if table.HasValue(CAKE.Teams[ply:Team()].door_groups, v) then
-				return false
-			end
-		end
-	end
-
-	return self.BaseClass:PlayerUse(ply, entity)
-end
 
 function GM:PlayerCanPickupWeapon(ply, class)
 	if ply:GetTable().Arrested then return false end

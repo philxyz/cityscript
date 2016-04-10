@@ -213,9 +213,14 @@ net.Receive("Cn", function(_, ply)
 	local entIndex = net.ReadInt(16)
 	local entity = ents.GetByIndex(entIndex)
 
+	local rentable = not entity:GetNWBool("nonRentable")
+	local restrictedArea = entity:GetNWBool("pmOnly")
+	local playerCanAccessRestrictedAreas = CAKE.Teams[ply:Team()].can_access_restricted_areas
+
 	if CAKE.IsDoor(entity) then
-		if entity.owner == ply then
+		if rentable and (entity.owner == ply or (restrictedArea and playerCanAccessRestrictedAreas)) then
 			entity:Fire("lock", "", 0)
+			ply:EmitSound("buttons/lever" .. math.floor(math.Rand(7,8)) .. ".wav")
 		else
 			CAKE.Response(ply, TEXT.NotYourDoor)
 		end
@@ -227,34 +232,16 @@ net.Receive("Cm", function(_, ply)
 	local entIndex = net.ReadInt(16)
 	local entity = ents.GetByIndex(entIndex)
 
+	local rentable = not entity:GetNWBool("nonRentable")
+	local restrictedArea = entity:GetNWBool("pmOnly")
+	local playerCanAccessRestrictedAreas = CAKE.Teams[ply:Team()].can_access_restricted_areas
+
 	if CAKE.IsDoor(entity) then
-		if entity.owner == ply then
+		if rentable and (entity.owner == ply or (restrictedArea and playerCanAccessRestrictedAreas)) then
 			entity:Fire("unlock", "", 0)
+			ply:EmitSound("buttons/lever" .. math.floor(math.Rand(7,8)) .. ".wav")
 		else
 			CAKE.Response(ply, TEXT.NotYourDoor)
-		end
-	end
-end)
-
--- Open door
-net.Receive("Cl", function(_, ply)
-	local entity = ply:GetEyeTrace().Entity
-
-	-- If we are looking at a door and are in range of it...
-	if IsValid(entity) and CAKE.IsDoor(entity) and ply:GetPos():Distance(entity:GetPos()) < 200 then
-		local pos = entity:GetPos()
-
-		for k, v in pairs(CAKE.Doors) do
-			-- If the position of one of the doors in CAKE.Doors matches the position of this door
-			if tonumber(v.x) == math.ceil(tonumber(pos.x)) and tonumber(v.y) == math.ceil(tonumber(pos.y)) and tonumber(v.z) == math.ceil(tonumber(pos.z)) then
-				-- and the player is in a team whose door_groups table includes the group that this door is assigned to
-				for k2, v2 in pairs(CAKE.Teams[ply:Team()].door_groups) do
-					if tonumber(v.group) == tonumber(v2) then
-						-- Open the door
-						entity:Fire("toggle", "", 0)
-					end
-				end
-			end
 		end
 	end
 end)
@@ -269,20 +256,19 @@ net.Receive("Ck", function(_, ply)
 		return
 	end
 
-	local pos = door:GetPos()
-
-	for k, v in pairs(CAKE.Doors) do
-		if tonumber(v.x) == math.ceil(tonumber(pos.x)) and tonumber(v.y) == math.ceil(tonumber(pos.y)) and tonumber(v.z) == math.ceil(tonumber(pos.z)) then
-			CAKE.Response(ply, TEXT.DoorNotRentable)
-			return
-		end
+	if door:GetNWBool("pmOnly") then
+		CAKE.Response(ply, TEXT.DoorNotRentable)
+		return
 	end
+
+	local pos = door:GetPos()
 
 	if CAKE.IsDoor(door) then
 		if door.owner == nil then
 			if tonumber(CAKE.GetCharField(ply, "money")) >= 50 then
 				-- Enough money to start off, let's start the rental.
 				CAKE.ChangeMoney(ply, -50)
+				door:SetNWInt("rby", ply:EntIndex())
 				door.owner = ply
 				CAKE.Response(ply, TEXT.DoorRented)
 
@@ -299,6 +285,7 @@ net.Receive("Ck", function(_, ply)
 							CAKE.Response(ply, TEXT.DoorLost)
 							door:SetNWString("title", "")
 							door.owner = nil
+							door:SetNWInt("rby", 0)
 						end
 					end
 				end
@@ -307,6 +294,7 @@ net.Receive("Ck", function(_, ply)
 			end
 		elseif door.owner == ply then
 			door.owner = nil
+			door:SetNWInt("rby", 0)
 			CAKE.Response(ply, TEXT.DoorRentCancelled)
 		else
 			CAKE.Response(ply, TEXT.DoorAlreadyRented)
@@ -314,20 +302,28 @@ net.Receive("Ck", function(_, ply)
 	end
 end)
 
--- Toggle door-rentability (per door)
+-- Toggle admin-controlled door attributes (per door)
 net.Receive("Cc", function(_, ply)
 	local doorEnt = Entity(net.ReadInt(16))
-	local rentingEnabled = net.ReadBool()
+	local mode = net.ReadInt(8)
+	local featureEnabled = net.ReadBool()
 
 	if not ply:IsSuperAdmin() then
 		CAKE.Response(ply, TEXT.SuperAdminOnly)
 		return
 	end
 
-	doorEnt:SetNWBool("nonRentable", not rentingEnabled)
-	DB.StoreDoorRentability(doorEnt)
+	if mode == 0 then
+		doorEnt:SetNWBool("nonRentable", not featureEnabled)
+		DB.StoreDoorRentability(doorEnt)
 
-	CAKE.Response(ply, rentingEnabled and TEXT.DoorRentingEnabled or TEXT.DoorRentingDisabled)
+		CAKE.Response(ply, featureEnabled and TEXT.DoorRentingEnabled or TEXT.DoorRentingDisabled)
+	elseif mode == 1 then
+		doorEnt:SetNWBool("pmOnly", featureEnabled)
+		DB.StoreDoorRestriction(doorEnt)
+
+		CAKE.Response(ply, featureEnabled and TEXT.DoorRestricted or TEXT.DoorUnrestricted)
+	end
 end)
 
 CAKE.ChatCommand(TEXT.DropWeaponCommand, function(ply, args)

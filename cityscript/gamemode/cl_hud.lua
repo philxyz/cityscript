@@ -3,7 +3,7 @@
 -- Author: LuaBanana ( Aka Jake )
 -- Project Start: 5/24/2008
 --
--- cl_hud.lua 
+-- cl_hud.lua
 -- General HUD stuff.
 -------------------------------
 
@@ -45,11 +45,11 @@ end
 
 function DrawTargetInfo()
 	local tr = LocalPlayer():GetEyeTrace()
-	
+
 	if not tr.HitNonWorld or not IsValid(tr.Entity) then
 		return
 	end
-	
+
 	if (not tr.Entity:IsVehicle() and not tr.Entity:IsPlayer() and not tr.Entity:IsNPC()) and tr.Entity:GetPos():Distance(LocalPlayer():GetPos()) < 100 then
 		local screenpos = tr.Entity:GetPos():ToScreen()
 
@@ -75,30 +75,30 @@ function DrawTargetInfo()
 		end
 	end
 end
-		
+
 function GM:HUDShouldDraw( name )
 	if not IsValid(LocalPlayer()) then return false end
 
 	if LocalPlayer():GetNWInt("charactercreate") == 1 or LocalPlayer():GetNWInt("charactercreate") == nil then
 		return false
 	end
-	
-	local nodraw = 
-	{ 
-	
+
+	local nodraw =
+	{
+
 		"CHudHealth",
 		"CHudAmmo",
 		"CHudSecondaryAmmo",
 		"CHudBattery",
-	
+
 	}
-	
+
 	for k, v in pairs(nodraw) do
 		if name == v then
 			return false
 		end
 	end
-	
+
 	return true
 end
 
@@ -134,10 +134,10 @@ end
 function DrawDeathMeter()
 	local timeleft = LocalPlayer():GetDTInt(2)
 	local w = (timeleft / 120) * 198
-	
+
 	draw.RoundedBox(8, ScrW() / 2 - 100, 5, 200, 50, Color(GUIcolor_trans))
 	draw.RoundedBox(8, ScrW() / 2 - 98, 7, w, 46, Color(255, 0, 0, 255))
-	
+
 	draw.DrawText(TEXT.TimeLeft .. " " .. TEXT.HowToRespawn, "ChatFont", ScrW() / 2 - 93, 25 - 5, Color(255, 255, 255, 255), 0)
 end
 
@@ -154,7 +154,7 @@ function ShowHelpPopup()
 	label2:SetPos(10, 56)
 	label2:SetText(TEXT.MainHelpHintText)
 	label2:SizeToContents()
-	
+
 	local check = vgui.Create("DCheckBoxLabel", frame)
 	check:SetPos(10, 88)
 	check:SetText(TEXT.HideHelpHintsCheckText)
@@ -196,23 +196,23 @@ function DrawPlayerInfo()
 				local dist = position:Distance(LocalPlayer():GetPos())
 				local dist = dist / 2
 				local dist = math.floor(dist)
-				
+
 				if dist > 100 then
 					alpha = 255 - (dist - 100)
 				else
 					alpha = 255
 				end
-				
+
 				if alpha > 255 then
 					alpha = 255
 				elseif alpha < 0 then
 					alpha = 0
 				end
-				
+
 				draw.DrawText(v:Nick(), "DefaultSmall", screenpos.x, screenpos.y, Color(255, 255, 255, alpha), 1)
 				draw.DrawText(team.GetName(v:Team()), "DefaultSmall", screenpos.x, screenpos.y + 10, Color(255, 255, 255, alpha), 1)
 				draw.DrawText(v:GetNWString("title"), "DefaultSmall", screenpos.x, screenpos.y + 20, Color(255, 255, 255, alpha), 1)
-				
+
 				if v:GetDTInt(3) == 1 then
 					draw.DrawText(TEXT.Typing, "ChatFont", screenpos.x, screenpos.y - 50, Color(255, 255, 255, alpha), 1)
 				end
@@ -266,22 +266,16 @@ function GM:HUDPaint()
 	if IsValid(tr.Entity) and CAKE.IsDoor(tr.Entity) and tr.Entity:GetPos():Distance(LocalPlayer():GetPos()) < 200 then
 		local pos = tr.HitPos:ToScreen()
 		local ent = tr.Entity
-		local st
-
-		if ent:GetNWBool("nonRentable") then
-			st = ent:GetNWString("dTitle") -- show disabled door title
-		else
-			st = ent:GetNWString("title") or "" --  show enabled door title
-		end
+		local st = ent:GetNWString("dTitle") or ""
 
 		draw.DrawText(st, "TargetID", pos.x + 1, pos.y + 1, Color(0, 0, 0, 200), 1)
 		draw.DrawText(st, "TargetID", pos.x, pos.y, Color(255, 255, 255, 200), 1)
 	end
-	
+
 	if LocalPlayer():GetDTInt(1) == 1 then
 		DrawDeathMeter()
 	end
-	
+
 	DrawTime()
 	DrawPlayerInfo()
 	DrawTargetInfo()

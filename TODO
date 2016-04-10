@@ -29,11 +29,10 @@ philxyz 2015
 		rp_admin kick <name> <reason>
 		rp_admin ban <name> <reason> <minutes>
 
-		rp_admin adddoor <groupid>  - Makes a door part of a numbered group which only teams mentioning that group can open.
-
 		rp_createitem (second argument to CAKE.CreateItem)
 		rp_setmoney <player_name> <positive_whole_amount>
 
+- Loading message
 - Move data to SQL Backend (SQLite)
 - Impose a limit of 4 player characters
 - Implement the ability to delete player characters
@@ -49,3 +48,6 @@ philxyz 2015
 		  in case they change that team back again
 		- Make character selection more obvious
 - Update help menu to represent current state
+- Tart things up a bit
+	- Jobs List
+	- Help Menu
