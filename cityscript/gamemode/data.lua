@@ -200,7 +200,6 @@ function DB.SetUpRestrictedAreaDoors()
 
 	for _, row in pairs(r) do
 		local e = ents.GetByGlobalID(tonumber(row.idx))
-		print("SETTING DOOR TITLE TO " .. row.title)
 		e:SetNWBool("pmOnly", true)
 		e:SetNWString("dTitle", row.title)
 	end

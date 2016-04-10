@@ -43,6 +43,21 @@ local function DrawTime()
 	draw.DrawText(GetGlobalString("time"), "PlInfoFont", 10, 10, Color(255, 255, 255, 255), 0)
 end
 
+local function DrawPleaseWaitMessage()
+	if CAKE.ShowLoadingMessage then
+		surface.SetFont("PlInfoFont")
+		local w, h = surface.GetTextSize(TEXT.PleaseWaitMessage)
+		local w2 = (ScrW() / 2) - (w / 2)
+		local h2 = (ScrH() / 2) - (h / 2)
+		surface.SetTextPos(w2 - 1, h2 - 1)
+		surface.SetTextColor(Color(0, 0, 0, 0))
+		surface.DrawText(TEXT.PleaseWaitMessage)
+		surface.SetTextColor(Color(255, 255, 255, 255))
+		surface.SetTextPos(w2, h2)
+		surface.DrawText(TEXT.PleaseWaitMessage)
+	end
+end
+
 function DrawTargetInfo()
 	local tr = LocalPlayer():GetEyeTrace()
 
@@ -85,12 +100,10 @@ function GM:HUDShouldDraw( name )
 
 	local nodraw =
 	{
-
 		"CHudHealth",
 		"CHudAmmo",
 		"CHudSecondaryAmmo",
-		"CHudBattery",
-
+		"CHudBattery"
 	}
 
 	for k, v in pairs(nodraw) do
@@ -282,6 +295,7 @@ function GM:HUDPaint()
 	DrawInfoPanel()
 	DrawAmmoDisplay()
 	DrawRevivalTimer()
+	DrawPleaseWaitMessage()
 	UPP.DrawUI()
 end
 

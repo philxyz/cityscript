@@ -5,9 +5,10 @@ ITEM.Model = "models/weapons/w_grenade.mdl";
 ITEM.Purchaseable = true;
 ITEM.Price = 279;
 ITEM.ItemGroup = 5;
+ITEM.IncludeAmmo = true
 
 function ITEM:Drop(ply)
-	
+
 end
 
 function ITEM:Pickup(ply)

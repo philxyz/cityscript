@@ -1113,5 +1113,14 @@ function CreatePlayerMenu()
 	if LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() then
 		PropertySheet:AddSheet( "Admin", Admin, "icon16/eye.png", false, false, TEXT.AdminCommandsMenu)
 	end
+
+	CAKE.ShowLoadingMessage = nil
 end
-net.Receive("C1", function(_, ply) CreatePlayerMenu() end)
+local function MenuWrapper()
+	CAKE.ShowLoadingMessage = true
+
+	timer.Simple(0.1, function()
+		CreatePlayerMenu()
+	end)
+end
+net.Receive("C1", function(_, ply) MenuWrapper() end)
