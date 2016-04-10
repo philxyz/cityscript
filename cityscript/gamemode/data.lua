@@ -11,6 +11,7 @@ function DB.Init()
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_zombiespawns('map' TEXT NOT NULL, 'x' NUMERIC NOT NULL, 'y' NUMERIC NOT NULL, 'z' NUMERIC NOT NULL);")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_soundabusers('steam64id' TEXT NOT NULL);")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_log('when' DATETIME DEFAULT CURRENT_TIMESTAMP, 'section' TEXT NOT NULL, 'message' TEXT NOT NULL);")
+		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_time('day' INTEGER NOT NULL, 'month' INTEGER NOT NULL, 'year' INTEGER NOT NULL, 'minutes' INTEGER NOT NULL);")
 	sql.Commit()
 end
 
@@ -19,6 +20,47 @@ function DB.LogEvent(section, text)
 	local err = sql.LastError()
 	if err ~= nil then
 		print("SQL ERROR in DB.LogEvent: " .. err)
+	end
+end
+
+function DB.InitRPTime(d, m, y, s)
+	sql.Query("INSERT INTO cityscript_time('day', 'month', 'year', 'minutes') VALUES(" .. tostring(d) .. ", " .. tostring(m) .. ", " .. tostring(y) .. ", " .. tostring(s) .. ");")
+	local err = sql.LastError()
+	if err ~= nil then
+		print("SQL ERROR in DB.InitRPTime")
+	end
+end
+
+function DB.GetRPTime()
+	local res = sql.Query("SELECT day, month, year, minutes FROM cityscript_time;")
+
+	if not res then
+		return nil
+	else
+		local err = sql.LastError()
+		if err ~= nil then
+			print("SQL ERROR in DB.GetRPTime")
+		end
+
+		local result = {}
+		local iterCheck = false
+
+		for _, r in ipairs(res) do
+			result.day = r.day
+			result.month = r.month
+			result.year = r.year
+			result.minutes = r.minutes
+
+			return result -- Exit function
+		end
+	end
+end
+
+function DB.SaveRPTime(d, m, y, mins)
+	sql.Query("UPDATE cityscript_time SET day = " .. tostring(d) .. ", month = " .. tostring(m) .. ", year = " .. tostring(y) .. ", minutes = " .. tostring(mins) .. ";")
+	local err = sql.LastError()
+	if err ~= nil then
+		print("SQL ERROR in DB.SaveRPTime")
 	end
 end
 
