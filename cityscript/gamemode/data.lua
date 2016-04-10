@@ -2,6 +2,8 @@ include("static_data.lua")
 
 function DB.Init()
 	sql.Begin()
+		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_players('steam64id' TEXT NOT NULL, 'proptrust' INTEGER NOT NULL, 'extraragdolls' INTEGER NOT NULL, 'tooltrust' INTEGER NOT NULL, 'gravtrust' INTEGER NOT NULL, 'phystrust' INTEGER NOT NULL, 'extraeffects' INTEGER NOT NULL, 'extravehicles' INTEGER NOT NULL, 'extraprops' INTEGER NOT NULL, 'showhelppopup' INTEGER NOT NULL, PRIMARY KEY('steam64id'));")
+		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_player_characters('steam64id' TEXT NOT NULL, 'name' TEXT NOT NULL, 'model' TEXT NOT NULL, 'bank' INTEGER NOT NULL, 'money' INTEGER NOT NULL, 'flags' TEXT NOT NULL);")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_jailpositions('map' TEXT NOT NULL, 'x' NUMERIC NOT NULL, 'y' NUMERIC NOT NULL, 'z' NUMERIC NOT NULL, 'lastused' NUMERIC NOT NULL, PRIMARY KEY('map', 'x', 'y', 'z'));")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_wiseguys('steam' TEXT NOT NULL, 'time' NUMERIC NOT NULL, PRIMARY KEY('steam'));")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_disableddoors('map' TEXT NOT NULL, 'idx' INTEGER NOT NULL, 'title' TEXT NOT NULL, PRIMARY KEY('map', 'idx'));")
