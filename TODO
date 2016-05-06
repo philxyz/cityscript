@@ -32,6 +32,20 @@ philxyz 2015
 		rp_createitem (second argument to CAKE.CreateItem)
 		rp_setmoney <player_name> <positive_whole_amount>
 
+
+- Items spawning onto the viewmodel?
+  (Something's up with CAKE.CalcDrop such that the position calculated results in things
+  spawned get stuck in view model sometimes.)
+
+- Leave more space between weapons when breaking open a shipment box.
+- Storage box is broken when putting fivesevens into it.
+[ERROR] gamemodes/cityscript/entities/entities/storage_box/init.lua:121: bad argument #1 to 'WriteString' (string expected, got table)
+1. WriteString - [C]:-1
+2. OpenMenu - gamemodes/cityscript/entities/entities/storage_box/init.lua:121
+ 3. UseItem - gamemodes/cityscript/entities/entities/storage_box/init.lua:159
+  4. func - gamemodes/cityscript/gamemode/concmd.lua:410
+	5. unknown - lua/includes/extensions/net.lua:32
+
 - Move data to SQL Backend (SQLite)
 - Fix rental of doors. It says that doors are not owned.
 - Show owner on doors.
@@ -54,3 +68,4 @@ philxyz 2015
 - Tart things up a bit
 	- Jobs List
 	- Help Menu
+	- 3D 2D text on boxes
