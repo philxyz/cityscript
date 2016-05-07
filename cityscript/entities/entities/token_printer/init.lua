@@ -61,6 +61,7 @@ function ENT:Fireball()
 end
 
 local function PrintMore(ent)
+	-- Does the entity referred-to still exist?
 	if IsValid(ent) then
 		ent.dt.sparking = true
 		timer.Simple(3, function() ent:CreateMoneybag() end)
@@ -84,7 +85,7 @@ function ENT:CreateMoneybag()
 	-- Money sents are removed when admin removes all SENTs
 
 	self.dt.sparking = false
-	timer.Simple(math.random(40, 350), function() self:PrintMore() end) -- Print more cash in 40 to 350 seconds
+	timer.Simple(math.random(40, 350), function() PrintMore(self) end) -- Print more cash in 40 to 350 seconds
 end
 
 function ENT:Think()
@@ -111,5 +112,5 @@ function ENT:Drop()
 end
 
 function ENT:Touch( hitEnt )
-   
+
 end
