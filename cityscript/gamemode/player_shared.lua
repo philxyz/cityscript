@@ -7,39 +7,33 @@
 -- This is a shared file that contains functions for the players, of which is loaded on client and server.
 -------------------------------
 
-local meta = FindMetaTable( "Player" );
+local meta = FindMetaTable("Player")
 
-function meta:CanTraceTo( ent ) -- Can the player and the entity "see" eachother?
+function meta:CanTraceTo(ent) -- Can the player and the entity "see" eachother?
+	local tr = util.TraceLine({
+		start = self:EyePos(),
+		endpos = ent:EyePos(),
+		filter = function(ent) if ent:GetClass() == "prop_physics" then return true end end
+	})
 
-	local trace = {  }
-	trace.start = self:EyePos( );
-	trace.endpos = ent:EyePos( );
-	trace.filter = self;
-	
-	local tr = util.TraceLine( trace );
-	
-	if( tr.Entity:IsValid( ) and tr.Entity:EntIndex( ) == ent:EntIndex( ) ) then return true; end
-	
-	return false;
+	if IsValid(tr.Entity) and tr.Entity:EntIndex() == ent:EntIndex() then return true end
 
+	return false
 end
 
-function meta:Nick( )
-	
-	return self:GetNWString( "name" );
-
+function meta:Nick()
+	return self:GetNWString("name")
 end
 
-function meta:CalcDrop( )
+function meta:CalcDrop()
+	local pos = self:GetShootPos()
+	local ang = self:GetAimVector()
 
-	local pos = self:GetShootPos( );
-	local ang = self:GetAimVector( );
-	local tracedata = {  };
-	tracedata.start = pos;
-	tracedata.endpos = pos+( ang*80 );
-	tracedata.filter = self;
-	local trace = util.TraceLine( tracedata );
-	
-	return trace.HitPos;
-	
+	local trace = util.TraceLine({
+		start = pos,
+		endpos = pos + (ang * 200),
+		filter = function(ent) if ent:GetClass() == "prop_physics" then return true end end
+	})
+
+	return trace.HitPos
 end

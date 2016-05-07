@@ -33,10 +33,6 @@ philxyz 2015
 		rp_setmoney <player_name> <positive_whole_amount>
 
 
-- Items spawning onto the viewmodel?
-  (Something's up with CAKE.CalcDrop such that the position calculated results in things
-  spawned get stuck in view model sometimes.)
-
 - Leave more space between weapons when breaking open a shipment box.
 - Storage box is broken when putting fivesevens into it.
 [ERROR] gamemodes/cityscript/entities/entities/storage_box/init.lua:121: bad argument #1 to 'WriteString' (string expected, got table)
