@@ -192,9 +192,9 @@ function meta:CompleteSentence()
 end
 
 function meta:GiveItem(class)
-	DB.LogEvent("economy", TEXT.AddingItemToInventory(class, CAKE.FormatCharString(self)))
-
 	local inv = CAKE.GetCharField(self, "inventory")
+
+	DB.LogEvent("economy", TEXT.AddingItemToInventory(class, CAKE.FormatCharString(self)))
 	table.insert(inv, class)
 
 	CAKE.SetCharField(self, "inventory", inv)
@@ -207,7 +207,6 @@ function meta:TakeItem(class)
 	for k, v in pairs(inv) do
 		if v == class then
 			inv[k] = nil
-			PrintTable(inv)
 			CAKE.SetCharField(self, "inventory", inv)
 			self:RefreshInventory()
 			DB.LogEvent("economy", TEXT.RemovingItemFromInventory(class, CAKE.FormatCharString(self)))

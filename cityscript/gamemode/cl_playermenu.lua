@@ -828,7 +828,7 @@ function CreatePlayerMenu()
 				if weapons.GetStored(v.Class) ~= nil and not LocalPlayer():HasWeapon(v.Class) then
 					ContextMenu:AddOption("Equip", function() net.Start("Cq"); net.WriteString(v.Class); net.SendToServer(); DeleteMyself() end):SetIcon("icon16/bullet_add.png")
 				end
-				ContextMenu:AddOption("Drop", function() net.Start("Ce"); net.WriteString(v.Class); net.SendToServer(); DeleteMyself(); end):SetIcon("icon16/briefcase.png");
+				ContextMenu:AddOption(TEXT.Drop, function() net.Start("Ce"); net.WriteString(v.Class); net.SendToServer(); DeleteMyself(); end):SetIcon("icon16/briefcase.png");
 			ContextMenu:Open()
 		end
 

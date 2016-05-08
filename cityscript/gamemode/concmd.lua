@@ -361,20 +361,26 @@ net.Receive("Cj", function(_, ply)
 		(not CAKE.IsDoor(item) and not item:IsVehicle() and not item:IsPlayer() and not item:IsNPC()) and
 		item:GetPos():Distance(ply:GetShootPos()) < 100 then
 
-		if item:Pickup(ply) ~= false then
-			if item:GetNWInt("Clip1A") > 0 then
-				ply:GiveAmmo_ReloadFix(item:GetNWInt("Clip1A"), game.GetAmmoName(item:GetNWInt("PAmmoType")))
-			end
+		local inv = CAKE.GetCharField(ply, "inventory")
 
-			if item:GetNWInt("Clip2A") > 0 then
-				ply:GiveAmmo_ReloadFix(item:GetNWInt("Clip2A"), game.GetAmmoName(item:GetNWInt("SAmmoType")))
-			end
+		if table.Count(inv) < 10 then
+			if item:Pickup(ply) ~= false then
+				if item:GetNWInt("Clip1A") > 0 then
+					ply:GiveAmmo_ReloadFix(item:GetNWInt("Clip1A"), game.GetAmmoName(item:GetNWInt("PAmmoType")))
+				end
 
-			if item:GetClass() == "spawned_weapon" then
-				ply:GiveItem(item.class)
-			else
-				ply:GiveItem(item.Class)
+				if item:GetNWInt("Clip2A") > 0 then
+					ply:GiveAmmo_ReloadFix(item:GetNWInt("Clip2A"), game.GetAmmoName(item:GetNWInt("SAmmoType")))
+				end
+
+				if item:GetClass() == "spawned_weapon" then
+					ply:GiveItem(item.class)
+				else
+					ply:GiveItem(item.Class)
+				end
 			end
+		else
+			CAKE.Response(ply, TEXT.InventoryFull)
 		end
 	end
 end)
