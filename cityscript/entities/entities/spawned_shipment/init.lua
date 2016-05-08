@@ -6,6 +6,7 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 
 include("shared.lua")
+include("items_that_need_rotating.lua")
 
 function ENT:Initialize()
 	self:SetModel("models/Items/item_item_crate.mdl")
@@ -46,7 +47,7 @@ function ENT:UseItem()
 end
 
 function ENT:Drop(ply)
-	
+
 end
 
 function ENT:Pickup(ply)
@@ -100,8 +101,8 @@ function ENT:Destruct()
 
 	-- Lay out the items in a grid above the box.
 
-	local vspacing = 12
-	local hspacing = 8
+	local vspacing = 20
+	local hspacing = 10
 
 	for i=1, count do
 		local horizPos = math.mod(i, 3)
@@ -114,6 +115,6 @@ function ENT:Destruct()
 
 		local z = math.ceil(i / 3)
 
-		CAKE.CreateItem(owner, self:GetNWString("contents"), Vector(vPoint.x, vPoint.y + (y * hspacing), vPoint.z + (z * vspacing)), Angle(0,0,0))
+		CAKE.CreateItem(owner, self:GetNWString("contents"), Vector(vPoint.x, vPoint.y + (y * hspacing), vPoint.z + (z * vspacing)), Angle(0, CAKE.NeedsRotating[self:GetNWString("contents")] and 90 or 0, 0))
 	end
 end

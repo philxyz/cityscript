@@ -33,7 +33,9 @@ philxyz 2015
 		rp_setmoney <player_name> <positive_whole_amount>
 
 
-- Leave more space between weapons when breaking open a shipment box.
+- Fix "Remove entities belonging to player"
+- Removing entities shouldn't remove weapons from players
+- Max 10 items in backpack
 - Storage box is broken when putting fivesevens into it.
 [ERROR] gamemodes/cityscript/entities/entities/storage_box/init.lua:121: bad argument #1 to 'WriteString' (string expected, got table)
 1. WriteString - [C]:-1
