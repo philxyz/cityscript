@@ -33,7 +33,6 @@ philxyz 2015
 		rp_setmoney <player_name> <positive_whole_amount>
 
 
-- Fix "Remove entities belonging to player"
 - Removing entities shouldn't remove weapons from players
 - Max 10 items in backpack
 - Storage box is broken when putting fivesevens into it.

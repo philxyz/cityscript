@@ -108,34 +108,7 @@ hook.Add("AddToolMenuCategories", "UPP.AddToolCategory", function()
 			bm:Open()
 		end
 
-		local c = vgui.Create("DButton")
-		c:SetText("#upp.remove_ents")
-		c.DoClick = function()
-			local players = player.GetAll()
-			local cm = vgui.Create("DMenu")
-			cm:AddOption("#upp.for_all_players", function()
-				net.Start("upp.dae")
-				net.SendToServer()
-			end):SetIcon("icon16/group_delete.png")
-			local usm = cm:AddSubMenu("#upp.for_player")
-			for _, v in pairs(players) do
-				usm:AddOption(v:Name() .. " - " .. v:SteamID(), function()
-					net.Start("upp.de")
-					net.WriteEntity(v)
-					net.SendToServer()
-				end):SetIcon("icon16/user_delete.png")
-			end
-			cm:Open()
-		end
-
-		local divider = vgui.Create("DHorizontalDivider")
-		divider:Dock(FILL)
-		divider:SetLeft(b)
-		divider:SetRight(c)
-		divider:SetDividerWidth(6)
-		divider:SetDragging(false)
-
-		panel:AddItem(divider)
+		panel:AddItem(b)
 	end)
 
 	spawnmenu.AddToolMenuOption("upp", "uppCategory", "uppMyProps", "#upp.my_props", "", "", function(panel)

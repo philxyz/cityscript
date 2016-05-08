@@ -765,32 +765,4 @@ net.Receive("upp.dap", function(len, sender)
 	end
 end)
 
--- Delete Ents (for specific player)
-util.AddNetworkString("upp.de")
-net.Receive("upp.de", function(len, sender)
-	local who = net.ReadEntity()
-
-	if sender:IsAdmin() then
-		for _, p in pairs(ents.GetAll()) do
-			if p:GetNWEntity("c_ent") == who and UPP.IsConsideredASENT(p) and not p.NoRemoveOnCleanup then
-				p:Remove()
-			end
-		end
-		UPP.NotifyPlayers(UPP.Messages.YourEntsCleanedUp, who)
-	end
-end)
-
--- Delete All Entities (for all users)
-util.AddNetworkString("upp.dae")
-net.Receive("upp.dae", function(len, sender)
-	if sender:IsAdmin() then
-		for _, p in pairs(ents.GetAll()) do
-			if UPP.IsConsideredASENT(p) and not p.NoRemoveOnCleanup then
-				p:Remove()
-			end
-		end
-		UPP.NotifyPlayers(UPP.Messages.AllEntsCleanedUp)
-	end
-end)
-
 UPP.Initialize()
