@@ -27,10 +27,27 @@ function ENT:OnTakeDamage(dmg)
 end
 
 function ENT:Destruct()
+	local vspacing = 20
+	local hspacing = 10
 	local i = 0
-	for k, v in ipairs(self.contents) do
-		CAKE.CreateItem(self.ply, v, self:GetPos() + Vector(0, 0, 25 + i), Angle(0,0,0))
-		i = i + 10
+
+	local vPoint = self:GetPos()
+
+	for _, v in ipairs(self.contents) do
+
+		local horizPos = math.mod(i, 3)
+		local y = 0
+		if horizPos == 2 then
+			y = -1
+		elseif horizPos == 0 then
+			y = 1
+		end
+
+		local z = math.ceil(i / 3)
+
+		CAKE.CreateItem(self.ply, v.itemClass, Vector(vPoint.x, vPoint.y + (y * hspacing), vPoint.z + (z * vspacing)), Angle(0, CAKE.NeedsRotating[v.itemClass] and 90 or 0, 0), v.Clip1, v.Clip2)
+
+		i = i + 1
 	end
 end
 
@@ -70,8 +87,12 @@ function ENT:RemoveItem(ply, itemNumber)
 	table.remove(self.contents, idx)
 end
 
+-- Titles on boxes may only be set once. It's like putting a shipping label on it.
 function ENT:SetTitle(title)
-	self:SetNWString("Title", title)
+	if not self.titleIsSet then
+		self.titleIsSet = true
+		self:SetNWString("Title", title)
+	end
 end
 
 function ENT:SpawnItem(ply, itemNumber)
@@ -83,7 +104,7 @@ end
 net.Receive("Cs", function(_, ply)
 	local entIndex = net.ReadInt(16)
 	local itemNumber = net.ReadInt(16)
-	
+
 	s = Entity(entIndex)
 
 	if IsValid(s) and s:GetPos():Distance(ply:GetPos()) > 150 then
@@ -118,7 +139,7 @@ function ENT:OpenMenu(ply)
 		local itemtable = CAKE.ItemData[j.itemClass]
 		net.WriteInt(self:EntIndex(), 16)
 		net.WriteInt(i, 16)
-		net.WriteString(j)
+		net.WriteString(j.itemClass)
 		net.WriteString(itemtable.Name)
 		net.WriteString(itemtable.Model)
 	end

@@ -33,20 +33,12 @@ philxyz 2015
 		rp_setmoney <player_name> <positive_whole_amount>
 
 
-- Storage box is broken when putting fivesevens into it.
-[ERROR] gamemodes/cityscript/entities/entities/storage_box/init.lua:121: bad argument #1 to 'WriteString' (string expected, got table)
-1. WriteString - [C]:-1
-2. OpenMenu - gamemodes/cityscript/entities/entities/storage_box/init.lua:121
- 3. UseItem - gamemodes/cityscript/entities/entities/storage_box/init.lua:159
-  4. func - gamemodes/cityscript/gamemode/concmd.lua:410
-	5. unknown - lua/includes/extensions/net.lua:32
-
 - Move data to SQL Backend (SQLite)
 - Fix rental of doors. It says that doors are not owned.
 - Show owner on doors.
 - Door co-ownership.
 - Write properly on doors. Use 3D2D text.
-- Impose a limit of 4 player characters.
+- Place time limit of 2 days on creation of new characters.
 - Implement the ability to delete player characters.
 
 - Roleplaying Vehicles Addon (or find another)
