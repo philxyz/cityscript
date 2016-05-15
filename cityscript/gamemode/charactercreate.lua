@@ -5,13 +5,13 @@
 --
 -- charactercreate.lua
 -- Contains the character creation concommands.
--------------------------------	
-	
+-------------------------------
+
 -- Set Model
 util.AddNetworkString("ncSetModel")
 net.Receive("ncSetModel", function(len, client)
 	local mdl = net.ReadString()
-	
+
 	if client:GetDTInt(0) == 1 then
 		local found = false
 
@@ -30,14 +30,14 @@ net.Receive("ncSetModel", function(len, client)
 			CAKE.SetCharField(client, "model", "models/player/group01/male_01.mdl")
 		end
 	end
-	
+
 	return
 end)
 
 util.AddNetworkString("ncStartCreate")
 net.Receive("ncStartCreate", function(len, client)
 	-- Start Creation
-	local PlyCharTable = CAKE.PlayerData[CAKE.FormatSteamID(client:SteamID())]["characters"]
+	local PlyCharTable = CAKE.PlayerData[client:SteamID64()]["characters"]
 
 	-- Find the highest Unique ID
 	local high = 0
@@ -45,16 +45,16 @@ net.Receive("ncStartCreate", function(len, client)
 	for k, v in pairs(PlyCharTable) do
 		k = tonumber(k)
 		high = tonumber(high)
-		
+
 		if k > high then
 			high = k
 		end
 	end
 
 	high = high + 1
-	client:SetNWString("uid", tostring(high))
+	client:SetNWInt("uid", high)
 	client:SetDTInt(0, 1)
-	CAKE.PlayerData[CAKE.FormatSteamID(client:SteamID())]["characters"][tostring(high)] = {}
+	CAKE.PlayerData[client:SteamID64()]["characters"][high] = {}
 	CAKE.CallHook("CharacterCreation_Start", client)
 end)
 
@@ -64,13 +64,6 @@ net.Receive("ncFinishCreate", function(len, client)
 	if client:GetDTInt(0) == 1 then
 		client:SetDTInt(0, 1)
 
-		local SteamID = CAKE.FormatSteamID(client:SteamID())
-		for fieldname, default in pairs(CAKE.CharacterDataFields) do
-			if CAKE.PlayerData[SteamID]["characters"][client:GetNWString("uid")][fieldname] == nil then
-				CAKE.PlayerData[SteamID]["characters"][client:GetNWString("uid")][fieldname] = CAKE.ReferenceFix(default)
-			end
-		end
-
 		CAKE.ResendCharData(client)
 
 		client:RefreshInventory()
@@ -78,26 +71,26 @@ net.Receive("ncFinishCreate", function(len, client)
 		client:SetTeam(1)
 		client:Spawn()
 		client:ConCommand("fadein")
-		CAKE.CallHook("CharacterCreation_Finished", client, client:GetNWString("uid"))
+		CAKE.CallHook("CharacterCreation_Finished", client, client:GetNWInt("uid"))
 	end
 end)
 
 net.Receive("Cr", function(_, ply)
 	local uid = net.ReadInt(16)
-	local SteamID = CAKE.FormatSteamID(ply:SteamID())
+	local SteamID64 = ply:SteamID64()
 
-	if CAKE.PlayerData[SteamID].characters[uid] != nil then
-		ply:SetNWString("uid", uid)
+	if CAKE.PlayerData[SteamID64].characters[uid] != nil then
+		ply:SetNWInt("uid", uid)
 		CAKE.ResendCharData(ply)
 		ply:SetDTInt(0, 1)
 		ply:SetTeam(1)
-		CAKE.CallHook("CharacterSelect_PostSetTeam", ply, CAKE.PlayerData[SteamID].characters[uid])
+		CAKE.CallHook("CharacterSelect_PostSetTeam", ply, CAKE.PlayerData[SteamID64].characters[uid])
 		ply:RefreshInventory()
 		ply:RefreshBusiness()
 		ply:ConCommand("fadein")
 		ply:Spawn()
-		
-		CAKE.CallHook("CharacterSelected", ply, CAKE.PlayerData[SteamID].characters[uid])
+
+		CAKE.CallHook("CharacterSelected", ply, CAKE.PlayerData[SteamID64].characters[uid])
 	else
 		return
 	end
@@ -106,29 +99,28 @@ end)
 net.Receive("Cp", function(_, ply)
 	if ply.Ready == false then
 		ply.Ready = true
-	
+
 		-- Find the highest Unique ID and set it - just in case they want to create a character.
 		local high = 0
 
 		local PlyCharTable = {}
-		local steam = CAKE.FormatSteamID(ply:SteamID())
+		local steam = ply:SteamID64()
 		if steam and CAKE.PlayerData[steam] then
 			PlyCharTable = CAKE.PlayerData[steam]["characters"]
 		end
-		
+
 		for k, v in pairs(PlyCharTable) do
-		
 			k = tonumber(k)
 			high = tonumber(high)
-			
-			if k > high then 
+
+			if k > high then
 				high = k
 			end
 		end
-		
+
 		high = high + 1
-		ply:SetNWString("uid", tostring(high))
-		
+		ply:SetNWInt("uid", high)
+
 		net.Start("Cz")
 		net.WriteInt(#PlyCharTable, 32)
 		for k, v in pairs(PlyCharTable) do -- Send them all their characters for selection
@@ -137,15 +129,15 @@ net.Receive("Cp", function(_, ply)
 			net.WriteString(v.model)
 		end
 		net.Send(ply)
-		
+
 		ply:SetDTInt(0, 1)
-		
-		local showHelp = CAKE.GetPlayerField(ply, "showhelppopup") == 1
+
+		local showHelp = CAKE.GetPlayerField(ply, "showhelppopup") == true
 
 		net.Start("C2")
 		net.WriteBool(showHelp)
 		net.Send(ply)
-		
+
 		CAKE.CallHook("PlayerReady", ply)
 	end
 end)

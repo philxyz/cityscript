@@ -26,7 +26,7 @@ end
 -- This is the F1 menu
 function GM:ShowHelp(ply)
 	local PlyCharTable = {}
-	local steam = CAKE.FormatSteamID(ply:SteamID())
+	local steam = ply:SteamID64()
 
 	if steam and CAKE.PlayerData[steam] then
 		PlyCharTable = CAKE.PlayerData[steam].characters
@@ -525,13 +525,9 @@ net.Receive("Cf", function(_, ply)
 end)
 
 net.Receive("Ca", function(_, ply)
+	local show = net.ReadBool()
+
 	if IsValid(ply) and ply:IsPlayer() then
-		local whetherToShow = 0
-
-		if net.ReadBool() then
-			whetherToShow = 1
-		end
-
-		CAKE.SetPlayerField(ply, "showhelppopup", whetherToShow)
+		CAKE.SetPlayerField(ply, "showhelppopup", show)
 	end
 end)

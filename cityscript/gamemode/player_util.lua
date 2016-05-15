@@ -286,7 +286,7 @@ function CAKE.ChangeMoney(ply, amount) -- Modify someone's money amount.
 
 	if money + amount < 0 then return false end
 
-	DB.LogEvent("economy", "Changing " .. ply:SteamID() .. "-" .. ply:GetNWString("uid") .. " money by " .. tostring(amount))
+	DB.LogEvent("economy", "Changing " .. ply:SteamID() .. "-" .. tostring(ply:GetNWInt("uid")) .. " money by " .. tostring(amount))
 	CAKE.SetCharField(ply, "money", money + amount)
 
 	ply:SetNWString("money", money + amount)
@@ -302,7 +302,7 @@ function CAKE.ChangeBankMoney(ply, amount) -- Modify someone's bank money amount
 	-- NEVAR EVAR LET IT GO NEGATIVE.
 	if bank + amount < 0 then return false end
 
-	DB.LogEvent("economy", TEXT.LogMoneyChange(ply:SteamID(), ply:GetNWString("uid"), amount))
+	DB.LogEvent("economy", TEXT.LogMoneyChange(ply:SteamID(), tostring(ply:GetNWInt("uid")), amount))
 	CAKE.SetCharField(ply, "bank", bank + amount)
 
 	return true
@@ -314,7 +314,7 @@ function CAKE.SetMoney(ply, amount) -- Set someone's money amount.
 	-- NEVAR EVAR LET IT GO NEGATIVE.
 	if amount < 0 then return false end
 
-	DB.LogEvent("economy", TEXT.LogSetMoneyChange(ply:SteamID(), ply:GetNWString("uid"), amount))
+	DB.LogEvent("economy", TEXT.LogSetMoneyChange(ply:SteamID(), tostring(ply:GetNWInt("uid")), amount))
 
 	CAKE.SetCharField(ply, "money", amount)
 	ply:SetNWString("money", CAKE.GetCharField(ply, "money"))

@@ -2,8 +2,8 @@ include("static_data.lua")
 
 function DB.Init()
 	sql.Begin()
-		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_players('steam64id' TEXT NOT NULL, 'proptrust' INTEGER NOT NULL, 'extraragdolls' INTEGER NOT NULL, 'tooltrust' INTEGER NOT NULL, 'gravtrust' INTEGER NOT NULL, 'phystrust' INTEGER NOT NULL, 'extraeffects' INTEGER NOT NULL, 'extravehicles' INTEGER NOT NULL, 'extraprops' INTEGER NOT NULL, 'showhelppopup' INTEGER NOT NULL, PRIMARY KEY('steam64id'));")
-		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_player_characters('steam64id' TEXT NOT NULL, 'name' TEXT NOT NULL, 'model' TEXT NOT NULL, 'bank' INTEGER NOT NULL, 'money' INTEGER NOT NULL, 'flags' TEXT NOT NULL);")
+		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_players('steamid64' TEXT NOT NULL, 'proptrust' INTEGER NOT NULL, 'extraragdolls' INTEGER NOT NULL, 'tooltrust' INTEGER NOT NULL, 'gravtrust' INTEGER NOT NULL, 'phystrust' INTEGER NOT NULL, 'extraeffects' INTEGER NOT NULL, 'extravehicles' INTEGER NOT NULL, 'extraprops' INTEGER NOT NULL, 'showhelppopup' INTEGER NOT NULL, PRIMARY KEY('steamid64'));")
+		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_player_characters('steamid64' TEXT NOT NULL, 'name' TEXT NOT NULL, 'model' TEXT NOT NULL, 'bank' INTEGER NOT NULL, 'money' INTEGER NOT NULL, 'inventory' TEXT NOT NULL, 'flags' TEXT NOT NULL);")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_jailpositions('map' TEXT NOT NULL, 'x' NUMERIC NOT NULL, 'y' NUMERIC NOT NULL, 'z' NUMERIC NOT NULL, 'lastused' NUMERIC NOT NULL, PRIMARY KEY('map', 'x', 'y', 'z'));")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_wiseguys('steam' TEXT NOT NULL, 'time' NUMERIC NOT NULL, PRIMARY KEY('steam'));")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_disableddoors('map' TEXT NOT NULL, 'idx' INTEGER NOT NULL, 'title' TEXT NOT NULL, PRIMARY KEY('map', 'idx'));")
@@ -11,7 +11,7 @@ function DB.Init()
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_teamspawns('id' INTEGER NOT NULL, 'map' TEXT NOT NULL, 'team' INTEGER NOT NULL, 'x' NUMERIC NOT NULL, 'y' NUMERIC NOT NULL, 'z' NUMERIC NOT NULL, PRIMARY KEY('id'));")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_atmpositions('id' INTEGER NOT NULL, 'map' TEXT NOT NULL, 'x' NUMERIC NOT NULL, 'y' NUMERIC NOT NULL, 'z' NUMERIC NOT NULL, 'a' NUMERIC NOT NULL, 'b' NUMERIC NOT NULL, 'c' NUMERIC NOT NULL, PRIMARY KEY('id'));")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_zombiespawns('map' TEXT NOT NULL, 'x' NUMERIC NOT NULL, 'y' NUMERIC NOT NULL, 'z' NUMERIC NOT NULL);")
-		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_soundabusers('steam64id' TEXT NOT NULL);")
+		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_soundabusers('steamid64' TEXT NOT NULL);")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_log('when' DATETIME DEFAULT CURRENT_TIMESTAMP, 'section' TEXT NOT NULL, 'message' TEXT NOT NULL);")
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_time('day' INTEGER NOT NULL, 'month' INTEGER NOT NULL, 'year' INTEGER NOT NULL, 'minutes' INTEGER NOT NULL);")
 	sql.Commit()
@@ -320,20 +320,20 @@ function DB.DropZombies()
 end
 
 function DB.FetchQuietPlayers()
-	local r = sql.Query("SELECT steam64id FROM cityscript_soundabusers;")
+	local r = sql.Query("SELECT steamid64 FROM cityscript_soundabusers;")
 	if not r then return end
 	for _, id in pairs(r) do
-		table.insert(CAKE.QuietPlayers, id.steam64id)
+		table.insert(CAKE.QuietPlayers, id.steamid64)
 	end
 end
 
 function DB.AllowSounds(s64, allow)
 	if allow then
-		sql.Query("DELETE FROM cityscript_soundabusers WHERE steam64id = " .. sql.SQLStr(s64) .. ";")
+		sql.Query("DELETE FROM cityscript_soundabusers WHERE steamid64 = " .. sql.SQLStr(s64) .. ";")
 	else
-		local r = sql.Query("SELECT 1 FROM cityscript_soundabusers WHERE steam64id = " .. sql.SQLStr(s64) .. ";")
+		local r = sql.Query("SELECT 1 FROM cityscript_soundabusers WHERE steamid64 = " .. sql.SQLStr(s64) .. ";")
 		if not r then
-			sql.Query("INSERT INTO cityscript_soundabusers(steam64id) VALUES(" .. sql.SQLStr(s64) .. ");")
+			sql.Query("INSERT INTO cityscript_soundabusers(steamid64) VALUES(" .. sql.SQLStr(s64) .. ");")
 		end
 	end
 end
@@ -402,6 +402,158 @@ function DB.RetrieveRandomZombieSpawnPos()
 		end
 	end
 	return Vector(r.x, r.y, r.z) + Vector(0, 0, 70)
+end
+
+-- Gets the player data table into memory. If there isn't one, make one.
+function DB.LoadPlayerData(ply)
+	local SteamID64 = ply:SteamID64()
+
+	CAKE.PlayerData[SteamID64] = {}
+
+	local rs = sql.Query("SELECT proptrust, extraragdolls, tooltrust, gravtrust, phystrust, extraeffects, extravehicles, extraprops, showhelppopup FROM cityscript_players WHERE steamid64 = " .. sql.SQLStr(SteamID64) .. ";")
+
+	-- If an entry exists for this user
+	if rs then
+		CAKE.CallHook("LoadPlayerData", ply)
+
+		DB.LogEvent("script", TEXT.LoadingPlayerDataFor .. " SteamID64: " .. SteamID64)
+
+		-- Insert the table into the data table
+		CAKE.PlayerData[SteamID64] = rs
+
+		-- Retrieve the data table for easier access
+		local PlayerTable = CAKE.PlayerData[SteamID64]
+		CAKE.PlayerData[SteamID64].characters = {}
+		local CharTable = CAKE.PlayerData[SteamID64].characters
+
+		-- Retrieve the player's characters
+		local chars = sql.Query("SELECT name, model, bank, money, inventory, flags FROM cityscript_player_characters WHERE steamid64 = " .. sql.SQLStr(SteamID64) .. ";")
+		if chars then
+			for k, v in ipairs(chars) do
+				v.inventory = util.JSONToTable(v.inventory) or {}
+				CharTable[k] = v
+				print("NAME: " .. tostring(v.name))
+			end
+		end
+
+		CAKE.CallHook("LoadedPlayerData", ply, Data_Table)
+	else
+		-- Seems they don't have a player table. Let's create a default
+		-- one for them with an empty character table.
+		DB.LogEvent("script", TEXT.CreatingNewPlayerDataFor .. " " .. SteamID64)
+
+		local cv = CAKE.ConVars -- For convenience.
+
+		CAKE.PlayerData[SteamID64] = {
+			proptrust = cv.Default_Proptrust,
+			tooltrust = cv.Default_Tooltrust,
+			gravtrust = cv.Default_Gravtrust,
+			phystrust = cv.Default_Phystrust,
+			extraragdolls = cv.Default_Extraragdolls,
+			extraeffects = cv.Default_Extraeffects,
+			extravehicles = cv.Default_Extravehicles,
+			extraprops = cv.Default_Extraprops,
+			showhelppopup = true, -- Always true at first
+			characters = {}
+		}
+
+		-- We won't make a character, obviously. That is done later.
+		DB.PersistPlayerData(ply)
+
+		-- Technically, we didn't load it, but the necessary structure
+		-- now exists.
+		CAKE.CallHook("LoadedPlayerData", ply, Data_Table)
+	end
+end
+
+function DB.PersistPlayerData(ply)
+	local SteamID64 = ply:SteamID64()
+	local toSave = CAKE.PlayerData[SteamID64]
+	local cv = CAKE.ConVars -- For convenience.
+	local err = nil
+
+	local exists = sql.Query("SELECT 1 FROM cityscript_players WHERE steamid64 = " .. sql.SQLStr(ply:SteamID64()) .. ";")
+	if exists then
+		sql.Query("UPDATE cityscript_players SET proptrust = " .. tostring(toSave.proptrust or cv.Default_Proptrust) ..
+			", extraragdolls = " .. tostring(toSave.extraragdolls or cv.Default_Extraragdolls) ..
+			", tooltrust = " .. tostring(toSave.tooltrust or cv.Default_Tooltrust) ..
+			", gravtrust = " .. tostring(toSave.gravtrust or cv.Default_Gravtrust) ..
+			", phystrust = " .. tostring(toSave.phystrust or cv.Default_Phystrust) ..
+			", extraeffects = " .. tostring(toSave.extraeffects or cv.Default_Extraeffects) ..
+			", extravehicles = " .. tostring(toSave.extravehicles or cv.Default_Extravehicles) ..
+			", extraprops = " .. tostring(toSave.extraprops or cv.Default_Extraprops) ..
+			", showhelppopup = " .. (toSave.showhelppopup and "1" or "0") ..
+			" WHERE steamid64 = " .. sql.SQLStr(SteamID64) .. ";")
+
+		err = sql.LastError()
+		if err ~= nil then
+			print("SQL ERROR in DB.PersistPlayerData 1: " .. err)
+		end
+	else
+		-- Insert
+		sql.Query("INSERT INTO cityscript_players(steamid64, proptrust, extraragdolls, tooltrust, gravtrust, phystrust, extraeffects, extravehicles, extraprops, showhelppopup) " ..
+			"VALUES(" .. sql.SQLStr(SteamID64) .. ", " ..
+				tostring(cv.Default_Proptrust) .. ", " ..
+				tostring(cv.Default_Extraragdolls) .. ", " ..
+				tostring(cv.Default_Tooltrust) .. ", " ..
+				tostring(cv.Default_Gravtrust) .. ", " ..
+				tostring(cv.Default_Phystrust) .. ", " ..
+				tostring(cv.Default_Extraeffects) .. ", " ..
+				tostring(cv.Default_Extravehicles) .. ", " ..
+				tostring(cv.Default_Extraprops) .. ", " ..
+				"1" ..
+				");")
+		err = sql.LastError()
+		if err ~= nil then
+			print("SQL ERROR in DB.PersistPlayerData 2: " .. err)
+		end
+	end
+
+	-- Drop any existing characters and recreate them
+	sql.Query("DELETE FROM cityscript_player_characters WHERE steamid64 = " .. sql.SQLStr(SteamID64) .. ";")
+	err = sql.LastError()
+	if err ~= nil then
+		print("SQL ERROR in DB.PersistPlayerData 3:" .. err)
+	end
+
+	for _, v in ipairs(toSave.characters) do
+		sql.Query("INSERT INTO cityscript_player_characters(steamid64, name, model, bank, money, inventory, flags) VALUES(" ..
+			sql.SQLStr(SteamID64) .. ", " ..
+			sql.SQLStr(v.name or "Set Your Name") .. ", " ..
+			sql.SQLStr(v.model or "models/player/group01/male_07.mdl") .. ", " ..
+			tostring(v.bank or 0) .. ", " ..
+			tostring(v.money or 0) .. ", " ..
+			sql.SQLStr(util.TableToJSON(v.inventory or {})) .. ", " ..
+			sql.SQLStr(v.flags or "") ..
+		");")
+
+		err = sql.LastError()
+		if err ~= nil then
+			print("SQL ERROR in DB.PersistPlayerData 4:" .. err)
+		end
+	end
+
+	-- deal with util.TableToJSON(inventory)
+
+
+
+
+
+	--[[
+	CAKE.AddDataField(1, "characters", {})
+	CAKE.AddDataField(1, "showhelppopup", 1) -- Whether or not to show the initial help box
+
+	-- These fields are what would be the default value, and it also allows the field to actually EXIST.
+	-- If there is a field in the data and it isn't added, it will automatically be removed.
+
+	-- Character Fields
+	CAKE.AddDataField(2, "name", "Set Your Name") -- Let's hope this never gets used.
+	CAKE.AddDataField(2, "model", "models/player/group01/male_07.mdl")
+	CAKE.AddDataField(2, "money", CAKE.ConVars.Default_Money) -- How much money do players start out with.
+	CAKE.AddDataField(2, "bank", CAKE.ConVars.Default_Bank) -- How much bank money do players start out with.
+	CAKE.AddDataField(2, "inventory", CAKE.ConVars.Default_Inventory) -- What inventory do they start with
+
+	]]
 end
 
 DB.Init()

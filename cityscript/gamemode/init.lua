@@ -190,8 +190,8 @@ function GM:PlayerInitialSpawn(ply)
 	-- Send them all the teams
 	CAKE.InitTeams(ply)
 
-	-- Load their data, or create a new datafile for them.
-	CAKE.LoadPlayerDataFile(ply)
+	-- Load or create the player profile for this user.
+	DB.LoadPlayerData(ply)
 
 	-- Call the hook after we have finished initializing the player
 	CAKE.CallHook("Player_Postload", ply)
@@ -251,7 +251,7 @@ function GM:PlayerLoadout(ply)
 end
 
 function GM:PlayerSpawn(ply)
-	if CAKE.PlayerData[CAKE.FormatSteamID(ply:SteamID())] == nil then
+	if CAKE.PlayerData[ply:SteamID64()] == nil then
 		return -- Player data isn't loaded. This is an initial spawn.
 	end
 
