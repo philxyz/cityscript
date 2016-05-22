@@ -8,71 +8,61 @@
 -------------------------------
 
 -- Set Model
-util.AddNetworkString("ncSetModel")
-net.Receive("ncSetModel", function(len, client)
+util.AddNetworkString("ncCreateCharacter")
+net.Receive("ncCreateCharacter", function(len, ply)
 	local mdl = net.ReadString()
+	local name = net.ReadString()
 
-	if client:GetDTInt(0) == 1 then
-		local found = false
+	local chars = CAKE.PlayerData[ply:SteamID64()].characters
 
-		for k, v in pairs(CAKE.ValidModels) do
-			if v == string.lower(mdl) then
-				found = true
-				break
-			end
-		end
+	-- Model code
+	local found = false
 
-		if found then
-			CAKE.CallHook("CharacterCreation_SetModel", client, mdl)
-			CAKE.SetCharField(client, "model", mdl)
-		else
-			CAKE.CallHook("CharacterCreation_SetModel", client, "models/player/group01/male_01.mdl")
-			CAKE.SetCharField(client, "model", "models/player/group01/male_01.mdl")
+	for k, v in pairs(CAKE.ValidModels) do
+		if v == string.lower(mdl) then
+			found = true
+			break
 		end
 	end
 
-	return
-end)
+	local thisIsANewPlayer = false
 
-util.AddNetworkString("ncStartCreate")
-net.Receive("ncStartCreate", function(len, client)
-	-- Start Creation
-	local PlyCharTable = CAKE.PlayerData[client:SteamID64()]["characters"]
-
-	-- Find the highest Unique ID
-	local high = 0
-
-	for k, v in pairs(PlyCharTable) do
-		k = tonumber(k)
-		high = tonumber(high)
-
-		if k > high then
-			high = k
+	for i=#DB.NewPlayers, 1, -1 do
+		if DB.NewPlayers[i] == ply then
+			thisIsANewPlayer = true
+			table.remove(DB.NewPlayers, i)
+			break
 		end
 	end
 
-	high = high + 1
-	client:SetNWInt("uid", high)
-	client:SetDTInt(0, 1)
-	CAKE.PlayerData[client:SteamID64()]["characters"][high] = {}
-	CAKE.CallHook("CharacterCreation_Start", client)
-end)
+	table.insert(chars, {
+		model = found and mdl or "models/player/group01/male_01.mdl",
+		name = name,
+		bank = 0,
+		money = (thisIsANewPlayer and (#chars == 0) and CAKE.ConVars.Default_Money or 0),
+		inventory = {},
+		flags = ""
+	})
 
--- Finish Creation
-util.AddNetworkString("ncFinishCreate")
-net.Receive("ncFinishCreate", function(len, client)
-	if client:GetDTInt(0) == 1 then
-		client:SetDTInt(0, 1)
+	local id = #chars
 
-		CAKE.ResendCharData(client)
+	ply:SetNWInt("uid", id)
+	ply:SetNWString("name", name)
 
-		client:RefreshInventory()
-		client:RefreshBusiness()
-		client:SetTeam(1)
-		client:Spawn()
-		client:ConCommand("fadein")
-		CAKE.CallHook("CharacterCreation_Finished", client, client:GetNWInt("uid"))
-	end
+	-- Finish character creation
+	ply:SetDTInt(0, 1)
+
+	CAKE.ResendCharData(ply)
+
+	ply:RefreshInventory()
+	ply:RefreshBusiness()
+
+	ply:SetTeam(1)
+
+	ply:Spawn()
+	ply:ConCommand("fadein")
+
+	DB.PersistPlayerData(ply)
 end)
 
 net.Receive("Cr", function(_, ply)

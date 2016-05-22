@@ -95,14 +95,6 @@ function GM:CanPlayerSuicide(ply)
 	return true
 end
 
--- Change IC Name
-net.Receive("Co", function(_, ply)
-	local name = net.ReadString()
-
-	CAKE.SetCharField(ply, "name", name)
-	ply:SetNWString("name", name)
-end)
-
 net.Receive("C7", function(_, ply)
 	local newrole = net.ReadString()
 	local RoleTo = {}

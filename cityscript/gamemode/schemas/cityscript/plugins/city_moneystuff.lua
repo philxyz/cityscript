@@ -51,7 +51,7 @@ local function DropTokens(ply, args)
 		return ""
 	end
 
-	if tonumber(ply:GetNWString("money")) < amount then
+	if CAKE.GetCharField(ply, "money") < amount then
 		CAKE.Response(ply, TEXT.NotEnoughTokens)
 		return ""
 	end
@@ -89,7 +89,7 @@ end
 local function FreezeATM(ply, args)
 	if ply:IsSuperAdmin() then
 		local trace = ply:GetEyeTrace()
-		
+
 		if trace.Entity and trace.Entity:GetNWBool("ATM") then
 			trace.Entity:SetColor(Color(0, 255, 0, 255))
 			trace.Entity:GoToSleep()
@@ -206,7 +206,7 @@ end
 local function PayInterest()
 	for k, v in pairs(player.GetAll()) do
 		if IsValid(v) then
-			local bank = tonumber(CAKE.GetCharField(v, "bank")) or 0
+			local bank = tonumber(CAKE.GetCharField(v, "bank") or 0)
 			local ip = tonumber(CAKE.ConVars.Default_Interest_Percentage) or 0
 			local interest = math.floor((bank * ip) / 100.0)
 

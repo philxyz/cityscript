@@ -67,28 +67,17 @@ function CAKE.GetPlayerField(ply, fieldname)
 	return CAKE.PlayerData[ply:SteamID64()][fieldname]
 end
 
-function CAKE.InitForUID(SteamID64, uid)
-	CAKE.PlayerData[SteamID64].characters[uid] = {}
-	CAKE.PlayerData[SteamID64].characters[uid].inventory = {}
-end
-
 function CAKE.SetCharField(ply, fieldname, data)
-	if CAKE.PlayerData[ply:SteamID64()].characters[tonumber(ply:GetNWInt("uid"))] == nil then
-		CAKE.InitForUID(ply:SteamID64(), ply:GetNWInt("uid"))
+	if CAKE.PlayerData[ply:SteamID64()].characters[ply:GetNWInt("uid")] ~= nil then
+		CAKE.PlayerData[ply:SteamID64()].characters[ply:GetNWInt("uid")][fieldname] = data
+		DB.PersistPlayerData(ply)
 	end
-
-	CAKE.PlayerData[ply:SteamID64()].characters[ply:GetNWInt("uid")][fieldname] = data
-	DB.PersistPlayerData(ply)
 end
 
 function CAKE.GetCharField(ply, fieldname)
 	if CAKE.PlayerData[ply:SteamID64()].characters[ply:GetNWInt("uid")] == nil then
-		CAKE.InitForUID(ply:SteamID64(), ply:GetNWInt("uid"))
+		return nil
+	else
+		return CAKE.PlayerData[ply:SteamID64()].characters[ply:GetNWInt("uid")][fieldname]
 	end
-
-	if fieldname == "inventory" and CAKE.PlayerData[ply:SteamID64()].characters[ply:GetNWInt("uid")].inventory == nil then
-		CAKE.PlayerData[ply:SteamID64()].characters[ply:GetNWInt("uid")].inventory = {}
-	end
-
-	return CAKE.PlayerData[ply:SteamID64()].characters[ply:GetNWInt("uid")][fieldname]
 end

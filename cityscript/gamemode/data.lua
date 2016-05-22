@@ -1,5 +1,7 @@
 include("static_data.lua")
 
+DB.NewPlayers = {}
+
 function DB.Init()
 	sql.Begin()
 		sql.Query("CREATE TABLE IF NOT EXISTS cityscript_players('steamid64' TEXT NOT NULL, 'proptrust' INTEGER NOT NULL, 'extraragdolls' INTEGER NOT NULL, 'tooltrust' INTEGER NOT NULL, 'gravtrust' INTEGER NOT NULL, 'phystrust' INTEGER NOT NULL, 'extraeffects' INTEGER NOT NULL, 'extravehicles' INTEGER NOT NULL, 'extraprops' INTEGER NOT NULL, 'showhelppopup' INTEGER NOT NULL, PRIMARY KEY('steamid64'));")
@@ -414,30 +416,51 @@ function DB.LoadPlayerData(ply)
 
 	-- If an entry exists for this user
 	if rs then
-		CAKE.CallHook("LoadPlayerData", ply)
+		for _, r in ipairs(rs) do
+			print("LOADING PLAYER DATA FOR PLAYER " .. SteamID64)
 
-		DB.LogEvent("script", TEXT.LoadingPlayerDataFor .. " SteamID64: " .. SteamID64)
+			CAKE.CallHook("LoadPlayerData", ply)
 
-		-- Insert the table into the data table
-		CAKE.PlayerData[SteamID64] = rs
+			DB.LogEvent("script", TEXT.LoadingPlayerDataFor .. " SteamID64: " .. SteamID64)
 
-		-- Retrieve the data table for easier access
-		local PlayerTable = CAKE.PlayerData[SteamID64]
-		CAKE.PlayerData[SteamID64].characters = {}
-		local CharTable = CAKE.PlayerData[SteamID64].characters
+			-- Insert the table into the data table
+			local charTable = {}
+			local playerTable = {
+				proptrust = tonumber(r.proptrust),
+				extraragdolls = tonumber(r.extraragdolls),
+				tooltrust = tonumber(r.tooltrust),
+				gravtrust = tonumber(r.gravtrust),
+				phystrust = tonumber(r.phystrust),
+				extraeffects = tonumber(r.extraeffects),
+				extravehicles = tonumber(r.extravehicles),
+				extraprops = tonumber(r.extraprops),
+				showhelppopup = r.showhelppopup == "1",
+				characters = charTable
+			}
+			CAKE.PlayerData[SteamID64] = playerTable
 
-		-- Retrieve the player's characters
-		local chars = sql.Query("SELECT name, model, bank, money, inventory, flags FROM cityscript_player_characters WHERE steamid64 = " .. sql.SQLStr(SteamID64) .. ";")
-		if chars then
-			for k, v in ipairs(chars) do
-				v.inventory = util.JSONToTable(v.inventory) or {}
-				CharTable[k] = v
-				print("NAME: " .. tostring(v.name))
+			-- types here
+			-- Retrieve the player's characters
+			local chars = sql.Query("SELECT name, model, bank, money, inventory, flags FROM cityscript_player_characters WHERE steamid64 = " .. sql.SQLStr(SteamID64) .. ";")
+			if chars then
+				for k, v in ipairs(chars) do
+					v.money = tonumber(v.money)
+					v.bank = tonumber(v.bank)
+					v.inventory = util.JSONToTable(v.inventory) or {}
+					v.flags = v.flags or ""
+
+					charTable[k] = v
+				end
 			end
-		end
 
-		CAKE.CallHook("LoadedPlayerData", ply, Data_Table)
+			CAKE.CallHook("LoadedPlayerData", ply, Data_Table)
+
+			break
+		end
 	else
+		-- Let the character creation code know that this is a new player
+		table.insert(DB.NewPlayers, ply)
+
 		-- Seems they don't have a player table. Let's create a default
 		-- one for them with an empty character table.
 		DB.LogEvent("script", TEXT.CreatingNewPlayerDataFor .. " " .. SteamID64)
@@ -474,14 +497,14 @@ function DB.PersistPlayerData(ply)
 
 	local exists = sql.Query("SELECT 1 FROM cityscript_players WHERE steamid64 = " .. sql.SQLStr(ply:SteamID64()) .. ";")
 	if exists then
-		sql.Query("UPDATE cityscript_players SET proptrust = " .. tostring(toSave.proptrust or cv.Default_Proptrust) ..
-			", extraragdolls = " .. tostring(toSave.extraragdolls or cv.Default_Extraragdolls) ..
-			", tooltrust = " .. tostring(toSave.tooltrust or cv.Default_Tooltrust) ..
-			", gravtrust = " .. tostring(toSave.gravtrust or cv.Default_Gravtrust) ..
-			", phystrust = " .. tostring(toSave.phystrust or cv.Default_Phystrust) ..
-			", extraeffects = " .. tostring(toSave.extraeffects or cv.Default_Extraeffects) ..
-			", extravehicles = " .. tostring(toSave.extravehicles or cv.Default_Extravehicles) ..
-			", extraprops = " .. tostring(toSave.extraprops or cv.Default_Extraprops) ..
+		sql.Query("UPDATE cityscript_players SET proptrust = " .. tostring(toSave.proptrust) ..
+			", extraragdolls = " .. tostring(toSave.extraragdolls) ..
+			", tooltrust = " .. tostring(toSave.tooltrust) ..
+			", gravtrust = " .. tostring(toSave.gravtrust) ..
+			", phystrust = " .. tostring(toSave.phystrust) ..
+			", extraeffects = " .. tostring(toSave.extraeffects) ..
+			", extravehicles = " .. tostring(toSave.extravehicles) ..
+			", extraprops = " .. tostring(toSave.extraprops) ..
 			", showhelppopup = " .. (toSave.showhelppopup and "1" or "0") ..
 			" WHERE steamid64 = " .. sql.SQLStr(SteamID64) .. ";")
 
@@ -490,8 +513,7 @@ function DB.PersistPlayerData(ply)
 			print("SQL ERROR in DB.PersistPlayerData 1: " .. err)
 		end
 	else
-		-- Insert
-		sql.Query("INSERT INTO cityscript_players(steamid64, proptrust, extraragdolls, tooltrust, gravtrust, phystrust, extraeffects, extravehicles, extraprops, showhelppopup) " ..
+		local str = "INSERT INTO cityscript_players(steamid64, proptrust, extraragdolls, tooltrust, gravtrust, phystrust, extraeffects, extravehicles, extraprops, showhelppopup) " ..
 			"VALUES(" .. sql.SQLStr(SteamID64) .. ", " ..
 				tostring(cv.Default_Proptrust) .. ", " ..
 				tostring(cv.Default_Extraragdolls) .. ", " ..
@@ -502,7 +524,10 @@ function DB.PersistPlayerData(ply)
 				tostring(cv.Default_Extravehicles) .. ", " ..
 				tostring(cv.Default_Extraprops) .. ", " ..
 				"1" ..
-				");")
+				");"
+
+		-- Insert
+		sql.Query(str)
 		err = sql.LastError()
 		if err ~= nil then
 			print("SQL ERROR in DB.PersistPlayerData 2: " .. err)
@@ -519,11 +544,11 @@ function DB.PersistPlayerData(ply)
 	for _, v in ipairs(toSave.characters) do
 		sql.Query("INSERT INTO cityscript_player_characters(steamid64, name, model, bank, money, inventory, flags) VALUES(" ..
 			sql.SQLStr(SteamID64) .. ", " ..
-			sql.SQLStr(v.name or "Set Your Name") .. ", " ..
-			sql.SQLStr(v.model or "models/player/group01/male_07.mdl") .. ", " ..
-			tostring(v.bank or 0) .. ", " ..
-			tostring(v.money or 0) .. ", " ..
-			sql.SQLStr(util.TableToJSON(v.inventory or {})) .. ", " ..
+			sql.SQLStr(v.name) .. ", " ..
+			sql.SQLStr(v.model) .. ", " ..
+			tostring(v.bank) .. ", " ..
+			tostring(v.money) .. ", " ..
+			sql.SQLStr(util.TableToJSON(v.inventory)) .. ", " ..
 			sql.SQLStr(v.flags or "") ..
 		");")
 
@@ -532,28 +557,6 @@ function DB.PersistPlayerData(ply)
 			print("SQL ERROR in DB.PersistPlayerData 4:" .. err)
 		end
 	end
-
-	-- deal with util.TableToJSON(inventory)
-
-
-
-
-
-	--[[
-	CAKE.AddDataField(1, "characters", {})
-	CAKE.AddDataField(1, "showhelppopup", 1) -- Whether or not to show the initial help box
-
-	-- These fields are what would be the default value, and it also allows the field to actually EXIST.
-	-- If there is a field in the data and it isn't added, it will automatically be removed.
-
-	-- Character Fields
-	CAKE.AddDataField(2, "name", "Set Your Name") -- Let's hope this never gets used.
-	CAKE.AddDataField(2, "model", "models/player/group01/male_07.mdl")
-	CAKE.AddDataField(2, "money", CAKE.ConVars.Default_Money) -- How much money do players start out with.
-	CAKE.AddDataField(2, "bank", CAKE.ConVars.Default_Bank) -- How much bank money do players start out with.
-	CAKE.AddDataField(2, "inventory", CAKE.ConVars.Default_Inventory) -- What inventory do they start with
-
-	]]
 end
 
 DB.Init()

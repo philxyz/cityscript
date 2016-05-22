@@ -635,25 +635,15 @@ function CreatePlayerMenu()
 		end
 
 		if not table.HasValue(ValidCakeModels, ChosenModel) then
-			LocalPlayer():PrintMessage(3, ChosenModel .. " " .. TEXT.XisNotAValidModel)
+			LocalPlayer():PrintMessage(3, ChosenModel .. " " .. TEXT.XIsNotAValidModel)
 			return
 		end
 
-		net.Start("ncStartCreate")
-		net.SendToServer()
-
-		net.Start("ncSetModel")
+		net.Start("ncCreateCharacter")
 		net.WriteString(ChosenModel)
-		net.SendToServer()
-
-		net.Start("Co")
 		net.WriteString(firstname:GetValue() .. " " .. lastname:GetValue())
 		net.SendToServer()
-
 		LocalPlayer().MyModel = ""
-
-		net.Start("ncFinishCreate")
-		net.SendToServer()
 
 		PlayerMenu:Remove()
 		PlayerMenu = nil
