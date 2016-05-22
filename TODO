@@ -33,10 +33,9 @@ philxyz 2015
 		rp_setmoney <player_name> <positive_whole_amount>
 
 
-- Move data to SQL Backend (SQLite)
 - Max player characters (10)
 - Implement the ability to delete player characters.
-- Fix rental of doors. It says that doors are not owned.
+- Something about doors saying they are not owned? Investigate.
 - Show owner on doors.
 - Door co-ownership.
 - Write properly on doors. Use 3D2D text.

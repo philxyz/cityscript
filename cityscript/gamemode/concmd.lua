@@ -283,6 +283,8 @@ net.Receive("Ck", function(_, ply)
 				end
 
 				timer.Simple(900, function() Rental(ply, entIndex) end)
+			else
+				CAKE.Response(ply, TEXT.Poor)
 			end
 		elseif door.owner == ply then
 			door.owner = nil
