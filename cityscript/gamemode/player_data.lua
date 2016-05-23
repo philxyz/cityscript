@@ -47,10 +47,6 @@ end
 function CAKE.ResendCharData(ply) -- Network all of the player's character data
 	local SteamID64 = ply:SteamID64()
 
-	if CAKE.PlayerData[SteamID64].characters[ply:GetNWInt("uid")] == nil then
-		return
-	end
-
 	for fieldname, data in pairs(CAKE.PlayerData[SteamID64].characters[ply:GetNWInt("uid")]) do
 		if type(data) ~= "table" then
 			ply:SetNWString(fieldname, tostring(data))

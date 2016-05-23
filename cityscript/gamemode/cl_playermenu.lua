@@ -681,7 +681,7 @@ function CreatePlayerMenu()
 		mdlPanel.PaintOver = function()
 			surface.SetTextColor(Color(255, 255, 255, 255))
 			surface.SetFont("Trebuchet18")
-			surface.SetTextPos((280 - surface.GetTextSize(ExistingChars[n]['name'])) / 2, 260)
+			surface.SetTextPos((280 - surface.GetTextSize(ExistingChars[n].name)) / 2, 260)
 			surface.DrawText(ExistingChars[n]['name'])
 		end
 
@@ -717,6 +717,12 @@ function CreatePlayerMenu()
 	chars:SetMultiSelect(false)
 	chars:AddColumn(TEXT.CharacterName)
 
+	local RebuildChars = function()
+		for k, v in pairs(ExistingChars) do
+			chars:AddLine(v.name)
+		end
+	end
+
 	function chars:OnRowSelected(LineID, Line)
 		n = LineID
 		mdlPanel:SetModel(ExistingChars[n].model)
@@ -727,9 +733,27 @@ function CreatePlayerMenu()
 		mdlPanel:OnMousePressed()
 	end
 
-	for k, v in pairs(ExistingChars) do
-		chars:AddLine(v.name)
+	function chars:OnRowRightClick(LineID, Line)
+		if LocalPlayer():GetNWInt("uid") ~= LineID then
+			local dm = DermaMenu()
+			dm:AddOption(TEXT.DeleteCharacter, function()
+				net.Start("Co")
+				net.WriteInt(LineID, 16)
+				net.SendToServer()
+
+				if LineID == #ExistingChars then
+					n = n - 1
+				end
+				
+				table.remove(ExistingChars, LineID)
+				chars:Clear()
+				RebuildChars()
+			end)
+			dm:Open()
+		end
 	end
+
+	RebuildChars()
 
 	selectcharform:AddItem(chars)
 	selectcharform:AddItem(charlist)

@@ -277,14 +277,6 @@ function DB.InstallATMs()
 
 	-- For each ATM in the database for this map, install them
 	for _, row in pairs(r) do
-		if not row.x then
-			for a, b in pairs(r) do
-				print("key: " .. a .. " = value: " .. b)
-			end
-
-			return
-		end
-
 		local atm = ents.Create("atm")
 		atm:SetPos(Vector(row.x, row.y, row.z))
 		atm:SetAngles(Angle(tonumber(row.a), tonumber(row.b), tonumber(row.c)))
@@ -417,8 +409,6 @@ function DB.LoadPlayerData(ply)
 	-- If an entry exists for this user
 	if rs then
 		for _, r in ipairs(rs) do
-			print("LOADING PLAYER DATA FOR PLAYER " .. SteamID64)
-
 			CAKE.CallHook("LoadPlayerData", ply)
 
 			DB.LogEvent("script", TEXT.LoadingPlayerDataFor .. " SteamID64: " .. SteamID64)

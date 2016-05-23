@@ -15,54 +15,64 @@ net.Receive("ncCreateCharacter", function(len, ply)
 
 	local chars = CAKE.PlayerData[ply:SteamID64()].characters
 
-	-- Model code
-	local found = false
+	if #chars == CAKE.ConVars.MaxPlayerCharacters then
+		CAKE.Response(ply, TEXT.MaxCharactersReached)
+	else
+		-- Model code
+		local found = false
 
-	for k, v in pairs(CAKE.ValidModels) do
-		if v == string.lower(mdl) then
-			found = true
-			break
+		for k, v in pairs(CAKE.ValidModels) do
+			if v == string.lower(mdl) then
+				found = true
+				break
+			end
 		end
-	end
 
-	local thisIsANewPlayer = false
+		local thisIsANewPlayer = false
 
-	for i=#DB.NewPlayers, 1, -1 do
-		if DB.NewPlayers[i] == ply then
-			thisIsANewPlayer = true
-			table.remove(DB.NewPlayers, i)
-			break
+		for i=#DB.NewPlayers, 1, -1 do
+			if DB.NewPlayers[i] == ply then
+				thisIsANewPlayer = true
+				table.remove(DB.NewPlayers, i)
+				break
+			end
 		end
+
+		local startingMoney = (thisIsANewPlayer and (#chars == 0) and CAKE.ConVars.Default_Money or 0)
+
+		table.insert(chars, {
+			model = found and mdl or "models/player/group01/male_01.mdl",
+			name = name,
+			bank = 0,
+			money = startingMoney,
+			inventory = {},
+			flags = ""
+		})
+
+		if startingMoney > 0 then
+			CAKE.Response(ply, TEXT.FirstCharacterBonus)
+		end
+
+		local id = #chars
+
+		ply:SetNWInt("uid", id)
+		ply:SetNWString("name", name)
+
+		-- Finish character creation
+		ply:SetDTInt(0, 1)
+
+		CAKE.ResendCharData(ply)
+
+		ply:RefreshInventory()
+		ply:RefreshBusiness()
+
+		ply:SetTeam(1)
+
+		ply:Spawn()
+		ply:ConCommand("fadein")
+
+		DB.PersistPlayerData(ply)
 	end
-
-	table.insert(chars, {
-		model = found and mdl or "models/player/group01/male_01.mdl",
-		name = name,
-		bank = 0,
-		money = (thisIsANewPlayer and (#chars == 0) and CAKE.ConVars.Default_Money or 0),
-		inventory = {},
-		flags = ""
-	})
-
-	local id = #chars
-
-	ply:SetNWInt("uid", id)
-	ply:SetNWString("name", name)
-
-	-- Finish character creation
-	ply:SetDTInt(0, 1)
-
-	CAKE.ResendCharData(ply)
-
-	ply:RefreshInventory()
-	ply:RefreshBusiness()
-
-	ply:SetTeam(1)
-
-	ply:Spawn()
-	ply:ConCommand("fadein")
-
-	DB.PersistPlayerData(ply)
 end)
 
 net.Receive("Cr", function(_, ply)

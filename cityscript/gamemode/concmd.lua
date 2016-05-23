@@ -200,6 +200,26 @@ net.Receive("C7", function(_, ply)
 	return
 end)
 
+util.AddNetworkString("Co")
+net.Receive("Co", function(_, ply)
+	local which = net.ReadInt(16)
+
+	-- If we delete a character with a lower ID number than the one we are using, our id will
+	-- reduce by one.
+
+	if which < ply:GetNWInt("uid") then
+		ply:SetNWInt("uid", ply:GetNWInt("uid") - 1)
+	end
+
+	table.remove(CAKE.PlayerData[ply:SteamID64()].characters, which)
+
+	DB.PersistPlayerData(ply)
+
+	CAKE.ResendCharData(ply)
+
+	CAKE.Response(ply, TEXT.CharacterDeleted)
+end)
+
 -- Lock door
 net.Receive("Cn", function(_, ply)
 	local entIndex = net.ReadInt(16)

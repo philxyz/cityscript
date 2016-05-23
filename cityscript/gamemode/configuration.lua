@@ -31,6 +31,7 @@ CAKE.ConVars.NPC_Kill_Pay = 5 -- How much you receive for killing an NPC
 CAKE.ConVars.Allow_Cash_Looting = true -- Players drop tokens on death
 CAKE.ConVars.Max_Cash_Drop_On_Death = 2000 -- Max tokens dropped when killed
 CAKE.ConVars.Schema = "cityscript" -- What folder is schema data being loaded from?
+CAKE.ConVars.MaxPlayerCharacters = 10 -- How many characters a player is allowed to have.
 
 -- MAX PERCENTAGE OF TOTAL PLAYERS PER TEAM
 -- YOU CAN ALWAYS HAVE AT LEAST ONE, BUT THIS DEFINES THE MAX
