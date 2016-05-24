@@ -64,6 +64,8 @@ function SCHEMA.SetUp()
 		"models/player/group01/female_03.mdl",
 		"models/player/group01/female_04.mdl",
 		"models/player/group01/female_06.mdl",
-		"models/player/group01/female_07.mdl"
+		"models/player/group03/female_02.mdl",
+		"models/player/group03/female_03.mdl",
+		"models/player/group03/female_04.mdl"
 	})
 end
