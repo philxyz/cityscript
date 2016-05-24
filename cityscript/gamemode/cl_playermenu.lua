@@ -78,6 +78,14 @@ local function InitHiddenButton()
 							if target:GetNWInt("rby") == LocalPlayer():EntIndex() then
 								ContextMenu:AddOption(TEXT.UnrentDoor, function() net.Start("Ck"); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end):SetIcon("icon16/house.png")
 								ContextMenu:AddSpacer()
+								local players = player.GetAll()
+								if #players > 1 then
+									local subm = ContextMenu:AddSubMenu(TEXT.GiveSomeKeysTo)
+									for _, v in ipairs(players) do
+										subm:AddOption(CAKE.GetCharField(v, "name") or v:Name(), function() net.Start("CA"); net.WriteInt(v:EntIndex(), 16); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end)
+									end
+									ContextMenu:AddSpacer()
+								end
 							else
 								if target:GetNWInt("rby") == nil or target:GetNWInt("rby") == 0 then
 									ContextMenu:AddOption(TEXT.RentDoor, function() net.Start("Ck"); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end):SetIcon("icon16/house.png")
@@ -140,7 +148,7 @@ local function InitHiddenButton()
 						local Credits = vgui.Create("DNumSlider", CreditPanel)
 						Credits:SetPos(25, 50)
 						Credits:SetWide(150)
-						Credits:SetText("Tokens to Give")
+						Credits:SetText(TEXT.NumberOfTokensToGive)
 						Credits:SetMin(0)
 						Credits:SetMax(tonumber(LocalPlayer():GetNWString("money")))
 						Credits:SetDecimals(0)
@@ -744,7 +752,7 @@ function CreatePlayerMenu()
 				if LineID == #ExistingChars then
 					n = n - 1
 				end
-				
+
 				table.remove(ExistingChars, LineID)
 				chars:Clear()
 				RebuildChars()

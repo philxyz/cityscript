@@ -200,6 +200,38 @@ net.Receive("C7", function(_, ply)
 	return
 end)
 
+util.AddNetworkString("CA")
+net.Receive("CA", function(_, ply)
+	local who = net.ReadInt(16)
+	local whoPly = Entity(who)
+	local door = net.ReadInt(16)
+	local doorEnt = Entity(door)
+
+	if IsValid(doorEnt) and IsValid(whoPly) then
+		-- Only the person renting the door can give keys away to it.
+		if doorEnt:GetNWInt("rby") == ply:EntIndex() then
+
+			-- Give the keys to the person
+			local found = false
+			for k, v in ipairs(doorEnt.Keyholders) do
+				if v == whoPly then
+					found = true
+					break
+				end
+			end
+
+			if not found then
+				table.insert(doorEnt.Keyholders, whoPly)
+				CAKE.Response(ply, TEXT.KeysGivenToPlayer(CAKE.GetCharField(whoPly, "name") or whoPly:Name()))
+			else
+				CAKE.Response(ply, TEXT.PlayerAlreadyHasKeys)
+			end
+		end
+	else
+		CAKE.Response(ply, TEXT.InvalidDoorEntityOrTargetPlayer)
+	end
+end)
+
 util.AddNetworkString("Co")
 net.Receive("Co", function(_, ply)
 	local which = net.ReadInt(16)
@@ -230,7 +262,20 @@ net.Receive("Cn", function(_, ply)
 	local playerCanAccessRestrictedAreas = CAKE.Teams[ply:Team()].can_access_restricted_areas
 
 	if CAKE.IsDoor(entity) then
-		if rentable and (entity.owner == ply or (restrictedArea and playerCanAccessRestrictedAreas)) then
+		local isKeyholder = false
+
+		-- If the door isn't owned by the originator of this message
+		if entity:GetNWInt("rby") ~= ply:EntIndex() then
+			-- Check whether the originator of this message is a keyholder
+			for _, v in ipairs(entity.Keyholders) do
+				if v == ply then
+					isKeyholder = true
+					break
+				end
+			end
+		end
+
+		if rentable and (entity.owner == ply or (restrictedArea and playerCanAccessRestrictedAreas)) or isKeyholder then
 			entity:Fire("lock", "", 0)
 			ply:EmitSound("buttons/lever" .. math.floor(math.Rand(7,8)) .. ".wav")
 			CAKE.Response(ply, TEXT.DoorLocked)
@@ -249,8 +294,21 @@ net.Receive("Cm", function(_, ply)
 	local restrictedArea = entity:GetNWBool("pmOnly")
 	local playerCanAccessRestrictedAreas = CAKE.Teams[ply:Team()].can_access_restricted_areas
 
+	local isKeyholder = false
+
+	-- If the door isn't owned by the originator of this message
+	if entity:GetNWInt("rby") ~= ply:EntIndex() then
+		-- Check whether the originator of this message is a keyholder
+		for _, v in ipairs(entity.Keyholders) do
+			if v == ply then
+				isKeyholder = true
+				break
+			end
+		end
+	end
+
 	if CAKE.IsDoor(entity) then
-		if rentable and (entity.owner == ply or (restrictedArea and playerCanAccessRestrictedAreas)) then
+		if rentable and (entity.owner == ply or (restrictedArea and playerCanAccessRestrictedAreas)) or isKeyholder then
 			entity:Fire("unlock", "", 0)
 			ply:EmitSound("buttons/lever" .. math.floor(math.Rand(7,8)) .. ".wav")
 			CAKE.Response(ply, TEXT.DoorUnlocked)
@@ -284,6 +342,7 @@ net.Receive("Ck", function(_, ply)
 				CAKE.ChangeMoney(ply, -50)
 				door:SetNWInt("rby", ply:EntIndex())
 				door.owner = ply
+				door.Keyholders = {}
 				CAKE.Response(ply, TEXT.DoorRented)
 
 				local function Rental(ply, doornum)
