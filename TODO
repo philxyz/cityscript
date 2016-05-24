@@ -33,8 +33,8 @@ philxyz 2015
 		rp_setmoney <player_name> <positive_whole_amount>
 
 - Something about doors saying they are not owned? Investigate.
-- Show owner on doors.
-- Door co-ownership, and show co-owners where appropriate.
+- Allow adding and removing co-owners to doors.
+
 - Update help menu to represent current state
 - Make the help menu more readable
 - 3D 2D text on boxes.

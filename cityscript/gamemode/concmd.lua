@@ -233,6 +233,7 @@ net.Receive("Cn", function(_, ply)
 		if rentable and (entity.owner == ply or (restrictedArea and playerCanAccessRestrictedAreas)) then
 			entity:Fire("lock", "", 0)
 			ply:EmitSound("buttons/lever" .. math.floor(math.Rand(7,8)) .. ".wav")
+			CAKE.Response(ply, TEXT.DoorLocked)
 		else
 			CAKE.Response(ply, TEXT.NotYourDoor)
 		end
@@ -252,6 +253,7 @@ net.Receive("Cm", function(_, ply)
 		if rentable and (entity.owner == ply or (restrictedArea and playerCanAccessRestrictedAreas)) then
 			entity:Fire("unlock", "", 0)
 			ply:EmitSound("buttons/lever" .. math.floor(math.Rand(7,8)) .. ".wav")
+			CAKE.Response(ply, TEXT.DoorUnlocked)
 		else
 			CAKE.Response(ply, TEXT.NotYourDoor)
 		end
