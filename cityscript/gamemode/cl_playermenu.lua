@@ -1075,22 +1075,6 @@ function CreatePlayerMenu()
 		Scoreboard:Add(FullData)
 	end
 
-	local Help = vgui.Create("DIconLayout")
-	--Help:SetPadding(20)
-	--Help:EnableHorizontal(false)
-	Help:SetVerticalScrollbarEnabled(true)
-
-	local function AddHelpLine(text)
-		local label = vgui.Create("DLabel")
-		label:SetText(text)
-		label:SizeToContents()
-		Help:Add(label)
-	end
-
-	for k, v in pairs(TEXT.HelpLong) do
-		AddHelpLine(v)
-	end
-
 	local Admin
 	if LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() then
 		Admin = vgui.Create("DPanelList")
@@ -1131,7 +1115,34 @@ function CreatePlayerMenu()
 	PropertySheet:AddSheet( TEXT.Backpack, Inventory, "icon16/house_go.png", false, false, TEXT.ViewYourInventory)
 	PropertySheet:AddSheet( TEXT.Business, Business, "icon16/briefcase.png", false, false, TEXT.PurchaseItems)
 	PropertySheet:AddSheet( TEXT.Scoreboard, Scoreboard, "icon16/application_view_detail.png", false, false, TEXT.ViewScoreboard)
-	PropertySheet:AddSheet( TEXT.Help, Help, "icon16/magnifier.png", false, false, TEXT.HelpTextMenu)
+
+	local scrll = vgui.Create("DScrollPanel", PropertySheet)
+	scrll:SetSize(PropertySheet:GetWide(), PropertySheet:GetTall())
+	scrll:SetPos(0, 0)
+
+	local Help = vgui.Create("DIconLayout", scrll)
+	Help:SetSize(scrll:GetWide() - 4, scrll:GetTall() - 4)
+	Help:SetPos(2, 2)
+	--Help:SetPadding(20)
+	--Help:EnableHorizontal(false)
+	Help:SetSpaceX(5)
+	Help:SetSpaceY(5)
+
+	local function AddHelpLine(text)
+		local label = vgui.Create("DLabel")
+		label:SetText(text)
+		label:SizeToContents()
+
+		local item = Help:Add(label)
+		item:SetSize(Help:GetWide(), 10)
+	end
+
+	for k, v in pairs(TEXT.HelpLong) do
+		AddHelpLine(v)
+	end
+
+	PropertySheet:AddSheet( TEXT.Help, scrll, "icon16/magnifier.png", false, false, TEXT.HelpTextMenu)
+
 	if LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() then
 		PropertySheet:AddSheet( "Admin", Admin, "icon16/eye.png", false, false, TEXT.AdminCommandsMenu)
 	end

@@ -119,7 +119,7 @@ function Admin_Help(ply, cmd, args)
 	CAKE.Response(ply, TEXT.ListAdminCmdsHeader)
 
 	for cmdname, cmd in pairs(CAKE.AdminCommands) do
-		local s = cmdname .. " \"" .. cmd.desc .. "\""
+		local s = cmdname .. " \"" .. (cmd.desc or "") .. "\""
 
 		if cmd.CanRunFromConsole then
 			s = s .. " console"
@@ -148,5 +148,4 @@ function PLUGIN.Init()
 	CAKE.AdminCommand("ban", Admin_Ban, TEXT.BanSomeone, true, true, false)
 	CAKE.AdminCommand("listvars", Admin_ListVars, TEXT.ListConVars, true, true, true)
 	CAKE.AdminCommand("setvar", Admin_SetVar, TEXT.SetVar, true, true, true)
-	CAKE.AdminCommand("adddoor", Admin_AddDoor, TEXT.AddDoorToDoorGroup, true, true, true)
 end

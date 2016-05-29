@@ -9,31 +9,6 @@ at any one moment.
 
 philxyz 2015
 ================================================================================
-- Identify all commands and parameters
-	- Note them down
-		rp_admin tooltrust <name> [1|0]
-		rp_admin phystrust <name> [1|0]
-		rp_admin proptrust <name> [1|0]
-
-		rp_admin extraeffects <name> <amount>
-		rp_admin extravehicles <name> <amount>
-		rp_admin extraprops <name> <amount>
-		rp_admin extraragdolls <name> <amount>
-
-		rp_admin listvars
-		rp_admin setvar <value>
-
-		rp_admin help - List all commands
-		rp_admin quiet <user> [1|0] - stop a player using voices
-		rp_admin warn <name> <warningmessage>
-		rp_admin kick <name> <reason>
-		rp_admin ban <name> <reason> <minutes>
-
-		rp_createitem (second argument to CAKE.CreateItem)
-		rp_setmoney <player_name> <positive_whole_amount>
-
-- Update help menu to represent current state
-- Make the help menu more readable
 - 3D 2D text on boxes.
 - 3D 2D text on doors.
 

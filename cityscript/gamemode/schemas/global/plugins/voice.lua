@@ -14,7 +14,7 @@ net.Receive("C8", function(_, ply)
 			return
 		end
 	end
-	
+
 	if CAKE.Voices[id] == nil then
 		CAKE.Response(ply, TEXT.SoundDoesNotExist)
 		return
@@ -22,30 +22,30 @@ net.Receive("C8", function(_, ply)
 
 	local voice = CAKE.Voices[id]
 	local team = ply:Team()
-	
+
 	if table.HasValue(CAKE.Teams[team].sound_groups, voice.soundgroup) then
 		local path = voice.path
-		
+
 		if (string.find(string.lower(ply:GetModel()), "female") or string.lower(ply:GetModel()) == "models/alyx.mdl") and voice.femalealt ~= "" then
 			path = voice.femalealt
 		end
-		
+
 		if CAKE.Teams[team].rations == true then
 			-- This is a combine team, thus we will give them COMBINE STYLE VOICES.
 			util.PrecacheSound("/npc/metropolice/vo/on2.wav")
 			util.PrecacheSound("/npc/metropolice/vo/off2.wav")
-			
+
 			ply:EmitSound("/npc/metropolice/vo/on2.wav")
-			
+
 			local function EmitThatShit()
 				ply:EmitSound(path)
 			end
 
 			timer.Simple(1, EmitThatShit)
-			
+
 			return ""
 		end
-			
+
 		util.PrecacheSound(path)
 		ply:EmitSound(path)
 		ply:ConCommand("say " .. voice.line .. "\n")
@@ -55,7 +55,7 @@ end)
 function ccListVoice(ply, cmd, args)
 	CAKE.Response(ply, TEXT.ListOfVoicesHeader)
 	CAKE.Response(ply, TEXT.NoteRoleSpecific)
-	
+
 	for _, voice in pairs(CAKE.Voices) do
 		if table.HasValue(CAKE.Teams[ply:Team()]["sound_groups"], voice.soundgroup) then
 			CAKE.Response(ply, _ .. " - " .. voice.line .. " - " .. voice.path)
@@ -70,6 +70,6 @@ function CAKE.AddVoice(id, path, soundgroup, text, fa)
 	voice.soundgroup = soundgroup or 0
 	voice.line = text or ""
 	voice.femalealt = fa or ""
-	
+
 	CAKE.Voices[id] = voice
 end
