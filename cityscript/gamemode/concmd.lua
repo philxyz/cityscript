@@ -267,7 +267,7 @@ net.Receive("Cn", function(_, ply)
 		-- If the door isn't owned by the originator of this message
 		if entity:GetNWInt("rby") ~= ply:EntIndex() then
 			-- Check whether the originator of this message is a keyholder
-			for _, v in ipairs(entity.Keyholders) do
+			for _, v in ipairs(entity.Keyholders or {}) do
 				if v == ply then
 					isKeyholder = true
 					break
@@ -299,7 +299,7 @@ net.Receive("Cm", function(_, ply)
 	-- If the door isn't owned by the originator of this message
 	if entity:GetNWInt("rby") ~= ply:EntIndex() then
 		-- Check whether the originator of this message is a keyholder
-		for _, v in ipairs(entity.Keyholders) do
+		for _, v in ipairs(entity.Keyholders or {}) do
 			if v == ply then
 				isKeyholder = true
 				break

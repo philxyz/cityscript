@@ -72,8 +72,8 @@ function DrawTargetInfo()
 		draw.DrawText(tr.Entity:GetNWString("Name"), "ChatFont", screenpos.x, screenpos.y, Color(255, 255, 255, 255), 1)
 
 		if tr.Entity:GetNWString("Title") ~= "" and not CAKE.IsDoor(tr.Entity) then
-			draw.DrawText(tr.Entity:GetNWString("Title"), "ChatFont", screenpos.x + 2, screenpos.y + 22, Color( 0, 0, 0, 255 ), 1)
-			draw.DrawText(tr.Entity:GetNWString("Title"), "ChatFont", screenpos.x, screenpos.y + 20, Color( 255, 255, 255, 255 ), 1)
+			draw.DrawText(tr.Entity:GetNWString("Title") .. "(isdoor)", "ChatFont", screenpos.x + 2, screenpos.y + 22, Color( 0, 0, 0, 255 ), 1)
+			draw.DrawText(tr.Entity:GetNWString("Title") .. "(isdoor)", "ChatFont", screenpos.x, screenpos.y + 20, Color( 255, 255, 255, 255 ), 1)
 		else
 			draw.DrawText(tr.Entity:GetNWString("Description"), "ChatFont", screenpos.x + 2, screenpos.y + 22, Color(0, 0, 0, 255), 1)
 			draw.DrawText(tr.Entity:GetNWString("Description"), "ChatFont", screenpos.x, screenpos.y + 20, Color(255, 255, 255, 255), 1)
@@ -275,15 +275,6 @@ end
 function GM:HUDPaint()
 	local tr = LocalPlayer():GetEyeTrace()
 	local superAdmin = LocalPlayer():IsSuperAdmin()
-
-	if IsValid(tr.Entity) and CAKE.IsDoor(tr.Entity) and tr.Entity:GetPos():Distance(LocalPlayer():GetPos()) < 200 then
-		local pos = tr.HitPos:ToScreen()
-		local ent = tr.Entity
-		local st = ent:GetNWString("dTitle") or ""
-
-		draw.DrawText(st, "TargetID", pos.x + 1, pos.y + 1, Color(0, 0, 0, 200), 1)
-		draw.DrawText(st, "TargetID", pos.x, pos.y, Color(255, 255, 255, 200), 1)
-	end
 
 	if LocalPlayer():GetDTInt(1) == 1 then
 		DrawDeathMeter()
@@ -523,3 +514,124 @@ end
 function GM:ChatTextChanged(newtext)
 	ListVoiceOptions(newtext)
 end
+
+surface.CreateFont("ItemFont", {
+	font = "TargetID",
+	size = 24,
+	weight = 500,
+	shadow = true,
+	additive = false,
+	outline = true
+})
+
+local DoorSignTexture = Material("coaster/wood", "smooth")
+
+local white = Color(255, 255, 255, 255)
+
+local drawForEntity = function(e, lines)
+	if not IsValid(e) then return end
+
+	local angle = e:GetAngles()
+	local model = e:GetModel()
+	local pos = e:GetPos()
+	local vOffset = 32
+	local hOffset = 22
+	local modelOriented90 = false
+
+	if e:GetClass() == "func_door" then
+		vOffset = 0
+		hOffset = 0
+		local mn = e:OBBMins()
+		local mx = e:OBBMaxs()
+		local dim1 = pos + Vector(mn.x/2, mn.y, pos.z)
+		local dim2 = pos + Vector(mx.x, mx.y/2, pos.z)
+		local d1 = math.Distance(dim1.x, dim1.y, pos.x, pos.y)
+		local d2 = math.Distance(dim2.x, dim2.y, pos.x, pos.y)
+		if d1 < d2 then
+			modelOriented90 = true
+		end
+	elseif model == "models/props_c17/door01_left.mdl" then
+		vOffset = -3
+	elseif model == "models/props_doors/door03_slotted_left.mdl" then
+		vOffset = 2
+	elseif model == "models/props_c17/door02_double.mdl" then
+		vOffset = 24
+		hOffset = 14.4
+	end
+
+	local massCenter = pos - (angle:Right() * hOffset) + (angle:Up() * vOffset)
+
+	angle:RotateAroundAxis(angle:Right(), 90)
+	if modelOriented90 then
+		angle:RotateAroundAxis(angle:Forward(), 90)
+	end
+	angle:RotateAroundAxis(angle:Up(), 270)
+
+	cam.Start3D2D(massCenter + angle:Up() * 2.2, angle, 0.28)
+		surface.SetTextColor(255, 255, 255, 255)
+		surface.SetMaterial(DoorSignTexture)
+		surface.SetDrawColor(255, 255, 255, 255)
+
+		surface.SetFont("ItemFont")
+
+		local tpy = 0
+		local inc = 12
+
+		for _, txt in ipairs(lines) do
+			local w, h = surface.GetTextSize(txt)
+			surface.SetTextPos(-(w/2), tpy+1)
+			surface.DrawTexturedRect(-(w/2)-12, tpy, w+24, h)
+			surface.DrawText(txt)
+			tpy = tpy + inc
+		end
+	cam.End3D2D()
+
+	angle:RotateAroundAxis(angle:Right(), 180)
+
+	cam.Start3D2D(massCenter + angle:Up() * 2.2, angle, 0.28)
+		surface.SetTextColor(255, 255, 255, 255)
+		surface.SetMaterial(DoorSignTexture)
+		surface.SetDrawColor(255, 255, 255, 255)
+
+		surface.SetFont("ItemFont")
+
+		tpy = 0
+		inc = 12
+
+		for _, txt in ipairs(lines) do
+			local w, h = surface.GetTextSize(txt)
+			surface.SetTextPos(-(w/2), tpy+1)
+			surface.DrawTexturedRect(-(w/2)-12, tpy, w+24, h)
+			surface.DrawText(txt)
+			tpy = tpy + inc
+		end
+	cam.End3D2D()
+end
+
+hook.Add("PostDrawTranslucentRenderables", "Labels", function()
+	local e = ents.GetAll()
+
+	for _, v in ipairs(e) do
+		local p = v:GetPos()
+		local p2 = LocalPlayer():GetPos()
+
+		local dist = math.Distance(p.x, p.y, p2.x, p2.y)
+
+		if dist < 1000 then
+			local cls = v:GetClass()
+
+			if cls == "func_door" or cls == "func_door_rotating" or cls == "prop_door_rotating" then
+				local tab = {}
+				local title = v:GetNWString("dTitle")
+
+				if title ~= nil and title ~= "" then
+					table.insert(tab, title)
+				end
+
+				if #tab > 0 then
+					drawForEntity(v, tab)
+				end
+			end
+		end
+	end
+end)

@@ -9,12 +9,24 @@ at any one moment.
 
 philxyz 2015
 ================================================================================
-- 3D 2D text on boxes.
-- 3D 2D text on doors.
+- 3D2D text on storage boxes.
 
 - Car Dealer functionality
-	- Roleplaying Vehicles Addon (or find another)
-	- [LW]
-	- SGM Cars
-	- TDM Cars
-	- SCars Slim, SCars Basic, and SCars Extra
+	- Vehicle option population from Admin menu.
+		- Scan for list of usable vehicles
+		- Check the database to see whether they are already set up
+		- List those that are set up
+		- List any that are not already set up
+		- When setting up, allow inputting a price and a name
+		- When generating, produce the text files for the vehicles
+		- Tell the user that they need to restart the server
+
+	- Vehicle locking
+		- Simple lock / unlock.
+
+	- Test with addons:
+		- Roleplaying Vehicles Addon (or find another)
+		- [LW]
+		- SGM Cars
+		- TDM Cars
+		- SCars Slim, SCars Basic, and SCars Extra
