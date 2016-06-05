@@ -72,16 +72,17 @@ function DrawTargetInfo()
 		draw.DrawText(tr.Entity:GetNWString("Name"), "ChatFont", screenpos.x, screenpos.y, Color(255, 255, 255, 255), 1)
 
 		if tr.Entity:GetNWString("Title") ~= "" and not CAKE.IsDoor(tr.Entity) then
-			draw.DrawText(tr.Entity:GetNWString("Title") .. "(isdoor)", "ChatFont", screenpos.x + 2, screenpos.y + 22, Color( 0, 0, 0, 255 ), 1)
-			draw.DrawText(tr.Entity:GetNWString("Title") .. "(isdoor)", "ChatFont", screenpos.x, screenpos.y + 20, Color( 255, 255, 255, 255 ), 1)
+			draw.DrawText(tr.Entity:GetNWString("Title"), "ChatFont", screenpos.x + 2, screenpos.y + 22, Color( 0, 0, 0, 255 ), 1)
+			draw.DrawText(tr.Entity:GetNWString("Title"), "ChatFont", screenpos.x, screenpos.y + 20, Color( 255, 255, 255, 255 ), 1)
 		else
-			draw.DrawText(tr.Entity:GetNWString("Description"), "ChatFont", screenpos.x + 2, screenpos.y + 22, Color(0, 0, 0, 255), 1)
-			draw.DrawText(tr.Entity:GetNWString("Description"), "ChatFont", screenpos.x, screenpos.y + 20, Color(255, 255, 255, 255), 1)
-		end
-
-		if tr.Entity:GetNWBool("shipment") then
-			draw.DrawText(tostring(tr.Entity.dt.count) .. " units\n" .. tostring(math.floor(((tr.Entity.dt.count * tr.Entity.dt.itemWt)*100)+0.5)/100) .. "kg NET", "ChatFont", screenpos.x + 2, screenpos.y + 42, Color( 0, 0, 0, 255 ), 1)
-			draw.DrawText(tostring(tr.Entity.dt.count) .. " units\n" .. tostring(math.floor(((tr.Entity.dt.count * tr.Entity.dt.itemWt)*100)+0.5)/100) .. "kg NET", "ChatFont", screenpos.x, screenpos.y + 40, Color( 255, 255, 255, 255 ), 1)
+			if tr.Entity:GetNWBool("shipment") then
+				local txt = "Contains " .. tostring(tr.Entity.dt.count) .. " items"
+				draw.DrawText(txt, "ChatFont", screenpos.x + 2, screenpos.y + 22, Color(0, 0, 0, 255), 1)
+				draw.DrawText(txt, "ChatFont", screenpos.x, screenpos.y + 20, Color(255, 255, 255, 255), 1)
+			else
+				draw.DrawText(tr.Entity:GetNWString("Description"), "ChatFont", screenpos.x + 2, screenpos.y + 22, Color(0, 0, 0, 255), 1)
+				draw.DrawText(tr.Entity:GetNWString("Description"), "ChatFont", screenpos.x, screenpos.y + 20, Color(255, 255, 255, 255), 1)
+			end
 		end
 
 		if tr.Entity:GetNWBool("ATM") then
@@ -527,6 +528,8 @@ surface.CreateFont("ItemFont", {
 local DoorSignTexture = Material("coaster/wood", "smooth")
 
 local white = Color(255, 255, 255, 255)
+local black = Color(0, 0, 0, 255)
+local transparentblack = Color(0, 0, 0, 150)
 
 local drawForEntity = function(e, lines)
 	if not IsValid(e) then return end
@@ -608,6 +611,74 @@ local drawForEntity = function(e, lines)
 	cam.End3D2D()
 end
 
+surface.CreateFont("BoxFont1", {
+	font = "Default",
+	size = 32,
+	weight = 500,
+	additive = false,
+})
+
+surface.CreateFont("BoxFont2", {
+	font = "Default",
+	size = 22,
+	weight = 500,
+	additive = false,
+})
+
+local drawForShipment = function(e, lines)
+	if not IsValid(e) then return end
+
+	local angle = e:GetAngles()
+	local model = e:GetModel()
+
+	local massCenter = e:GetPos() - (angle:Right() * -12) + (angle:Up() * 21.6) + (angle:Forward() * 11)
+	angle:RotateAroundAxis(angle:Up(), 180)
+
+	cam.Start3D2D(massCenter + angle:Up() * 2, angle, 0.08)
+		surface.SetTextColor(black)
+
+		surface.SetFont("BoxFont2")
+
+		local tpy = 0
+		local inc = 29
+		local maxw = 0
+
+		surface.SetDrawColor(black)
+		surface.DrawRect(-7, -26, 248, 26)
+
+		surface.SetDrawColor(Color(255, 0, 0, 255))
+		surface.DrawRect(-5, -24, 244, 22)
+
+		surface.SetTextPos(0, -22)
+		surface.DrawText(TEXT.DocumentsEnclosed)
+
+		surface.SetTextColor(Color(0, 0, 0))
+		surface.SetFont("BoxFont1")
+
+		local heights = {}
+
+		for _, txt in ipairs(lines) do
+			local w, h = surface.GetTextSize(txt)
+			if w > maxw then
+				maxw = w
+			end
+			table.insert(heights, h)
+		end
+
+		for i, txt in ipairs(lines) do
+			surface.SetTextPos(0, tpy+1)
+			surface.SetDrawColor(white)
+			surface.DrawRect(-6, tpy, maxw+12, heights[i] - 3)
+			surface.DrawText(txt)
+
+			tpy = tpy + inc
+		end
+
+		surface.SetDrawColor(transparentblack)
+		surface.DrawRect(-8, -27, 250, 145)
+	cam.End3D2D()
+end
+
 hook.Add("PostDrawTranslucentRenderables", "Labels", function()
 	local e = ents.GetAll()
 
@@ -630,6 +701,20 @@ hook.Add("PostDrawTranslucentRenderables", "Labels", function()
 
 				if #tab > 0 then
 					drawForEntity(v, tab)
+				end
+			end
+
+-- GetNWBool("shipment")
+			if cls == "spawned_shipment" then
+				local tab = {}
+
+				table.insert(tab, v:GetNWString("Name"))
+				table.insert(tab, v:GetNWString("Description"))
+				table.insert(tab, tostring(math.floor(((10 * v.dt.itemWt)*100)+0.5)/100) .. "kg NET")
+				table.insert(tab, "Handle with care")
+
+				if #tab > 0 then
+					drawForShipment(v, tab)
 				end
 			end
 		end
