@@ -679,6 +679,39 @@ local drawForShipment = function(e, lines)
 	cam.End3D2D()
 end
 
+local drawForStorageBox = function(e, lines)
+	if not IsValid(e) then return end
+
+	local angle = e:GetAngles()
+	local model = e:GetModel()
+
+	local massCenter = e:GetPos() - (angle:Right() * -16) + (angle:Up() * 10.1) + (angle:Forward() * -14)
+	angle:RotateAroundAxis(angle:Up(), 90)
+
+	cam.Start3D2D(massCenter + angle:Up() * 2, angle, 0.08)
+		surface.SetTextColor(0, 0, 0)
+		surface.SetFont("BoxFont1")
+
+		local tpy = 0
+		local inc = 29
+		local maxw = 0
+
+		for _, txt in ipairs(lines) do
+			local w, h = surface.GetTextSize(txt)
+
+			if w > maxw then
+				maxw = w
+			end
+
+			surface.SetTextPos(0, tpy+1)
+			surface.SetDrawColor(white)
+			surface.DrawRect(-6, tpy, maxw+12, h-3)
+			surface.DrawText(txt)
+			tpy = tpy + inc
+		end
+	cam.End3D2D()
+end
+
 hook.Add("PostDrawTranslucentRenderables", "Labels", function()
 	local e = ents.GetAll()
 
@@ -702,10 +735,7 @@ hook.Add("PostDrawTranslucentRenderables", "Labels", function()
 				if #tab > 0 then
 					drawForEntity(v, tab)
 				end
-			end
-
--- GetNWBool("shipment")
-			if cls == "spawned_shipment" then
+			elseif cls == "spawned_shipment" then
 				local tab = {}
 
 				table.insert(tab, v:GetNWString("Name"))
@@ -715,6 +745,14 @@ hook.Add("PostDrawTranslucentRenderables", "Labels", function()
 
 				if #tab > 0 then
 					drawForShipment(v, tab)
+				end
+			elseif cls == "storage_box" then
+				local tab = {}
+
+				local str = v:GetNWString("Title")
+				if str ~= "" then
+					table.insert(tab, str)
+					drawForStorageBox(v, tab)
 				end
 			end
 		end
