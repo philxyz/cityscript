@@ -31,6 +31,22 @@ net.Receive("Cx", function(_, ply)
 	InventoryTable = {}
 end)
 
+net.Receive("veh", function(_, ply)
+
+
+
+
+	local vehFrm = vgui.Create("DFrame")
+	vehFrm:SetSize(320, 240)
+	vehFrm:SetPos(ScrW()/2-(320/2), ScrH()/2-(240/2))
+	vehFrm:SetTitle(TEXT.AdminManageVehicleAddons)
+	vehFrm:SetVisible(false)
+	vehFrm:Show()
+	vehFrm:MoveToFront()
+
+
+end)
+
 BusinessTable = {}
 net.Receive("Cu", function(_, ply)
 	local count = net.ReadInt(32)
@@ -71,7 +87,7 @@ local function InitHiddenButton()
 			local target = trace.Entity
 
 			local ContextMenu = DermaMenu()
-				if CAKE.IsDoor(target) or target:IsVehicle() then
+				if CAKE.IsDoor(target) then
 					if not target:GetNWBool("nonRentable") then
 
 						if not target:GetNWBool("pmOnly") then
@@ -176,7 +192,45 @@ local function InitHiddenButton()
 						ContextMenu:AddOption(TEXT.Kick, function() KickPlayer(target) end)
 						ContextMenu:AddOption(TEXT.Ban, function() BanPlayer(target) end)
 					end
-				elseif(target:IsNPC()) then
+				elseif target:IsNPC() then
+				elseif target:IsVehicle() then
+					-- If the person clicking is the owner of the vehicle
+					if target:GetNWEntity("c_ent") == LocalPlayer() then
+						ContextMenu:AddOption(TEXT.LockVehicle, function() net.Start("Cnv"); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end):SetIcon("icon16/lock.png")
+						ContextMenu:AddOption(TEXT.UnlockVehicle, function() net.Start("Cmv"); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end):SetIcon("icon16/lock_open.png")
+						ContextMenu:AddSpacer()
+						if target:GetNWInt("svl") < 0 then
+							ContextMenu:AddOption(TEXT.SetSalePrice, function()
+								-- Get a sale price from the owner of the vehicle.
+								Derma_StringRequest(TEXT.SetSalePrice,
+									TEXT.SetSalePrice,
+									"",
+									function(amount)
+										if amount == "" or not tonumber(amount) then return end
+
+										net.Start("Ssp")
+										net.WriteInt(target:EntIndex(), 16)
+										net.WriteString(amount)
+										net.SendToServer()
+									end
+								)
+							end):SetIcon("icon16/tag_blue_edit.png")
+						else
+							ContextMenu:AddOption(TEXT.RemoveFromSale, function()
+								net.Start("Ssp")
+								net.WriteInt(target:EntIndex(), 16)
+								net.WriteString("-1")
+								net.SendToServer()
+							end):SetIcon("icon16/cross.png")
+						end
+						ContextMenu:AddSpacer()
+						ContextMenu:AddOption(TEXT.ScrapVehicle, function() net.Start("Sv"); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end):SetIcon("icon16/car_delete.png")
+					else -- If the person clicking is not the owner of the vehicle
+						local svl = target:GetNWInt("svl")
+						if svl ~= nil and svl >= 0 then
+							ContextMenu:AddOption(TEXT.BuyVehicle, function() end):SetIcon("icon16/car_add.png")
+						end
+					end
 				else
 					-- If the weapon is already being held, you can't pick it up - but you can take its default ammo if there is some.
 					if (target:GetClass() == "spawned_weapon" and not LocalPlayer():HasWeapon(target.class)) or not LocalPlayer():HasWeapon(target:GetNWString("Class")) then
@@ -1083,18 +1137,19 @@ function CreatePlayerMenu()
 		Admin:EnableHorizontal(true)
 		Admin:EnableVerticalScrollbar(true)
 		local buttonsCommands = {}
-		buttonsCommands["Spawn a New ATM"] = TEXT.NewATMCommand
-		buttonsCommands["Freeze an ATM (look at it first)"] = TEXT.FreezeATMCommand
-		buttonsCommands["Add spawn position for current role"] = TEXT.AddSpawnCommand
-		buttonsCommands["Remove all custom spawn positions for current role"] = TEXT.RemoveSpawnsCommand
-		buttonsCommands["Enable Zombies"] = TEXT.EnableZombiesCommand
-		buttonsCommands["Disable Zombies"] = TEXT.DisableZombiesCommand
-		buttonsCommands["Add zombie spawn position here"] = TEXT.AddZombieCommand
-		buttonsCommands["Drop Zombies"] = TEXT.DropZombiesCommand
-		buttonsCommands["Enable Meteor Storm"] = TEXT.EnableMeteorStormCommand
-		buttonsCommands["Disable Meteor Storm"] = TEXT.DisableMeteorStormCommand
-		buttonsCommands["Clear all jail positions and set one here"] = TEXT.AddJailPosCommand
-		buttonsCommands["Add jail position here"] = TEXT.AddExtraJailPosCommand
+		buttonsCommands[TEXT.SpawnNewATM] = TEXT.NewATMCommand
+		buttonsCommands[TEXT.FreezeAnATM] = TEXT.FreezeATMCommand
+		buttonsCommands[TEXT.AddCustomPosForCurrentRole] = TEXT.AddSpawnCommand
+		buttonsCommands[TEXT.CustomSpawnPositions] = TEXT.RemoveSpawnsCommand
+		buttonsCommands[TEXT.EnableZombies] = TEXT.EnableZombiesCommand
+		buttonsCommands[TEXT.DisableZombies] = TEXT.DisableZombiesCommand
+		buttonsCommands[TEXT.AddZombieSpawnPosHere] = TEXT.AddZombieCommand
+		buttonsCommands[TEXT.DropZombies] = TEXT.DropZombiesCommand
+		buttonsCommands[TEXT.EnableMeteorStorm] = TEXT.EnableMeteorStormCommand
+		buttonsCommands[TEXT.DisableMeteorStorm] = TEXT.DisableMeteorStormCommand
+		buttonsCommands[TEXT.ClearJailPositions] = TEXT.AddJailPosCommand
+		buttonsCommands[TEXT.AddJailPosHere] = TEXT.AddExtraJailPosCommand
+		buttonsCommands[TEXT.AdminManageVehicleAddons] = TEXT.ManageVehicleAddonsCommand
 
 		local posY = 5
 		for k, v in pairs(buttonsCommands) do

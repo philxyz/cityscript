@@ -4,17 +4,17 @@ function CAKE.LoadItem(schema, filename)
 	local path = "schemas/" .. schema .. "/items/" .. filename
 	ITEM = {}
 	include(path)
-	
+
 	CAKE.ItemData[ITEM.Class] = ITEM
 end
 
 function CAKE.CreateItem(ply, class, pos, ang, ammo1, ammo2)
 	if CAKE.ItemData[class] == nil then return end
-	
+
 	local itemtable = CAKE.ItemData[class]
 
 	local item
-	
+
 	if itemtable.ContentClass then
 		-- It's a Shipment
 		item = ents.Create("spawned_shipment")
@@ -23,7 +23,8 @@ function CAKE.CreateItem(ply, class, pos, ang, ammo1, ammo2)
 		-- It's a Vehicle
 		item = ents.Create(itemtable.VehicleClass)
 		item:SetKeyValue("vehiclescript", itemtable.VehicleScript)
-		item:SetNWString("Owner", "Shared") -- Do this explicitly for vehicles
+		UPP.SetOwnership(item, ply)
+		item:SetNWInt("svl", -1) -- Negative sale value = "Not for sale".
 	else
 		item = ents.Create(itemtable.Sent or "item_prop")
 	end
@@ -55,14 +56,14 @@ function CAKE.CreateItem(ply, class, pos, ang, ammo1, ammo2)
 	item:SetAngles(ang)
 	item:SetPos(pos)
 	item.SID = ply.SID
-	
+
 	for k, v in pairs(itemtable) do
 		item[k] = v
 		if type(v) == "string" then
 			item:SetNWString(k, v)
 		end
 	end
-	
+
 	item:Spawn()
 	item:Activate()
 

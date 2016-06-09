@@ -10,21 +10,13 @@ at any one moment.
 philxyz 2015
 ================================================================================
 - Car Dealer functionality
-	- Vehicle option population from Admin menu.
-		- Scan for list of usable vehicles
-		- Check the database to see whether they are already set up
-		- List those that are set up
-		- List any that are not already set up
-		- When setting up, allow inputting a price and a name
-		- When generating, produce the text files for the vehicles
-		- Tell the user that they need to restart the server
+	- Add a basic vehicle (The buggy?)
 
-	- Vehicle locking
-		- Simple lock / unlock.
+	- Document the mechanism for adding other vehicles to CityScript.
 
-	- Test with addons:
-		- Roleplaying Vehicles Addon (or find another)
-		- [LW]
-		- SGM Cars
-		- TDM Cars
-		- SCars Slim, SCars Basic, and SCars Extra
+	- Vehicle locking and ownership transfer
+		(implement Scrap Vehicle and Buy vehicle)
+
+	- Some kind of video showing features / setup guide, etc.
+
+	- Release

@@ -401,6 +401,34 @@ net.Receive("Cc", function(_, ply)
 	end
 end)
 
+-- Lock vehicle
+net.Receive("Cnv", function(_, ply)
+	local entIndex = net.ReadInt(16)
+	local entity = ents.GetByIndex(entIndex)
+
+	if not entity:IsVehicle() then return end
+
+	if entity:GetNWEntity("c_ent") ~= ply then return end
+
+	entity:Fire("lock", "", 0)
+	ply:EmitSound("buttons/lever" .. math.floor(math.Rand(7,8)) .. ".wav")
+	CAKE.Response(ply, TEXT.VehicleLocked)
+end)
+
+-- Unlock vehicle
+net.Receive("Cmv", function(_, ply)
+	local entIndex = net.ReadInt(16)
+	local entity = ents.GetByIndex(entIndex)
+
+	if not entity:IsVehicle() then return end
+
+	if entity:GetNWEntity("c_ent") ~= ply then return end
+
+	entity:Fire("unlock", "", 0)
+	ply:EmitSound("buttons/lever" .. math.floor(math.Rand(7,8)) .. ".wav")
+	CAKE.Response(ply, TEXT.VehicleUnlocked)
+end)
+
 CAKE.ChatCommand(TEXT.DropWeaponCommand, function(ply, args)
 	local wep = ply:GetActiveWeapon()
 
@@ -425,6 +453,48 @@ CAKE.ChatCommand(TEXT.DropWeaponCommand, function(ply, args)
 	ply:StripWeapon(wep:GetClass())
 
 	CAKE.CreateItem(ply, wep:GetClass(), ply:CalcDrop(), Angle(0, 0, 0), clip1, clip2)
+end)
+
+
+util.AddNetworkString("veh")
+CAKE.ChatCommand(TEXT.ManageVehicleAddonsCommand, function(ply, args)
+	if not ply:IsSuperAdmin() then return "" end
+
+	net.Start("veh")
+	net.Send(ply)
+
+	print("running find...")
+	local vehs, dirs = file.Find("models/*.mdl", "GAME")
+
+	for _, v in ipairs(vehs) do
+		print("attempting to read " .. v)
+		--[[local f = file.Read(v, "GAME")
+		if string.match(f, "vehicle", 1) then
+			print("Vehicle Found: " .. tostring(v))
+		else
+			print("No match for " .. v)
+		end]]
+	end
+
+	return ""
+end)
+
+-- Set a vehicle sale price
+net.Receive("Ssp", function(_, ply)
+	local vehEnt = Entity(net.ReadInt(16))
+	local amt = net.ReadString()
+
+	if (not IsValid(vehEnt)) or (vehEnt:GetNWEntity("c_ent") ~= ply) then return end
+
+	local saleValue = tonumber(amt)
+
+	if saleValue == nil then return end
+
+	if saleValue < 0 then
+		saleValue = -1
+	end
+
+	vehEnt:SetNWInt("svl", math.floor(saleValue))
 end)
 
 -- Pickup item

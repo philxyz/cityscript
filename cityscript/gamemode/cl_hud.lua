@@ -65,29 +65,48 @@ function DrawTargetInfo()
 		return
 	end
 
-	if (not tr.Entity:IsVehicle() and not tr.Entity:IsPlayer() and not tr.Entity:IsNPC()) and tr.Entity:GetPos():Distance(LocalPlayer():GetPos()) < 100 then
+	if (not tr.Entity:IsPlayer() and not tr.Entity:IsNPC()) and tr.Entity:GetPos():Distance(LocalPlayer():GetPos()) < 100 then
 		local screenpos = tr.Entity:GetPos():ToScreen()
 
-		draw.DrawText(tr.Entity:GetNWString("Name"), "ChatFont", screenpos.x + 2, screenpos.y + 2, Color(0, 0, 0, 255), 1)
-		draw.DrawText(tr.Entity:GetNWString("Name"), "ChatFont", screenpos.x, screenpos.y, Color(255, 255, 255, 255), 1)
+		if not tr.Entity:IsVehicle() then
+			draw.DrawText(tr.Entity:GetNWString("Name"), "ChatFont", screenpos.x + 2, screenpos.y + 2, Color(0, 0, 0, 255), 1)
+			draw.DrawText(tr.Entity:GetNWString("Name"), "ChatFont", screenpos.x, screenpos.y, Color(255, 255, 255, 255), 1)
 
-		if tr.Entity:GetNWString("Title") ~= "" and not CAKE.IsDoor(tr.Entity) then
-			draw.DrawText(tr.Entity:GetNWString("Title"), "ChatFont", screenpos.x + 2, screenpos.y + 22, Color( 0, 0, 0, 255 ), 1)
-			draw.DrawText(tr.Entity:GetNWString("Title"), "ChatFont", screenpos.x, screenpos.y + 20, Color( 255, 255, 255, 255 ), 1)
-		else
-			if tr.Entity:GetNWBool("shipment") then
-				local txt = "Contains " .. tostring(tr.Entity.dt.count) .. " items"
-				draw.DrawText(txt, "ChatFont", screenpos.x + 2, screenpos.y + 22, Color(0, 0, 0, 255), 1)
-				draw.DrawText(txt, "ChatFont", screenpos.x, screenpos.y + 20, Color(255, 255, 255, 255), 1)
+			if tr.Entity:GetNWString("Title") ~= "" and not CAKE.IsDoor(tr.Entity) then
+				draw.DrawText(tr.Entity:GetNWString("Title"), "ChatFont", screenpos.x + 2, screenpos.y + 22, Color( 0, 0, 0, 255 ), 1)
+				draw.DrawText(tr.Entity:GetNWString("Title"), "ChatFont", screenpos.x, screenpos.y + 20, Color( 255, 255, 255, 255 ), 1)
 			else
-				draw.DrawText(tr.Entity:GetNWString("Description"), "ChatFont", screenpos.x + 2, screenpos.y + 22, Color(0, 0, 0, 255), 1)
-				draw.DrawText(tr.Entity:GetNWString("Description"), "ChatFont", screenpos.x, screenpos.y + 20, Color(255, 255, 255, 255), 1)
+				if tr.Entity:GetNWBool("shipment") then
+					local txt = "Contains " .. tostring(tr.Entity.dt.count) .. " items"
+					draw.DrawText(txt, "ChatFont", screenpos.x + 2, screenpos.y + 22, Color(0, 0, 0, 255), 1)
+					draw.DrawText(txt, "ChatFont", screenpos.x, screenpos.y + 20, Color(255, 255, 255, 255), 1)
+				else
+					draw.DrawText(tr.Entity:GetNWString("Description"), "ChatFont", screenpos.x + 2, screenpos.y + 22, Color(0, 0, 0, 255), 1)
+					draw.DrawText(tr.Entity:GetNWString("Description"), "ChatFont", screenpos.x, screenpos.y + 20, Color(255, 255, 255, 255), 1)
+				end
 			end
-		end
 
-		if tr.Entity:GetNWBool("ATM") then
-			draw.DrawText( TEXT.ATMText, "ATMFont", screenpos.x + 2, screenpos.y + 22, Color( 0, 255, 0, 255 ), 1)
-			draw.DrawText( TEXT.ATMText, "ATMFont", screenpos.x, screenpos.y + 20, Color( 255, 255, 255, 255 ), 1)
+			if tr.Entity:GetNWBool("ATM") then
+				draw.DrawText( TEXT.ATMText, "ATMFont", screenpos.x + 2, screenpos.y + 22, Color( 0, 255, 0, 255 ), 1)
+				draw.DrawText( TEXT.ATMText, "ATMFont", screenpos.x, screenpos.y + 20, Color( 255, 255, 255, 255 ), 1)
+			end
+		else -- it's a vehicle.
+			draw.DrawText(tr.Entity:GetNWString("Name"), "ChatFont", screenpos.x + 2, screenpos.y + 2, Color(0, 0, 0, 255), 1)
+			draw.DrawText(tr.Entity:GetNWString("Name"), "ChatFont", screenpos.x, screenpos.y, Color(255, 255, 255, 255), 1)
+
+			local ownr = TEXT.Owner .. ": " .. tr.Entity:GetNWString("creator")
+
+			draw.DrawText(ownr , "ChatFont", screenpos.x + 2, screenpos.y + 22, Color( 0, 0, 0, 255 ), 1)
+			draw.DrawText(ownr, "ChatFont", screenpos.x, screenpos.y + 20, Color( 255, 255, 255, 255 ), 1)
+
+			local saleValue = tr.Entity:GetNWInt("svl")
+
+			if saleValue ~= nil and saleValue >= 0 then
+				local txt = TEXT.ForSale .. ": " .. (saleValue == 0 and TEXT.ItIsFree or tostring(saleValue) .. " " .. TEXT.Tokens)
+
+				draw.DrawText(txt , "ChatFont", screenpos.x + 2, screenpos.y + 42, Color( 0, 0, 0, 255 ), 1)
+				draw.DrawText(txt, "ChatFont", screenpos.x, screenpos.y + 40, Color( 255, 255, 255, 255 ), 1)
+			end
 		end
 	end
 end

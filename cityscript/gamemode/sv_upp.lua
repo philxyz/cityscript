@@ -124,10 +124,14 @@ function UPP.SpamCheck(ply)
 	end
 end
 
+function UPP.SetOwnership(ent, ply)
+	ent:SetNWString("creator", ply:Name())
+	ent:SetNWEntity("c_ent", ply)
+end
+
 -- Set the identifying info on items created by the player.
 function UPP.PlayerSpawnedProp(ply, model, ent)
-        ent:SetNWString("creator", ply:Name())
-        ent:SetNWEntity("c_ent", ply)
+	UPP.SetOwnership(ent, ply)
 	ent:SetNWFloat("born", CurTime())
 
 	UPP.SpamCheck(ply)
@@ -135,29 +139,25 @@ end
 hook.Add("PlayerSpawnedProp", "UPP.PlayerSpawnedProp", UPP.PlayerSpawnedProp)
 
 function UPP.PlayerSpawnedSENT(ply, ent)
-	ent:SetNWString("creator", ply:Name())
-	ent:SetNWEntity("c_ent", ply)
+	UPP.SetOwnership(ent, ply)
 	ent:SetNWFloat("born", CurTime())
 end
 hook.Add("PlayerSpawnedSENT", "UPP.PlayerSpawnedSENT", UPP.PlayerSpawnedSENT)
 
 function UPP.PlayerSpawnedRagdoll(ply, model, ent)
-	ent:SetNWString("creator", ply:Name())
-	ent:SetNWEntity("c_ent", ply)
+	UPP.SetOwnership(ent, ply)
 	ent:SetNWFloat("born", CurTime())
 end
 hook.Add("PlayerSpawnedRagdoll", "UPP.PlayerSpawnedRagdoll", UPP.PlayerSpawnedRagdoll)
 
 function UPP.PlayerSpawnedNPC(ply, ent)
-	ent:SetNWString("creator", ply:Name())
-	ent:SetNWEntity("c_ent", ply)
+	UPP.SetOwnership(ent, ply)
 	ent:SetNWFloat("born", CurTime())
 end
 hook.Add("PlayerSpawnedNPC", "UPP.PlayerSpawnedNPC", UPP.PlayerSpawnedNPC)
 
 function UPP.PlayerSpawnedVehicle(ply, ent)
-	ent:SetNWString("creator", ply:Name())
-	ent:SetNWEntity("c_ent", ply)
+	UPP.SetOwnership(ent, ply)
 	ent:SetNWFloat("born", CurTime())
 end
 hook.Add("PlayerSpawnedVehicle", "UPP.PlayerSpawnedVehicle", UPP.PlayerSpawnedVehicle)
@@ -242,7 +242,6 @@ UPP.OrphanedProps = {}
 
 function UPP.PlayerDisconnected(ply)
 	-- Find all the player's props and queue them for deletion
-
 	local sid64 = ply:SteamID64()
 
 	if UPP.PropTimeout == 0 then
@@ -321,7 +320,6 @@ function UPP.PlayerInitialSpawn(ply)
 		UPP.OrphanedProps[sid64] = nil
 		print("UPP: Props were not deleted for player: " .. sid64 .. ".")
 	end
-
 
 	local uid = ply:UserID()
 	-- Add an entry to the trusted players cache for the newly joined player

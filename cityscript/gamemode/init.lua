@@ -34,6 +34,8 @@ util.AddNetworkString("Ck") -- Rent door
 util.AddNetworkString("Cl") -- Open door
 util.AddNetworkString("Cm") -- Unlock door
 util.AddNetworkString("Cn") -- Lock door
+util.AddNetworkString("Cmv") -- Unlock door
+util.AddNetworkString("Cnv") -- Lock door
 util.AddNetworkString("Co") -- Change name
 util.AddNetworkString("Cp") -- Character ready
 util.AddNetworkString("Cq") -- Equip inventory item
@@ -54,6 +56,8 @@ util.AddNetworkString("C5") -- Storage box reset
 util.AddNetworkString("C6") -- ATM 'use' menu
 util.AddNetworkString("C7") -- Change Role
 util.AddNetworkString("C8") -- Voice Trigger
+util.AddNetworkString("Ssp") -- Set sale price
+util.AddNetworkString("Sv") -- Scrap vehicle
 
 -- Server Includes#
 include("shared.lua") -- Shared Functions
