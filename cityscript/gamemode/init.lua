@@ -58,6 +58,7 @@ util.AddNetworkString("C7") -- Change Role
 util.AddNetworkString("C8") -- Voice Trigger
 util.AddNetworkString("Ssp") -- Set sale price
 util.AddNetworkString("Sv") -- Scrap vehicle
+util.AddNetworkString("Bv") -- Buy vehicle
 
 -- Server Includes#
 include("shared.lua") -- Shared Functions

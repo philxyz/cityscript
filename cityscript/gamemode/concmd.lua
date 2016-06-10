@@ -479,6 +479,25 @@ CAKE.ChatCommand(TEXT.ManageVehicleAddonsCommand, function(ply, args)
 	return ""
 end)
 
+-- Scrap the vehicle
+net.Receive("Sv", function(_, ply)
+	local vehEnt = Entity(net.ReadInt(16))
+
+	if not IsValid(ply) or not IsValid(vehEnt) then return end
+
+	local vehOwner = vehEnt:GetNWEntity("c_ent")
+	if not IsValid(vehOwner) then return end
+
+	if vehOwner ~= ply then return end
+
+	local amt = math.floor(vehEnt.PurchasePrice * 0.1)
+
+	CAKE.Response(ply, TEXT.VehicleScrappedFor(amt))
+	CAKE.ChangeMoney(ply, amt)
+
+	vehEnt:Remove()
+end)
+
 -- Set a vehicle sale price
 net.Receive("Ssp", function(_, ply)
 	local vehEnt = Entity(net.ReadInt(16))
@@ -495,6 +514,33 @@ net.Receive("Ssp", function(_, ply)
 	end
 
 	vehEnt:SetNWInt("svl", math.floor(saleValue))
+end)
+
+-- Buy a vehicle
+net.Receive("Bv", function(_, buyer)
+	local vehEnt = Entity(net.ReadInt(16))
+	local vehowner = vehEnt:GetNWEntity("c_ent")
+
+	if not IsValid(buyer) or not IsValid(vehEnt) or not IsValid(vehowner) or vehowner == buyer then return end
+
+	local saleValue = vehEnt:GetNWInt("svl")
+
+	if saleValue == nil or saleValue < 0 then return end
+
+	-- If the buyer can afford the price of the vehicle
+	-- perform the transaction
+	local money = math.floor(tonumber(CAKE.GetCharField(buyer, "money") or 0))
+	if money < saleValue then
+		CAKE.Response(buyer, TEXT.Poor)
+	else
+		CAKE.ChangeMoney(buyer, -saleValue)
+		CAKE.ChangeMoney(vehowner, saleValue)
+		CAKE.Response(buyer, TEXT.BoughtVehicleFor(saleValue))
+		CAKE.Response(vehowner, TEXT.SoldVehicleFor(saleValue))
+		vehEnt.PurchasePrice = saleValue -- Used for calculating scrap value
+
+		UPP.SetOwnership(vehEnt, buyer)
+	end
 end)
 
 -- Pickup item

@@ -10,12 +10,9 @@ at any one moment.
 philxyz 2015
 ================================================================================
 - Car Dealer functionality
-	- Add a basic vehicle (The buggy?)
+	- Recheck addon requirements
 
 	- Document the mechanism for adding other vehicles to CityScript.
-
-	- Vehicle locking and ownership transfer
-		(implement Scrap Vehicle and Buy vehicle)
 
 	- Some kind of video showing features / setup guide, etc.
 

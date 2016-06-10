@@ -23,6 +23,7 @@ function CAKE.CreateItem(ply, class, pos, ang, ammo1, ammo2)
 		-- It's a Vehicle
 		item = ents.Create(itemtable.VehicleClass)
 		item:SetKeyValue("vehiclescript", itemtable.VehicleScript)
+		item.PurchasePrice = itemtable.Price
 		UPP.SetOwnership(item, ply)
 		item:SetNWInt("svl", -1) -- Negative sale value = "Not for sale".
 	else

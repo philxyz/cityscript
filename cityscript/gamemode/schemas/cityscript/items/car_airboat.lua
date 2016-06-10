@@ -1,0 +1,10 @@
+ITEM.Name = "Airboat"
+ITEM.Class = "airboat_car"
+ITEM.Description = "Airboat"
+ITEM.Model = "models/airboat.mdl"
+ITEM.VehicleScript = "scripts/vehicles/airboat.txt"
+ITEM.VehicleClass = "prop_vehicle_jeep"
+ITEM.VehicleExtras = 511 -- Bodygroup options
+ITEM.Purchaseable = true -- Available to buy
+ITEM.Price = 2500
+ITEM.ItemGroup = 4 -- Appears in the business menu of the car dealer group

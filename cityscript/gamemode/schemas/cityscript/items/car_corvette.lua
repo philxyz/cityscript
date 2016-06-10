@@ -1,9 +1,0 @@
-ITEM.Name = "Corvette C6";
-ITEM.Class = "car_corvette";
-ITEM.Description = "Car.";
-ITEM.Model = "models/corvette/corvette.mdl";
-ITEM.VehicleScript = "scripts/vehicles/corvette.txt";
-ITEM.VehicleClass = "prop_vehicle_jeep";
-ITEM.Purchaseable = true;
-ITEM.Price = 17500;
-ITEM.ItemGroup = 4;

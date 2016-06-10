@@ -228,7 +228,7 @@ local function InitHiddenButton()
 					else -- If the person clicking is not the owner of the vehicle
 						local svl = target:GetNWInt("svl")
 						if svl ~= nil and svl >= 0 then
-							ContextMenu:AddOption(TEXT.BuyVehicle, function() end):SetIcon("icon16/car_add.png")
+							ContextMenu:AddOption(TEXT.BuyVehicle, function() net.Start("Bv"); net.WriteInt(target:EntIndex(), 16); sent.SendToServer() end):SetIcon("icon16/car_add.png")
 						end
 					end
 				else

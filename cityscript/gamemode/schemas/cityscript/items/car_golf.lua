@@ -1,9 +1,0 @@
-ITEM.Name = "MKV Golf GTI";
-ITEM.Class = "car_golf";
-ITEM.Description = "Car.";
-ITEM.Model = "models/golf/golf.mdl";
-ITEM.VehicleScript = "scripts/vehicles/golf.txt";
-ITEM.VehicleClass = "prop_vehicle_jeep";
-ITEM.Purchaseable = true;
-ITEM.Price = 12500;
-ITEM.ItemGroup = 4;

@@ -1,9 +1,0 @@
-ITEM.Name = "Police Cruiser";
-ITEM.Class = "car_police_cruiser";
-ITEM.Description = "Police Car.";
-ITEM.Model = "models/copcar.mdl";
-ITEM.VehicleScript = "scripts/vehicles/copcar.txt";
-ITEM.VehicleClass = "prop_vehicle_jeep";
-ITEM.Purchaseable = true;
-ITEM.Price = 10000;
-ITEM.ItemGroup = 4;
