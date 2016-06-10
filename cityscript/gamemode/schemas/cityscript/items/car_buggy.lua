@@ -1,10 +1,10 @@
-ITEM.Name = "Airboat"
-ITEM.Class = "airboat_car"
-ITEM.Description = "Airboat"
-ITEM.Model = "models/airboat.mdl"
-ITEM.VehicleScript = "scripts/vehicles/airboat.txt"
+ITEM.Name = "Buggy"
+ITEM.Class = "buggy_car"
+ITEM.Description = "Basic vehicle"
+ITEM.Model = "models/buggy.mdl"
+ITEM.VehicleScript = "scripts/vehicles/jeep_test.txt"
 ITEM.VehicleClass = "prop_vehicle_jeep"
-ITEM.VehicleExtras = 511 -- Bodygroup options
+ITEM.VehicleExtras = nil -- Bodygroup options go here.
 ITEM.Purchaseable = true -- Available to buy
 ITEM.Price = 2500
 ITEM.ItemGroup = 4 -- Appears in the business menu of the car dealer group
