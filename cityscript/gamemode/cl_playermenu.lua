@@ -31,22 +31,6 @@ net.Receive("Cx", function(_, ply)
 	InventoryTable = {}
 end)
 
-net.Receive("veh", function(_, ply)
-
-
-
-
-	local vehFrm = vgui.Create("DFrame")
-	vehFrm:SetSize(320, 240)
-	vehFrm:SetPos(ScrW()/2-(320/2), ScrH()/2-(240/2))
-	vehFrm:SetTitle(TEXT.AdminManageVehicleAddons)
-	vehFrm:SetVisible(false)
-	vehFrm:Show()
-	vehFrm:MoveToFront()
-
-
-end)
-
 BusinessTable = {}
 net.Receive("Cu", function(_, ply)
 	local count = net.ReadInt(32)
@@ -1149,7 +1133,6 @@ function CreatePlayerMenu()
 		buttonsCommands[TEXT.DisableMeteorStorm] = TEXT.DisableMeteorStormCommand
 		buttonsCommands[TEXT.ClearJailPositions] = TEXT.AddJailPosCommand
 		buttonsCommands[TEXT.AddJailPosHere] = TEXT.AddExtraJailPosCommand
-		buttonsCommands[TEXT.AdminManageVehicleAddons] = TEXT.ManageVehicleAddonsCommand
 
 		local posY = 5
 		for k, v in pairs(buttonsCommands) do

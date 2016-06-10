@@ -455,30 +455,6 @@ CAKE.ChatCommand(TEXT.DropWeaponCommand, function(ply, args)
 	CAKE.CreateItem(ply, wep:GetClass(), ply:CalcDrop(), Angle(0, 0, 0), clip1, clip2)
 end)
 
-
-util.AddNetworkString("veh")
-CAKE.ChatCommand(TEXT.ManageVehicleAddonsCommand, function(ply, args)
-	if not ply:IsSuperAdmin() then return "" end
-
-	net.Start("veh")
-	net.Send(ply)
-
-	print("running find...")
-	local vehs, dirs = file.Find("models/*.mdl", "GAME")
-
-	for _, v in ipairs(vehs) do
-		print("attempting to read " .. v)
-		--[[local f = file.Read(v, "GAME")
-		if string.match(f, "vehicle", 1) then
-			print("Vehicle Found: " .. tostring(v))
-		else
-			print("No match for " .. v)
-		end]]
-	end
-
-	return ""
-end)
-
 -- Scrap the vehicle
 net.Receive("Sv", function(_, ply)
 	local vehEnt = Entity(net.ReadInt(16))
