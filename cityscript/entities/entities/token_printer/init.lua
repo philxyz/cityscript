@@ -47,7 +47,13 @@ function ENT:BurstIntoFlames()
 	self.burningup = true
 	local burntime = math.random(8, 18)
 	self:Ignite(burntime, 0)
-	timer.Simple(burntime, function() self:Fireball() end)
+	timer.Simple(burntime, function()
+		if self:IsOnFire() then
+			self:Fireball()
+		else
+			self.dt.burningup = false
+		end
+	end)
 end
 
 function ENT:Fireball()
