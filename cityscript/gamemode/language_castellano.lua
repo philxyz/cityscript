@@ -8,6 +8,7 @@ TEXT = {}
 TEXT.ToolTrust = "confianza_herramienta"
 TEXT.PhysTrust = "confianza_phys"
 TEXT.PropTrust = "confianza_prop"
+TEXT.GravTrust = "confianza_grav"
 TEXT.ExtraEffects = "extraefectos"
 TEXT.ExtraVehicles = "extravehículos"
 TEXT.ExtraProps = "extraprops"
@@ -260,7 +261,7 @@ TEXT.BloodBrothersGangLeader = "Lider de Hermanos de la sangre"
 TEXT.BloodBrothersGangMember = "Miembro de Hermanos de la sangre"
 TEXT.LaFamigliaVontoriniGangLeader = "Lider de La Famiglia Vontorini"
 TEXT.LaFamigliaVontoriniGangMember = "Miembro de La Famiglia Vontorini"
-TEXT.TheLegionGangLeader = "Lidre de La Legion"
+TEXT.TheLegionGangLeader = "Lider de La Legion"
 TEXT.TheLegionGangMember = "Miembro de La Legion"
 TEXT.CityPolice = "Policía"
 TEXT.CityMayor = "Alcalde"
@@ -273,7 +274,6 @@ TEXT.SomeoneHasBeenWarned = function(name) return "¡" .. name .. " ha sido adve
 TEXT.CanNotFindPlayer = function(name) return "¡No se encuentra " .. name .. "!" end
 TEXT.BanInfo = function(uid, mins, reason) return uid .. " \"Prohibido por " .. mins .. " mins ( " .. reason .. " )\"\n" end
 TEXT.BannedName = function(name) return "prohibido a " .. name end
-TEXT.SetVarInvalidArgumentCount = "¡Cantidad de argumentos inválido! ( rp_admin " .. TEXT.SetVarsCmd .. " \"nombredevar\" \"valor\" )"
 TEXT.ReportAdminChangeMade = function(arg1, arg2) return arg1 .. " se ha cambiado a " .. arg2 end
 TEXT.InvalidConvar = function(convar) return "¡" .. convar .. " no es un convar válida! Usar rp_admin " .. TEXT.ListVars end
 TEXT.ListVarsHeader = "---Lista de ConVars para Cakescript + CityScript---"
@@ -285,9 +285,10 @@ TEXT.KickSomeone = "Botar alguien del servidor"
 TEXT.BanSomeone = "Prohibir alguien del servidor"
 TEXT.SetVar = "Cambiar un Convar"
 TEXT.SetVarsCmd = "asignarvar"
+TEXT.SetVarInvalidArgumentCount = "¡Cantidad de argumentos inválido! ( rp_admin " .. TEXT.SetVarsCmd .. " \"nombredevar\" \"valor\" )"
 TEXT.ListConVars = "Listar las ConVars"
 TEXT.ItIsATable = "no se puede cambiar - es una tabla."
-TEXT.NotValidListVar = "no es un convar válido! Utilizar rp_admin " .. TEXT.ListVarsCmd
+TEXT.NotValidListVar = "no es un convar válido! Utilizar rp_admin " .. TEXT.ListVars
 TEXT.Quiet = "Si a un jugador en particular se permite utilizar los botones del menú de voz."
 TEXT.QuietCommandUsageError = "Uso incorecto del comando. Intenta con: rp_admin " .. TEXT.Quiet .. " <nombredeusuario> [1|0]"
 TEXT.WaitPlease = function(time) return "¡Por favor espere " .. time .. " segundos antes de usar el chat 'FDP' de nuevo!" end
@@ -325,19 +326,19 @@ TEXT.ToolTrustRevokedBy = function(adminName) return "Tu " .. TEXT.ToolTrust .. 
 TEXT.ToolTrustRevokedAnnounce = function(targetName) return TEXT.ToolTrust .. "ha sido revocado de " .. targetName end
 
 TEXT.PhysTrustInvalidArguments = "¡Cantidad de argumentos no es válido! ( rp_admin " .. TEXT.PhysTrust .. " \"nombre\" 1/0 )"
-TEXT.PhysTrustGivenBy = function(adminName) return return adminName .. " dio a ti " .. TEXT.PhysTrust end
+TEXT.PhysTrustGivenBy = function(adminName) return adminName .. " dio a ti " .. TEXT.PhysTrust end
 TEXT.PhysTrustGivenAnnounce = function(targetName) return targetName .. " ha recibido " .. TEXT.PhysTrust end
 TEXT.PhysTrustRevokedBy = function(adminName) return "Tu " .. TEXT.PhysTrust .. " ha sido revocado por " .. adminName end
 TEXT.PhysTrustRevokedAnnounce = function(targetName) return TEXT.PhysTrust .. "ha sido revocado de " .. targetName end
 
 TEXT.GravTrustInvalidArguments = "¡Cantidad de argumentos no es válido! ( rp_admin " .. TEXT.GravTrust .. " \"nombre\" 1/0 )"
-TEXT.GravTrustGivenBy = function(adminName) return return adminName .. " dio a ti " .. TEXT.GravTrust end
+TEXT.GravTrustGivenBy = function(adminName) return adminName .. " dio a ti " .. TEXT.GravTrust end
 TEXT.GravTrustGivenAnnounce = function(targetName) return targetName .. " ha recibido " .. TEXT.GravTrust end
 TEXT.GravTrustRevokedBy = function(adminName) return "Tu " .. TEXT.GravTrust .. " ha sido revocado por " .. adminName end
 TEXT.GravTrustRevokedAnnounce = function(targetName) return TEXT.GravTrust .. "ha sido revocado de " .. targetName end
 
 TEXT.PropTrustInvalidArguments = "¡Cantidad de argumentos no es válido! ( rp_admin " .. TEXT.PropTrust .. " \"nombre\" 1/0 )"
-TEXT.PropTrustGivenBy = function(adminName) return return adminName .. " dio a ti " .. TEXT.PropTrust end
+TEXT.PropTrustGivenBy = function(adminName) return adminName .. " dio a ti " .. TEXT.PropTrust end
 TEXT.PropTrustGivenAnnounce = function(targetName) return targetName .. " ha recibido " .. TEXT.PropTrust end
 TEXT.PropTrustRevokedBy = function(adminName) return "Tu " .. TEXT.PropTrust .. " ha sido revocado por " .. adminName end
 TEXT.PropTrustRevokedAnnounce = function(targetName) return TEXT.PropTrust .. "ha sido revocado de " .. targetName end
@@ -463,7 +464,7 @@ TEXT.HelpLong = {
 	"Se puede alquilar puertas, dar dinero a jugadores, recoger cosas y más por medio de este menú.",
 	"",
 	"F1 para acceder este mismo menú.",
-	"Crear un personaje cuando usando el lado izquierdo de la pestaña 'Crear Nuevo Personaje'",
+	"Crear un personaje cuando usando el lado izquierdo de la pestaña '" .. TEXT.PlayerMenu .. "'",
 	"Una vez creado, tu personaje aparecerá en la lista a la derecha.",
 	"Haz clic-doble en un personaje en la lista para empezar.",
 	"",
@@ -518,7 +519,7 @@ TEXT.HelpLong = {
 	"rp_admin " .. TEXT.ExtraProps .. " <nombre> <monto>             Permitir que un jugador tiene <monto> props adicionales.",
 	"rp_admin " .. TEXT.ExtraRagdolls .. " <nombre> <monto>          Permitir que un jugador tiene <monto> muñecas de trapo adicionales.",
 	"",
-	"rp_admin " .. TEXT.ListVarsCmd .. "                               Lista de configuraciónes disponibles al admin.",
+	"rp_admin " .. TEXT.ListVars .. "                               Lista de configuraciónes disponibles al admin.",
 	"rp_admin " .. TEXT.SetVarsCmd .. " <valor>                         Cambiar una de las configuraciónes.",
 	"",
 	"rp_admin " .. TEXT.HelpLower .. "                        Lista de opciónes para rp_admin",

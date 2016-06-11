@@ -146,6 +146,6 @@ function PLUGIN.Init()
 	CAKE.AdminCommand(TEXT.WarnLower, Admin_Warn, TEXT.WarnSomeone, true, true, false)
 	CAKE.AdminCommand(TEXT.KickLower, Admin_Kick, TEXT.KickSomeone, true, true, false)
 	CAKE.AdminCommand(TEXT.BanLower, Admin_Ban, TEXT.BanSomeone, true, true, false)
-	CAKE.AdminCommand(TEXT.ListVarsCmd, Admin_ListVars, TEXT.ListConVars, true, true, true)
+	CAKE.AdminCommand(TEXT.ListVars, Admin_ListVars, TEXT.ListConVars, true, true, true)
 	CAKE.AdminCommand(TEXT.SetVarsCmd, Admin_SetVar, TEXT.SetVar, true, true, true)
 end

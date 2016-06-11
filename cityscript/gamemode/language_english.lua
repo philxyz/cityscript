@@ -8,6 +8,7 @@ TEXT = {}
 TEXT.ToolTrust = "tooltrust"
 TEXT.PhysTrust = "phystrust"
 TEXT.PropTrust = "proptrust"
+TEXT.GravTrust = "gravtrust"
 TEXT.ExtraEffects = "extraeffects"
 TEXT.ExtraVehicles = "extravehicles"
 TEXT.ExtraProps = "extraprops"
@@ -287,7 +288,7 @@ TEXT.SetVar = "Set a Convar"
 TEXT.SetVarsCmd = "setvar"
 TEXT.ListConVars = "List Convars"
 TEXT.ItIsATable = "cannot be changed, it is a table."
-TEXT.NotValidListVar = "is not a valid convar! Use rp_admin " .. TEXT.ListVarsCmd
+TEXT.NotValidListVar = "is not a valid convar! Use rp_admin " .. TEXT.ListVars
 TEXT.Quiet = "Whether a particular player is not allowed to use speech menu buttons."
 TEXT.QuietCommandUsageError = "Incorrect command usage. Try: rp_admin quiet <username> [1|0]"
 TEXT.WaitPlease = function(time) return "Please wait " .. time .. " seconds before using OOC chat again!" end
@@ -457,7 +458,7 @@ TEXT.HelpLong = {
 	"You can rent doors, give players money, pick up items, and other things from this menu.",
 	"",
 	"Press F1 to re-access this menu.",
-	"Create a character when you join by using the left hand side of the 'Create New Character' tab.",
+	"Create a character when you join by using the left hand side of the '" .. TEXT.PlayerMenu .. "' tab.",
 	"Once created, your character will appear in the list on the right.",
 	"Double-click a character in the list to start.",
 	"",
