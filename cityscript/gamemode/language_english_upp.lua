@@ -17,14 +17,17 @@
 --
 -- 3) Edit cl_upp.lua to include that one instead of this one.
 --
--- 4) Find out where this gamemode makes references to this language file
---    and replace those references to your new file.
+-- 4) Look where this gamemode makes references to this language file and,
+--    replace those references to your new file. The references are made in
+--		the following files:
+--		./gamemode/cl_upp.lua
+--		./gamemode/client_resources.lua
+--		./gamemode/shared.lua
 --
 -- == IMPORTANT! ==
 -- Make sure the text of this file is in UTF-8 format (without BOM)
 
 -- == Language Specific Strings below ==
-
 language.Add("upp.prop_protection", "Prop Protection")
 language.Add("upp.admin_tools", "Admin Tools")
 language.Add("upp.my_props", "My Props")

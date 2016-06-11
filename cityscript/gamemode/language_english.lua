@@ -5,6 +5,13 @@
 CUR = "T" -- Tokens currency in use
 
 TEXT = {}
+TEXT.ToolTrust = "tooltrust"
+TEXT.PhysTrust = "phystrust"
+TEXT.PropTrust = "proptrust"
+TEXT.ExtraEffects = "extraeffects"
+TEXT.ExtraVehicles = "extravehicles"
+TEXT.ExtraProps = "extraprops"
+TEXT.ExtraRagdolls = "extraragdolls"
 TEXT.Admin = "ADMIN"
 TEXT.CommandInvalid = "That is not a valid command!"
 TEXT.NotFromServerConsole = "You can not run this command from server console!"
@@ -91,10 +98,13 @@ TEXT.GiveTokens = "Give Tokens"
 TEXT.NumberOfTokensToGive = "Number of tokens to give"
 TEXT.GivePersonTokens = function(person) return "Give " .. person .. " Tokens" end
 TEXT.Warn = "Warn" -- (verb)
+TEXT.WarnLower = "warn"
 TEXT.Warning = "Warning"
 TEXT.WARNING = "BE WARNED"
 TEXT.Kick = "Kick" -- (verb)
+TEXT.KickLower = "kick"
 TEXT.Ban = "Ban" -- (verb)
+TEXT.BanLower = "ban"
 TEXT.Reason = "Reason"
 TEXT.ReasonForBanningName = function(name) return "Reason for banning " .. name end
 TEXT.UseItem = "Use Item"
@@ -125,6 +135,8 @@ TEXT.Backpack = "Backpack"
 TEXT.Business = "Business"
 TEXT.Scoreboard = "Scoreboard"
 TEXT.Help = "Help"
+TEXT.HelpLower = "help"
+TEXT.QuietLower = "quiet"
 TEXT.Always = "ever"
 TEXT.ForAlways = "forever"
 TEXT.For = "for"
@@ -171,7 +183,7 @@ TEXT.SuicideIsDisabled = "Suicide is disabled!"
 TEXT.LongTitle = "Title is too long! Max 32 characters"
 TEXT.IncorrectRole = "Incorrect Role!"
 TEXT.NoJobChangeWhileDeadInJail = "Can not change your job while dead in jail."
-TEXT.NoJobChangeWhileAliveInJail = "You are in Jail. Get a new job when you have been released."
+TEXT.NoJobChangeWhileAliveInJail = "You are in jail, scum. Get a new job when you have been released."
 TEXT.NewRoleBackpackEmptied = "New role selected, backpack emptied!"
 TEXT.NotYourDoor = "This is not your door!"
 TEXT.DoorNotRentable = "This is not a rentable door!"
@@ -214,7 +226,7 @@ TEXT.PayAnnouncement = function(amount) return "Paycheck! " .. tostring(amount) 
 TEXT.PayDayMissedBecauseArrested = "Pay day missed! (arrested)"
 TEXT.PlayerHasDiedInJail = function(name) return name .. " has died in jail!" end
 TEXT.BankedTokensForNPCKill = function(amount) return "Banked " .. amount .. " Tokens for killing an NPC!" end
-TEXT.DeadUntilSentenceComplete = "You now are dead until your jail time is up!"
+TEXT.DeadUntilSentenceComplete = "You are dead until your jail time is served!"
 TEXT.ScottFree = "You're no longer under arrest because no jail positions are set!"
 TEXT.Yes = "Yes"
 TEXT.No = "No"
@@ -252,7 +264,7 @@ TEXT.TheLegionGangLeader = "The Legion Gang Leader"
 TEXT.TheLegionGangMember = "The Legion Gang Member"
 TEXT.CityPolice = "City Police"
 TEXT.CityMayor = "City Mayor"
-TEXT.MustBeLookingAtDoor = "You must be looking at a door!"
+TEXT.MustBeLookingAtDoor = "You must be facing a door!"
 TEXT.DoorAdded = "Door added"
 TEXT.RPWarnInvalidArgumentCount = "Invalid number of arguments! ( rp_admin warn \"name\" \"warning\" )"
 TEXT.RPKickInvalidArgumentCount = "Invalid number of arguments! ( rp_admin kick \"name\" \"reason\" )"
@@ -267,11 +279,15 @@ TEXT.InvalidConvar = function(convar) return convar .. " is not a valid convar! 
 TEXT.ListVarsHeader = "---List of Cakescript + CityScript ConVars---"
 TEXT.ListAdminCmdsHeader = "---List of Cakescript + CityScript Admin Commands---"
 TEXT.ListAllAdminCommands = "List of all admin commands"
+TEXT.ListVars = "listvars"
 TEXT.WarnSomeone = "Warn someone on the server"
 TEXT.KickSomeone = "Kick someone from the server"
 TEXT.BanSomeone = "Ban someone from the server"
 TEXT.SetVar = "Set a Convar"
+TEXT.SetVarsCmd = "setvar"
 TEXT.ListConVars = "List Convars"
+TEXT.ItIsATable = "cannot be changed, it is a table."
+TEXT.NotValidListVar = "is not a valid convar! Use rp_admin " .. TEXT.ListVarsCmd
 TEXT.Quiet = "Whether a particular player is not allowed to use speech menu buttons."
 TEXT.QuietCommandUsageError = "Incorrect command usage. Try: rp_admin quiet <username> [1|0]"
 TEXT.WaitPlease = function(time) return "Please wait " .. time .. " seconds before using OOC chat again!" end
@@ -301,7 +317,6 @@ TEXT.ChangeAnExtraRagdollsLimit = "Change someone's extra ragdolls limit"
 TEXT.ChangeAnExtraVehiclesLimit = "Change someone's extra vehicles limit"
 TEXT.ChangeAnExtraEffectsLimit = "Change someone's extra effects limit"
 TEXT.IncorrectNumberOfArguments = "Incorrect number of arguments!"
-TEXT.PermaRoleSetTo = "Permarole set to"
 TEXT.ToolTrustInvalidArguments = "Invalid number of arguments! ( rp_admin tooltrust \"name\" 1/0 )"
 TEXT.ToolTrustGivenBy = function(adminName) return "You have been given tooltrust by " .. adminName end
 TEXT.ToolTrustGivenAnnounce = function(targetName) return targetName .. " has been given tooltrust" end
@@ -354,15 +369,15 @@ TEXT.DropTokensCommand = "/droptokens"
 TEXT.DropTokensCommand2 = "/dropmoney"
 TEXT.DropTokensCommand3 = "/moneydrop"
 TEXT.DropTokensCommand4 = "/tokendrop"
-TEXT.SetMoneyUsedIncorrectly = "Command used incorrecty! Must be: rp_admin setmoney (name) (token amount)"
+TEXT.SetMoneyUsedIncorrectly = "Command used incorrecty! Must be: rp_setmoney (name) (token amount)"
 TEXT.SetMoneyCommandAbout = "Command for giving tokens to players."
 TEXT.NewSpawnPointCreated = function(teamID) return "New Spawn Point for team: " .. tostring(teamID) .. " created! To remove this team's spawns, use " .. TEXT.RemoveSpawnsCommand end
 TEXT.BoxLabelUpdated = "Box label updated!"
-TEXT.ZombiesApproaching = "Zombies are approaching!"
+TEXT.ZombiesApproaching = "Zombies are approaching! (of course)"
 TEXT.ZombiesLeaving = "Zombies are leaving."
 TEXT.ClearedAllZombiePositions = "You have cleared all zombie spawn positions!"
 TEXT.ZombieSpawnPosAdded = "You have added a zombie spawn position."
-TEXT.InvalidMaxZombies = "Invalid command! Try " .. TEXT.MaxZombiesCommand .. " <positive number>"
+TEXT.InvalidMaxZombies = "Invalid command! Try again with: " .. TEXT.MaxZombiesCommand .. " <positive number>"
 TEXT.SetMaxZombiesTo = "Max Zombies set to"
 TEXT.ZombiesNowEnabled = "Zombies are now enabled!"
 TEXT.ZombiesNowDisabled = "Zombies are now disabled!"
@@ -409,7 +424,7 @@ TEXT.StandCloserToTheBox = "Stand nearer to the box!"
 TEXT.OpeningTheBox = "Opening the box..."
 TEXT.WontFitInBackpack = "This item won't fit in your backpack. It's way too big!"
 TEXT.SelectUseItemToPickUpTokens = "Select \"Use Item\" to pick up these tokens."
-TEXT.MePocketsABundleOfTokens = function(amt) return "/me stuffs " .. tostring(amt) .. " tokens into their pocket!" end
+TEXT.MePocketsABundleOfTokens = function(amt) return TEXT.SlashMeCommand .. " stuffs " .. tostring(amt) .. " tokens into their pocket!" end
 TEXT.TokenBundle = "Token Bundle"
 TEXT.TokenPrinter = "Token Printer"
 TEXT.PrintWhenIAmReady = "I'll print when I'm ready to, thanks..."
@@ -428,22 +443,22 @@ TEXT.UnarrestStickInstructions = "Left or right click to unarrest"
 TEXT.NukePack = "Nuclear Detonator Pack"
 TEXT.NukeDetInstructions = "Aim away from face"
 TEXT.DetonationTime = function(time) return "Detonation countdown: ".. tostring(time) .." seconds!" end
-TEXT.ItemsHelpHintText = "- Use shift + right-click to interact with items, doors and players."
+TEXT.ItemsHelpHintText = "- Use shift + right-click to interact with items, doors, vehicles and players."
 TEXT.MainHelpHintText = "- Press F1 in-game and click the Help tab for full info."
 TEXT.HideHelpHintsCheckText = "Don't show this next time."
 TEXT.HelpHintCloseBtn = "Close"
 TEXT.FirstTimeHelpTitle = "First Time Help"
 TEXT.HelpLong = {
-	"Welcome to CityScript by philxyz - Based on CakeScript by Nori",
+	"Welcome to CityScript by philxyz - Based on CakeScript G2 by Nori",
 	"",
 	"",
 	"GAMEPLAY:",
 	"To interact with players, items or doors, hold TAB then right-click whatever you want to interact with.",
-	"You can purchase doors, give players money, pick up items, and other things from this menu.",
+	"You can rent doors, give players money, pick up items, and other things from this menu.",
 	"",
 	"Press F1 to re-access this menu.",
-	"Create a character when you join by using the left hand side of the 'Character Create' tab.",
-	"Once created, your character will appear on the right hand column in the list of your characters.",
+	"Create a character when you join by using the left hand side of the 'Create New Character' tab.",
+	"Once created, your character will appear in the list on the right.",
 	"Double-click a character in the list to start.",
 	"",
 	"You will earn tokens over time based upon your selected role. These roles are listed in the \"Roles\" tab.",

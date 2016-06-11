@@ -19,7 +19,7 @@ end
 AddResource("lua", "shared_upp.lua") -- Unobtrusive Prop Protection
 AddResource("lua", "language_english_upp.lua") -- UPP Language File
 AddResource("lua", "cl_upp.lua") -- Unobtrusive Prop Protection
-AddResource("lua", "language.lua") -- Language Text
+AddResource("lua", "language_english.lua") -- Language Text
 AddResource("lua", "shared.lua") -- Shared Functions
 AddResource("lua", "cl_playermenu.lua") -- The F1 playermenu
 AddResource("lua", "cl_binds.lua") -- Binds

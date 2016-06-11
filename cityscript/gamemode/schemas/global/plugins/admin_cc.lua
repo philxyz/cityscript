@@ -96,14 +96,14 @@ function Admin_SetVar(ply, cmd, args)
 		elseif vartype == "number" then
 			CAKE.ConVars[args[1]] = tonumber(args[2]) or 0 -- Don't set a fkn string for a number, dumbass! >:<
 		elseif vartype == "table" then
-			CAKE.Response(ply, args[1] .. " cannot be changed, it is a table." ) -- This is kind of like.. impossible.. kinda. (Or I'm just a lazy fuck)
+			CAKE.Response(ply, args[1] .. " " .. TEXT.ItIsATable) -- This is kind of like.. impossible.. kinda. (Or I'm just a lazy fuck)
 			return
 		end
 
 		CAKE.Response(ply, TEXT.ReportAdminChangeMade(args[1], args[2]))
 		CAKE.CallHook("SetVar", ply, args[1], args[2])
 	else
-		CAKE.Response(ply, args[1] .. " is not a valid convar! Use rp_admin listvars")
+		CAKE.Response(ply, args[1] .. " " .. TEXT.NotValidListVar)
 	end
 end
 
@@ -141,11 +141,11 @@ end
 
 -- Let's make some ADMIN COMMANDS!
 function PLUGIN.Init()
-	CAKE.AdminCommand("help", Admin_Help, TEXT.ListAllAdminCommands, true, true, false)
-	CAKE.AdminCommand("quiet", Admin_Quiet, TEXT.Quiet, true, true, false)
-	CAKE.AdminCommand("warn", Admin_Warn, TEXT.WarnSomeone, true, true, false)
-	CAKE.AdminCommand("kick", Admin_Kick, TEXT.KickSomeone, true, true, false)
-	CAKE.AdminCommand("ban", Admin_Ban, TEXT.BanSomeone, true, true, false)
-	CAKE.AdminCommand("listvars", Admin_ListVars, TEXT.ListConVars, true, true, true)
-	CAKE.AdminCommand("setvar", Admin_SetVar, TEXT.SetVar, true, true, true)
+	CAKE.AdminCommand(TEXT.HelpLower, Admin_Help, TEXT.ListAllAdminCommands, true, true, false)
+	CAKE.AdminCommand(TEXT.QuietLower, Admin_Quiet, TEXT.Quiet, true, true, false)
+	CAKE.AdminCommand(TEXT.WarnLower, Admin_Warn, TEXT.WarnSomeone, true, true, false)
+	CAKE.AdminCommand(TEXT.KickLower, Admin_Kick, TEXT.KickSomeone, true, true, false)
+	CAKE.AdminCommand(TEXT.BanLower, Admin_Ban, TEXT.BanSomeone, true, true, false)
+	CAKE.AdminCommand(TEXT.ListVarsCmd, Admin_ListVars, TEXT.ListConVars, true, true, true)
+	CAKE.AdminCommand(TEXT.SetVarsCmd, Admin_SetVar, TEXT.SetVar, true, true, true)
 end

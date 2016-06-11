@@ -7,7 +7,7 @@
 -- Some shared functions
 -------------------------------
 
-include("language.lua")
+include("language_english.lua")
 
 local DoorTypes =
 {
