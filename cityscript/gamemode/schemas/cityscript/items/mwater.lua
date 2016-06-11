@@ -19,7 +19,7 @@ end
 function ITEM:UseItem(ply)
 
 	CAKE.ToxicPlayer(ply, 2);
-	ply:ConCommand("say /me drinks some malt \"water\"");
+	ply:ConCommand("say " .. TEXT.SlashMeCommand .. " drinks some malt \"water\"");
 	ply:SetHealth(math.Clamp(ply:Health() - 15, 0, ply:MaxHealth()));
 	self:Remove();
 

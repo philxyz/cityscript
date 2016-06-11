@@ -19,7 +19,7 @@ end
 function ITEM:UseItem(ply)
 
 	ply:SetHealth(math.Clamp(ply:Health() + 10, 0, ply:MaxHealth()));
-	ply:ConCommand("say /me drinks a lot of milk");
+	ply:ConCommand("say " .. TEXT.SlashMeCommand .. " drinks a lot of milk");
 	self:Remove();
 
 end

@@ -16,7 +16,7 @@ end
 
 function ITEM:UseItem(ply)
 	CAKE.ToxicPlayer(ply, 2);
-	ply:ConCommand("say /me drinks some lemonade and gets poisoned by Aspartame/Aminosweet and other neurotoxic E-number sweeteners");
+	ply:ConCommand("say " .. TEXT.SlashMeCommand .. " drinks some lemonade and gets poisoned by Aspartame/Aminosweet and other neurotoxic E-number sweeteners");
 	ply:SetHealth(ply:Health() - 10)
 	self:Remove();
 end

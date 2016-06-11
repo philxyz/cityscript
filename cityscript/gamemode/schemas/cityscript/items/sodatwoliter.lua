@@ -18,7 +18,7 @@ end
 
 function ITEM:UseItem(ply)
 
-	ply:ConCommand("say /me drinks a lot of soda");
+	ply:ConCommand("say " .. TEXT.SlashMeCommand .. " drinks a lot of soda");
 	ply:SetHealth(math.Clamp(ply:Health() - 5, 0, ply:MaxHealth()));
 	self:Remove();
 

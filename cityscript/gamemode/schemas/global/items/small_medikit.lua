@@ -15,6 +15,6 @@ end
 
 function ITEM:UseItem(ply)
 	ply:SetHealth(math.Clamp(ply:Health() + 15, 0, ply:MaxHealth()))
-	ply:ConCommand("say /me patches himself up")
+	ply:ConCommand("say " .. TEXT.SlashMeCommand .. " patches himself up")
 	self:Remove()
 end
