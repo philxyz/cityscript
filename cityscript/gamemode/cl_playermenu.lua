@@ -82,7 +82,9 @@ local function InitHiddenButton()
 								if #players > 1 then
 									local subm = ContextMenu:AddSubMenu(TEXT.GiveSomeKeysTo)
 									for _, v in ipairs(players) do
-										subm:AddOption(CAKE.GetCharField(v, "name") or v:Name(), function() net.Start("CA"); net.WriteInt(v:EntIndex(), 16); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end)
+										if IsValid(v) then
+											subm:AddOption(CAKE.GetCharField(v, "name") or v:Name(), function() net.Start("CA"); net.WriteInt(v:EntIndex(), 16); net.WriteInt(target:EntIndex(), 16); net.SendToServer() end)
+										end
 									end
 									ContextMenu:AddSpacer()
 								end
