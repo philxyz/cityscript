@@ -353,7 +353,11 @@ net.Receive("Ck", function(_, ply)
 							CAKE.ChangeMoney(ply, 0 - 50)
 							CAKE.Response(ply, TEXT.DoorCharged)
 							-- Start the timer again
-							timer.Simple(900, function() ply:Rental(doornum) end) -- 15 minutes hoo rah
+							timer.Simple(900, function()
+								if IsValid(ply) then
+									ply:Rental(doornum)
+								end
+							end) -- 15 minutes hoo rah
 						else
 							CAKE.Response(ply, TEXT.DoorLost)
 							door:SetNWString("title", "")

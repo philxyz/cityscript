@@ -82,9 +82,10 @@ function LightOthers(igniter)
 
 				-- When burning money, report a sad story.
 				if prop:GetTable().MoneyBag then
+					local amt = prop:Getamount()
 					prop:Remove()
 					for k, v in pairs(player.GetAll()) do
-						CAKE.Response(v, TEXT.FireShock(e:Getamount()))
+						CAKE.Response(v, TEXT.FireShock(amt))
 					end
 				end
 			end
