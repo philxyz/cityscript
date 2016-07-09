@@ -447,11 +447,11 @@ CAKE.ChatCommand(TEXT.DropWeaponCommand, function(ply, args)
 	local wepclass = weapons.GetStored(wep:GetClass())
 
 	if wepclass.Primary and (clip1 > 0) then
-		ply:GiveAmmo_ReloadFix(-clip1, wepclass.Primary.Ammo, true)
+		ply:GiveAmmo(-clip1, wepclass.Primary.Ammo, true)
 	end
 
 	if wepclass.Secondary and (clip2 > 0) then
-		ply:GiveAmmo_ReloadFix(-clip2, wepclass.Secondary.Ammo, true)
+		ply:GiveAmmo(-clip2, wepclass.Secondary.Ammo, true)
 	end
 
 	ply:StripWeapon(wep:GetClass())
@@ -537,11 +537,11 @@ net.Receive("Cj", function(_, ply)
 		if table.Count(inv) < 10 then
 			if item:Pickup(ply) ~= false then
 				if item:GetNWInt("Clip1A") > 0 then
-					ply:GiveAmmo_ReloadFix(item:GetNWInt("Clip1A"), game.GetAmmoName(item:GetNWInt("PAmmoType")))
+					ply:GiveAmmo(item:GetNWInt("Clip1A"), game.GetAmmoName(item:GetNWInt("PAmmoType")))
 				end
 
 				if item:GetNWInt("Clip2A") > 0 then
-					ply:GiveAmmo_ReloadFix(item:GetNWInt("Clip2A"), game.GetAmmoName(item:GetNWInt("SAmmoType")))
+					ply:GiveAmmo(item:GetNWInt("Clip2A"), game.GetAmmoName(item:GetNWInt("SAmmoType")))
 				end
 
 				if item:GetClass() == "spawned_weapon" then
@@ -615,10 +615,10 @@ net.Receive("Ch", function(_, ply)
 			CAKE.Response(ply, "Found " .. tostring(item:GetNWInt("Clip2A")) .. " units of " .. tostring(game.GetAmmoName(item:GetNWInt("SAmmoTpe") or 0) or "") ..  " ammunition.")
 		end
 
-		ply:GiveAmmo_ReloadFix(item:GetNWInt("Clip1A"), tostring(game.GetAmmoName(item:GetNWInt("PAmmoType") or 0) or ""))
+		ply:GiveAmmo(item:GetNWInt("Clip1A"), tostring(game.GetAmmoName(item:GetNWInt("PAmmoType") or 0) or ""))
 		item:SetNWInt("Clip1A", 0)
 
-		ply:GiveAmmo_ReloadFix(item:GetNWInt("Clip2A"), tostring(game.GetAmmoName(item:GetNWInt("SAmmoType") or 0) or ""))
+		ply:GiveAmmo(item:GetNWInt("Clip2A"), tostring(game.GetAmmoName(item:GetNWInt("SAmmoType") or 0) or ""))
 		item:SetNWInt("Clip2A", 0)
 	end
 end)

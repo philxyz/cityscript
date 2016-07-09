@@ -12,34 +12,6 @@ CAKE.PlayerData = {}
 
 local meta = FindMetaTable("Player")
 
--- Weapons can't be reloaded unless ammo was available at the point
--- the weapon was last switched-to (Gmod bug?).
---
--- A version of GiveAmmo which re-enables weapon-reloading while restocking
--- ammo for a currently selected weapon that was originally selected while no ammo
--- of that type was available.
-function meta:GiveAmmo_ReloadFix(amount, typ, hidePopup)
-	local wep = self:GetActiveWeapon()
-
-	local paType = wep:GetPrimaryAmmoType()
-	local paName = game.GetAmmoName(paType)
-
-	local saType = wep:GetSecondaryAmmoType()
-	local saName = game.GetAmmoName(saType)
-
-	-- Determine whether we need to switch the player's weapon away and back
-	-- so as to re-enable reloads of the weapon.
-	local switchRequired = (paName ~= nil and paName:lower() == typ:lower() and self:GetAmmoCount(paType) == 0) or (saName ~= nil and saName:lower() == typ:lower() and self:GetAmmoCount(saType) == 0)
-
-	-- Call the original GiveAmmo implementation
-	self:GiveAmmo(amount, typ, hidePopup)
-
-	if switchRequired then
-		self:SelectWeapon("hands") -- Gamemode specific. This can be anything that all players have by default.
-		self:SelectWeapon(wep:GetClass())
-	end
-end
-
 function CAKE.FormatCharString(ply)
 	return ply:SteamID() .. "-" .. ply:SteamID64() .. "-" .. tostring(ply:GetNWInt("uid"))
 end

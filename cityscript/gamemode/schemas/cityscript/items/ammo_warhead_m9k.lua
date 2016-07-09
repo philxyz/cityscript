@@ -14,6 +14,6 @@ function ITEM:Pickup(ply)
 end
 
 function ITEM:UseItem(ply)
-	ply:GiveAmmo_ReloadFix(1, "Nuclear_Warhead")
+	ply:GiveAmmo(1, "Nuclear_Warhead")
 	self:Remove()
 end

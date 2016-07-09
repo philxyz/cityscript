@@ -15,7 +15,7 @@ end
 
 function ITEM:UseItem(ply)
 
-	ply:GiveAmmo_ReloadFix(48, "357")
+	ply:GiveAmmo(48, "357")
 
 	self:Remove()
 end
