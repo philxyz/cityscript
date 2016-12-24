@@ -520,14 +520,13 @@ function CreatePlayerMenu()
 	PlayerMenu = vgui.Create("DFrame")
 	PlayerMenu:SetPos(ScrW() / 2 - 320, ScrH() / 2 - 240)
 	PlayerMenu:SetSize(640, 480)
-	PlayerMenu:SetTitle(TEXT.PlayerMenu)
+	PlayerMenu:SetTitle(TEXT.WelcomeToCakescriptG2)
 	PlayerMenu:SetVisible(true)
 	PlayerMenu:SetDraggable(true)
 	PlayerMenu:ShowCloseButton(true)
 	PlayerMenu:MakePopup()
 
-	PropertySheet = vgui.Create("DPropertySheet")
-	PropertySheet:SetParent(PlayerMenu)
+	PropertySheet = vgui.Create("DPropertySheet", PlayerMenu)
 	PropertySheet:SetPos(2, 30)
 	PropertySheet:SetSize(636, 448)
 
@@ -538,11 +537,6 @@ function CreatePlayerMenu()
 	end
 
 	local PlayerInfo = vgui.Create("DListLayout")
-	--PlayerInfo:SetSize(636, 448)
-	--PlayerInfo:SetLayoutDir(TOP)
-	--PlayerInfo:SetBorder(20)
-	--PlayerInfo:SetSpaceX(20)
-	--PlayerInfo:SetSpaceY(20)
 
 	local FullData = vgui.Create("DListLayout")
 	FullData:SetSize(0, 84)
@@ -608,33 +602,24 @@ function CreatePlayerMenu()
 	PlayerInfo:Add(icdata)
 	PlayerInfo:Add(vitals)
 
-	CharPanel = vgui.Create("DPanelList")
-	CharPanel:SetPadding(20)
-	CharPanel:SetSpacing(20)
-	CharPanel:EnableHorizontal(false)
 
-	local newcharform = vgui.Create("DForm")
-	newcharform:SetPadding(4)
-	newcharform:SetName(TEXT.NewCharacter)
-	newcharform:SetAutoSize(true)
+	CharPanel = vgui.Create("DHorizontalDivider")
 
-	local CharMenu = vgui.Create("DPanelList")
-	newcharform:AddItem(CharMenu)
-	CharMenu:SetSize(316, 386)
-	CharMenu:SetPadding(10)
-	CharMenu:SetSpacing(20)
-	CharMenu:EnableVerticalScrollbar()
-	CharMenu:EnableHorizontal(false)
+	local CharMenu = vgui.Create("DListLayout", CharPanel)
+	CharMenu:SetPos(10, 10)
+	CharMenu:SetSize(108, 386)
+
+	CharPanel:SetRight(CharMenu)
 
 	local label = vgui.Create("DLabel")
-	CharMenu:AddItem(label)
+	CharMenu:Add(label)
 	label:SetSize(400, 25)
 	label:SetPos(5, 25)
-	label:SetText(TEXT.WelcomeToCakescriptG2)
+	label:SetText(TEXT.NewCharacter)
 
 	local info = vgui.Create("DForm")
 	info:SetName(TEXT.PersonalInformation)
-	CharMenu:AddItem(info)
+	CharMenu:Add(info)
 
 	local label = vgui.Create("DLabel")
 	info:AddItem(label)
@@ -665,7 +650,7 @@ function CreatePlayerMenu()
 	local modelform = vgui.Create("DForm")
 	modelform:SetPadding(4)
 	modelform:SetName(TEXT.Appearance)
-	CharMenu:AddItem(modelform)
+	CharMenu:Add(modelform)
 
 	local OpenButton = vgui.Create("DButton")
 	OpenButton:SetText("Select Model")
@@ -696,20 +681,14 @@ function CreatePlayerMenu()
 		PlayerMenu:Remove()
 		PlayerMenu = nil
 	end
-	CharMenu:AddItem(apply)
+	CharMenu:Add(apply)
 
-	local selectcharform = vgui.Create("DForm")
-	selectcharform:SetPadding(4);
+	local selectcharform = vgui.Create("DListLayout")
 	selectcharform:SetName(TEXT.SelectCharacter)
-	selectcharform:SetSize(316, 386)
+	CharPanel:SetLeft(selectcharform)
+	CharPanel:SetLeftWidth((PlayerMenu:GetWide()/2)-10)
 
-	local charlist = vgui.Create("DPanelList")
-
-	charlist:SetSize(316, 386)
-	charlist:SetPadding(10)
-	charlist:SetSpacing(20)
-	charlist:EnableVerticalScrollbar()
-	charlist:EnableHorizontal(true)
+	local charlist = vgui.Create("DListLayout")
 
 	local n = 1
 
@@ -757,7 +736,7 @@ function CreatePlayerMenu()
 
 		InitAnim()
 
-		charlist:AddItem(mdlPanel)
+		charlist:Add(mdlPanel)
 	end
 
 	local chars = vgui.Create("DListView")
@@ -803,23 +782,13 @@ function CreatePlayerMenu()
 
 	RebuildChars()
 
-	selectcharform:AddItem(chars)
-	selectcharform:AddItem(charlist)
+	local selectCharLabel = vgui.Create("DLabel")
+	selectCharLabel:SetText(TEXT.SelectCharacter)
+	selectcharform:Add(selectCharLabel)
+	selectcharform:Add(chars)
+	selectcharform:Add(charlist)
 
-	local divider = vgui.Create("DHorizontalDivider")
-	divider:SetLeft(newcharform)
-	divider:SetRight(selectcharform)
-	divider:SetLeftWidth(316);
-
-	CharPanel:AddItem(newcharform)
-	CharPanel:AddItem(selectcharform)
-	CharPanel:AddItem(divider)
-
-	CityCommands = vgui.Create("DPanelList")
-	CityCommands:SetPadding(20)
-	CityCommands:SetSpacing(20)
-	CityCommands:EnableHorizontal(true)
-	CityCommands:EnableVerticalScrollbar(true)
+	CityCommands = vgui.Create("DListLayout")
 
 	local CityRoles = vgui.Create("DListView")
 	CityRoles:SetSize(550, 446)
@@ -856,13 +825,9 @@ function CreatePlayerMenu()
 		CityRoles:AddLine(v.name, tostring(v.salary), yesno2, yesno, v.rolekey)
 	end
 
-	CityCommands:AddItem(CityRoles)
+	CityCommands:Add(CityRoles)
 
 	Inventory = vgui.Create("DPanelList")
-	Inventory:SetPadding(20)
-	Inventory:SetSpacing(20)
-	Inventory:EnableHorizontal(true)
-	Inventory:EnableVerticalScrollbar(true)
 
 	for k, v in pairs(InventoryTable) do
 		local spawnicon = vgui.Create("SpawnIcon")
@@ -913,7 +878,7 @@ function CreatePlayerMenu()
 			surface.DrawText(v.Name .. " test")
 		end
 
-		Inventory:AddItem(spawnicon)
+		Inventory:Add(spawnicon)
 	end
 
 	Business = vgui.Create("DPanel")
@@ -1163,8 +1128,6 @@ function CreatePlayerMenu()
 	local Help = vgui.Create("DIconLayout", scrll)
 	Help:SetSize(scrll:GetWide() - 4, scrll:GetTall() - 4)
 	Help:SetPos(2, 2)
-	--Help:SetPadding(20)
-	--Help:EnableHorizontal(false)
 	Help:SetSpaceX(5)
 	Help:SetSpaceY(5)
 
