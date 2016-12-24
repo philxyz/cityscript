@@ -279,7 +279,9 @@ spawnmenu.AddContentType("model", function(container, obj)
 
 	local isAllowed = UPP.Allowed_Models[mdl] == true
 
-	if not LocalPlayer():IsAdmin() and not isAllowed then return end
+	if LocalPlayer().IsAdmin == nil then return end
+
+	if not isAllowed and not LocalPlayer():IsAdmin() then return end
 
 	local icon = vgui.Create("SpawnIcon", container)
 
